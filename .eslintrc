@@ -30,7 +30,7 @@
       { "namedComponents": ["arrow-function", "function-declaration"] }
     ],
     "react/require-default-props": 0,
-    "import-prefer-default-export": 0,
+    "import/prefer-default-export": "off",
     "react/prop-types": 0,
     "linebreak-style": 0
   }
