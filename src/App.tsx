@@ -1,15 +1,20 @@
+/** @jsxImportSource @emotion/react */
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Global } from '@emotion/react';
+
 import { Login } from './pages/Login/Login';
+import { GlobalStyles } from './styles/Global.styled';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route>
+    <>
+      <Global styles={GlobalStyles} />
+      <BrowserRouter>
+        <Routes>
           <Route path="/" element={<Login />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
