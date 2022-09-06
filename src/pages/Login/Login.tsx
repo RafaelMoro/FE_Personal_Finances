@@ -2,7 +2,7 @@ import { CardContent } from '@mui/material';
 
 import {
   Main, LoginCardForm, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
-  FormTitle, FormInstructions, InputForm,
+  FormTitle, FormInstructions, LoginInput,
 } from './Login.styled';
 import { PrimaryButton } from '../../styles/Global.styled';
 import logo from '../../assets/logo.png';
@@ -19,8 +19,8 @@ const Login = () => (
       <CardContent>
         <FormTitle>Welcome back</FormTitle>
         <FormInstructions>Enter your credentials to enter your account.</FormInstructions>
-        <InputForm label="Email" variant="standard" fullWidth />
-        <InputForm label="Password" variant="standard" fullWidth />
+        <LoginInput label="Email" variant="standard" fullWidth />
+        <LoginInput label="Password" variant="standard" fullWidth />
       </CardContent>
       <LoginCardActions>
         <PrimaryButton variant="contained" type="submit" size="medium">Login</PrimaryButton>

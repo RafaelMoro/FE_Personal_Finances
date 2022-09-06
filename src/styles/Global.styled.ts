@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
+import { TextFieldProps } from '@mui/material/TextField';
 
 import { IGlobalConfiguration } from './interface';
 
@@ -20,6 +21,19 @@ export const GlobalStyles = css`
     line-height: 1.5;
   }
 `;
+
+export const appColors = {
+  primary: '#E6991E',
+  secondary: '#EAB765',
+  white: '#FAF8F6',
+  black: '#1D1305',
+  positive: '#35E6DB',
+  negative: '#E65A12',
+  bgColorLight: '#F5EFE5',
+  bgColorDark: '#66440D',
+  grey: '#9F9B94',
+  subtitleColor: '#B5BFCA',
+};
 
 export const GlobalConfiguration: IGlobalConfiguration = {
   mobile: {
@@ -53,12 +67,60 @@ export const GlobalConfiguration: IGlobalConfiguration = {
 
 export const PrimaryButton = styled(Button)`
   font-size: ${GlobalConfiguration.mobile.fontSizes.P};
-  background-color: #E6991E;
+  background-color: ${appColors.primary};
 
   @media (min-width: 480px) {
     font-size: ${GlobalConfiguration.tablet.fontSizes.P};
   }
   @media (min-width: 1024px) {
     font-size: ${GlobalConfiguration.desktop.fontSizes.P};
+  }
+`;
+
+export const Heading1 = styled.h1`
+  font-size: ${GlobalConfiguration.mobile.fontSizes.H1};
+  font-weight: bold;
+
+  @media (min-width: 480px) {
+    font-size: ${GlobalConfiguration.tablet.fontSizes.H1};
+  }
+  @media (min-width: 1024px) {
+    font-size: ${GlobalConfiguration.desktop.fontSizes.H1};
+  }
+`;
+
+export const Paragraph = styled.p`
+font-size: ${GlobalConfiguration.mobile.fontSizes.Sub};
+
+@media (min-width: 480px) {
+  font-size: ${GlobalConfiguration.tablet.fontSizes.Sub};
+}
+@media (min-width: 1024px) {
+  font-size: ${GlobalConfiguration.desktop.fontSizes.Sub};
+}
+`;
+
+export const InputForm = styled(TextField)<TextFieldProps>`
+  input {
+    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
+  }
+  label {
+    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
+  }
+  @media (min-width: 480px) {
+    input {
+    font-size: ${GlobalConfiguration.tablet.fontSizes.P};
+    }
+    label {
+      font-size: ${GlobalConfiguration.tablet.fontSizes.P};
+    }
+  }
+  @media (min-width: 1024px) {
+    input {
+    font-size: ${GlobalConfiguration.desktop.fontSizes.P};
+    }
+    label {
+      font-size: ${GlobalConfiguration.desktop.fontSizes.P};
+    }
   }
 `;

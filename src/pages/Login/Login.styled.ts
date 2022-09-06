@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import { Typography, CardActions, TextField } from '@mui/material';
-import { TextFieldProps } from '@mui/material/TextField';
+import { Typography, CardActions } from '@mui/material';
 
-import { GlobalConfiguration } from '../../styles/Global.styled';
+import {
+  appColors, InputForm, Paragraph, Heading1,
+} from '../../styles/Global.styled';
 
 export const Main = styled.main`
   width: 100%;
@@ -33,7 +34,7 @@ export const LogoImageContainer = styled.picture`
 export const LogoTitle = styled(Typography)`
   font-family: 'Permanent Marker', cursive;
   font-size: 2.5rem;
-  color: #E6991E;
+  color: ${appColors.primary};
 `;
 
 export const LoginCardForm = styled.form`
@@ -49,57 +50,18 @@ export const LoginCardForm = styled.form`
   }
 `;
 
-export const FormTitle = styled.h1`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.H1};
-  font-weight: bold;
+export const FormTitle = styled(Heading1)`
   text-align: center;
   margin-bottom: 2rem;
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.H1};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.H1};
-  }
 `;
 
-export const FormInstructions = styled.p`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.Sub};
-  color: rgba(0, 0, 0, 0.6);
+export const FormInstructions = styled(Paragraph)`
+  color: ${appColors.subtitleColor};
   margin-bottom: 1rem;
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.Sub};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.Sub};
-  }
 `;
 
-export const InputForm = styled(TextField)<TextFieldProps>`
+export const LoginInput = styled(InputForm)`
   margin: 1rem 0;
-  input {
-    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
-  }
-  label {
-    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
-  }
-  @media (min-width: 480px) {
-    input {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.P};
-    }
-    label {
-      font-size: ${GlobalConfiguration.tablet.fontSizes.P};
-    }
-  }
-  @media (min-width: 1024px) {
-    input {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.P};
-    }
-    label {
-      font-size: ${GlobalConfiguration.desktop.fontSizes.P};
-    }
-  }
 `;
 
 export const LoginCardActions = styled(CardActions)`
