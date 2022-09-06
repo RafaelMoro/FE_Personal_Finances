@@ -1,11 +1,10 @@
-import {
-  Button, Typography, TextField, CardContent,
-} from '@mui/material';
+import { CardContent } from '@mui/material';
 
 import {
   Main, LoginCardForm, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
-  buttonStyles, titleStyles, descriptionStyle, inputStyles,
+  FormTitle, FormInstructions, InputForm,
 } from './Login.styled';
+import { PrimaryButton } from '../../styles/Global.styled';
 import logo from '../../assets/logo.png';
 
 const Login = () => (
@@ -18,17 +17,13 @@ const Login = () => (
     </LogoContainer>
     <LoginCardForm>
       <CardContent>
-        <Typography sx={titleStyles} component="h1">
-          Welcome back
-        </Typography>
-        <Typography sx={descriptionStyle} component="p" color="text.secondary" gutterBottom>
-          Enter your credentials to enter your account.
-        </Typography>
-        <TextField sx={inputStyles} label="Email" variant="outlined" fullWidth />
-        <TextField sx={inputStyles} label="Password" variant="outlined" fullWidth />
+        <FormTitle>Welcome back</FormTitle>
+        <FormInstructions>Enter your credentials to enter your account.</FormInstructions>
+        <InputForm label="Email" variant="standard" fullWidth />
+        <InputForm label="Password" variant="standard" fullWidth />
       </CardContent>
       <LoginCardActions>
-        <Button sx={buttonStyles} variant="contained" type="submit" size="medium">Login</Button>
+        <PrimaryButton variant="contained" type="submit" size="medium">Login</PrimaryButton>
       </LoginCardActions>
     </LoginCardForm>
   </Main>
