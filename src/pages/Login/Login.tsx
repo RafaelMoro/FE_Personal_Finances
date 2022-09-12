@@ -2,7 +2,6 @@ import { CardContent } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
-import * as Yup from 'yup';
 
 import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
@@ -10,11 +9,8 @@ import {
 } from './Login.styled';
 import { PrimaryButton } from '../../styles/Global.styled';
 import logo from '../../assets/logo.png';
-
-const LoginSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
-});
+import { LoginSchema } from '../../validationsSchemas/login.schema';
+import { loginUserRequest } from './Login.request';
 
 const Login = () => (
   <Main>
@@ -28,7 +24,7 @@ const Login = () => (
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={LoginSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => loginUserRequest(values)}
       >
         {({ submitForm }) => (
           <Form>
