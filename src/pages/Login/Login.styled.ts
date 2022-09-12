@@ -37,7 +37,7 @@ export const LogoTitle = styled(Typography)`
   color: ${appColors.primary};
 `;
 
-export const LoginCardForm = styled.form`
+export const LoginCard = styled.div`
   min-width: 27.5rem;
   align-self: start;
   @media (min-width: 480px) {

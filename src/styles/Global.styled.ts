@@ -1,26 +1,9 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button, TextField } from '@mui/material';
-import { TextFieldProps } from '@mui/material/TextField';
+import { Button } from '@mui/material';
+import { TextField } from 'formik-mui';
 
 import { IGlobalConfiguration } from './interface';
-
-export const GlobalStyles = css`
-  * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
-  html {
-    font-size: 62.5%;
-  }
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-  h1, h2, h3, p {
-    line-height: 1.5;
-  }
-`;
 
 export const appColors = {
   primary: '#E6991E',
@@ -65,6 +48,32 @@ export const GlobalConfiguration: IGlobalConfiguration = {
   },
 };
 
+export const GlobalStyles = css`
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+  html {
+    font-size: 62.5%;
+  }
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+  h1, h2, h3, p {
+    line-height: 1.5;
+  }
+  .MuiFormHelperText-root {
+    font-size: ${GlobalConfiguration.mobile.fontSizes.Sub} !important;
+    @media (min-width: 480px) {
+    font-size: ${GlobalConfiguration.tablet.fontSizes.Sub} !important;
+    }
+    @media (min-width: 1024px) {
+      font-size: ${GlobalConfiguration.desktop.fontSizes.Sub} !important;
+    }
+  }
+`;
+
 export const PrimaryButton = styled(Button)`
   font-size: ${GlobalConfiguration.mobile.fontSizes.P};
   background-color: ${appColors.primary};
@@ -104,7 +113,7 @@ font-size: ${GlobalConfiguration.mobile.fontSizes.Sub};
 }
 `;
 
-export const InputForm = styled(TextField)<TextFieldProps>`
+export const InputForm = styled(TextField)`
   input {
     font-size: ${GlobalConfiguration.mobile.fontSizes.P};
   }
