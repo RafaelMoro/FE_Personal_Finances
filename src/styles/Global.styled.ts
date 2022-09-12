@@ -69,6 +69,10 @@ export const PrimaryButton = styled(Button)`
   font-size: ${GlobalConfiguration.mobile.fontSizes.P};
   background-color: ${appColors.primary};
 
+  &:hover {
+    background-color: ${appColors.bgColorDark};
+  }
+
   @media (min-width: 480px) {
     font-size: ${GlobalConfiguration.tablet.fontSizes.P};
   }
