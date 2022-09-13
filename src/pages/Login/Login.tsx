@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 import { CardContent } from '@mui/material';
 import {
@@ -12,11 +11,11 @@ import {
 } from './Login.styled';
 import { PrimaryButton } from '../../styles/Global.styled';
 import logo from '../../assets/logo.png';
-import { LoginSchema } from '../../validationsSchemas/login.schema';
+import { LoginSchema } from '../../validationsSchemas';
 import { loginUserRequest } from './Login.request';
 import { ILoginUserInfo } from './interface';
-import { accessTokenAtom } from '../../atoms/loginAtom';
-import { updateLocalStorage } from '../../utils/updateLocalStorage';
+import { accessTokenAtom } from '../../atoms';
+import { updateLocalStorage } from '../../utils';
 
 const Login = () => {
   const [error, setError] = useState<string | null>(null);

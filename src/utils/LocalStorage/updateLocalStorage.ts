@@ -1,4 +1,4 @@
-import { getLocalStorageInfo } from './getInfoLocalStorage';
+import { getLocalStorageInfo } from './getLocalStorageInfo';
 import { saveInfoToLocalStorage } from './saveInfoToLocalStorage';
 
 export function updateLocalStorage(newInfo: object) {
