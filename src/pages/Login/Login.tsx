@@ -47,6 +47,7 @@ const Login = () => {
           initialValues={{ email: '', password: '' }}
           validationSchema={LoginSchema}
           onSubmit={(values) => handleSubmit(values)}
+          validateOnMount
         >
           {({ submitForm }) => (
             <Form>
