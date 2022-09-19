@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { Typography, CardActions } from '@mui/material';
 
 import {
-  appColors, InputForm, Paragraph, Heading1,
-} from '../../styles/Global.styled';
+  AppColors, InputForm, Paragraph, Heading1,
+} from '../../styles';
 
 export const Main = styled.main`
   width: 100%;
@@ -34,7 +34,7 @@ export const LogoImageContainer = styled.picture`
 export const LogoTitle = styled(Typography)`
   font-family: 'Permanent Marker', cursive;
   font-size: 2.5rem;
-  color: ${appColors.primary};
+  color: ${AppColors.primary};
 `;
 
 export const LoginCard = styled.div`
@@ -59,7 +59,7 @@ export const FormTitle = styled(Heading1)`
 `;
 
 export const FormInstructions = styled(Paragraph)`
-  color: ${appColors.subtitleColor};
+  color: ${AppColors.subtitleColor};
   margin-bottom: 1rem;
 `;
 

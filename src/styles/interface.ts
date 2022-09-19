@@ -1,4 +1,4 @@
-interface FontSizes {
+export interface FontSizes {
   H1: string,
   H2: string,
   H3: string,

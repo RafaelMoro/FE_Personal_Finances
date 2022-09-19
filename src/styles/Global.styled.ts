@@ -3,50 +3,8 @@ import { css } from '@emotion/react';
 import { Button } from '@mui/material';
 import { TextField } from 'formik-mui';
 
-import { IGlobalConfiguration } from './interface';
-
-export const appColors = {
-  primary: '#E6991E',
-  secondary: '#EAB765',
-  white: '#fbfbfb',
-  black: '#1D1305',
-  positive: '#35E6DB',
-  negative: '#E65A12',
-  bgColorLight: '#F5EFE5',
-  bgColorDark: '#66440D',
-  grey: '#9F9B94',
-  subtitleColor: '#B5BFCA',
-};
-
-export const GlobalConfiguration: IGlobalConfiguration = {
-  mobile: {
-    fontSizes: {
-      H1: '2.2rem',
-      H2: '2rem',
-      H3: '1.7rem',
-      P: '1.6rem',
-      Sub: '1.4rem',
-    },
-  },
-  tablet: {
-    fontSizes: {
-      H1: '2.4rem',
-      H2: '2.2rem',
-      H3: '2rem',
-      P: '1.6rem',
-      Sub: '1.5rem',
-    },
-  },
-  desktop: {
-    fontSizes: {
-      H1: '3.2rem',
-      H2: '2.8rem',
-      H3: '2.4rem',
-      P: '1.8rem',
-      Sub: '1.6rem',
-    },
-  },
-};
+import { AppColors } from './GlobalConfigObjects';
+import { createResponsiveProps } from './createResponsiveProps';
 
 export const GlobalStyles = css`
   * {
@@ -68,99 +26,40 @@ export const GlobalStyles = css`
     z-index: 1;
   }
   .MuiFormHelperText-root {
-    font-size: ${GlobalConfiguration.mobile.fontSizes.Sub} !important;
-    @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.Sub} !important;
-    }
-    @media (min-width: 1024px) {
-      font-size: ${GlobalConfiguration.desktop.fontSizes.Sub} !important;
-    }
+    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
   }
 `;
 
 export const PrimaryButton = styled(Button)`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.P};
-  background-color: ${appColors.primary};
+  ${createResponsiveProps({ fontSize: 'P' })}
+  background-color: ${AppColors.primary};
 
   &:hover {
-    background-color: ${appColors.bgColorDark};
-  }
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.P};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.P};
+    background-color: ${AppColors.bgColorDark};
   }
 `;
 
 export const Heading1 = styled.h1`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.H1};
-  font-weight: bold;
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.H1};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.H1};
-  }
+  ${createResponsiveProps({ fontSize: 'H1', fontWeight: 'bold' })}
 `;
 
 export const Heading2 = styled.h2`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.H2};
-  font-weight: bold;
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.H2};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.H2};
-  }
+  ${createResponsiveProps({ fontSize: 'H2', fontWeight: 'bold' })}
 `;
 
 export const Heading3 = styled.h3`
-  font-size: ${GlobalConfiguration.mobile.fontSizes.H3};
-
-  @media (min-width: 480px) {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.H3};
-  }
-  @media (min-width: 1024px) {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.H3};
-  }
+  ${createResponsiveProps({ fontSize: 'H3' })}
 `;
 
 export const Paragraph = styled.p`
-font-size: ${GlobalConfiguration.mobile.fontSizes.Sub};
-
-@media (min-width: 480px) {
-  font-size: ${GlobalConfiguration.tablet.fontSizes.Sub};
-}
-@media (min-width: 1024px) {
-  font-size: ${GlobalConfiguration.desktop.fontSizes.Sub};
-}
+  ${createResponsiveProps({ fontSize: 'P' })}
 `;
 
 export const InputForm = styled(TextField)`
   input {
-    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
+    ${createResponsiveProps({ fontSize: 'P' })}
   }
   label {
-    font-size: ${GlobalConfiguration.mobile.fontSizes.P};
-  }
-  @media (min-width: 480px) {
-    input {
-    font-size: ${GlobalConfiguration.tablet.fontSizes.P};
-    }
-    label {
-      font-size: ${GlobalConfiguration.tablet.fontSizes.P};
-    }
-  }
-  @media (min-width: 1024px) {
-    input {
-    font-size: ${GlobalConfiguration.desktop.fontSizes.P};
-    }
-    label {
-      font-size: ${GlobalConfiguration.desktop.fontSizes.P};
-    }
+    ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;

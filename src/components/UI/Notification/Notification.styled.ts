@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { appColors, Paragraph, Heading3 } from '../../../styles/Global.styled';
+import { AppColors, Paragraph, Heading3 } from '../../../styles';
 
 export const NotificationWrapper = styled.div`
   width: 100%;
@@ -14,7 +14,7 @@ export const NotificationContainer = styled.section`
   display: grid;
   grid-template-columns: 20% 70% 10%;
   grid-template-rows: 50% 50%;
-  background-color: ${appColors.white};
+  background-color: ${AppColors.white};
   border-radius: 1rem;
   box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);
   &:hover {
@@ -28,7 +28,7 @@ export const IconStatusContainer = styled.picture`
   display: grid;
   place-items: center;
   svg {
-    color: ${appColors.negative};
+    color: ${AppColors.negative};
   }
 `;
 
