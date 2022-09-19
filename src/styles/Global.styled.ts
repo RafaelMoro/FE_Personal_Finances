@@ -8,7 +8,7 @@ import { IGlobalConfiguration } from './interface';
 export const appColors = {
   primary: '#E6991E',
   secondary: '#EAB765',
-  white: '#FAF8F6',
+  white: '#fbfbfb',
   black: '#1D1305',
   positive: '#35E6DB',
   negative: '#E65A12',
@@ -63,6 +63,10 @@ export const GlobalStyles = css`
   h1, h2, h3, p {
     line-height: 1.5;
   }
+  #root {
+    position: relative;
+    z-index: 1;
+  }
   .MuiFormHelperText-root {
     font-size: ${GlobalConfiguration.mobile.fontSizes.Sub} !important;
     @media (min-width: 480px) {
@@ -99,6 +103,29 @@ export const Heading1 = styled.h1`
   }
   @media (min-width: 1024px) {
     font-size: ${GlobalConfiguration.desktop.fontSizes.H1};
+  }
+`;
+
+export const Heading2 = styled.h2`
+  font-size: ${GlobalConfiguration.mobile.fontSizes.H2};
+  font-weight: bold;
+
+  @media (min-width: 480px) {
+    font-size: ${GlobalConfiguration.tablet.fontSizes.H2};
+  }
+  @media (min-width: 1024px) {
+    font-size: ${GlobalConfiguration.desktop.fontSizes.H2};
+  }
+`;
+
+export const Heading3 = styled.h3`
+  font-size: ${GlobalConfiguration.mobile.fontSizes.H3};
+
+  @media (min-width: 480px) {
+    font-size: ${GlobalConfiguration.tablet.fontSizes.H3};
+  }
+  @media (min-width: 1024px) {
+    font-size: ${GlobalConfiguration.desktop.fontSizes.H3};
   }
 `;
 

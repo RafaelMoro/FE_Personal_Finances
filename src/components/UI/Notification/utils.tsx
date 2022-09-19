@@ -3,8 +3,8 @@ import {
 } from '@mui/icons-material';
 
 export const SystemStateIcons = {
-  ERROR: <ErrorOutlineOutlined />,
-  WARNING: <ReportProblemOutlined />,
-  SUCCESS: <CheckCircleOutlineOutlined />,
-  INFO: <InfoOutlined />,
+  ERROR: <ErrorOutlineOutlined sx={{ fontSize: '2.5rem' }} />,
+  WARNING: <ReportProblemOutlined sx={{ fontSize: '2.5rem' }} />,
+  SUCCESS: <CheckCircleOutlineOutlined sx={{ fontSize: '2.5rem' }} />,
+  INFO: <InfoOutlined sx={{ fontSize: '2.5rem' }} />,
 };
