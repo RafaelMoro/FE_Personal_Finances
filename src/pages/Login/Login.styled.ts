@@ -41,7 +41,7 @@ export const LoginCard = styled.div`
   min-width: 27.5rem;
   align-self: start;
   @media (min-width: 480px) {
-    height: 40rem;
+    max-height: 45rem;
     width: 45rem;
     padding: 3rem;
     box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);

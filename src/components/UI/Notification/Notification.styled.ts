@@ -7,9 +7,13 @@ export const NotificationWrapper = styled.div`
   padding: 1rem 1rem 0 1rem;
   position: absolute;
   z-index: 2;
+  display: flex;
+  justify-content: center;
 `;
 
 export const NotificationContainer = styled.section`
+  width: 100%;
+  max-width: 60rem;
   height: 9rem;
   display: grid;
   grid-template-columns: 20% 70% 10%;
