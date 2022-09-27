@@ -104,4 +104,29 @@ describe('<Login />', () => {
       expect(axios.post).toHaveBeenCalled();
     });
   });
+
+  test('Show notification error when email and password are incorrect', async () => {
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const passwordInput = screen.getByLabelText(/password/i);
+    const loginButton = screen.getByRole('button', { name: /login/i });
+
+    mockedAxios.post.mockRejectedValue({
+      response: {
+        data: {
+          error: 'Unauthorized',
+          message: 'Email or Password incorrect',
+          statusCode: 401,
+        },
+      },
+    });
+
+    userEvent.type(emailInput, credentials.email);
+    userEvent.type(passwordInput, credentials.password);
+    userEvent.click(loginButton);
+
+    await waitFor(() => {
+      const errorNotification = screen.getByRole('heading', { name: /error/i });
+      expect(errorNotification).toBeInTheDocument();
+    });
+  });
 });

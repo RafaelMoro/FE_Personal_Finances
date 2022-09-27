@@ -4,4 +4,5 @@ export interface INotificationProps {
   title: string;
   description: string;
   status: SystemStateEnum
+  close(): void
 }

@@ -36,9 +36,20 @@ const Login = () => {
     }
   };
 
+  const handleShowNotification = ():void => {
+    setShowNotification(!showNotification);
+  };
+
   return (
     <>
-      {showNotification && <Notification title="Error" description={error} status={SystemStateEnum.Error} />}
+      {showNotification && (
+      <Notification
+        title="Error"
+        description={error}
+        status={SystemStateEnum.Error}
+        close={handleShowNotification}
+      />
+      )}
       <Main>
         <LogoContainer>
           <LogoImageContainer>

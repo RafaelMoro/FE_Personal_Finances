@@ -8,7 +8,9 @@ import {
   NotificationDescription, IconCloseContainer,
 } from './Notification.styled';
 
-const Notification = ({ title, description, status }: INotificationProps) => (
+const Notification = ({
+  title, description, status, close,
+}: INotificationProps) => (
   <NotificationWrapper>
     <NotificationContainer>
       <IconStatusContainer>
@@ -16,7 +18,7 @@ const Notification = ({ title, description, status }: INotificationProps) => (
       </IconStatusContainer>
       <NotificationTitle>{title}</NotificationTitle>
       <NotificationDescription>{description}</NotificationDescription>
-      <IconCloseContainer>
+      <IconCloseContainer onClick={close}>
         <CloseOutlined sx={{ fontSize: '2.5rem' }} />
       </IconCloseContainer>
     </NotificationContainer>
