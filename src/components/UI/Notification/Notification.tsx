@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import { CloseOutlined } from '@mui/icons-material';
 
 import { SystemStateIcons } from './utils';
@@ -7,12 +8,13 @@ import {
   IconStatusContainer, NotificationTitle,
   NotificationDescription, IconCloseContainer,
 } from './Notification.styled';
+import { fadeIn } from '../../../styles/animations/fadeInOut';
 
 const Notification = ({
   title, description, status, close,
 }: INotificationProps) => (
   <NotificationWrapper>
-    <NotificationContainer>
+    <NotificationContainer css={fadeIn}>
       <IconStatusContainer>
         { SystemStateIcons[status] }
       </IconStatusContainer>
