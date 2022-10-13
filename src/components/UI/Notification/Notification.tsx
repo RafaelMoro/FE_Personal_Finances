@@ -24,9 +24,13 @@ const Notification = ({
     }, 1500);
   }, [animation, toggleAnimation]);
 
+  const handleEndAnimation = () => {
+    if (animation === fadeOut) close();
+  };
+
   return (
     <NotificationWrapper>
-      <NotificationContainer css={animation}>
+      <NotificationContainer onAnimationEnd={handleEndAnimation} css={animation}>
         <IconStatusContainer>
           { SystemStateIcons[status] }
         </IconStatusContainer>

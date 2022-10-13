@@ -26,4 +26,5 @@ export const fadeIn = css`
 
 export const fadeOut = css`
   animation: ${fadeOutKeyframe} 3s ease;
+  animation-fill-mode: forwards;
 `;
