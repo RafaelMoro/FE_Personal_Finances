@@ -24,13 +24,16 @@ const Notification = ({
     }, 1500);
   }, [animation, toggleAnimation]);
 
-  const handleEndAnimation = () => {
+  const handleEndAnimation = ():void => {
     if (animation === fadeOut) close();
   };
 
   return (
     <NotificationWrapper>
-      <NotificationContainer onAnimationEnd={handleEndAnimation} css={animation}>
+      <NotificationContainer
+        onAnimationEnd={handleEndAnimation}
+        css={animation}
+      >
         <IconStatusContainer>
           { SystemStateIcons[status] }
         </IconStatusContainer>

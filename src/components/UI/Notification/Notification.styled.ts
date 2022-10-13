@@ -23,6 +23,7 @@ export const NotificationContainer = styled.section`
   box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);
   &:hover {
       box-shadow: 0 .8rem 1.6rem 0 rgba(0, 0, 0, 0.2);
+      animation: none;
     }
 `;
 
