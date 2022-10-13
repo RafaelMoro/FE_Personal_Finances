@@ -22,9 +22,11 @@ export const fadeOutKeyframe = keyframes`
 
 export const fadeIn = css`
   animation: ${fadeInKeyframe} 1s ease;
+  label: fadeInAnimation;
 `;
 
 export const fadeOut = css`
   animation: ${fadeOutKeyframe} 3s ease;
   animation-fill-mode: forwards;
+  label: fadeOutAnimation;
 `;

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /** @jsxImportSource @emotion/react */
 import { CloseOutlined } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
@@ -31,6 +30,7 @@ const Notification = ({
   return (
     <NotificationWrapper>
       <NotificationContainer
+        data-testid="notification-container"
         onAnimationEnd={handleEndAnimation}
         css={animation}
       >
