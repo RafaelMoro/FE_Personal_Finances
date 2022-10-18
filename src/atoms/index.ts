@@ -1,1 +1,1 @@
-export { userAtom as accessTokenAtom } from './loginAtom';
+export { userAtom } from './loginAtom';

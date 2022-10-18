@@ -2,7 +2,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Global } from '@emotion/react';
 
-import { Login } from './pages';
+import { Login, ProtectedRoute, Dashboard } from './pages';
 import { GlobalStyles } from './styles/Global.styled';
 
 function App() {
@@ -11,6 +11,9 @@ function App() {
       <Global styles={GlobalStyles} />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </>
   );
