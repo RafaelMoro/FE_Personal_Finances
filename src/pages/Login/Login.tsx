@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState } from 'react';
 import { CardContent } from '@mui/material';
 import {
@@ -14,6 +15,7 @@ import logo from '../../assets/logo.png';
 import { LoginSchema } from '../../validationsSchemas';
 import { loginUserRequest } from './Login.request';
 import { ILoginUserInfo } from './interface';
+import { IUserAtom } from '../../atoms/interface';
 import { accessTokenAtom } from '../../atoms';
 import { updateLocalStorage } from '../../utils';
 import { Notification } from '../../components/UI';
@@ -22,17 +24,26 @@ import { SystemStateEnum } from '../../enums';
 const Login = () => {
   const [error, setError] = useState<string>('');
   const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [, setAccessToken] = useAtom(accessTokenAtom);
+  const [, setUser] = useAtom(accessTokenAtom);
 
   const handleSubmit = async (values: ILoginUserInfo) => {
-    const token = await loginUserRequest(values);
-    if (token?.error) {
-      const errorMessage = token?.message as string;
+    const loginInfo = await loginUserRequest(values);
+    if (loginInfo?.error) {
+      const errorMessage = loginInfo?.message as string;
       setError(errorMessage);
       setShowNotification(true);
     } else {
-      updateLocalStorage({ token });
-      setAccessToken(token);
+      const { accessToken, user: { email } } = loginInfo;
+      const user: IUserAtom = { accessToken, email };
+      updateLocalStorage(
+        {
+          user: {
+            accessToken,
+            email,
+          },
+        },
+      );
+      setUser(user);
     }
   };
 

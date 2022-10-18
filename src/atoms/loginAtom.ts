@@ -1,3 +1,4 @@
 import { atom } from 'jotai';
+import { IUserAtom } from './interface';
 
-export const accessTokenAtom = atom<string | null>(null);
+export const userAtom = atom<IUserAtom | null>(null);
