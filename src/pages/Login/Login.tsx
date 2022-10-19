@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardContent } from '@mui/material';
 import {
@@ -16,9 +16,10 @@ import logo from '../../assets/logo.png';
 import { LoginSchema } from '../../validationsSchemas';
 import { loginUserRequest } from './Login.request';
 import { ILoginUserInfo } from './interface';
-import { IUserAtom } from '../../atoms/interface';
+import { IUser } from '../../atoms/interface';
+import { ICountOnMeLocalStorage } from '../../utils/LocalStorage/interface';
 import { userAtom } from '../../atoms';
-import { updateLocalStorage } from '../../utils';
+import { getLocalStorageInfo, updateLocalStorage } from '../../utils';
 import { Notification } from '../../components/UI';
 import { SystemStateEnum } from '../../enums';
 
@@ -27,6 +28,17 @@ const Login = () => {
   const [error, setError] = useState<string>('');
   const [showNotification, setShowNotification] = useState<boolean>(false);
   const [, setUser] = useAtom(userAtom);
+
+  useEffect(() => {
+    const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
+    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 0;
+
+    if (!IsEmptyLocalStorage) {
+      const { user } = localStorageInfo;
+      setUser(user);
+      navigate('/dashboard');
+    }
+  }, [navigate, setUser]);
 
   const handleSubmit = async (values: ILoginUserInfo) => {
     const loginInfo = await loginUserRequest(values);
@@ -37,7 +49,7 @@ const Login = () => {
       setShowNotification(true);
     } else {
       const { accessToken, user: { email } } = loginInfo;
-      const user: IUserAtom = { accessToken, email };
+      const user: IUser = { accessToken, email };
       updateLocalStorage(
         {
           user: {

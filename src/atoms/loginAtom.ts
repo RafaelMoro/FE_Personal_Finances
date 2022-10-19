@@ -1,4 +1,4 @@
 import { atom } from 'jotai';
-import { IUserAtom } from './interface';
+import { IUser } from './interface';
 
-export const userAtom = atom<IUserAtom | null>(null);
+export const userAtom = atom<IUser | null>(null);

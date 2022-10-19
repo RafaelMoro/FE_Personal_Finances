@@ -1,4 +1,4 @@
-export interface IUserAtom {
+export interface IUser {
   accessToken: string;
   email: string;
 }
