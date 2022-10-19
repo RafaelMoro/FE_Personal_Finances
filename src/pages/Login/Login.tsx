@@ -1,71 +1,23 @@
-/* eslint-disable no-console */
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CardContent } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
-import { useAtom } from 'jotai';
 
+import { SystemStateEnum } from '../../enums';
+import { useLogin } from '../../hooks/useLogin';
+import { LoginSchema } from '../../validationsSchemas';
+import { Notification } from '../../components/UI';
 import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
   FormTitle, FormInstructions, LoginInput,
 } from './Login.styled';
 import { PrimaryButton } from '../../styles/Global.styled';
 import logo from '../../assets/logo.png';
-import { LoginSchema } from '../../validationsSchemas';
-import { loginUserRequest } from './Login.request';
-import { ILoginUserInfo } from './interface';
-import { IUser } from '../../atoms/interface';
-import { ICountOnMeLocalStorage } from '../../utils/LocalStorage/interface';
-import { userAtom } from '../../atoms';
-import { getLocalStorageInfo, updateLocalStorage } from '../../utils';
-import { Notification } from '../../components/UI';
-import { SystemStateEnum } from '../../enums';
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
-  const [showNotification, setShowNotification] = useState<boolean>(false);
-  const [, setUser] = useAtom(userAtom);
-
-  useEffect(() => {
-    const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
-    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 0;
-
-    if (!IsEmptyLocalStorage) {
-      const { user } = localStorageInfo;
-      setUser(user);
-      navigate('/dashboard');
-    }
-  }, [navigate, setUser]);
-
-  const handleSubmit = async (values: ILoginUserInfo) => {
-    const loginInfo = await loginUserRequest(values);
-
-    if (loginInfo?.error) {
-      const errorMessage = loginInfo?.message as string;
-      setError(errorMessage);
-      setShowNotification(true);
-    } else {
-      const { accessToken, user: { email } } = loginInfo;
-      const user: IUser = { accessToken, email };
-      updateLocalStorage(
-        {
-          user: {
-            accessToken,
-            email,
-          },
-        },
-      );
-      setUser(user);
-      navigate('/dashboard');
-    }
-  };
-
-  const handleShowNotification = ():void => {
-    setShowNotification(!showNotification);
-  };
+  const {
+    handleSubmit, handleShowNotification, error, showNotification,
+  } = useLogin();
 
   return (
     <>
