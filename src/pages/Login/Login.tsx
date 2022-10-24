@@ -11,7 +11,7 @@ import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
   FormTitle, FormInstructions, LoginInput,
 } from './Login.styled';
-import { PrimaryButton } from '../../styles/Global.styled';
+import { PrimaryButton } from '../../styles';
 import logo from '../../assets/logo.png';
 
 const Login = () => {

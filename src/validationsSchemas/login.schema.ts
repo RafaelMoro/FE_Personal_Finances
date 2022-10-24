@@ -1,6 +1,11 @@
 import * as Yup from 'yup';
+import { emailValidation, passwordValidation } from './validations';
 
 export const LoginSchema = Yup.object({
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  email: emailValidation,
+  password: passwordValidation,
+});
+
+export const ForgotPasswordSchema = Yup.object({
+  email: emailValidation,
 });

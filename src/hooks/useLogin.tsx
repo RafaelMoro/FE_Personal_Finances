@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import { ILoginUserInfo } from '../pages/Login/interface';
+import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
 import { userAtom } from '../atoms';
 import { loginUserRequest } from '../pages/Login/Login.request';
@@ -26,7 +26,7 @@ const useLogin = () => {
     }
   }, [navigate, setUser]);
 
-  const handleSubmit = async (values: ILoginUserInfo) => {
+  const handleSubmit = async (values: ILoginValues) => {
     const loginInfo = await loginUserRequest(values);
 
     if (loginInfo?.error) {
