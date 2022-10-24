@@ -1,17 +1,19 @@
 import { ReactElement } from 'react';
 
+import { Main, ForgotPasswordTitle, ForgotPasswordDescription } from './ForgotPassword.styled';
+
 const ForgotPassword = (): ReactElement => (
-  <main>
-    <h1>Forgot password</h1>
-    <p>
-      If you forgot your password, please enter your email and
-      we will send you an email to reset your password.
-    </p>
+  <Main>
+    <ForgotPasswordTitle>Forgot password</ForgotPasswordTitle>
+    <ForgotPasswordDescription>
+      Please enter your email and
+      we will send you the instructions to reset your password.
+    </ForgotPasswordDescription>
     <form action="POST">
       <input type="email" placeholder="email" />
       <button type="submit">Change my password</button>
     </form>
-  </main>
+  </Main>
 );
 
 export { ForgotPassword };

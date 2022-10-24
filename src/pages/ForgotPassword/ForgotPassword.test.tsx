@@ -6,7 +6,7 @@ describe('<ForgotPassword />', () => {
     render(<ForgotPassword />);
 
     expect(screen.getByRole('heading', { name: /forgot password/i })).toBeInTheDocument();
-    expect(screen.getByText(/if you forgot your password, please enter your email and we will send you an email to reset your password\./i)).toBeInTheDocument();
+    expect(screen.getByText(/please enter your email and we will send you the instructions to reset your password\./i)).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /change my password/i })).toBeInTheDocument();
   });
