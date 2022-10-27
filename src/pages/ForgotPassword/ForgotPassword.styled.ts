@@ -5,8 +5,21 @@ import { Heading1, Paragraph } from '../../styles';
 export const Main = styled.main`
   width: 100%;
   height: 100vh;
+  padding-top: 8rem;
   display: grid;
-  grid-template-rows: 10% 20% 70%;
+  justify-content: center;
+`;
+
+export const ForgotPasswordContainer = styled.article`
+  height: 50%;
+  display: grid;
+  gap: 5rem;
+  grid-template-rows: 10% 20% 60%;
+
+  @media (min-width: 480px) {
+    max-width: 50rem;
+    height: 70%;
+  }
 `;
 
 export const ForgotPasswordTitle = styled(Heading1)`
@@ -22,6 +35,6 @@ export const ForgotPasswordForm = styled(Form)`
   padding: 0 3rem;
   display: flex;
   flex-direction: column;
-  gap: 3rem;
+  gap: 5rem;
   justify-items: center;
 `;
