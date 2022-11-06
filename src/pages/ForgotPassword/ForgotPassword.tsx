@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-import { ReactElement, useState } from 'react';
+import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAtom } from 'jotai';
 import {
   Formik, Field,
 } from 'formik';
@@ -8,6 +9,7 @@ import {
 import { FORGOT_PASSWORD_POST_ROUTE, FORGOT_PASSWORD_REDIRECT_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../enums';
+import { showNotificationAtom } from '../../atoms';
 import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
 import { postRequest } from '../../utils/PostRequest.ts';
 import { Notification } from '../../components/UI';
@@ -18,7 +20,7 @@ import { InputForm, PrimaryButton } from '../../styles';
 
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
-  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
 
   const handleSubmit = async (values: IForgotPasswordValues) => {
     await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);

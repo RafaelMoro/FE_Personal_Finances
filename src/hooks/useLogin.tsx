@@ -6,15 +6,15 @@ import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/con
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
-import { userAtom } from '../atoms';
+import { userAtom, showNotificationAtom } from '../atoms';
 import { postRequest } from '../utils/PostRequest.ts';
 import { getLocalStorageInfo, updateLocalStorage } from '../utils';
 
 const useLogin = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
-  const [showNotification, setShowNotification] = useState<boolean>(false);
   const [, setUser] = useAtom(userAtom);
+  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
 
   useEffect(() => {
     const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
@@ -23,7 +23,7 @@ const useLogin = () => {
     if (!IsEmptyLocalStorage) {
       const { user } = localStorageInfo;
       setUser(user);
-      navigate('/dashboard');
+      navigate(AFTER_LOGIN_NAVIGATE_ROUTE);
     }
   }, [navigate, setUser]);
 
