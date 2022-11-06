@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
 import { userAtom } from '../atoms';
-import { loginUserRequest } from '../pages/Login/Login.request';
+import { postRequest } from '../utils/PostRequest.ts';
+import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/constants';
 import { getLocalStorageInfo, updateLocalStorage } from '../utils';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 
@@ -27,7 +28,7 @@ const useLogin = () => {
   }, [navigate, setUser]);
 
   const handleSubmit = async (values: ILoginValues) => {
-    const loginInfo = await loginUserRequest(values);
+    const loginInfo = await postRequest(values, LOGIN_POST_ROUTE);
 
     if (loginInfo?.error) {
       const errorMessage = loginInfo?.message as string;
@@ -42,7 +43,7 @@ const useLogin = () => {
         },
       );
       setUser(user);
-      navigate('/dashboard');
+      navigate(AFTER_LOGIN_NAVIGATE_ROUTE);
     }
   };
 

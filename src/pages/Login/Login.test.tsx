@@ -3,6 +3,8 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 
 import { Login } from './Login';
 
@@ -14,12 +16,17 @@ const credentials = {
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
-beforeEach(() => {
-  render(<Login />);
-  jest.spyOn(console, 'error').mockImplementation(() => {});
-});
-
 describe('<Login />', () => {
+  beforeEach(() => {
+    const history = createMemoryHistory();
+    render(
+      <Router location={history.location} navigator={history}>
+        <Login />
+      </Router>,
+    );
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
   test("Render Login Page with the title 'welcome back', email and password input and login button", () => {
     const title = screen.getByRole('heading', { name: /welcome back/i });
     const emailInput = screen.getByRole('textbox', { name: /email/i });
@@ -36,7 +43,6 @@ describe('<Login />', () => {
 
     fireEvent.click(loginButton);
 
-    // working on this test
     await waitFor(() => {
       expect(screen.getByText(/email is required/i)).toBeInTheDocument();
       expect(screen.getByText(/password is required/i)).toBeInTheDocument();
@@ -50,7 +56,6 @@ describe('<Login />', () => {
     userEvent.type(emailInput, 'a');
     fireEvent.click(loginButton);
 
-    // working on this test
     await waitFor(() => {
       expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
     });

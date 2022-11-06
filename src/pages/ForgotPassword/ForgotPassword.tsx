@@ -9,12 +9,13 @@ import {
 } from './ForgotPassword.styled';
 import { InputForm, PrimaryButton } from '../../styles';
 import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
-import { ForgotPasswordRequest } from './ForgotPassword.request';
+import { postRequest } from '../../utils/PostRequest.ts';
+import { FORGOT_PASSWORD_POST_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
 
 const ForgotPassword = (): ReactElement => {
   const handleSubmit = async (values: IForgotPasswordValues) => {
-    await ForgotPasswordRequest(values);
+    await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
     // show notification
   };
 
