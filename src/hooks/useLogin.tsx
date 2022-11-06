@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
+import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/constants';
+import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
 import { userAtom } from '../atoms';
 import { postRequest } from '../utils/PostRequest.ts';
-import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/constants';
 import { getLocalStorageInfo, updateLocalStorage } from '../utils';
-import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 
 const useLogin = () => {
   const navigate = useNavigate();
