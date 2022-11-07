@@ -26,7 +26,7 @@ const ForgotPassword = (): ReactElement => {
     await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
     setShowNotification(true);
     setTimeout(() => {
-      navigate(FORGOT_PASSWORD_REDIRECT_ROUTE);
+      // navigate(FORGOT_PASSWORD_REDIRECT_ROUTE);
     }, 5000);
   };
 

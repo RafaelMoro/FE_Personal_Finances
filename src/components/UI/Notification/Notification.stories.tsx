@@ -1,0 +1,47 @@
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+
+import { Notification } from './Notification';
+import { SystemStateEnum } from '../../../enums';
+
+export default {
+  title: 'UI/Notification',
+  component: Notification
+} as ComponentMeta<typeof Notification>;
+
+const Template: ComponentStory<typeof Notification> = (args) => <Notification {...args} />;
+
+const mockCloseNotification = () => {}
+
+export const SuccessNotification = Template.bind({});
+SuccessNotification.args = {
+  title: 'Success Notification',
+  description: 'This is a success notification',
+  status: SystemStateEnum.Success,
+  close: mockCloseNotification,
+};
+
+export const ErrorNotification = Template.bind({});
+ErrorNotification.args = {
+  title: 'An error ocurred',
+  description: 'Something bad happened, please try again later',
+  status: SystemStateEnum.Error,
+  close: mockCloseNotification,
+}
+
+export const WarningNotification = Template.bind({});
+WarningNotification.args = {
+  title: 'Be careful',
+  description: 'Are you sure you want to continue?',
+  status: SystemStateEnum.Warning,
+  close: mockCloseNotification,
+}
+
+export const InfoNotification = Template.bind({});
+InfoNotification.args = {
+  title: 'This is a informative notification',
+  description: 'Your action has been carried out.',
+  status: SystemStateEnum.Info,
+  close: mockCloseNotification,
+}
+
+export {};
