@@ -3,7 +3,6 @@ import { AppColors, Paragraph, Heading3 } from '../../../styles';
 
 export const NotificationWrapper = styled.div`
   width: 100%;
-  height: 10rem;
   padding: 1rem 1rem 0 1rem;
   position: absolute;
   z-index: 2;
@@ -14,10 +13,10 @@ export const NotificationWrapper = styled.div`
 export const NotificationContainer = styled.section`
   width: 100%;
   max-width: 60rem;
-  height: 9rem;
+  min-height: 9rem;
   display: grid;
   grid-template-columns: 20% 70% 10%;
-  grid-template-rows: 50% 50%;
+  grid-template-rows: min-content 1fr;
   background-color: ${AppColors.white};
   border-radius: 1rem;
   box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);
@@ -46,6 +45,7 @@ export const NotificationTitle = styled(Heading3)`
 export const NotificationDescription = styled(Paragraph)`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
+  margin: 2rem 0;
 `;
 export const IconCloseContainer = styled.picture`
   grid-column: 3 / 4;

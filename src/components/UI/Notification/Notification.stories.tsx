@@ -44,4 +44,12 @@ InfoNotification.args = {
   close: mockCloseNotification,
 }
 
+export const LongTextNotification = Template.bind({});
+LongTextNotification.args = {
+  title: 'This is a informative notification',
+  description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae sunt architecto distinctio velit, id consequatur? Iste sit nostrum incidunt consectetur repudiandae accusantium totam cupiditate temporibus quaerat! Dolorem, optio assumenda. Voluptatem?,',
+  status: SystemStateEnum.Info,
+  close: mockCloseNotification,
+}
+
 export {};
