@@ -17,14 +17,14 @@ describe('<Notification />', () => {
   test('Render Notification starting with fade in animation', () => {
     const notification = screen.queryByTestId('notification-container');
 
-    expect(notification).toHaveClass('css-cgfjxi-fadeInAnimation');
+    expect(notification).toHaveClass('css-m910mb-fadeInAnimation');
   });
 
   test('Render notification and after 1.5 seconds, have fadeOut Animation', async () => {
     const notification = screen.queryByTestId('notification-container');
 
     await waitFor(() => {
-      expect(notification).toHaveClass('css-bwbv71-fadeOutAnimation');
+      expect(notification).toHaveClass('css-1xkpnv5-fadeOutAnimation');
     }, { timeout: 1600 });
   });
 });
