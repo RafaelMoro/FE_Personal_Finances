@@ -3,8 +3,8 @@ import { Formik, Field } from 'formik';
 
 import { IResetPasswordValues } from './interface';
 import {
-  Main, ForgotPasswordContainer, ForgotPasswordTitle, ForgotPasswordDescription, ForgotPasswordForm,
-} from '../ForgotPassword/ForgotPassword.styled';
+  Main, MainContainer, FormTitle, FormDescription, FormContainer,
+} from '../../styles/LoginModule.styled';
 import { ResetPasswordSchema } from '../../validationsSchemas/login.schema';
 import { PrimaryButton, InputForm } from '../../styles';
 
@@ -15,11 +15,11 @@ const ResetPassword = (): ReactElement => {
   };
   return (
     <Main>
-      <ForgotPasswordContainer>
-        <ForgotPasswordTitle>Reset Password</ForgotPasswordTitle>
-        <ForgotPasswordDescription>
+      <MainContainer>
+        <FormTitle>Reset Password</FormTitle>
+        <FormDescription>
           Enter your new password in the fields below:
-        </ForgotPasswordDescription>
+        </FormDescription>
         <Formik
           initialValues={{ newPassword: '', confirmPassword: '' }}
           validationSchema={ResetPasswordSchema}
@@ -27,7 +27,7 @@ const ResetPassword = (): ReactElement => {
           validateOnMount
         >
           {({ submitForm }) => (
-            <ForgotPasswordForm>
+            <FormContainer>
               <Field
                 component={InputForm}
                 name="newPassword"
@@ -43,10 +43,10 @@ const ResetPassword = (): ReactElement => {
                 label="Confirm Password"
               />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Reset Password</PrimaryButton>
-            </ForgotPasswordForm>
+            </FormContainer>
           )}
         </Formik>
-      </ForgotPasswordContainer>
+      </MainContainer>
     </Main>
   );
 };

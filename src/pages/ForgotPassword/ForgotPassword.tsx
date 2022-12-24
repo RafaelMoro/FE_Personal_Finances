@@ -13,8 +13,8 @@ import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
 import { postRequest } from '../../utils/PostRequest.ts';
 import { Notification } from '../../components/UI';
 import {
-  Main, ForgotPasswordTitle, ForgotPasswordDescription, ForgotPasswordForm, ForgotPasswordContainer,
-} from './ForgotPassword.styled';
+  Main, FormTitle, FormDescription, FormContainer, MainContainer,
+} from '../../styles/LoginModule.styled';
 import { InputForm, PrimaryButton } from '../../styles';
 
 const ForgotPassword = (): ReactElement => {
@@ -45,12 +45,12 @@ const ForgotPassword = (): ReactElement => {
       />
       )}
       <Main>
-        <ForgotPasswordContainer>
-          <ForgotPasswordTitle>Forgot password</ForgotPasswordTitle>
-          <ForgotPasswordDescription>
+        <MainContainer>
+          <FormTitle>Forgot password</FormTitle>
+          <FormDescription>
             Please enter your email and
             we will send you the instructions to reset your password.
-          </ForgotPasswordDescription>
+          </FormDescription>
           <Formik
             initialValues={{ email: '' }}
             validationSchema={ForgotPasswordSchema}
@@ -58,7 +58,7 @@ const ForgotPassword = (): ReactElement => {
             validateOnMount
           >
             {({ submitForm }) => (
-              <ForgotPasswordForm>
+              <FormContainer>
                 <Field
                   component={InputForm}
                   name="email"
@@ -67,10 +67,10 @@ const ForgotPassword = (): ReactElement => {
                   label="Email"
                 />
                 <PrimaryButton variant="contained" onClick={submitForm} size="medium">Change my password</PrimaryButton>
-              </ForgotPasswordForm>
+              </FormContainer>
             )}
           </Formik>
-        </ForgotPasswordContainer>
+        </MainContainer>
       </Main>
     </>
   );
