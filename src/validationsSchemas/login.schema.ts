@@ -9,3 +9,8 @@ export const LoginSchema = Yup.object({
 export const ForgotPasswordSchema = Yup.object({
   email: emailValidation,
 });
+
+export const ResetPasswordSchema = Yup.object({
+  password: passwordValidation,
+  confirmPassword: passwordValidation,
+});
