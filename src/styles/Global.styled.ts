@@ -7,6 +7,11 @@ import { Link } from 'react-router-dom';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 
+/*
+* This file has generic emotion components to use accross the application and
+* global css styles
+*/
+
 export const GlobalStyles = css`
   * {
     box-sizing: border-box;

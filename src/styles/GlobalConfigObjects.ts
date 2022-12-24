@@ -1,5 +1,10 @@
 import { IGlobalConfiguration } from './interface';
 
+/*
+* This file saves colors, breakpoints for responsive web design, font sizes
+* for different devices.
+*/
+
 export const AppColors = {
   primary: '#E6991E',
   secondary: '#EAB765',
