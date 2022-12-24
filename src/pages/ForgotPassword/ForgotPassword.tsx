@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';

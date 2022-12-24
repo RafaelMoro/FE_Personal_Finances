@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Typography, CardActions } from '@mui/material';
 
 import {
-  AppColors, InputForm, Paragraph, Heading1,
+  AppColors, InputForm, Paragraph, Heading1, Anchor,
 } from '../../styles';
 
 export const Main = styled.main`
@@ -65,6 +65,11 @@ export const FormInstructions = styled(Paragraph)`
 
 export const LoginInput = styled(InputForm)`
   margin: 1rem 0;
+`;
+
+export const ForgotPasswordLink = styled(Anchor)`
+  display: block;
+  padding: 2rem 0;
 `;
 
 export const LoginCardActions = styled(CardActions)`

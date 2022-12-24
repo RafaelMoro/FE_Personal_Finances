@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Button } from '@mui/material';
 import { TextField } from 'formik-mui';
+import { Link } from 'react-router-dom';
 
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
@@ -52,6 +53,10 @@ export const Heading3 = styled.h3`
 `;
 
 export const Paragraph = styled.p`
+  ${createResponsiveProps({ fontSize: 'P' })}
+`;
+
+export const Anchor = styled(Link)`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
 

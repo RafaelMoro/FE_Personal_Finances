@@ -9,7 +9,7 @@ import { LoginSchema } from '../../validationsSchemas';
 import { Notification } from '../../components/UI';
 import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
-  FormTitle, FormInstructions, LoginInput,
+  FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
 import { PrimaryButton } from '../../styles';
 import logo from '../../assets/logo.png';
@@ -64,6 +64,7 @@ const Login = () => {
                     fullWidth
                     label="Password"
                   />
+                  <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
                 <LoginCardActions>
                   <PrimaryButton variant="contained" onClick={submitForm} size="medium">Login</PrimaryButton>
