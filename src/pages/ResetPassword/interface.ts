@@ -1,4 +1,4 @@
 export interface IResetPasswordValues {
-  newPassword: string;
+  password: string;
   confirmPassword: string;
 }

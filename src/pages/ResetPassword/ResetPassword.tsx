@@ -21,7 +21,7 @@ const ResetPassword = (): ReactElement => {
           Enter your new password in the fields below:
         </FormDescription>
         <Formik
-          initialValues={{ newPassword: '', confirmPassword: '' }}
+          initialValues={{ password: '', confirmPassword: '' }}
           validationSchema={ResetPasswordSchema}
           onSubmit={(values) => handleSubmit(values)}
           validateOnMount
@@ -30,7 +30,7 @@ const ResetPassword = (): ReactElement => {
             <FormContainer>
               <Field
                 component={InputForm}
-                name="newPassword"
+                name="password"
                 type="password"
                 variant="standard"
                 label="New Password"
