@@ -47,6 +47,12 @@ export const NotificationDescription = styled(Paragraph)`
   grid-row: 2 / 3;
   margin: 2rem 0;
 `;
+export const NotificationUIElementContainer = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 3 / 4;
+  justify-self: center;
+  margin: 2rem 0;
+`;
 export const IconCloseContainer = styled.picture`
   grid-column: 3 / 4;
   grid-row: 1 / 3;

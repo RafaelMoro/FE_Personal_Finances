@@ -7,12 +7,12 @@ import { INotificationProps } from './interface';
 import {
   NotificationWrapper, NotificationContainer,
   IconStatusContainer, NotificationTitle,
-  NotificationDescription, IconCloseContainer,
+  NotificationDescription, IconCloseContainer, NotificationUIElementContainer,
 } from './Notification.styled';
 import { fadeIn, fadeOut } from '../../../styles/animations/fadeInOut';
 
 const Notification = ({
-  title, description, status, close,
+  title, description, status, close, UIElement = null,
 }: INotificationProps) => {
   const [toggleAnimation, setToggleAnimation] = useState<boolean>(true);
   const animation = toggleAnimation ? fadeIn : fadeOut;
@@ -39,6 +39,11 @@ const Notification = ({
         </IconStatusContainer>
         <NotificationTitle>{title}</NotificationTitle>
         <NotificationDescription>{description}</NotificationDescription>
+        { UIElement && (
+          <NotificationUIElementContainer>
+            {UIElement}
+          </NotificationUIElementContainer>
+        )}
         <IconCloseContainer onClick={close}>
           <CloseOutlined sx={{ fontSize: '2.5rem' }} />
         </IconCloseContainer>

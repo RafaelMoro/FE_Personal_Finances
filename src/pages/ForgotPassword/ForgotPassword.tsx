@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Formik, Field,
 } from 'formik';
+import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { useNotification } from '../../hooks/useNotification';
 import { FORGOT_PASSWORD_POST_ROUTE, REDIRECT_ROUTE } from './constants';
@@ -14,7 +15,7 @@ import { Notification } from '../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
 } from '../../styles/LoginModule.styled';
-import { InputForm, PrimaryButton } from '../../styles';
+import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
 
 const NOTIFICATION_TITLE = 'Email Sent';
 const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
@@ -23,6 +24,8 @@ const NOTIFICATION_STATUS = SystemStateEnum.Success;
 const NOTIFICATION_ERROR_TITLE = 'Incorrect Email.';
 const NOTIFICATION_ERROR_DESCRIPTION = 'Verify that your email is correct or create an account';
 const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Info;
+
+const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contained" size="medium">Create Account</SecondaryButton>;
 
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
@@ -58,6 +61,11 @@ const ForgotPassword = (): ReactElement => {
         description={notificationInfo.current.description}
         status={notificationInfo.current.status}
         close={toggleShowNotification}
+        UIElement={
+          notificationInfo.current.status === NOTIFICATION_ERROR_STATUS
+            ? createAccountButton
+            : null
+        }
       />
       )}
       <Main>

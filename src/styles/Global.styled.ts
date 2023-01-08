@@ -45,6 +45,15 @@ export const PrimaryButton = styled(Button)`
   }
 `;
 
+export const SecondaryButton = styled(Button)`
+  ${createResponsiveProps({ fontSize: 'P' })}
+  background-color: ${AppColors.secondary};
+
+  &:hover {
+    background-color: ${AppColors.bgColorDark};
+  }
+`;
+
 export const Heading1 = styled.h1`
   ${createResponsiveProps({ fontSize: 'H1', fontWeight: 'bold' })}
 `;
