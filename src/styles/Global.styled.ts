@@ -47,10 +47,13 @@ export const PrimaryButton = styled(Button)`
 
 export const SecondaryButton = styled(Button)`
   ${createResponsiveProps({ fontSize: 'P' })}
-  background-color: ${AppColors.secondary};
+  background-color: ${AppColors.white};
+  color: ${AppColors.primary};
+  border: .1rem solid ${AppColors.primary};
 
   &:hover {
-    background-color: ${AppColors.bgColorDark};
+    background-color: ${AppColors.primary};
+    color: ${AppColors.white};
   }
 `;
 
