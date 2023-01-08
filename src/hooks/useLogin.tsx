@@ -6,7 +6,8 @@ import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/con
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
-import { userAtom, showNotificationAtom } from '../atoms';
+import { useNotification } from './useNotification';
+import { userAtom } from '../atoms';
 import { postRequest } from '../utils/PostRequest.ts';
 import { getLocalStorageInfo, updateLocalStorage } from '../utils';
 
@@ -14,7 +15,7 @@ const useLogin = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>('');
   const [, setUser] = useAtom(userAtom);
-  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
+  const { showNotification, toggleShowNotification } = useNotification();
 
   useEffect(() => {
     const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
@@ -33,7 +34,7 @@ const useLogin = () => {
     if (loginInfo?.error) {
       const errorMessage = loginInfo?.message as string;
       setError(errorMessage);
-      setShowNotification(true);
+      toggleShowNotification();
     } else {
       const { accessToken, user: { email } } = loginInfo;
       const user: IUser = { accessToken, email };
@@ -47,13 +48,9 @@ const useLogin = () => {
     }
   };
 
-  const handleShowNotification = ():void => {
-    setShowNotification(!showNotification);
-  };
-
   return {
     handleSubmit,
-    handleShowNotification,
+    handleShowNotification: toggleShowNotification,
     error,
     showNotification,
   };

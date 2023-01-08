@@ -1,13 +1,12 @@
 import { ReactElement, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
-import { useAtom } from 'jotai';
 
 import { Notification } from '../../components/UI';
 import { IResetPasswordValues } from './interface';
 import { postRequest } from '../../utils/PostRequest.ts';
 import { RESET_PASSWORD_POST_ROUTE, REDIRECT_ROUTE, RESET_PASSWORD_ERROR_REDIRECT } from '../ForgotPassword/constants';
-import { showNotificationAtom } from '../../atoms';
+import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
 import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
@@ -16,7 +15,7 @@ import { ResetPasswordSchema } from '../../validationsSchemas/login.schema';
 import { PrimaryButton, InputForm } from '../../styles';
 
 const ResetPassword = (): ReactElement => {
-  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
+  const { showNotification, toggleShowNotification } = useNotification();
   const notificationInfo = useRef({
     title: 'Password reset successfully',
     description: 'You may login with your new password.',
@@ -36,22 +35,17 @@ const ResetPassword = (): ReactElement => {
       notificationInfo.current.title = 'Error';
       notificationInfo.current.description = 'An error ocurred. Please try again re-sending the email to reset your password.';
       notificationInfo.current.status = SystemStateEnum.Error;
-      setShowNotification(true);
+
+      toggleShowNotification();
       setTimeout(() => {
-        setShowNotification(false);
         navigate(RESET_PASSWORD_ERROR_REDIRECT);
       }, 5000);
     } else {
-      setShowNotification(true);
+      toggleShowNotification();
       setTimeout(() => {
-        setShowNotification(false);
         navigate(REDIRECT_ROUTE);
       }, 5000);
     }
-  };
-
-  const toggleShowNotification = () => {
-    setShowNotification(!showNotification);
   };
 
   return (

@@ -1,14 +1,13 @@
 import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAtom } from 'jotai';
 import {
   Formik, Field,
 } from 'formik';
 
+import { useNotification } from '../../hooks/useNotification';
 import { FORGOT_PASSWORD_POST_ROUTE, REDIRECT_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../enums';
-import { showNotificationAtom } from '../../atoms';
 import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
 import { postRequest } from '../../utils/PostRequest.ts';
 import { Notification } from '../../components/UI';
@@ -19,19 +18,14 @@ import { InputForm, PrimaryButton } from '../../styles';
 
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
-  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
+  const { showNotification, toggleShowNotification } = useNotification();
 
   const handleSubmit = async (values: IForgotPasswordValues) => {
     await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
-    setShowNotification(true);
+    toggleShowNotification();
     setTimeout(() => {
-      setShowNotification(false);
       navigate(REDIRECT_ROUTE);
     }, 5000);
-  };
-
-  const toggleShowNotification = () => {
-    setShowNotification(!showNotification);
   };
 
   return (
