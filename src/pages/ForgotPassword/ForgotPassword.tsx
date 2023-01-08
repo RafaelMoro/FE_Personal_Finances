@@ -1,4 +1,4 @@
-import { ReactElement, useRef } from 'react';
+import { ReactElement } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Formik, Field,
@@ -16,22 +16,30 @@ import {
 } from '../../styles/LoginModule.styled';
 import { InputForm, PrimaryButton } from '../../styles';
 
+const NOTIFICATION_TITLE = 'Email Sent';
+const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
+const NOTIFICATION_STATUS = SystemStateEnum.Success;
+
+const NOTIFICATION_ERROR_TITLE = 'Incorrect Email.';
+const NOTIFICATION_ERROR_DESCRIPTION = 'Verify that your email is correct or create an account';
+const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Info;
+
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
-  const { showNotification, toggleShowNotification } = useNotification();
-  const notificationInfo = useRef({
-    title: 'Email Sent',
-    description: 'Kindly check your email inbox and follow the instructions.',
-    status: SystemStateEnum.Success,
+  const {
+    showNotification, toggleShowNotification, notificationInfo,
+    updateTitle, updateDescription, updateStatus,
+  } = useNotification({
+    title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
 
   const handleSubmit = async (values: IForgotPasswordValues) => {
     const responseForgotPasswordRequest = await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
 
     if (responseForgotPasswordRequest?.error) {
-      notificationInfo.current.title = 'User not found';
-      notificationInfo.current.description = 'Verify that your email is correct or create an account';
-      notificationInfo.current.status = SystemStateEnum.Info;
+      updateTitle(NOTIFICATION_ERROR_TITLE);
+      updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
+      updateStatus(NOTIFICATION_ERROR_STATUS);
 
       toggleShowNotification();
       return;

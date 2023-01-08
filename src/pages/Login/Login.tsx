@@ -3,7 +3,6 @@ import {
   Formik, Form, Field,
 } from 'formik';
 
-import { SystemStateEnum } from '../../enums';
 import { useLogin } from '../../hooks/useLogin';
 import { LoginSchema } from '../../validationsSchemas';
 import { Notification } from '../../components/UI';
@@ -16,16 +15,16 @@ import logo from '../../assets/logo.png';
 
 const Login = () => {
   const {
-    handleSubmit, handleShowNotification, error, showNotification,
+    handleSubmit, handleShowNotification, notificationInfo, showNotification,
   } = useLogin();
 
   return (
     <>
       {showNotification && (
       <Notification
-        title="Error"
-        description={error}
-        status={SystemStateEnum.Error}
+        title={notificationInfo.current.title}
+        description={notificationInfo.current.description}
+        status={notificationInfo.current.status}
         close={handleShowNotification}
       />
       )}
