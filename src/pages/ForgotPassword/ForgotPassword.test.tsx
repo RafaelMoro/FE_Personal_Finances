@@ -3,9 +3,9 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
-
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+
 import { ForgotPassword } from './ForgotPassword';
 
 jest.mock('axios');
