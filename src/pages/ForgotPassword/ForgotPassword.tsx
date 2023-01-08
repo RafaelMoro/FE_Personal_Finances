@@ -5,7 +5,7 @@ import {
   Formik, Field,
 } from 'formik';
 
-import { FORGOT_PASSWORD_POST_ROUTE, FORGOT_PASSWORD_REDIRECT_ROUTE } from './constants';
+import { FORGOT_PASSWORD_POST_ROUTE, REDIRECT_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../enums';
 import { showNotificationAtom } from '../../atoms';
@@ -26,7 +26,7 @@ const ForgotPassword = (): ReactElement => {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
-      navigate(FORGOT_PASSWORD_REDIRECT_ROUTE);
+      navigate(REDIRECT_ROUTE);
     }, 5000);
   };
 
