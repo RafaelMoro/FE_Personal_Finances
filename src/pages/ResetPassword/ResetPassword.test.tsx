@@ -166,6 +166,8 @@ describe('<ResetPassword />', () => {
       fireEvent.click(resetPasswordButton);
 
       await waitFor(() => {
+        // eslint-disable-next-line no-restricted-globals
+        expect(location.pathname).toBe('/');
         expect(axios.post).toHaveBeenCalled();
       });
     });
