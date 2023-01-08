@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Formik, Field,
@@ -19,9 +19,23 @@ import { InputForm, PrimaryButton } from '../../styles';
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
   const { showNotification, toggleShowNotification } = useNotification();
+  const notificationInfo = useRef({
+    title: 'Email Sent',
+    description: 'Kindly check your email inbox and follow the instructions.',
+    status: SystemStateEnum.Success,
+  });
 
   const handleSubmit = async (values: IForgotPasswordValues) => {
-    await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
+    const responseForgotPasswordRequest = await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
+
+    if (responseForgotPasswordRequest?.error) {
+      notificationInfo.current.title = 'User not found';
+      notificationInfo.current.description = 'Verify that your email is correct or create an account';
+      notificationInfo.current.status = SystemStateEnum.Info;
+
+      toggleShowNotification();
+      return;
+    }
     toggleShowNotification();
     setTimeout(() => {
       navigate(REDIRECT_ROUTE);
@@ -32,9 +46,9 @@ const ForgotPassword = (): ReactElement => {
     <>
       {showNotification && (
       <Notification
-        title="Email Sent"
-        description="Kindly check your email inbox and follow the instructions."
-        status={SystemStateEnum.Success}
+        title={notificationInfo.current.title}
+        description={notificationInfo.current.description}
+        status={notificationInfo.current.status}
         close={toggleShowNotification}
       />
       )}
