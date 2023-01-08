@@ -1,7 +1,12 @@
+/* eslint-disable no-console */
 import { ReactElement } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
 import { IResetPasswordValues } from './interface';
+import { postRequest } from '../../utils/PostRequest.ts';
+import { RESET_PASSWORD_POST_ROUTE } from '../ForgotPassword/constants';
+import { errors } from './constants';
 import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
 } from '../../styles/LoginModule.styled';
@@ -9,9 +14,26 @@ import { ResetPasswordSchema } from '../../validationsSchemas/login.schema';
 import { PrimaryButton, InputForm } from '../../styles';
 
 const ResetPassword = (): ReactElement => {
-  const handleSubmit = (values: IResetPasswordValues) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
+  const location = useLocation();
+  const { pathname } = location;
+
+  const handleSubmit = async (values: IResetPasswordValues) => {
+    const { password } = values;
+    const valuesRequest = { password };
+    const completeRoute = RESET_PASSWORD_POST_ROUTE + pathname;
+    const responseResetPasswordRequest = await postRequest(valuesRequest, completeRoute);
+
+    if (responseResetPasswordRequest?.error) {
+      const errorMessage = responseResetPasswordRequest?.message as string;
+      errors.forEach((error) => {
+        if (error === errorMessage) {
+          // show notification of try again
+        }
+      });
+    } else {
+      // Show notification of success.
+      // Redirect into Login.
+    }
   };
   return (
     <Main>
