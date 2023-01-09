@@ -1,7 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Notification } from './Notification';
+import { PrimaryButton } from '../../../styles';
 import { SystemStateEnum } from '../../../enums';
+
+const myButton = <PrimaryButton variant="contained" size="medium">Click me!</PrimaryButton>
 
 export default {
   title: 'UI/Notification',
@@ -52,4 +55,20 @@ LongTextNotification.args = {
   close: mockCloseNotification,
 }
 
-export {};
+export const NotificationWithUIElement = Template.bind({});
+NotificationWithUIElement.argTypes = {
+  UIElement: {
+    options: ['button'],
+    mapping: {
+      button: myButton
+    },
+    defaultValue: 'button'
+  }
+}
+NotificationWithUIElement.args = {
+  title: 'Hey',
+  description: 'There is a button in this notification',
+  status: SystemStateEnum.Info,
+  close: mockCloseNotification,
+}
+
