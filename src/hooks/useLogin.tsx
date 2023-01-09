@@ -16,6 +16,19 @@ const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
 const NOTIFICATION_STATUS = SystemStateEnum.Error;
 
+/*
+* useLogin manages:
+*   - The notification of the Login Page
+*   - Update user atom from local storage
+*   - handleSubmit function to manage the data when the form in the Login page is submitted.
+*
+* It returns:
+*   - handleSubmit: manages the actions after submitting the form in the Login page
+*   - toggleShowNotification: Function that toggles the notification to show it or hide it.
+*   - notificationInfo: React ref that has the notification title, description and status.
+*   - showNotification: A flag to show or hide the notification component.
+*/
+
 const useLogin = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);

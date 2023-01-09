@@ -11,6 +11,9 @@ interface UseNotificationProps {
 }
 
 /*
+* useNotification manages when to show or hide the notification, what title, description
+* and status should the component have.
+*
 * This hook recieves the props: title, description and status. Same as the notification component
 * It returns:
 *   - showNotification: flag to show or hide notification
