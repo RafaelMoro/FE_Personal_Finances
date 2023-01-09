@@ -47,6 +47,14 @@ const ForgotPassword = (): ReactElement => {
       toggleShowNotification();
       return;
     }
+
+    // Update notification info in case the last notification was error.
+    if (notificationInfo.current.title === NOTIFICATION_ERROR_TITLE) {
+      updateTitle(NOTIFICATION_TITLE);
+      updateDescription(NOTIFICATION_DESCRIPTION);
+      updateStatus(NOTIFICATION_STATUS);
+    }
+
     toggleShowNotification();
     setTimeout(() => {
       navigate(REDIRECT_ROUTE);

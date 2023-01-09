@@ -1,7 +1,5 @@
-import { useAtom } from 'jotai';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
-import { showNotificationAtom } from '../atoms';
 import { SystemStateEnum } from '../enums';
 
 interface UseNotificationProps {
@@ -24,7 +22,7 @@ interface UseNotificationProps {
 *   - updateStatus: Function that updates the notification status.
 */
 const useNotification = ({ title, description, status }: UseNotificationProps) => {
-  const [showNotification, setShowNotification] = useAtom(showNotificationAtom);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
   const notificationInfo = useRef({
     title,
     description,

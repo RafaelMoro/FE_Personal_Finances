@@ -1,1 +1,1 @@
-export { userAtom, showNotificationAtom } from './atoms';
+export { userAtom } from './atoms';
