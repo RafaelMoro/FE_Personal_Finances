@@ -1,11 +1,12 @@
 import * as Yup from 'yup';
 import {
-  emailValidation, passwordValidation, createPasswordValidation, confirmPasswordValidation,
+  emailValidation, passwordValidation, confirmPasswordValidation,
+  firstNameValidation, lastNameValidation, middleNameValidation,
 } from './validations';
 
 export const LoginSchema = Yup.object({
   email: emailValidation,
-  password: passwordValidation,
+  password: passwordValidation('Password is required', true),
 });
 
 export const ForgotPasswordSchema = Yup.object({
@@ -13,6 +14,15 @@ export const ForgotPasswordSchema = Yup.object({
 });
 
 export const ResetPasswordSchema = Yup.object({
-  password: createPasswordValidation,
+  password: passwordValidation('New Password is required'),
   confirmPassword: confirmPasswordValidation,
+});
+
+export const CreateAccountSchema = Yup.object({
+  email: emailValidation,
+  password: passwordValidation('Password is required'),
+  confirmPassword: confirmPasswordValidation,
+  firstName: firstNameValidation,
+  lastName: lastNameValidation,
+  middleName: middleNameValidation,
 });

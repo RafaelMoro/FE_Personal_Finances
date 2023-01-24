@@ -6,7 +6,7 @@ import {
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { useNotification } from '../../hooks/useNotification';
-import { FORGOT_PASSWORD_POST_ROUTE, REDIRECT_ROUTE } from './constants';
+import { FORGOT_PASSWORD_POST_ROUTE, LOGIN_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../enums';
 import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
@@ -57,7 +57,7 @@ const ForgotPassword = (): ReactElement => {
 
     toggleShowNotification();
     setTimeout(() => {
-      navigate(REDIRECT_ROUTE);
+      navigate(LOGIN_ROUTE);
     }, 5000);
   };
 
