@@ -10,12 +10,12 @@ import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import { PrimaryButton } from '../../styles';
+import { PrimaryButton, SecondaryButton } from '../../styles';
 import logo from '../../assets/logo.png';
 
 const Login = () => {
   const {
-    handleSubmit, handleShowNotification, notificationInfo, showNotification,
+    handleSubmit, handleShowNotification, notificationInfo, showNotification, handleRegisterButton,
   } = useLogin();
 
   return (
@@ -66,6 +66,7 @@ const Login = () => {
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
                 <LoginCardActions>
+                  <SecondaryButton variant="contained" onClick={handleRegisterButton} size="medium">Register</SecondaryButton>
                   <PrimaryButton variant="contained" onClick={submitForm} size="medium">Login</PrimaryButton>
                 </LoginCardActions>
               </Form>

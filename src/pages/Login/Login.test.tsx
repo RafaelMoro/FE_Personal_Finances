@@ -32,10 +32,12 @@ describe('<Login />', () => {
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const passwordInput = screen.getByLabelText(/password/i);
     const loginButton = screen.getByRole('button', { name: /login/i });
+    const registerButton = screen.getByRole('button', { name: /register/i });
     expect(title).toBeInTheDocument();
     expect(emailInput).toBeInTheDocument();
     expect(passwordInput).toBeInTheDocument();
     expect(loginButton).toBeInTheDocument();
+    expect(registerButton).toBeInTheDocument();
   });
 
   test('If the email and password input are empty, a validation error must appear in each input', async () => {
@@ -58,6 +60,19 @@ describe('<Login />', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
+    });
+  });
+
+  test('Click the button Register and redirect into the register route', async () => {
+    const registerButton = screen.getByRole('button', { name: /register/i });
+
+    fireEvent.click(registerButton);
+
+    await waitFor(() => {
+      // eslint-disable-next-line no-restricted-globals
+      expect(location.pathname).toBe('/register');
+    }, {
+      timeout: 3000,
     });
   });
 

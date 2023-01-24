@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE } from '../pages/Login/constants';
+import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE, LOGIN_REGISTER_ROUTE } from '../pages/Login/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/Login/interface';
 import { IUser } from '../atoms/interface';
@@ -70,9 +70,12 @@ const useLogin = () => {
     }
   };
 
+  const handleRegisterButton = ():void => navigate(LOGIN_REGISTER_ROUTE);
+
   return {
     handleSubmit,
     handleShowNotification: toggleShowNotification,
+    handleRegisterButton,
     notificationInfo,
     showNotification,
   };

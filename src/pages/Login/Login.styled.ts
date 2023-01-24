@@ -74,5 +74,5 @@ export const ForgotPasswordLink = styled(Anchor)`
 
 export const LoginCardActions = styled(CardActions)`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 `;
