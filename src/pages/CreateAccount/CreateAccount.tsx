@@ -1,19 +1,21 @@
-import { ReactElement } from 'react';
-import { useNavigate } from 'react-router-dom';
-import {
-  Formik, Field,
-} from 'formik';
+import { ReactElement, useState } from 'react';
+import { Formik } from 'formik';
 
 import { ICreateAccountValues } from './interface';
 import { CreateAccountSchema } from '../../validationsSchemas/login.schema';
-import { LOGIN_ROUTE } from '../ForgotPassword/constants';
-import { PrimaryButton, InputForm, SecondaryButton } from '../../styles';
+import { PersonalInformation } from './PersonalInformation';
+import { UserAndPassword } from './UserAndPassword';
+// import { LOGIN_ROUTE } from '../ForgotPassword/constants';
 import {
-  Main, MainContainer, FormTitle, FormDescription, FormContainer,
+  Main, MainContainer, FormTitle, FormDescription,
 } from '../../styles/LoginModule.styled';
 
 const CreateAccount = ():ReactElement => {
-  const navigate = useNavigate();
+  const [counterView, setCounterView] = useState<number>(0);
+
+  const goBack = () => setCounterView(counterView - 1);
+  const goNext = () => setCounterView(counterView + 1);
+
   const initialValuesCreateAccountForm = {
     email: '',
     firstName: '',
@@ -28,8 +30,6 @@ const CreateAccount = ():ReactElement => {
     console.log(values);
   };
 
-  const redirectButton = () => navigate(LOGIN_ROUTE);
-
   return (
     <Main>
       <MainContainer>
@@ -42,52 +42,10 @@ const CreateAccount = ():ReactElement => {
           validateOnMount
         >
           {({ submitForm }) => (
-            <FormContainer>
-              <Field
-                component={InputForm}
-                name="firstName"
-                type="text"
-                variant="standard"
-                label="First Name"
-              />
-              <Field
-                component={InputForm}
-                name="lastName"
-                type="text"
-                variant="standard"
-                label="Last Name"
-              />
-              <Field
-                component={InputForm}
-                name="middleName"
-                type="text"
-                variant="standard"
-                label="Middle Name"
-              />
-              <Field
-                component={InputForm}
-                name="email"
-                type="email"
-                variant="standard"
-                label="Email"
-              />
-              <Field
-                component={InputForm}
-                name="password"
-                type="password"
-                variant="standard"
-                label="Password"
-              />
-              <Field
-                component={InputForm}
-                name="confirmPassword"
-                type="password"
-                variant="standard"
-                label="Confirm Password"
-              />
-              <SecondaryButton variant="contained" onClick={redirectButton} size="medium">Cancel</SecondaryButton>
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
-            </FormContainer>
+            <>
+              <PersonalInformation goNext={goNext} counterView={counterView} />
+              <UserAndPassword goBack={goBack} submitForm={submitForm} counterView={counterView} />
+            </>
           )}
         </Formik>
       </MainContainer>
