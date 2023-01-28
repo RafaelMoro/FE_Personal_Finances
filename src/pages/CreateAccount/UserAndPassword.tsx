@@ -1,42 +1,55 @@
-import { Field } from 'formik';
+import { Field, Formik } from 'formik';
+
+import { IUserAndPasswordProps } from './interface';
+import { UserAndPasswordSchema } from '../../validationsSchemas/login.schema';
 import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
-import { FormContainer } from '../../styles/LoginModule.styled';
+import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
 
-interface IUserPasswordProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  submitForm: (() => Promise<void>) & (() => Promise<any>)
-  goBack: () => void;
-  counterView: number;
-}
+const initialValuesUserAndPassword = {
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 
-const UserAndPassword = ({ goBack, submitForm, counterView }: IUserPasswordProps) => {
-  if (counterView === 0) return null;
+const UserAndPassword = ({ goBack, goNext, counterView }: IUserAndPasswordProps) => {
+  if (counterView !== 1) return null;
   return (
-    <FormContainer>
-      <Field
-        component={InputForm}
-        name="email"
-        type="email"
-        variant="standard"
-        label="Email"
-      />
-      <Field
-        component={InputForm}
-        name="password"
-        type="password"
-        variant="standard"
-        label="Password"
-      />
-      <Field
-        component={InputForm}
-        name="confirmPassword"
-        type="password"
-        variant="standard"
-        label="Confirm Password"
-      />
-      <SecondaryButton variant="contained" onClick={goBack} size="medium">Return</SecondaryButton>
-      <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
-    </FormContainer>
+    <Formik
+      initialValues={initialValuesUserAndPassword}
+      validationSchema={UserAndPasswordSchema}
+      onSubmit={(values) => goNext(values)}
+      validateOnMount
+    >
+      {({ submitForm }) => (
+        <FormContainer>
+          <Field
+            component={InputForm}
+            name="email"
+            type="email"
+            variant="standard"
+            label="Email"
+          />
+          <Field
+            component={InputForm}
+            name="password"
+            type="password"
+            variant="standard"
+            label="Password"
+          />
+          <Field
+            component={InputForm}
+            name="confirmPassword"
+            type="password"
+            variant="standard"
+            label="Confirm Password"
+          />
+          <FormActionButtons>
+            <SecondaryButton variant="contained" onClick={goBack} size="medium">Return</SecondaryButton>
+            <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
+          </FormActionButtons>
+        </FormContainer>
+      )}
+    </Formik>
   );
 };
 

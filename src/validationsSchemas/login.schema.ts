@@ -18,11 +18,14 @@ export const ResetPasswordSchema = Yup.object({
   confirmPassword: confirmPasswordValidation,
 });
 
-export const CreateAccountSchema = Yup.object({
-  email: emailValidation,
-  password: passwordValidation('Password is required'),
-  confirmPassword: confirmPasswordValidation,
+export const PersonalInformationSchema = Yup.object({
   firstName: firstNameValidation,
   lastName: lastNameValidation,
   middleName: middleNameValidation,
+});
+
+export const UserAndPasswordSchema = Yup.object({
+  email: emailValidation,
+  password: passwordValidation('Password is required'),
+  confirmPassword: confirmPasswordValidation,
 });

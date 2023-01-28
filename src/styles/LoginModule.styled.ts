@@ -42,3 +42,8 @@ export const FormContainer = styled(Form)`
   gap: 5rem;
   justify-items: center;
 `;
+
+export const FormActionButtons = styled(Form)`
+  display: flex;
+  justify-content: space-between;
+`;
