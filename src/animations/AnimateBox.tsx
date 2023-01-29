@@ -35,24 +35,11 @@ const transition = {
 };
 
 /*
-* This Box have to be used inside the element to be animated and as first parent.
-* Direction have to be:
-*   1 if you want to slide to the right.
-*   -1 if you want to slide to left.
+* This component has to be used as a wrapper of the child component that
+* want to be animated.
 
-* The state of the component that manages the direction and the counter of the page
-* have to be an array of 2 numbers [0, 0].
-* The first number is the page you want to change, the second number is the direction.
-* Example: const [[counterView, direction], setCounterView] = useState([0, 0]);
-
-* You may create a function called paginate, where you add the number to counter of the view,
-* and assigns the new direction. Example:
-* const paginate = (newDirection: number) => {
-    setCounterView([counterView + newDirection, newDirection]);
-  };
-
-* For the "GoBack" fn, use paginate(-1) to slide to left.
-* For the "GoNext" fn, use paginate(1) to slide to right.
+* In the parent component, you have to use the hook useAnimateBox that
+* has all the logic needed to start using AnimateBox component.
 */
 
 const AnimateBox = ({ children, direction }: AnimateCardProps) => (

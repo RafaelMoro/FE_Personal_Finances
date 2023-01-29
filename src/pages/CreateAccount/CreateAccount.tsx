@@ -1,8 +1,9 @@
 import {
-  ReactElement, useState, useRef,
+  ReactElement, useRef,
 } from 'react';
 
 import { ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues } from './interface';
+import { useAnimateBox } from '../../hooks/useAnimateBox';
 import { PersonalInformation } from './PersonalInformation';
 import { UserAndPassword } from './UserAndPassword';
 // import { LOGIN_ROUTE } from '../ForgotPassword/constants';
@@ -20,7 +21,9 @@ const initialValuesCreateAccountForm = {
 };
 
 const CreateAccount = ():ReactElement => {
-  const [[counterView, direction], setCounterView] = useState([0, 0]);
+  const {
+    direction, counterView, goPreviousView, goNextView,
+  } = useAnimateBox();
   const data = useRef<ICreateAccountValues>(initialValuesCreateAccountForm);
 
   const updateData = (newInfo: PersonalInfoFormValues | UserAndPasswordFormValues) => {
@@ -28,24 +31,14 @@ const CreateAccount = ():ReactElement => {
     data.current = { ...current, ...newInfo };
   };
 
-  const paginate = (newDirection: number) => {
-    setCounterView([counterView + newDirection, newDirection]);
-  };
-
   const handleSubmit = (values: ICreateAccountValues) => {
     // eslint-disable-next-line no-console
     console.log(values);
   };
 
-  const goBack = () => {
-    // Giving -1 to paginate means slide to left.
-    paginate(-1);
-  };
-
   const goNext = (props: PersonalInfoFormValues | UserAndPasswordFormValues) => {
     updateData(props);
-    // Giving 1 to paginate means slide to right
-    paginate(1);
+    goNextView();
     if (counterView === 2) {
       // show loader...
       handleSubmit(data.current);
@@ -59,7 +52,7 @@ const CreateAccount = ():ReactElement => {
         <FormDescription>Fill the following information to create your account.</FormDescription>
         <PersonalInformation goNext={goNext} counterView={counterView} direction={direction} />
         <UserAndPassword
-          goBack={goBack}
+          goBack={goPreviousView}
           goNext={goNext}
           counterView={counterView}
           direction={direction}
