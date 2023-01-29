@@ -20,22 +20,22 @@ export const LoaderStyled = styled(motion.div)`
     background: ${AppColors.primary};
   }
 
-  div:nth-child(1) {
+  div:nth-of-type(1) {
     left: 8px;
     ${ldsEllipsis1}
   }
 
-  div:nth-child(2) {
+  div:nth-of-type(2) {
     left: 8px;
     ${ldsEllipsis2}
   }
 
-  div:nth-child(3) {
+  div:nth-of-type(3) {
     left: 32px;
     ${ldsEllipsis2}
   }
 
-  div:nth-child(4) {
+  div:nth-of-type(4) {
     left: 56px;
     ${ldsEllipsis3}
   }

@@ -3,7 +3,9 @@ import {
 } from 'react';
 
 import { ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues } from './interface';
+import { CREATE_ACCOUNT_POST_ROUTE, ERROR_RESPONSE_USER_CREATED } from './constants';
 import { useAnimateBox } from '../../../hooks/useAnimateBox';
+import { postRequest } from '../../../utils/PostRequest.ts';
 import { Loader } from '../../../animations/Loader';
 import { PersonalInformation } from './PersonalInformation';
 import { UserAndPassword } from './UserAndPassword';
@@ -32,16 +34,27 @@ const CreateAccount = ():ReactElement => {
     data.current = { ...current, ...newInfo };
   };
 
-  const handleSubmit = (values: ICreateAccountValues) => {
-    // eslint-disable-next-line no-console
-    console.log(values);
+  const handleSubmit = async (values: ICreateAccountValues) => {
+    const { confirmPassword, ...restOfValues } = values;
+    const rta = await postRequest(restOfValues, CREATE_ACCOUNT_POST_ROUTE);
+    if (rta?.error) {
+      if (rta?.message === ERROR_RESPONSE_USER_CREATED) {
+        // eslint-disable-next-line no-console
+        console.log('email exists with other user');
+      }
+      // show notification that something went wrong, try again later.
+    }
+    if (rta?.emailModel) {
+      // User created successfully
+      // eslint-disable-next-line no-console
+      console.log('user created successfully');
+    }
   };
 
   const goNext = (props: PersonalInfoFormValues | UserAndPasswordFormValues) => {
     updateData(props);
     goNextView();
-    if (counterView === 2) {
-      // show loader...
+    if (counterView === 1) {
       handleSubmit(data.current);
     }
   };
