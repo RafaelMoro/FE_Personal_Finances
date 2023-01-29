@@ -20,7 +20,7 @@ const initialValuesCreateAccountForm = {
 };
 
 const CreateAccount = ():ReactElement => {
-  const [counterView, setCounterView] = useState<number>(0);
+  const [[counterView, direction], setCounterView] = useState([0, 0]);
   const data = useRef<ICreateAccountValues>(initialValuesCreateAccountForm);
 
   const updateData = (newInfo: PersonalInfoFormValues | UserAndPasswordFormValues) => {
@@ -28,15 +28,24 @@ const CreateAccount = ():ReactElement => {
     data.current = { ...current, ...newInfo };
   };
 
+  const paginate = (newDirection: number) => {
+    setCounterView([counterView + newDirection, newDirection]);
+  };
+
   const handleSubmit = (values: ICreateAccountValues) => {
     // eslint-disable-next-line no-console
     console.log(values);
   };
 
-  const goBack = () => setCounterView(counterView - 1);
+  const goBack = () => {
+    // Giving -1 to paginate means slide to left.
+    paginate(-1);
+  };
+
   const goNext = (props: PersonalInfoFormValues | UserAndPasswordFormValues) => {
     updateData(props);
-    setCounterView(counterView + 1);
+    // Giving 1 to paginate means slide to right
+    paginate(1);
     if (counterView === 2) {
       // show loader...
       handleSubmit(data.current);
@@ -48,8 +57,13 @@ const CreateAccount = ():ReactElement => {
       <MainContainer>
         <FormTitle>Create account</FormTitle>
         <FormDescription>Fill the following information to create your account.</FormDescription>
-        <PersonalInformation goNext={goNext} counterView={counterView} />
-        <UserAndPassword goBack={goBack} goNext={goNext} counterView={counterView} />
+        <PersonalInformation goNext={goNext} counterView={counterView} direction={direction} />
+        <UserAndPassword
+          goBack={goBack}
+          goNext={goNext}
+          counterView={counterView}
+          direction={direction}
+        />
       </MainContainer>
     </Main>
   );

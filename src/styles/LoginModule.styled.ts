@@ -43,7 +43,7 @@ export const FormContainer = styled(Form)`
   justify-items: center;
 `;
 
-export const FormActionButtons = styled(Form)`
+export const FormActionButtons = styled.div`
   display: flex;
   justify-content: space-between;
 `;

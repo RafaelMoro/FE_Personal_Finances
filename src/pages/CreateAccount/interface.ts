@@ -21,10 +21,12 @@ export interface UserAndPasswordFormValues {
 export interface IPersonalInformationProps {
   goNext: (props: PersonalInfoFormValues | UserAndPasswordFormValues) => void;
   counterView: number;
+  direction: number;
 }
 
 export interface IUserAndPasswordProps {
   goNext: (props: UserAndPasswordFormValues | PersonalInfoFormValues) => void;
   goBack: () => void;
   counterView: number;
+  direction: number;
 }

@@ -1,5 +1,6 @@
 import { Field, Formik } from 'formik';
 
+import { AnimateBox } from '../../animations/AnimateBox';
 import { IUserAndPasswordProps } from './interface';
 import { UserAndPasswordSchema } from '../../validationsSchemas/login.schema';
 import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
@@ -11,7 +12,9 @@ const initialValuesUserAndPassword = {
   confirmPassword: '',
 };
 
-const UserAndPassword = ({ goBack, goNext, counterView }: IUserAndPasswordProps) => {
+const UserAndPassword = ({
+  goBack, goNext, counterView, direction,
+}: IUserAndPasswordProps) => {
   if (counterView !== 1) return null;
   return (
     <Formik
@@ -21,33 +24,35 @@ const UserAndPassword = ({ goBack, goNext, counterView }: IUserAndPasswordProps)
       validateOnMount
     >
       {({ submitForm }) => (
-        <FormContainer>
-          <Field
-            component={InputForm}
-            name="email"
-            type="email"
-            variant="standard"
-            label="Email"
-          />
-          <Field
-            component={InputForm}
-            name="password"
-            type="password"
-            variant="standard"
-            label="Password"
-          />
-          <Field
-            component={InputForm}
-            name="confirmPassword"
-            type="password"
-            variant="standard"
-            label="Confirm Password"
-          />
-          <FormActionButtons>
-            <SecondaryButton variant="contained" onClick={goBack} size="medium">Return</SecondaryButton>
-            <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
-          </FormActionButtons>
-        </FormContainer>
+        <AnimateBox direction={direction}>
+          <FormContainer>
+            <Field
+              component={InputForm}
+              name="email"
+              type="email"
+              variant="standard"
+              label="Email"
+            />
+            <Field
+              component={InputForm}
+              name="password"
+              type="password"
+              variant="standard"
+              label="Password"
+            />
+            <Field
+              component={InputForm}
+              name="confirmPassword"
+              type="password"
+              variant="standard"
+              label="Confirm Password"
+            />
+            <FormActionButtons>
+              <SecondaryButton variant="contained" onClick={goBack} size="medium">Return</SecondaryButton>
+              <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
+            </FormActionButtons>
+          </FormContainer>
+        </AnimateBox>
       )}
     </Formik>
   );

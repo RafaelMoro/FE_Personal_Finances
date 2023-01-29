@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { IPersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../validationsSchemas/login.schema';
 import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
+import { AnimateBox } from '../../animations/AnimateBox';
 import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
 
 const initialValuesPersonalInfo = {
@@ -12,7 +13,7 @@ const initialValuesPersonalInfo = {
   lastName: '',
 };
 
-const PersonalInformation = ({ goNext, counterView }: IPersonalInformationProps) => {
+const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInformationProps) => {
   const navigate = useNavigate();
   const handleCancel = () => navigate('/');
 
@@ -26,33 +27,35 @@ const PersonalInformation = ({ goNext, counterView }: IPersonalInformationProps)
       validateOnMount
     >
       {({ submitForm }) => (
-        <FormContainer>
-          <Field
-            component={InputForm}
-            name="firstName"
-            type="text"
-            variant="standard"
-            label="First Name"
-          />
-          <Field
-            component={InputForm}
-            name="middleName"
-            type="text"
-            variant="standard"
-            label="Middle Name"
-          />
-          <Field
-            component={InputForm}
-            name="lastName"
-            type="text"
-            variant="standard"
-            label="Last Name"
-          />
-          <FormActionButtons>
-            <SecondaryButton variant="contained" onClick={handleCancel} size="medium">Cancel</SecondaryButton>
-            <PrimaryButton variant="contained" onClick={submitForm} size="medium">Next</PrimaryButton>
-          </FormActionButtons>
-        </FormContainer>
+        <AnimateBox direction={direction}>
+          <FormContainer>
+            <Field
+              component={InputForm}
+              name="firstName"
+              type="text"
+              variant="standard"
+              label="First Name"
+            />
+            <Field
+              component={InputForm}
+              name="middleName"
+              type="text"
+              variant="standard"
+              label="Middle Name"
+            />
+            <Field
+              component={InputForm}
+              name="lastName"
+              type="text"
+              variant="standard"
+              label="Last Name"
+            />
+            <FormActionButtons>
+              <SecondaryButton variant="contained" onClick={handleCancel} size="medium">Cancel</SecondaryButton>
+              <PrimaryButton variant="contained" onClick={submitForm} size="medium">Next</PrimaryButton>
+            </FormActionButtons>
+          </FormContainer>
+        </AnimateBox>
       )}
     </Formik>
   );
