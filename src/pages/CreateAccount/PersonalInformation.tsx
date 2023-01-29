@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { IPersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../validationsSchemas/login.schema';
-import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
+import { InputForm, PrimaryButton, CancelButton } from '../../styles';
 import { AnimateBox } from '../../animations/AnimateBox';
 import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
 
@@ -51,7 +51,7 @@ const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInform
               label="Last Name"
             />
             <FormActionButtons>
-              <SecondaryButton variant="contained" onClick={handleCancel} size="medium">Cancel</SecondaryButton>
+              <CancelButton variant="contained" onClick={handleCancel} size="medium">Cancel</CancelButton>
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Next</PrimaryButton>
             </FormActionButtons>
           </FormContainer>

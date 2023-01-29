@@ -57,6 +57,17 @@ export const SecondaryButton = styled(Button)`
   }
 `;
 
+export const CancelButton = styled(Button)`
+  ${createResponsiveProps({ fontSize: 'P' })}
+  background-color: ${AppColors.negative};
+  color: ${AppColors.white};
+
+  &:hover {
+    background-color: ${AppColors.negativeDarker};
+    color: ${AppColors.white};
+  }
+`;
+
 export const Heading1 = styled.h1`
   ${createResponsiveProps({ fontSize: 'H1', fontWeight: 'bold' })}
 `;

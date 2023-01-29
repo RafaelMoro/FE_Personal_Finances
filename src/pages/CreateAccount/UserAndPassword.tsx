@@ -3,7 +3,7 @@ import { Field, Formik } from 'formik';
 import { AnimateBox } from '../../animations/AnimateBox';
 import { IUserAndPasswordProps } from './interface';
 import { UserAndPasswordSchema } from '../../validationsSchemas/login.schema';
-import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
+import { InputForm, PrimaryButton, CancelButton } from '../../styles';
 import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
 
 const initialValuesUserAndPassword = {
@@ -48,7 +48,7 @@ const UserAndPassword = ({
               label="Confirm Password"
             />
             <FormActionButtons>
-              <SecondaryButton variant="contained" onClick={goBack} size="medium">Return</SecondaryButton>
+              <CancelButton variant="contained" onClick={goBack} size="medium">Return</CancelButton>
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
             </FormActionButtons>
           </FormContainer>
