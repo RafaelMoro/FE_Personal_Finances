@@ -47,3 +47,11 @@ export const FormActionButtons = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+export const LoaderContainer = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+
+`;

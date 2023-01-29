@@ -4,10 +4,12 @@ import {
 
 import { ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues } from './interface';
 import { useAnimateBox } from '../../../hooks/useAnimateBox';
+import { Loader } from '../../../animations/Loader';
 import { PersonalInformation } from './PersonalInformation';
 import { UserAndPassword } from './UserAndPassword';
+import { Paragraph } from '../../../styles';
 import {
-  Main, MainContainer, FormTitle, FormDescription,
+  Main, MainContainer, FormTitle, FormDescription, LoaderContainer,
 } from '../../../styles/LoginModule.styled';
 
 const initialValuesCreateAccountForm = {
@@ -56,6 +58,12 @@ const CreateAccount = ():ReactElement => {
           counterView={counterView}
           direction={direction}
         />
+        { counterView === 2 && (
+          <LoaderContainer>
+            <Loader />
+            <Paragraph>Your account is being created. Please wait...</Paragraph>
+          </LoaderContainer>
+        ) }
       </MainContainer>
     </Main>
   );
