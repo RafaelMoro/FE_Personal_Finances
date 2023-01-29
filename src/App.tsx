@@ -4,7 +4,7 @@ import { Global } from '@emotion/react';
 
 import {
   Login, ForgotPassword, ProtectedRoute, Dashboard, ResetPassword, CreateAccount,
-} from './pages';
+} from './pages/LoginModule';
 import { GlobalStyles } from './styles/Global.styled';
 
 function App() {

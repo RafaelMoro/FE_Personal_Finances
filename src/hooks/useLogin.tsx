@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE, LOGIN_REGISTER_ROUTE } from '../pages/Login/constants';
+import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE, LOGIN_REGISTER_ROUTE } from '../pages/LoginModule/Login/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
-import { ILoginValues } from '../pages/Login/interface';
+import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { IUser } from '../atoms/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';

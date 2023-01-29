@@ -2,17 +2,17 @@ import { ReactElement } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
-import { Notification } from '../../components/UI';
+import { Notification } from '../../../components/UI';
 import { IResetPasswordValues } from './interface';
-import { postRequest } from '../../utils/PostRequest.ts';
+import { postRequest } from '../../../utils/PostRequest.ts';
 import { RESET_PASSWORD_POST_ROUTE, LOGIN_ROUTE, RESET_PASSWORD_ERROR_REDIRECT } from '../ForgotPassword/constants';
-import { useNotification } from '../../hooks/useNotification';
-import { SystemStateEnum } from '../../enums';
+import { useNotification } from '../../../hooks/useNotification';
+import { SystemStateEnum } from '../../../enums';
 import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
-} from '../../styles/LoginModule.styled';
-import { ResetPasswordSchema } from '../../validationsSchemas/login.schema';
-import { PrimaryButton, InputForm } from '../../styles';
+} from '../../../styles/LoginModule.styled';
+import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
+import { PrimaryButton, InputForm } from '../../../styles';
 
 const NOTIFICATION_TITLE = 'Password reset successfully';
 const NOTIFICATION_DESCRIPTION = 'You may login with your new password.';

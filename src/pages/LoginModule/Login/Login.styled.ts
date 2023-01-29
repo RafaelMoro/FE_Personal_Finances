@@ -3,7 +3,7 @@ import { Typography, CardActions } from '@mui/material';
 
 import {
   AppColors, InputForm, Paragraph, Heading1, Anchor,
-} from '../../styles';
+} from '../../../styles';
 
 export const Main = styled.main`
   width: 100%;

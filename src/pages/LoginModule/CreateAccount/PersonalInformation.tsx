@@ -2,10 +2,10 @@ import { Field, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
 import { IPersonalInformationProps } from './interface';
-import { PersonalInformationSchema } from '../../validationsSchemas/login.schema';
-import { InputForm, PrimaryButton, CancelButton } from '../../styles';
-import { AnimateBox } from '../../animations/AnimateBox';
-import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
+import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
+import { InputForm, PrimaryButton, CancelButton } from '../../../styles';
+import { AnimateBox } from '../../../animations/AnimateBox';
+import { FormContainer, FormActionButtons } from '../../../styles/LoginModule.styled';
 
 const initialValuesPersonalInfo = {
   firstName: '',

@@ -1,10 +1,10 @@
 import { Field, Formik } from 'formik';
 
-import { AnimateBox } from '../../animations/AnimateBox';
+import { AnimateBox } from '../../../animations/AnimateBox';
 import { IUserAndPasswordProps } from './interface';
-import { UserAndPasswordSchema } from '../../validationsSchemas/login.schema';
-import { InputForm, PrimaryButton, CancelButton } from '../../styles';
-import { FormContainer, FormActionButtons } from '../../styles/LoginModule.styled';
+import { UserAndPasswordSchema } from '../../../validationsSchemas/login.schema';
+import { InputForm, PrimaryButton, CancelButton } from '../../../styles';
+import { FormContainer, FormActionButtons } from '../../../styles/LoginModule.styled';
 
 const initialValuesUserAndPassword = {
   email: '',

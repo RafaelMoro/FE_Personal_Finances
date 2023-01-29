@@ -3,15 +3,15 @@ import {
   Formik, Form, Field,
 } from 'formik';
 
-import { useLogin } from '../../hooks/useLogin';
-import { LoginSchema } from '../../validationsSchemas';
-import { Notification } from '../../components/UI';
+import { useLogin } from '../../../hooks/useLogin';
+import { LoginSchema } from '../../../validationsSchemas';
+import { Notification } from '../../../components/UI';
 import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import { PrimaryButton, SecondaryButton } from '../../styles';
-import logo from '../../assets/logo.png';
+import { PrimaryButton, SecondaryButton } from '../../../styles';
+import logo from '../../../assets/logo.png';
 
 const Login = () => {
   const {

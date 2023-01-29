@@ -5,17 +5,17 @@ import {
 } from 'formik';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
-import { useNotification } from '../../hooks/useNotification';
+import { useNotification } from '../../../hooks/useNotification';
 import { FORGOT_PASSWORD_POST_ROUTE, LOGIN_ROUTE } from './constants';
 import { IForgotPasswordValues } from './interface';
-import { SystemStateEnum } from '../../enums';
-import { ForgotPasswordSchema } from '../../validationsSchemas/login.schema';
-import { postRequest } from '../../utils/PostRequest.ts';
-import { Notification } from '../../components/UI';
+import { SystemStateEnum } from '../../../enums';
+import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
+import { postRequest } from '../../../utils/PostRequest.ts';
+import { Notification } from '../../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
-} from '../../styles/LoginModule.styled';
-import { InputForm, PrimaryButton, SecondaryButton } from '../../styles';
+} from '../../../styles/LoginModule.styled';
+import { InputForm, PrimaryButton, SecondaryButton } from '../../../styles';
 
 const NOTIFICATION_TITLE = 'Email Sent';
 const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
