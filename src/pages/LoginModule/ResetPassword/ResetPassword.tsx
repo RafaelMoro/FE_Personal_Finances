@@ -5,7 +5,8 @@ import { Formik, Field } from 'formik';
 import { Notification } from '../../../components/UI';
 import { IResetPasswordValues } from './interface';
 import { postRequest } from '../../../utils/PostRequest.ts';
-import { RESET_PASSWORD_POST_ROUTE, LOGIN_ROUTE, RESET_PASSWORD_ERROR_REDIRECT } from '../ForgotPassword/constants';
+import { RESET_PASSWORD_POST_ROUTE } from './constants';
+import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../constants';
 import { useNotification } from '../../../hooks/useNotification';
 import { SystemStateEnum } from '../../../enums';
 import {
@@ -46,7 +47,7 @@ const ResetPassword = (): ReactElement => {
 
       toggleShowNotification();
       setTimeout(() => {
-        navigate(RESET_PASSWORD_ERROR_REDIRECT);
+        navigate(FORGOT_PASSWORD_ROUTE);
       }, 5000);
     } else {
       toggleShowNotification();

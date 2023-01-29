@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import { LOGIN_POST_ROUTE, AFTER_LOGIN_NAVIGATE_ROUTE, LOGIN_REGISTER_ROUTE } from '../pages/LoginModule/Login/constants';
+import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
+import { DASHBOARD_ROUTE, REGISTER_ROUTE } from '../pages/LoginModule/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { IUser } from '../atoms/interface';
@@ -46,7 +47,7 @@ const useLogin = () => {
     if (!IsEmptyLocalStorage) {
       const { user } = localStorageInfo;
       setUser(user);
-      navigate(AFTER_LOGIN_NAVIGATE_ROUTE);
+      navigate(DASHBOARD_ROUTE);
     }
   }, [navigate, setUser]);
 
@@ -66,11 +67,11 @@ const useLogin = () => {
         },
       );
       setUser(user);
-      navigate(AFTER_LOGIN_NAVIGATE_ROUTE);
+      navigate(DASHBOARD_ROUTE);
     }
   };
 
-  const handleRegisterButton = ():void => navigate(LOGIN_REGISTER_ROUTE);
+  const handleRegisterButton = ():void => navigate(REGISTER_ROUTE);
 
   return {
     handleSubmit,

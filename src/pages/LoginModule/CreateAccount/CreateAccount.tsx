@@ -6,7 +6,6 @@ import { ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues
 import { useAnimateBox } from '../../../hooks/useAnimateBox';
 import { PersonalInformation } from './PersonalInformation';
 import { UserAndPassword } from './UserAndPassword';
-// import { LOGIN_ROUTE } from '../ForgotPassword/constants';
 import {
   Main, MainContainer, FormTitle, FormDescription,
 } from '../../../styles/LoginModule.styled';

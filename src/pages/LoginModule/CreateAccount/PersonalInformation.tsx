@@ -1,6 +1,7 @@
 import { Field, Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
+import { LOGIN_ROUTE } from '../constants';
 import { IPersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
 import { InputForm, PrimaryButton, CancelButton } from '../../../styles';
@@ -15,7 +16,7 @@ const initialValuesPersonalInfo = {
 
 const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInformationProps) => {
   const navigate = useNavigate();
-  const handleCancel = () => navigate('/');
+  const handleCancel = () => navigate(LOGIN_ROUTE);
 
   if (counterView !== 0) return null;
 
