@@ -17,6 +17,8 @@ const useAnimateBox = () => {
     setCounterView([counterView + newDirection, newDirection]);
   };
 
+  const resetCounterView = () => setCounterView([0, 0]);
+
   const goPreviousView = () => {
     // Giving -1 to paginate means slide to left.
     paginate(-1);
@@ -28,7 +30,7 @@ const useAnimateBox = () => {
   };
 
   return {
-    counterView, direction, goNextView, goPreviousView,
+    counterView, direction, goNextView, goPreviousView, resetCounterView,
   };
 };
 

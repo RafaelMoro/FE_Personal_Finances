@@ -1,19 +1,25 @@
+/* eslint-disable react/no-unstable-nested-components */
 import {
-  ReactElement, useRef,
+  ReactElement, useEffect, useRef, useState,
 } from 'react';
 
-import { ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues } from './interface';
+import {
+  ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues,
+} from './interface';
 import { CREATE_ACCOUNT_POST_ROUTE, ERROR_RESPONSE_USER_CREATED } from './constants';
-import { useAnimateBox } from '../../../hooks/useAnimateBox';
 import { postRequest } from '../../../utils/PostRequest.ts';
-import { Loader } from '../../../animations/Loader';
+import { useAnimateBox } from '../../../hooks/useAnimateBox';
+import {
+  CreateAccountResult, SuccessCreateAccount, ErrorCreateAccount, LoadingCreateAccount,
+} from './CreateAccountResult';
 import { PersonalInformation } from './PersonalInformation';
 import { UserAndPassword } from './UserAndPassword';
-import { Paragraph } from '../../../styles';
 import {
-  Main, MainContainer, FormTitle, FormDescription, LoaderContainer,
+  Main, MainContainer, FormTitle, FormDescription,
 } from '../../../styles/LoginModule.styled';
 
+const ERROR_MESSAGE_CREATE_ACCOUNT = 'Something went wrong, Try again in some minutes.';
+const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try a different email.';
 const initialValuesCreateAccountForm = {
   email: '',
   firstName: '',
@@ -25,39 +31,53 @@ const initialValuesCreateAccountForm = {
 
 const CreateAccount = ():ReactElement => {
   const {
-    direction, counterView, goPreviousView, goNextView,
+    direction, counterView, goPreviousView, goNextView, resetCounterView,
   } = useAnimateBox();
-  const data = useRef<ICreateAccountValues>(initialValuesCreateAccountForm);
+  const formData = useRef<ICreateAccountValues>(initialValuesCreateAccountForm);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<string>(ERROR_MESSAGE_CREATE_ACCOUNT);
 
   const updateData = (newInfo: PersonalInfoFormValues | UserAndPasswordFormValues) => {
-    const { current } = data;
-    data.current = { ...current, ...newInfo };
+    const { current } = formData;
+    formData.current = { ...current, ...newInfo };
   };
 
   const handleSubmit = async (values: ICreateAccountValues) => {
     const { confirmPassword, ...restOfValues } = values;
-    const rta = await postRequest(restOfValues, CREATE_ACCOUNT_POST_ROUTE);
-    if (rta?.error) {
-      if (rta?.message === ERROR_RESPONSE_USER_CREATED) {
-        // eslint-disable-next-line no-console
-        console.log('email exists with other user');
-      }
-      // show notification that something went wrong, try again later.
+    const response = await postRequest(restOfValues, CREATE_ACCOUNT_POST_ROUTE);
+    setIsLoading(false);
+
+    if (!response) {
+      // if response is undefined, the server did not respond.
+      setIsError(true);
+      return;
     }
-    if (rta?.emailModel) {
-      // User created successfully
-      // eslint-disable-next-line no-console
-      console.log('user created successfully');
+
+    if (response?.error) {
+      setIsError(true);
+      if (response?.message === ERROR_RESPONSE_USER_CREATED) {
+        setError(ERROR_MESSAGE_EMAIL_EXISTS);
+      }
     }
   };
 
   const goNext = (props: PersonalInfoFormValues | UserAndPasswordFormValues) => {
     updateData(props);
     goNextView();
+
+    // This view means that the data is ready to be submitted.
     if (counterView === 1) {
-      handleSubmit(data.current);
+      setIsLoading(true);
+      handleSubmit(formData.current);
     }
   };
+
+  useEffect(() => {
+    if (!isLoading && counterView === 2) {
+      setTimeout(() => goNextView(), 3000);
+    }
+  }, [counterView, goNextView, isLoading]);
 
   return (
     <Main>
@@ -71,12 +91,16 @@ const CreateAccount = ():ReactElement => {
           counterView={counterView}
           direction={direction}
         />
-        { counterView === 2 && (
-          <LoaderContainer>
-            <Loader />
-            <Paragraph>Your account is being created. Please wait...</Paragraph>
-          </LoaderContainer>
-        ) }
+        <LoadingCreateAccount counterView={counterView} direction={direction} />
+        { (!isLoading) && (
+          <CreateAccountResult
+            counterView={counterView}
+            direction={direction}
+            isError={isError}
+            onError={() => <ErrorCreateAccount error={error} resetCounterView={resetCounterView} />}
+            onSuccess={() => <SuccessCreateAccount />}
+          />
+        )}
       </MainContainer>
     </Main>
   );

@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface ICreateAccountValues {
   email: string;
   password: string;
@@ -29,4 +31,22 @@ export interface IUserAndPasswordProps {
   goBack: () => void;
   counterView: number;
   direction: number;
+}
+
+export interface ILoadingCreateAccount {
+  counterView: number;
+  direction: number;
+}
+
+export interface IErrorCreateAccount {
+  error: string;
+  resetCounterView: () => void;
+}
+
+export interface ICreateAccountResult {
+  direction: number;
+  counterView: number;
+  isError: boolean;
+  onError: () => ReactNode;
+  onSuccess: () => ReactNode;
 }
