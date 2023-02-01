@@ -1,10 +1,11 @@
 import { Field, Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
 
 import { LOGIN_ROUTE } from '../constants';
 import { IPersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
-import { InputForm, PrimaryButton, CancelButton } from '../../../styles';
+import {
+  InputForm, PrimaryButton, CancelButton, AnchorButton,
+} from '../../../styles';
 import { AnimateBox } from '../../../animations/AnimateBox';
 import { FormContainer, FormActionButtons } from '../../../styles/LoginModule.styled';
 
@@ -15,9 +16,6 @@ const initialValuesPersonalInfo = {
 };
 
 const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInformationProps) => {
-  const navigate = useNavigate();
-  const handleCancel = () => navigate(LOGIN_ROUTE);
-
   if (counterView !== 0) return null;
 
   return (
@@ -52,7 +50,9 @@ const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInform
               label="Last Name"
             />
             <FormActionButtons>
-              <CancelButton variant="contained" onClick={handleCancel} size="medium">Cancel</CancelButton>
+              <AnchorButton to={LOGIN_ROUTE}>
+                <CancelButton variant="contained" size="medium">Cancel</CancelButton>
+              </AnchorButton>
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Next</PrimaryButton>
             </FormActionButtons>
           </FormContainer>

@@ -16,7 +16,7 @@ import logo from '../../../assets/logo.png';
 
 const Login = () => {
   const {
-    handleSubmit, handleShowNotification, notificationInfo, showNotification, handleRegisterButton,
+    handleSubmit, handleShowNotification, notificationInfo, showNotification,
   } = useLogin();
 
   return (
