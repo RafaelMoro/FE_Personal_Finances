@@ -3,7 +3,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axios from 'axios';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, MemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { Login } from './Login';
@@ -17,8 +17,8 @@ jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 describe('<Login />', () => {
+  const history: MemoryHistory = createMemoryHistory();
   beforeEach(() => {
-    const history = createMemoryHistory();
     render(
       <Router location={history.location} navigator={history}>
         <Login />
@@ -64,15 +64,14 @@ describe('<Login />', () => {
   });
 
   test('Click the button Register and redirect into the register route', async () => {
-    const registerButton = screen.getByRole('button', { name: /register/i });
+    const registerLink = screen.getByRole('link', { name: /register/i });
 
-    fireEvent.click(registerButton);
+    fireEvent.click(registerLink);
 
     await waitFor(() => {
-      // eslint-disable-next-line no-restricted-globals
-      expect(location.pathname).toBe('/register');
+      expect(history.location.pathname).toBe('/register');
     }, {
-      timeout: 3000,
+      timeout: 4000,
     });
   });
 

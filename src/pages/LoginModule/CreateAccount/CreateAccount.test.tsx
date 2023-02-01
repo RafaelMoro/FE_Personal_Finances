@@ -21,6 +21,6 @@ describe('<CreateAccount />', () => {
     expect(screen.getByRole('heading', { name: /create account/i })).toBeInTheDocument();
     expect(screen.getByText(/fill the following information to create your account\./i)).toBeInTheDocument();
     expect(firstNameInput).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /create account/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
   });
 });

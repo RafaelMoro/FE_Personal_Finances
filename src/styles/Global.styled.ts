@@ -88,6 +88,11 @@ export const Anchor = styled(Link)`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
 
+export const AnchorButton = styled(Link)`
+  text-decoration: none;
+  ${createResponsiveProps({ fontSize: 'P' })}
+`;
+
 export const InputForm = styled(TextField)`
   input {
     ${createResponsiveProps({ fontSize: 'P' })}

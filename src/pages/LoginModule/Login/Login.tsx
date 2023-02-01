@@ -3,6 +3,7 @@ import {
   Formik, Form, Field,
 } from 'formik';
 
+import { REGISTER_ROUTE } from '../constants';
 import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
@@ -10,7 +11,7 @@ import {
   Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import { PrimaryButton, SecondaryButton } from '../../../styles';
+import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
 import logo from '../../../assets/logo.png';
 
 const Login = () => {
@@ -66,7 +67,9 @@ const Login = () => {
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
                 <LoginCardActions>
-                  <SecondaryButton variant="contained" onClick={handleRegisterButton} size="medium">Register</SecondaryButton>
+                  <AnchorButton to={REGISTER_ROUTE}>
+                    <SecondaryButton variant="contained" size="medium">Register</SecondaryButton>
+                  </AnchorButton>
                   <PrimaryButton variant="contained" onClick={submitForm} size="medium">Login</PrimaryButton>
                 </LoginCardActions>
               </Form>
