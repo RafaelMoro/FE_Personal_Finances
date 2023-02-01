@@ -19,7 +19,7 @@ import {
 } from '../../../styles/LoginModule.styled';
 
 const ERROR_MESSAGE_CREATE_ACCOUNT = 'Something went wrong, Try again in some minutes.';
-const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try a different email.';
+const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try with a different email.';
 const initialValuesCreateAccountForm = {
   email: '',
   firstName: '',
@@ -48,13 +48,9 @@ const CreateAccount = ():ReactElement => {
     const response = await postRequest(restOfValues, CREATE_ACCOUNT_POST_ROUTE);
     setIsLoading(false);
 
-    if (!response) {
-      // if response is undefined, the server did not respond.
-      setIsError(true);
-      return;
-    }
-
-    if (response?.error) {
+    if (!response || response?.error) {
+      // if response is undefined, the server did not respond. Show error
+      // If the response has any error, show error.
       setIsError(true);
       if (response?.message === ERROR_RESPONSE_USER_CREATED) {
         setError(ERROR_MESSAGE_EMAIL_EXISTS);
