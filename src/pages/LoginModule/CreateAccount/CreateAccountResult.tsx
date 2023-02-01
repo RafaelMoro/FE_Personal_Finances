@@ -5,7 +5,7 @@ import {
 import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
 import { LOGIN_ROUTE } from '../constants';
 import {
-  AppColors, Paragraph, Anchor, PrimaryButton,
+  AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
 } from '../../../styles';
 import { AnimateBox } from '../../../animations';
 import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
@@ -31,7 +31,9 @@ const SuccessCreateAccount = () => (
   <MessageContainer>
     <CheckCircleOutlineOutlined sx={{ fontSize: '4.5rem', fill: positive }} />
     <Paragraph>Your account has being created.</Paragraph>
-    <Anchor to={LOGIN_ROUTE}>Go to Login</Anchor>
+    <AnchorButton padding="6rem 0 0 0" to={LOGIN_ROUTE}>
+      <PrimaryButton variant="contained" size="medium">Go to Login</PrimaryButton>
+    </AnchorButton>
   </MessageContainer>
 );
 
@@ -40,7 +42,9 @@ const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) =>
     <ErrorOutlineOutlined sx={{ fontSize: '4.5rem', fill: negative }} />
     <Paragraph>{error}</Paragraph>
     <AnchorContainer>
-      <Anchor to={LOGIN_ROUTE}>Go to Login</Anchor>
+      <AnchorButton to={LOGIN_ROUTE}>
+        <SecondaryButton variant="contained" size="medium">Go to Login</SecondaryButton>
+      </AnchorButton>
       <PrimaryButton variant="contained" onClick={() => resetCounterView()} size="medium">Try Again</PrimaryButton>
     </AnchorContainer>
   </MessageContainer>

@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
+import { dynamicPadding } from './DynamicStyles.styled';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 
@@ -91,6 +92,7 @@ export const Anchor = styled(Link)`
 export const AnchorButton = styled(Link)`
   text-decoration: none;
   ${createResponsiveProps({ fontSize: 'P' })}
+  ${dynamicPadding}
 `;
 
 export const InputForm = styled(TextField)`
