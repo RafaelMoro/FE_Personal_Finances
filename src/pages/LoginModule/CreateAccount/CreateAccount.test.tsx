@@ -107,7 +107,7 @@ describe('<CreateAccount />', () => {
       fireEvent.click(nextButton);
 
       // WIP
-      await waitFor(() => {
+      await waitFor(async () => {
         emailInput = screen.getByRole('textbox', { name: /email/i });
         passwordInput = screen.getByRole('textbox', { name: /email/i });
         confirmPasswordInput = screen.getByLabelText(/confirm password/i);
@@ -118,10 +118,6 @@ describe('<CreateAccount />', () => {
         userEvent.type(confirmPasswordInput, userData.confirmPassword);
 
         fireEvent.click(createAccountButton);
-      });
-
-      await waitFor(() => {
-        screen.debug();
       });
     });
   });
