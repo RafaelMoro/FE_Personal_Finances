@@ -15,7 +15,7 @@ describe('<Account />', () => {
     );
 
     expect(screen.getByText('BBVA')).toBeInTheDocument();
-    expect(screen.getByText('$20,000')).toBeInTheDocument();
+    expect(screen.getByText('$20,000.00')).toBeInTheDocument();
     expect(screen.getByText('Debit')).toBeInTheDocument();
   });
 });
