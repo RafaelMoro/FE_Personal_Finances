@@ -1,8 +1,13 @@
-const Account = () => (
+import { IAccountProps } from './interface';
+
+const Account = ({ title, amount, accountType }: IAccountProps) => (
   <section>
-    <h4>BBVA</h4>
-    <p>$20,000</p>
-    <p>Debit</p>
+    <h4>{ title }</h4>
+    <p>
+      $
+      { amount }
+    </p>
+    <p>{ accountType }</p>
   </section>
 );
 
