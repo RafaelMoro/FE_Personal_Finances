@@ -2,7 +2,7 @@ import { IAccountProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
 
 const Account = ({ title, amount, accountType }: IAccountProps) => {
-  const amountFormatted = formatNumberToCurrency(amount);
+  const amountFormatted: string = formatNumberToCurrency(amount);
 
   return (
     <section>
