@@ -1,15 +1,19 @@
 import { IAccountProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
+import { AccountContainer, AccountTitle } from './Account.styled';
+import { Paragraph } from '../../../styles';
 
-const Account = ({ title, amount, accountType }: IAccountProps) => {
+const Account = ({
+  title, amount, accountType, bgColor, color,
+}: IAccountProps) => {
   const amountFormatted: string = formatNumberToCurrency(amount);
 
   return (
-    <section>
-      <h4>{ title }</h4>
-      <p>{ amountFormatted }</p>
-      <p>{ accountType }</p>
-    </section>
+    <AccountContainer bgColor={bgColor} color={color}>
+      <AccountTitle>{ title }</AccountTitle>
+      <Paragraph>{ amountFormatted }</Paragraph>
+      <Paragraph>{ accountType }</Paragraph>
+    </AccountContainer>
   );
 };
 
