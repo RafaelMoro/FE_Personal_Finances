@@ -1,11 +1,14 @@
 import { render, screen } from '@testing-library/react';
 
+import { AccountType } from './interface';
 import { Account } from './Account';
+
+const accountType: AccountType = 'Debit';
 
 const account = {
   title: 'BBVA',
   amount: 20000,
-  accountType: 'Debit',
+  accountType,
   bgColor: 'red',
   color: 'white',
 };

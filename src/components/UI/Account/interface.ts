@@ -1,12 +1,16 @@
+export type AccountType = 'Debit' | 'Credit' | 'Food Voucher' | 'Restaurant Voucher' | 'Savings';
+
 export interface IAccountProps {
   title: string;
   amount: number;
-  accountType: string;
+  accountType: AccountType;
   bgColor: string;
   color?: string;
+  selected?: boolean;
 }
 
 export interface IAccountDynamicStylesProps {
   bgColor: string;
   color?: string;
+  selected: boolean;
 }
