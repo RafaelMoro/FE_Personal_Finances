@@ -57,13 +57,3 @@ AccountSelected.args = {
   color: 'white',
   selected: true,
 }
-
-export const AccountLoading = Template.bind({});
-AccountLoading.args = {
-  title: 'Santander',
-  amount: 1350.78,
-  accountType: 'Debit',
-  bgColor: 'red',
-  color: 'white',
-  loading: true,
-}

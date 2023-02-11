@@ -6,21 +6,20 @@ import { AppColors, Heading4 } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 
 const accountDynamicStyles = ({
-  color, bgColor, selected, loading,
+  color, bgColor, selected,
 }: IAccountDynamicStylesProps) => css`
-  background-color: ${!loading ? bgColor : AppColors.white};
+  background-color: ${bgColor ?? AppColors.white};
   color: ${color ?? AppColors.black};
   ${selected && 'opacity: 1;'}
 `;
 
-export const AccountContainer = styled.article`
+const AccountContainerBasicStyles = css`
   width: 100%;
   max-width: 300px;
   min-height: 140px;
   padding: 1.5rem 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
   opacity: 0.7;
-  ${accountDynamicStyles}
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: grid;
   gap: 1rem;
@@ -31,6 +30,16 @@ export const AccountContainer = styled.article`
   &:hover {
     opacity: 1;
   }
+`;
+
+export const AccountContainer = styled.article`
+  ${AccountContainerBasicStyles}
+  ${accountDynamicStyles}
+`;
+
+export const AccountContainerLoading = styled.article`
+  ${AccountContainerBasicStyles}
+  background-color: ${AppColors.white};
 `;
 
 export const AccountTitle = styled(Heading4)`
