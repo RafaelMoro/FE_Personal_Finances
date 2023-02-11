@@ -13,7 +13,7 @@ const accountDynamicStyles = ({
   ${selected && 'opacity: 1;'}
 `;
 
-const AccountContainerBasicStyles = css`
+const AccountContainerBasicStyles = styled.article`
   width: 100%;
   max-width: 300px;
   min-height: 140px;
@@ -32,13 +32,11 @@ const AccountContainerBasicStyles = css`
   }
 `;
 
-export const AccountContainer = styled.article`
-  ${AccountContainerBasicStyles}
+export const AccountContainer = styled(AccountContainerBasicStyles)`
   ${accountDynamicStyles}
 `;
 
-export const AccountContainerLoading = styled.article`
-  ${AccountContainerBasicStyles}
+export const AccountContainerLoading = styled(AccountContainerBasicStyles)`
   background-color: ${AppColors.white};
 `;
 
