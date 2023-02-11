@@ -7,10 +7,12 @@ export interface IAccountProps {
   bgColor: string;
   color?: string;
   selected?: boolean;
+  loading?: boolean;
 }
 
 export interface IAccountDynamicStylesProps {
   bgColor: string;
   color?: string;
   selected: boolean;
+  loading?: boolean;
 }

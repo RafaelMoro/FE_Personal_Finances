@@ -3,9 +3,12 @@ import { css } from '@emotion/react';
 
 import { IAccountDynamicStylesProps } from './interface';
 import { AppColors, Heading4 } from '../../../styles';
+import { blinkAnimation } from '../../../styles/animations/blink';
 
-const accountDynamicStyles = ({ color, bgColor, selected }: IAccountDynamicStylesProps) => css`
-  background-color: ${bgColor ?? AppColors.white};
+const accountDynamicStyles = ({
+  color, bgColor, selected, loading,
+}: IAccountDynamicStylesProps) => css`
+  background-color: ${!loading ? bgColor : AppColors.white};
   color: ${color ?? AppColors.black};
   ${selected && 'opacity: 1;'}
 `;
@@ -33,4 +36,13 @@ export const AccountContainer = styled.article`
 export const AccountTitle = styled(Heading4)`
   align-self: start;
   margin-bottom: 1rem;
+`;
+
+export const AccountSkeletonHolder = styled.div`
+  width: 100%;
+  height: 4rem;
+  background-color: ${AppColors.grey};
+  border-radius: 1rem;
+  place-self: center;
+  ${blinkAnimation}
 `;
