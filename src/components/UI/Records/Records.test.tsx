@@ -18,6 +18,7 @@ describe('<Records />', () => {
     render(<Records
       shortName={record.shortName}
       description={record.description}
+      recordType="Expense"
       price={record.price}
       budgets={record.budgets}
       date={new Date()}

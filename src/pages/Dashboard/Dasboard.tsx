@@ -1,3 +1,4 @@
+import { Divider, List, ListItem } from '@mui/material';
 import {
   DashboardContainer, AccountsBox, RecordsBox, AccountsTitle,
 } from './Dashboard.styled';
@@ -24,41 +25,52 @@ const Dashboard = () => (
       <AddAccount />
     </AccountsBox>
     <RecordsBox>
-      <Records
-        shortName={record.shortName}
-        description={record.description}
-        price={record.price}
-        budgets={record.budgets}
-        date={new Date()}
-      />
-      <Records
-        shortName={record.shortName}
-        description={record.description}
-        price={record.price}
-        budgets={record.budgets}
-        date={new Date()}
-      />
-      <Records
-        shortName={record.shortName}
-        description={record.description}
-        price={record.price}
-        budgets={record.budgets}
-        date={new Date()}
-      />
-      <Records
-        shortName={record.shortName}
-        description={record.description}
-        price={record.price}
-        budgets={record.budgets}
-        date={new Date()}
-      />
-      <Records
-        shortName={record.shortName}
-        description={record.description}
-        price={record.price}
-        budgets={record.budgets}
-        date={new Date()}
-      />
+      <List component="nav">
+        <ListItem button>
+          <Records
+            shortName={record.shortName}
+            description={record.description}
+            recordType="Expense"
+            price={record.price}
+            budgets={record.budgets}
+            date={new Date()}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <Records
+            shortName={record.shortName}
+            description={record.description}
+            recordType="Expense"
+            price={record.price}
+            budgets={record.budgets}
+            date={new Date()}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <Records
+            shortName={record.shortName}
+            description={record.description}
+            recordType="Income"
+            price={record.price}
+            budgets={record.budgets}
+            date={new Date()}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button>
+          <Records
+            shortName={record.shortName}
+            description={record.description}
+            recordType="Expense"
+            price={record.price}
+            budgets={record.budgets}
+            date={new Date()}
+          />
+        </ListItem>
+        <Divider />
+      </List>
     </RecordsBox>
   </DashboardContainer>
 );

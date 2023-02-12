@@ -1,7 +1,7 @@
 import { GlobalConfiguration, ResponsiveBreakpoints } from './GlobalConfigObjects';
 import { FontSizes } from './interface';
 
-type FontWeight = 'normal' | 'bold';
+type FontWeight = 'normal' | 'bold' | '500';
 type FontSizesKeys = keyof FontSizes;
 interface ICreateResponsivePropsParameters {
   fontSize: FontSizesKeys;

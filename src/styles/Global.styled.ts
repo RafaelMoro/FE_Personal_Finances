@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button } from '@mui/material';
+import { Button, Chip } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
@@ -85,6 +85,14 @@ export const Heading4 = styled.h4`
   ${createResponsiveProps({ fontSize: 'H4' })}
 `;
 
+export const ParagraphTitle = styled.p`
+  ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
+`;
+
+export const Sub = styled.p`
+  ${createResponsiveProps({ fontSize: 'Sub' })}
+`;
+
 export const Paragraph = styled.p`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
@@ -105,5 +113,11 @@ export const InputForm = styled(TextField)`
   }
   label {
     ${createResponsiveProps({ fontSize: 'P' })}
+  }
+`;
+
+export const StyledChip = styled(Chip)`
+  span {
+    ${createResponsiveProps({ fontSize: 'Sub' })}
   }
 `;
