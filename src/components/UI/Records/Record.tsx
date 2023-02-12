@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-import { IRecordProps } from './interface';
+import { TRecordProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
@@ -10,9 +10,10 @@ import { StyledChip, ParagraphTitle } from '../../../styles';
 const MONTHS = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const Record = ({
-  shortName, description, price, budgets = [], date, recordType,
-}: IRecordProps) => {
+  shortName, description, price, budgets = [], date, recordType, children,
+}: TRecordProps) => {
   const formattedPrice = formatNumberToCurrency(price);
+  const isExpense = recordType === 'Expense';
 
   const day = date.getDate();
   const month = date.getMonth();
@@ -29,7 +30,7 @@ const Record = ({
       <RecordDateTime>{ fullDate }</RecordDateTime>
       <RecordDateTime>{ formattedTime }</RecordDateTime>
       <RecordDescription>{ description }</RecordDescription>
-      { recordType === 'Expense' ? (
+      { isExpense ? (
         <RecordExpense>
           -
           {' '}
@@ -48,6 +49,7 @@ const Record = ({
           <StyledChip key={budget.id} label={budget.name} variant="outlined" color="primary" />
         ))}
       </Stack>
+      { children }
     </RecordContainer>
   );
 };
