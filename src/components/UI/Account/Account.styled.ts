@@ -32,12 +32,18 @@ const AccountContainerBasicStyles = styled.article`
   }
 `;
 
-export const AccountContainer = styled(AccountContainerBasicStyles)`
+export const AccountContainerColoroued = styled(AccountContainerBasicStyles)`
   ${accountDynamicStyles}
 `;
 
 export const AccountContainerLoading = styled(AccountContainerBasicStyles)`
   background-color: ${AppColors.white};
+`;
+
+export const AddAccountContainer = styled(AccountContainerBasicStyles)`
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
 `;
 
 export const AccountTitle = styled(Heading4)`
