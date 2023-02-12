@@ -1,5 +1,7 @@
 import { IRecordsProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
+import { RecordContainer } from './Records.styled';
+import { Paragraph } from '../../../styles';
 
 const Records = ({
   shortName, description, price, budgets, date,
@@ -15,15 +17,16 @@ const Records = ({
   const hourMinute = `${hours}:${minutes}`;
 
   return (
-    <div>
-      <p>{ shortName }</p>
-      <p>{ fullDate }</p>
-      <p>{ description }</p>
-      <p>{ formattedPrice }</p>
+    <RecordContainer>
+      <Paragraph>{ shortName }</Paragraph>
+      <Paragraph>{ fullDate }</Paragraph>
+      <Paragraph>{ hourMinute }</Paragraph>
+      <Paragraph>{ description }</Paragraph>
+      <Paragraph>{ formattedPrice }</Paragraph>
       { budgets.length > 0 && budgets.map((budget) => (
-        <p key={budget.id}>{ budget?.name }</p>
+        <Paragraph key={budget.id}>{ budget?.name }</Paragraph>
       ))}
-    </div>
+    </RecordContainer>
   );
 };
 

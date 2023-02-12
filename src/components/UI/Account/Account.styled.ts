@@ -30,12 +30,12 @@ const accountDynamicStyles = ({
 
 const AccountContainerBasicStyles = styled.article`
   width: 100%;
-  max-width: 300px;
-  min-height: 140px;
+  max-width: 30rem;
+  min-height: 14rem;
   padding: 1.5rem 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
   opacity: 0.7;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
   display: grid;
   gap: 1rem;
   align-items: center;
