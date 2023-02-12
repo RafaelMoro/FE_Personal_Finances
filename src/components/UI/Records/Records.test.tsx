@@ -20,6 +20,7 @@ describe('<Records />', () => {
       description={record.description}
       price={record.price}
       budgets={record.budgets}
+      date={new Date()}
     />);
 
     expect(screen.getByText('Uber home to gym')).toBeInTheDocument();

@@ -8,4 +8,5 @@ export interface IRecordsProps {
   description: string;
   price: number;
   budgets: Budget[];
+  date: Date;
 }
