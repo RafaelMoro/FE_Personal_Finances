@@ -5,6 +5,21 @@ import { IAccountDynamicStylesProps } from './interface';
 import { AppColors, Heading4 } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 
+export const AccountBackgroundColors = {
+  red: '#FF0000',
+  orange: '#FF8000',
+  yellow: '#FFFF00',
+  chartreuseGreen: '#80FF00',
+  green: '#00FF00',
+  springGreen: '#00FF80',
+  cyan: '#00FFFF',
+  azure: '#0080FF',
+  blue: '#0000FF',
+  violet: '#8000FF',
+  magenta: '#FF00FF',
+  rose: '#FF0080',
+};
+
 const accountDynamicStyles = ({
   color, bgColor, selected,
 }: IAccountDynamicStylesProps) => css`
