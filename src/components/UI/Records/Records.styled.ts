@@ -3,12 +3,13 @@ import { AppColors, Paragraph, Sub } from '../../../styles';
 
 export const RecordContainer = styled.article`
   width: 100%;
-  height: 100px;
+  min-height: 10rem;
   padding: 1rem;
   border-radius: 1rem;
   display: grid;
   grid-template-columns: 70% 15% 15%;
   grid-template-rows: repeat(1, 1fr);
+  row-gap: 1.5rem;
 `;
 
 export const RecordDescription = styled(Paragraph)`

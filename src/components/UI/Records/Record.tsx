@@ -10,22 +10,24 @@ import { StyledChip, ParagraphTitle } from '../../../styles';
 const MONTHS = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
 const Record = ({
-  shortName, description, price, budgets, date, recordType,
+  shortName, description, price, budgets = [], date, recordType,
 }: IRecordProps) => {
   const formattedPrice = formatNumberToCurrency(price);
 
   const day = date.getDate();
   const month = date.getMonth();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  const fullDate = `${MONTHS[month]} - ${day}`;
-  const hourMinute = `${hours}:${minutes}`;
+  const hour = date.getHours();
+  const hourString = String(hour).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const fullDate = `${MONTHS[month]} ${day}`;
+  const twelveHourPeriod = hour >= 0 && hour <= 11 ? 'am' : 'pm';
+  const formattedTime = `${hourString}:${minutes}${twelveHourPeriod}`;
 
   return (
     <RecordContainer>
       <ParagraphTitle>{ shortName }</ParagraphTitle>
       <RecordDateTime>{ fullDate }</RecordDateTime>
-      <RecordDateTime>{ hourMinute }</RecordDateTime>
+      <RecordDateTime>{ formattedTime }</RecordDateTime>
       <RecordDescription>{ description }</RecordDescription>
       { recordType === 'Expense' ? (
         <RecordExpense>
@@ -41,6 +43,7 @@ const Record = ({
         </RecordIncome>
       ) }
       <Stack direction="row" spacing={1}>
+        { budgets.length === 0 && (<StyledChip label="No Budget" variant="outlined" color="secondary" />) }
         { budgets.length > 0 && budgets.map((budget) => (
           <StyledChip key={budget.id} label={budget.name} variant="outlined" color="primary" />
         ))}
