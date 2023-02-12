@@ -1,21 +1,21 @@
 import { Stack } from '@mui/material';
 
-import { IRecordsProps } from './interface';
+import { IRecordProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
 } from './Records.styled';
-import { Paragraph, StyledChip, ParagraphTitle } from '../../../styles';
+import { StyledChip, ParagraphTitle } from '../../../styles';
 
 const MONTHS = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 
-const Records = ({
+const Record = ({
   shortName, description, price, budgets, date, recordType,
-}: IRecordsProps) => {
+}: IRecordProps) => {
   const formattedPrice = formatNumberToCurrency(price);
 
   const day = date.getDate();
-  const month = date.getMonth() + 1;
+  const month = date.getMonth();
   const hours = date.getHours();
   const minutes = date.getMinutes();
   const fullDate = `${MONTHS[month]} - ${day}`;
@@ -49,4 +49,4 @@ const Records = ({
   );
 };
 
-export { Records };
+export { Record };

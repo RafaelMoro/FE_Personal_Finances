@@ -1,9 +1,13 @@
 import { render, screen } from '@testing-library/react';
-import { Records } from './Records';
+import { Record } from './Record';
+import { IRecord } from './interface';
 
-const record = {
+const record: IRecord = {
+  id: 1,
   shortName: 'Uber home to gym',
   description: 'Paying Uber to go to smartfit on Solesta',
+  recordType: 'Expense',
+  date: new Date(),
   price: 168.02,
   budgets: [
     {
@@ -15,18 +19,18 @@ const record = {
 
 describe('<Records />', () => {
   test('Render component with shortName, description, price, budget', () => {
-    render(<Records
+    render(<Record
       shortName={record.shortName}
       description={record.description}
-      recordType="Expense"
+      recordType={record.recordType}
       price={record.price}
       budgets={record.budgets}
-      date={new Date()}
+      date={record.date}
     />);
 
     expect(screen.getByText('Uber home to gym')).toBeInTheDocument();
     expect(screen.getByText('Paying Uber to go to smartfit on Solesta')).toBeInTheDocument();
-    expect(screen.getByText('$168.02')).toBeInTheDocument();
+    expect(screen.getByText('- $168.02')).toBeInTheDocument();
     expect(screen.getByText('Transport')).toBeInTheDocument();
   });
 });

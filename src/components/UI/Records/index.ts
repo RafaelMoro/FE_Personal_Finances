@@ -1,1 +1,2 @@
-export { Records } from './Records';
+export { Record } from './Record';
+export { RecordList } from './RecordList';

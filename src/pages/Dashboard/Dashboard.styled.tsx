@@ -15,10 +15,7 @@ export const AccountsBox = styled.aside`
 `;
 
 export const RecordsBox = styled.main`
-  padding: 140px 20px 0 20px;
-  display: grid;
-  grid-auto-rows: 100px;
-  gap: 1rem;
+  padding: 14rem 2rem 0 2rem;
 `;
 
 export const AccountsTitle = styled(Heading3)`
