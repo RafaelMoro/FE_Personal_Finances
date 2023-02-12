@@ -49,11 +49,11 @@ LongDescriptionRecord.args = {
 
 export const IncomeRecord = Template.bind({});
 IncomeRecord.args = {
-  shortName: 'Payment Feb 01 - 15.',
-  description: 'Paying every expense within this timeframe',
+  shortName: 'Payment',
+  description: 'Paying $2100',
   recordType: 'Income',
   date: new Date('February 10, 2023 17:21:18'),
-  price: 1234.69,
+  price: 2100,
 };
 
 const payedRecords: IRecordPayed[] = [
@@ -82,6 +82,16 @@ const payedRecords: IRecordPayed[] = [
 
 export const IncomeRecordWithExpenses = Template.bind({});
 IncomeRecordWithExpenses.args = {
+  shortName: 'Payment Feb 01 - 15.',
+  description: 'Paying every expense within this timeframe',
+  recordType: 'Income',
+  date: new Date('February 10, 2023 17:21:18'),
+  price: 1234.69,
+  linkedPayedRecords: payedRecords
+};
+
+export const IncomeRecordExpandedWithExpenses = Template.bind({});
+IncomeRecordExpandedWithExpenses.args = {
   shortName: 'Payment Feb 01 - 15.',
   description: 'Paying every expense within this timeframe',
   recordType: 'Income',

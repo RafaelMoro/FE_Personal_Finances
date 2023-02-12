@@ -11,7 +11,7 @@ import { StyledChip, ParagraphTitle } from '../../../styles';
 
 const Record = ({
   shortName, description, price, budgets = [], date,
-  recordType, linkedPayedRecords, shortView = true,
+  recordType, linkedPayedRecords = [], shortView = true,
 }: TRecordProps) => {
   const formattedPrice = formatNumberToCurrency(price);
   const { fullDate, formattedTime } = formatDateToString(date);
@@ -42,8 +42,8 @@ const Record = ({
           <StyledChip key={budget.id} label={budget.name} variant="outlined" color="primary" />
         ))}
       </Stack>
-      { !isExpense && (
-      <IncomeRecord payedLinkedRecords={linkedPayedRecords || []} shortView={shortView} />
+      { (!isExpense && linkedPayedRecords.length > 0) && (
+      <IncomeRecord payedLinkedRecords={linkedPayedRecords} shortView={shortView} />
       )}
     </RecordContainer>
   );
