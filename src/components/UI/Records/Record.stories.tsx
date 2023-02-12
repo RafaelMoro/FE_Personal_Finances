@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { IRecordPayed } from './interface';
 import { Record } from './Record';
 
 export default {
@@ -53,4 +54,39 @@ IncomeRecord.args = {
   recordType: 'Income',
   date: new Date('February 10, 2023 17:21:18'),
   price: 1234.69,
+};
+
+const payedRecords: IRecordPayed[] = [
+  {
+    id: 21,
+    shortName: 'Uber from job to home',
+    description: 'Uber monday evening to see friends.',
+    price: 136.4,
+    date: new Date(),
+  },
+  {
+    id: 22,
+    shortName: 'Uber from home to job',
+    description: 'Uber monday morning to go to the office.',
+    price: 172.22,
+    date: new Date(),
+  },
+  {
+    id: 23,
+    shortName: 'Don Julio',
+    description: 'Buyin tequila with Adrian',
+    price: 1030.17,
+    date: new Date(),
+  }
+]
+
+export const IncomeRecordWithExpenses = Template.bind({});
+IncomeRecordWithExpenses.args = {
+  shortName: 'Payment Feb 01 - 15.',
+  description: 'Paying every expense within this timeframe',
+  recordType: 'Income',
+  date: new Date('February 10, 2023 17:21:18'),
+  price: 1234.69,
+  linkedPayedRecords: payedRecords,
+  shortView: false,
 };

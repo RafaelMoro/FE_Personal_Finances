@@ -12,6 +12,17 @@ export const RecordContainer = styled.article`
   row-gap: 1.5rem;
 `;
 
+export const ExpensesPayed = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+export const Expense = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+`;
+
 export const RecordDescription = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
 `;

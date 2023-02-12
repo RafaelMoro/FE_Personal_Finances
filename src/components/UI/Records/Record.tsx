@@ -2,27 +2,20 @@ import { Stack } from '@mui/material';
 
 import { TRecordProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
+import { formatDateToString } from '../../../utils/FormatDateToString';
+import { IncomeRecord } from './IncomeRecord';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
 } from './Records.styled';
 import { StyledChip, ParagraphTitle } from '../../../styles';
 
-const MONTHS = ['Jan', 'Feb', 'March', 'April', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
-
 const Record = ({
-  shortName, description, price, budgets = [], date, recordType, children,
+  shortName, description, price, budgets = [], date,
+  recordType, linkedPayedRecords, shortView = true,
 }: TRecordProps) => {
   const formattedPrice = formatNumberToCurrency(price);
+  const { fullDate, formattedTime } = formatDateToString(date);
   const isExpense = recordType === 'Expense';
-
-  const day = date.getDate();
-  const month = date.getMonth();
-  const hour = date.getHours();
-  const hourString = String(hour).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const fullDate = `${MONTHS[month]} ${day}`;
-  const twelveHourPeriod = hour >= 0 && hour <= 11 ? 'am' : 'pm';
-  const formattedTime = `${hourString}:${minutes}${twelveHourPeriod}`;
 
   return (
     <RecordContainer>
@@ -49,7 +42,9 @@ const Record = ({
           <StyledChip key={budget.id} label={budget.name} variant="outlined" color="primary" />
         ))}
       </Stack>
-      { children }
+      { !isExpense && (
+      <IncomeRecord payedLinkedRecords={linkedPayedRecords || []} shortView={shortView} />
+      )}
     </RecordContainer>
   );
 };

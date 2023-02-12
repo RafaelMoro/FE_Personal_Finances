@@ -1,11 +1,17 @@
-import { ReactNode } from 'react';
-
 export interface Budget {
   id: number;
   name: string;
 }
 
 export type RecordType = 'Expense' | 'Income';
+
+export interface IRecordPayed {
+  id: number;
+  shortName: string;
+  description: string;
+  price: number;
+  date: Date;
+}
 
 export interface IRecord {
   id: number;
@@ -15,12 +21,13 @@ export interface IRecord {
   price: number;
   budgets: Budget[];
   date: Date;
-  children?: ReactNode;
+  shortView?: boolean;
+  linkedPayedRecords?: IRecordPayed[];
 }
 
 export interface IIncomeRecordProps {
-  payedLinkedRecords: IRecord[];
-  shortView: boolean;
+  payedLinkedRecords: IRecordPayed[];
+  shortView?: boolean;
 }
 export type TRecordProps = Omit<IRecord, 'id'>;
 
