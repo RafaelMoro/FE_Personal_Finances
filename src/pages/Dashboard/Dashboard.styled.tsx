@@ -3,22 +3,44 @@ import { Heading3 } from '../../styles';
 
 export const DashboardContainer = styled.div`
   display: grid;
-  grid-template-columns: 21rem 1fr;
+  @media (min-width: 480px) {
+    grid-template-columns: 21rem 1fr;
+  }
 `;
 
-export const AccountsBox = styled.aside`
-  height: 100vh;
+export const AccountSection = styled.aside`
+  height: 200px;
   padding-left: 1rem;
   display: grid;
-  grid-auto-rows: 14rem;
+  grid-template-rows: 30% 70%;
+
+  @media (min-width: 480px) {
+    height: 100vh;
+    grid-template-columns: 21rem 1fr;
+    grid-auto-rows: 14rem;
+    gap: 1rem;
+  }
+`;
+
+export const AccountsContainer = styled.div`
+  display: flex;
   gap: 1rem;
+  overflow-x: scroll;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
 `;
 
 export const RecordsBox = styled.main`
-  padding: 14rem 2rem 0 2rem;
+  @media (min-width: 480px) {
+    padding: 14rem 2rem 0 2rem;
+  }
 `;
 
 export const AccountsTitle = styled(Heading3)`
   padding-left: 10px;
-  align-self: center;
+  place-self: center;
+
+  @media (min-width: 480px) {
+    align-self: center;
+  }
 `;

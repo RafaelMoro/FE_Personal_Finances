@@ -1,5 +1,5 @@
 import {
-  DashboardContainer, AccountsBox, RecordsBox, AccountsTitle,
+  DashboardContainer, AccountSection, RecordsBox, AccountsTitle, AccountsContainer,
 } from './Dashboard.styled';
 import { IRecord } from '../../components/UI/Records/interface';
 import { Account, AddAccount, RecordList } from '../../components/UI';
@@ -65,12 +65,16 @@ const records: IRecord[] = [
 
 const Dashboard = () => (
   <DashboardContainer>
-    <AccountsBox>
+    <AccountSection>
       <AccountsTitle>Accounts: </AccountsTitle>
-      <Account title="Zero" amount={18000} accountType="Debit" bgColor="orange" color="white" selected />
-      <Account title="BBVA" amount={1638.69} accountType="Debit" bgColor="red" color="white" />
-      <AddAccount />
-    </AccountsBox>
+      <AccountsContainer>
+        <Account title="Zero" amount={18000} accountType="Debit" bgColor="orange" color="white" selected />
+        <Account title="BBVA" amount={1638.69} accountType="Debit" bgColor="red" color="white" />
+        <Account title="Zero" amount={18000} accountType="Debit" bgColor="orange" color="white" selected />
+        <Account title="BBVA" amount={1638.69} accountType="Debit" bgColor="red" color="white" />
+        <AddAccount />
+      </AccountsContainer>
+    </AccountSection>
     <RecordsBox>
       <RecordList records={records} />
     </RecordsBox>

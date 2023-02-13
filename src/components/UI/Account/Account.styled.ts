@@ -14,6 +14,7 @@ const accountDynamicStyles = ({
 `;
 
 const AccountContainerBasicStyles = styled.article`
+  min-width: 180px;
   width: 100%;
   max-width: 30rem;
   min-height: 14rem;
@@ -26,6 +27,7 @@ const AccountContainerBasicStyles = styled.article`
   align-items: center;
   cursor: pointer;
   transition: opacity 0.3s ease;
+  scroll-snap-align: center;
 
   &:hover {
     opacity: 1;
