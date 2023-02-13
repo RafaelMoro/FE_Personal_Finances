@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { blinkAnimation } from '../../../styles/animations/blink';
 import { AppColors, Paragraph, Sub } from '../../../styles';
 
 export const RecordContainer = styled.article`
@@ -10,6 +11,10 @@ export const RecordContainer = styled.article`
   grid-template-columns: 70% 15% 15%;
   grid-template-rows: repeat(1, 1fr);
   row-gap: 1.5rem;
+`;
+
+export const RecordSkeletonContainer = styled(RecordContainer)`
+  border: 1px solid grey;
 `;
 
 export const ExpensesPayed = styled.section`
@@ -39,4 +44,12 @@ export const RecordIncome = styled(Paragraph)`
 export const RecordExpense = styled(Paragraph)`
   font-weight: 500;
   color: ${AppColors.negative};
+`;
+
+export const RecordSkeletonHolder = styled.div`
+  width: 50%;
+  height: 4rem;
+  background-color: ${AppColors.grey};
+  border-radius: 1rem;
+  ${blinkAnimation}
 `;
