@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { IRecordPayed } from './interface';
-import { Record } from './Record';
+import { IRecordPayed } from '../interface';
+import { Record } from '../Record';
 
 export default {
   title: 'UI/Record',

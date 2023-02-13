@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import { TRecordProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
 import { formatDateToString } from '../../../utils/FormatDateToString';
-import { IncomeRecord } from './IncomeRecord';
+import { IncomeRecord } from './features/IncomeRecord';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
 } from './Records.styled';

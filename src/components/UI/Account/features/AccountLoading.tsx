@@ -1,4 +1,4 @@
-import { AccountContainerLoading, AccountSkeletonHolder } from './Account.styled';
+import { AccountContainerLoading, AccountSkeletonHolder } from '../Account.styled';
 
 const AccountLoading = () => (
   <AccountContainerLoading>

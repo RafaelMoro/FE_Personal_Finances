@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { AccountLoading } from './AccountLoading';
+import { AccountLoading } from '../features/AccountLoading';
 
 export default {
   title: 'UI/Account',

@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { RecordLoading } from './RecordLoading';
+import { RecordLoading } from '../features/RecordLoading';
 
 export default {
   title: 'UI/Record',

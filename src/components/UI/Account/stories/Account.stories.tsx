@@ -1,5 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Account } from "./Account";
+import { Account } from '../Account';
 
 export default {
   title: 'UI/Account',

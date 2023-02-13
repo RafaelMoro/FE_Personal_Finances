@@ -1,4 +1,4 @@
-import { RecordSkeletonContainer, RecordSkeletonHolder } from './Records.styled';
+import { RecordSkeletonContainer, RecordSkeletonHolder } from '../Records.styled';
 
 const RecordLoading = () => (
   <RecordSkeletonContainer>

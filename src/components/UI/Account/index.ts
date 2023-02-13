@@ -1,3 +1,3 @@
 export { Account } from './Account';
-export { AccountLoading } from './AccountLoading';
-export { AddAccount } from './AddAccount';
+export { AccountLoading } from './features/AccountLoading';
+export { AddAccount } from './features/AddAccount';

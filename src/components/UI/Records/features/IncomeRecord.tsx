@@ -1,11 +1,11 @@
 import { Divider } from '@mui/material';
-import { formatDateToString } from '../../../utils/FormatDateToString';
-import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
-import { Paragraph } from '../../../styles';
+import { formatDateToString } from '../../../../utils/FormatDateToString';
+import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
+import { Paragraph } from '../../../../styles';
 import {
   RecordDateTime, RecordExpense, ExpensesPayed, Expense,
-} from './Records.styled';
-import { IIncomeRecordProps } from './interface';
+} from '../Records.styled';
+import { IIncomeRecordProps } from '../interface';
 
 const IncomeRecord = ({ payedLinkedRecords = [], shortView = true }: IIncomeRecordProps) => {
   if (!shortView) {

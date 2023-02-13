@@ -1,6 +1,6 @@
 import { List, ListItem, Divider } from '@mui/material';
-import { IRecordListProps } from './interface';
-import { Record } from './Record';
+import { IRecordListProps } from '../interface';
+import { Record } from '../Record';
 
 const RecordList = ({ records }: IRecordListProps) => (
   <List component="nav">
