@@ -1,14 +1,12 @@
 import { render, screen } from '@testing-library/react';
 
-import { AccountType } from './interface';
+import { IAccountProps } from './interface';
 import { Account } from './Account';
 
-const accountType: AccountType = 'Debit';
-
-const account = {
+const account: IAccountProps = {
   title: 'BBVA',
   amount: 20000,
-  accountType,
+  accountType: 'Debit',
   bgColor: 'red',
   color: 'white',
 };

@@ -67,7 +67,7 @@ const Dashboard = () => (
   <DashboardContainer>
     <AccountsBox>
       <AccountsTitle>Accounts: </AccountsTitle>
-      <Account title="Zero" amount={18000} accountType="Debit" bgColor="grey" color="white" selected />
+      <Account title="Zero" amount={18000} accountType="Debit" bgColor="orange" color="white" selected />
       <Account title="BBVA" amount={1638.69} accountType="Debit" bgColor="red" color="white" />
       <AddAccount />
     </AccountsBox>
