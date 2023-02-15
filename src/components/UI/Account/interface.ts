@@ -2,12 +2,15 @@ import { AccountBackgroundColorsKeys } from '../../../styles/interface';
 
 export type AccountType = 'Debit' | 'Credit' | 'Food Voucher' | 'Restaurant Voucher' | 'Savings';
 
-export interface IAccountProps {
+export interface IAccount {
+  id: number;
   title: string;
   amount: number;
   accountType: AccountType;
   bgColor: AccountBackgroundColorsKeys;
   color?: string;
+}
+export interface IAccountProps extends IAccount {
   selected?: boolean;
 }
 
