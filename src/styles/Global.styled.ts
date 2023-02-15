@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { Button, Chip } from '@mui/material';
+import {
+  Button, Chip, DialogTitle, ListItemText,
+} from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
@@ -105,6 +107,16 @@ export const AnchorButton = styled(Link)`
   text-decoration: none;
   ${createResponsiveProps({ fontSize: 'P' })}
   ${dynamicPadding}
+`;
+
+export const DialogTitleStyled = styled(DialogTitle)`
+  ${createResponsiveProps({ fontSize: 'H2' })}
+`;
+
+export const ListItemTextStyled = styled(ListItemText)`
+  span {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
 `;
 
 export const InputForm = styled(TextField)`

@@ -1,7 +1,9 @@
 import {
-  Dialog, DialogTitle, List, ListItem, ListItemButton, ListItemText,
+  Dialog, List, ListItem, ListItemButton, Divider,
 } from '@mui/material';
+import { DialogTitleStyled, ListItemTextStyled } from '../../styles';
 import { IAccount } from '../../components/UI/Account/interface';
+import { formatNumberToCurrency } from '../../utils/FormatNumberToCurrency';
 
 interface AccountDialogProps {
   open: boolean;
@@ -13,6 +15,10 @@ interface AccountDialogProps {
 const AccountDialog = ({
   open, selectedAccount, onClose, accounts,
 }: AccountDialogProps) => {
+  const accountsWithAmountFormatted = accounts.map((account) => {
+    const { amount } = account;
+    return { ...account, amount: formatNumberToCurrency(amount) };
+  });
   const handleClose = () => {
     onClose(selectedAccount);
   };
@@ -25,21 +31,24 @@ const AccountDialog = ({
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Choose other account</DialogTitle>
+      <DialogTitleStyled>Choose other account</DialogTitleStyled>
       <List sx={{ pt: 0 }}>
-        { accounts.map((account) => (
-          <ListItem disableGutters key={account.id}>
-            <ListItemButton onClick={() => handleListItemClick(account.id)}>
-              <ListItemText primary={account.title} />
-              <ListItemText primary={account.amount} />
-            </ListItemButton>
-          </ListItem>
+        { accountsWithAmountFormatted.map((account) => (
+          <>
+            <ListItem key={account.id}>
+              <ListItemButton onClick={() => handleListItemClick(account.id)}>
+                <ListItemTextStyled primary={account.title} />
+                <ListItemTextStyled primary={account.amount} />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+          </>
         )) }
-        <ListItem disableGutters>
+        <ListItem>
           <ListItemButton
             autoFocus
           >
-            <ListItemText primary="Add account" />
+            <ListItemTextStyled primary="Add account" />
           </ListItemButton>
         </ListItem>
       </List>
