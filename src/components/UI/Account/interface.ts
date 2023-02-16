@@ -9,8 +9,6 @@ export interface IAccount {
   accountType: AccountType;
   bgColor: AccountBackgroundColorsKeys;
   color?: string;
-}
-export interface IAccountProps extends IAccount {
   selected?: boolean;
 }
 

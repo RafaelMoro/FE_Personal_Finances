@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
-import { IAccountProps } from './interface';
+import { IAccount } from './interface';
 import { Account } from './Account';
 
-const account: IAccountProps = {
+const account: IAccount = {
   id: 1,
   title: 'BBVA',
   amount: 20000,

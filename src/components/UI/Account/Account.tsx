@@ -1,11 +1,11 @@
-import { IAccountProps } from './interface';
+import { IAccount } from './interface';
 import { formatNumberToCurrency } from '../../../utils/FormatNumberToCurrency';
 import { AccountContainerColoroued, AccountTitle } from './Account.styled';
 import { Paragraph } from '../../../styles';
 
 const Account = ({
   title, amount, accountType, bgColor, color, selected = false,
-}: IAccountProps) => {
+}: IAccount) => {
   const amountFormatted: string = formatNumberToCurrency(amount);
 
   return (

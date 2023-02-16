@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AccountDialog } from './AccountsDialog';
+import { AccountDialog } from './features/AccountsDialog/AccountsDialog';
 import {
   DashboardContainer, AccountSection, RecordsBox,
   AccountsTitle, AccountsContainer, ChangeAccountButton,

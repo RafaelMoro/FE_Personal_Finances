@@ -1,9 +1,10 @@
 import {
   Dialog, List, ListItem, ListItemButton, Divider,
 } from '@mui/material';
-import { DialogTitleStyled, ListItemTextStyled } from '../../styles';
-import { IAccount } from '../../components/UI/Account/interface';
-import { formatNumberToCurrency } from '../../utils/FormatNumberToCurrency';
+import { ListAccount } from './AccountsDialog.styled';
+import { DialogTitleStyled, ListItemTextStyled } from '../../../../styles';
+import { IAccount } from '../../../../components/UI/Account/interface';
+import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
 
 interface AccountDialogProps {
   open: boolean;
@@ -15,15 +16,20 @@ interface AccountDialogProps {
 const AccountDialog = ({
   open, selectedAccount, onClose, accounts,
 }: AccountDialogProps) => {
+  const selectedAccountId = selectedAccount.id;
   const accountsWithAmountFormatted = accounts.map((account) => {
-    const { amount } = account;
-    return { ...account, amount: formatNumberToCurrency(amount) };
+    const { amount, id } = account;
+    if (id === selectedAccountId) {
+      return { ...account, amount: formatNumberToCurrency(amount), selected: true };
+    }
+    return { ...account, amount: formatNumberToCurrency(amount), selected: false };
   });
+
   const handleClose = () => {
     onClose(selectedAccount);
   };
 
-  const handleListItemClick = (id: number) => {
+  const handleAccountClick = (id: number) => {
     const newSelectedAccount = accounts.find((account) => account.id === id);
     const accountToBePassed = newSelectedAccount || accounts[0];
     onClose(accountToBePassed);
@@ -35,12 +41,12 @@ const AccountDialog = ({
       <List sx={{ pt: 0 }}>
         { accountsWithAmountFormatted.map((account) => (
           <>
-            <ListItem key={account.id}>
-              <ListItemButton onClick={() => handleListItemClick(account.id)}>
+            <ListAccount key={account.id} selectedAccount={account?.selected}>
+              <ListItemButton onClick={() => handleAccountClick(account.id)}>
                 <ListItemTextStyled primary={account.title} />
                 <ListItemTextStyled primary={account.amount} />
               </ListItemButton>
-            </ListItem>
+            </ListAccount>
             <Divider />
           </>
         )) }

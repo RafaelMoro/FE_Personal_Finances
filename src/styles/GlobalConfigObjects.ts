@@ -17,6 +17,7 @@ export const AppColors = {
   warning: '#d9f117',
   bgColorLight: '#F5EFE5',
   bgColorDark: '#66440D',
+  bgColorGrey: '#dbcaca',
   grey: '#9F9B94',
   subtitleColor: '#B5BFCA',
 };
