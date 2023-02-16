@@ -29,7 +29,7 @@ const SelectAccountDialog = ({
     onClose(selectedAccount);
   };
 
-  const handleAccountClick = (id: number) => {
+  const handleAccountClick = (id: string) => {
     const newSelectedAccount = accounts.find((account) => account.id === id);
     const accountToBePassed = newSelectedAccount || accounts[0];
     onClose(accountToBePassed);

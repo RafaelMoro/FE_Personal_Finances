@@ -8,28 +8,28 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 
 const mockedAccounts: IAccount[] = [
   {
-    id: 1,
+    id: '1',
     title: 'Zero',
     amount: 7500,
     accountType: 'Credit',
     bgColor: 'grey',
   },
   {
-    id: 2,
+    id: '2',
     title: '2now',
     amount: 15000,
     accountType: 'Credit',
     bgColor: 'black',
   },
   {
-    id: 3,
+    id: '3',
     title: 'Santander',
     amount: 678,
     accountType: 'Debit',
     bgColor: 'darkRed',
   },
   {
-    id: 4,
+    id: '4',
     title: 'BBVA',
     amount: 3700,
     accountType: 'Savings',

@@ -4,7 +4,7 @@ import { IAccount } from './interface';
 import { Account } from './Account';
 
 const account: IAccount = {
-  id: 1,
+  id: '1',
   title: 'BBVA',
   amount: 20000,
   accountType: 'Debit',

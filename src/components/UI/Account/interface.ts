@@ -3,7 +3,7 @@ import { AccountBackgroundColorsKeys } from '../../../styles/interface';
 export type AccountType = 'Debit' | 'Credit' | 'Food Voucher' | 'Restaurant Voucher' | 'Savings';
 
 export interface IAccount {
-  id: number;
+  id: string;
   title: string;
   amount: number;
   accountType: AccountType;
