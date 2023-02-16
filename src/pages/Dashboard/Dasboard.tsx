@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AccountDialog } from './features/AccountsDialog/AccountsDialog';
+import { SelectAccountDialog } from './features/SelectAccountDialog/SelectAccountDialog';
 import {
   DashboardContainer, AccountSection, RecordsBox,
   AccountsTitle, AccountsContainer, ChangeAccountButton,
@@ -133,7 +133,7 @@ const Dashboard = () => {
       <RecordsBox>
         <RecordList records={records} />
       </RecordsBox>
-      <AccountDialog
+      <SelectAccountDialog
         accounts={mockedAccounts}
         selectedAccount={selectedAccount}
         open={openAccountModal}

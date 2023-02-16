@@ -1,7 +1,7 @@
 import {
   Dialog, List, ListItem, ListItemButton, Divider,
 } from '@mui/material';
-import { ListAccount } from './AccountsDialog.styled';
+import { ListAccount } from './SelectAccountDialog.styled';
 import { DialogTitleStyled, ListItemTextStyled } from '../../../../styles';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
@@ -13,7 +13,7 @@ interface AccountDialogProps {
   onClose: (selectedAccount: IAccount) => void;
 }
 
-const AccountDialog = ({
+const SelectAccountDialog = ({
   open, selectedAccount, onClose, accounts,
 }: AccountDialogProps) => {
   const selectedAccountId = selectedAccount.id;
@@ -35,6 +35,7 @@ const AccountDialog = ({
     onClose(accountToBePassed);
   };
 
+  // Missing to add handler to create account
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitleStyled>Choose other account</DialogTitleStyled>
@@ -62,4 +63,4 @@ const AccountDialog = ({
   );
 };
 
-export { AccountDialog };
+export { SelectAccountDialog };
