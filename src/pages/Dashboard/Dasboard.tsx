@@ -1,13 +1,12 @@
 import { useState } from 'react';
 
-import { SelectAccountDialog } from './features/SelectAccountDialog/SelectAccountDialog';
+import { SelectAccountDialog, ViewAccounts } from './features';
+import { RecordList } from '../../components/UI';
 import {
-  DashboardContainer, AccountSection, RecordsBox,
-  AccountsTitle, AccountsContainer, ChangeAccountButton,
+  DashboardContainer, RecordsBox,
 } from './Dashboard.styled';
 import { IAccount } from '../../components/UI/Account/interface';
 import { IRecord } from '../../components/UI/Records/interface';
-import { Account, RecordList } from '../../components/UI';
 
 const records: IRecord[] = [
   {
@@ -115,21 +114,7 @@ const Dashboard = () => {
 
   return (
     <DashboardContainer>
-      <AccountSection>
-        <AccountsTitle>Account: </AccountsTitle>
-        <ChangeAccountButton variant="contained" size="medium" onClick={handleClickOpen}>Change account</ChangeAccountButton>
-        <AccountsContainer>
-          <Account
-            id={selectedAccount.id}
-            title={selectedAccount.title}
-            amount={selectedAccount.amount}
-            accountType={selectedAccount.accountType}
-            bgColor={selectedAccount.bgColor}
-            color={selectedAccount?.color ?? 'white'}
-            selected
-          />
-        </AccountsContainer>
-      </AccountSection>
+      <ViewAccounts selectedAccount={selectedAccount} handleClickOpen={handleClickOpen} />
       <RecordsBox>
         <RecordList records={records} />
       </RecordsBox>
