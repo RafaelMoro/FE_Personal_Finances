@@ -6,7 +6,7 @@ export interface Budget {
 export type RecordType = 'Expense' | 'Income';
 
 export interface IRecordPayed {
-  id: number;
+  id: string;
   shortName: string;
   description: string;
   price: number;
@@ -14,7 +14,7 @@ export interface IRecordPayed {
 }
 
 export interface IRecord {
-  id: number;
+  id: string;
   shortName: string;
   description: string;
   recordType: RecordType;

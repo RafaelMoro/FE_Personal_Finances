@@ -58,21 +58,21 @@ IncomeRecord.args = {
 
 const payedRecords: IRecordPayed[] = [
   {
-    id: 21,
+    id: '21',
     shortName: 'Uber from job to home',
     description: 'Uber monday evening to see friends.',
     price: 136.4,
     date: new Date(),
   },
   {
-    id: 22,
+    id: '22',
     shortName: 'Uber from home to job',
     description: 'Uber monday morning to go to the office.',
     price: 172.22,
     date: new Date(),
   },
   {
-    id: 23,
+    id: '23',
     shortName: 'Don Julio',
     description: 'Buyin tequila with Adrian',
     price: 1030.17,
