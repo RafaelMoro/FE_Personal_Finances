@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
+import { AxiosError, AxiosRequestHeaders } from 'axios';
+
 import { Account } from '../../../../components/UI';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
 } from './ViewAccounts.styled';
 import { SelectAccountDialog } from '../SelectAccountDialog';
+
+import { userAtom } from '../../../../atoms';
+import { GetRequest } from '../../../../utils';
+import { GET_ACCOUNTS_ROUTE } from './constants';
 
 const mockedAccounts: IAccount[] = [
   {
@@ -39,8 +46,34 @@ const mockedAccounts: IAccount[] = [
 ];
 
 const ViewAccounts = () => {
+  const [user] = useAtom(userAtom);
+  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+
+  const [accounts, setAccounts] = useState<IAccount [] | null>(null);
+  // eslint-disable-next-line no-console
+  console.log(accounts);
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState(mockedAccounts[0]);
+
+  useEffect(() => {
+    const getAccounts = async () => {
+      try {
+        const accountsData = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
+        if (accountsData?.error) {
+          const error = accountsData?.message as string;
+          // eslint-disable-next-line no-console
+          console.log(error);
+          return;
+        }
+        setAccounts(accountsData);
+      } catch (errorCatched) {
+        const error = errorCatched as AxiosError;
+        // eslint-disable-next-line no-console
+        console.log(error.response?.data);
+      }
+    };
+    if (user && bearerToken) getAccounts();
+  }, [bearerToken, user]);
 
   const handleClickOpen = () => {
     setOpenAccountModal(true);
