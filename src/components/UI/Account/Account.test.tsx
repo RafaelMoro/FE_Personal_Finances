@@ -4,7 +4,7 @@ import { IAccount } from './interface';
 import { Account } from './Account';
 
 const account: IAccount = {
-  id: '1',
+  _id: '1',
   title: 'BBVA',
   amount: 20000,
   accountType: 'Debit',
@@ -16,7 +16,7 @@ describe('<Account />', () => {
   test('Render account name, price, account type', () => {
     render(
       <Account
-        id={account.id}
+        _id={account._id}
         title={account.title}
         amount={account.amount}
         accountType={account.accountType}

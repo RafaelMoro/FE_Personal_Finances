@@ -13,47 +13,47 @@ import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 
-const mockedAccounts: IAccount[] = [
-  {
-    id: '1',
-    title: 'Zero',
-    amount: 7500,
-    accountType: 'Credit',
-    bgColor: 'grey',
-  },
-  {
-    id: '2',
-    title: '2now',
-    amount: 15000,
-    accountType: 'Credit',
-    bgColor: 'black',
-  },
-  {
-    id: '3',
-    title: 'Santander',
-    amount: 678,
-    accountType: 'Debit',
-    bgColor: 'darkRed',
-  },
-  {
-    id: '4',
-    title: 'BBVA',
-    amount: 3700,
-    accountType: 'Savings',
-    bgColor: 'azure',
-    color: 'black',
-  },
-];
+// const mockedAccounts: IAccount[] = [
+//   {
+//     id: '1',
+//     title: 'Zero',
+//     amount: 7500,
+//     accountType: 'Credit',
+//     bgColor: 'grey',
+//   },
+//   {
+//     id: '2',
+//     title: '2now',
+//     amount: 15000,
+//     accountType: 'Credit',
+//     bgColor: 'black',
+//   },
+//   {
+//     id: '3',
+//     title: 'Santander',
+//     amount: 678,
+//     accountType: 'Debit',
+//     bgColor: 'darkRed',
+//   },
+//   {
+//     id: '4',
+//     title: 'BBVA',
+//     amount: 3700,
+//     accountType: 'Savings',
+//     bgColor: 'azure',
+//     color: 'black',
+//   },
+// ];
 
 const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [accounts, setAccounts] = useState<IAccount [] | null>(null);
-  // eslint-disable-next-line no-console
-  console.log(accounts);
   const [openAccountModal, setOpenAccountModal] = useState(false);
-  const [selectedAccount, setSelectedAccount] = useState(mockedAccounts[0]);
+  const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
+  // eslint-disable-next-line no-console
+  console.log(selectedAccount);
 
   useEffect(() => {
     const getAccounts = async () => {
@@ -66,6 +66,8 @@ const ViewAccounts = () => {
           return;
         }
         setAccounts(accountsData);
+        // If there is data in the array, assign a selected account
+        if (accountsData.length > 0) setSelectedAccount(accountsData[0]);
       } catch (errorCatched) {
         const error = errorCatched as AxiosError;
         // eslint-disable-next-line no-console
@@ -87,24 +89,30 @@ const ViewAccounts = () => {
   return (
     <AccountSection>
       <AccountsTitle>Account: </AccountsTitle>
-      <ChangeAccountButton variant="contained" size="medium" onClick={handleClickOpen}>Change account</ChangeAccountButton>
+      { selectedAccount && (
+        <ChangeAccountButton variant="contained" size="medium" onClick={handleClickOpen}>Change account</ChangeAccountButton>
+      )}
       <AccountsContainer>
-        <Account
-          id={selectedAccount.id}
-          title={selectedAccount.title}
-          amount={selectedAccount.amount}
-          accountType={selectedAccount.accountType}
-          bgColor={selectedAccount.bgColor}
-          color={selectedAccount?.color ?? 'white'}
-          selected
-        />
+        { selectedAccount && (
+          <Account
+            _id={selectedAccount._id}
+            title={selectedAccount.title}
+            amount={selectedAccount.amount}
+            accountType={selectedAccount.accountType}
+            bgColor={selectedAccount.bgColor}
+            color={selectedAccount?.color ?? 'white'}
+            selected
+          />
+        )}
       </AccountsContainer>
-      <SelectAccountDialog
-        accounts={mockedAccounts}
-        selectedAccount={selectedAccount}
-        open={openAccountModal}
-        onClose={handleClickClose}
-      />
+      { selectedAccount && (
+        <SelectAccountDialog
+          accounts={accounts as IAccount[]}
+          selectedAccount={selectedAccount}
+          open={openAccountModal}
+          onClose={handleClickClose}
+        />
+      ) }
     </AccountSection>
   );
 };

@@ -16,10 +16,12 @@ interface AccountDialogProps {
 const SelectAccountDialog = ({
   open, selectedAccount, onClose, accounts,
 }: AccountDialogProps) => {
-  const selectedAccountId = selectedAccount.id;
+  const selectedAccountId = selectedAccount._id;
   const accountsWithAmountFormatted = accounts.map((account) => {
-    const { amount, id } = account;
+    const { amount, _id: id } = account;
     if (id === selectedAccountId) {
+      // eslint-disable-next-line no-console
+      console.log('estoy aca');
       return { ...account, amount: formatNumberToCurrency(amount), selected: true };
     }
     return { ...account, amount: formatNumberToCurrency(amount), selected: false };
@@ -30,7 +32,7 @@ const SelectAccountDialog = ({
   };
 
   const handleAccountClick = (id: string) => {
-    const newSelectedAccount = accounts.find((account) => account.id === id);
+    const newSelectedAccount = accounts.find((account) => account._id === id);
     const accountToBePassed = newSelectedAccount || accounts[0];
     onClose(accountToBePassed);
   };
@@ -42,8 +44,8 @@ const SelectAccountDialog = ({
       <List sx={{ pt: 0 }}>
         { accountsWithAmountFormatted.map((account) => (
           <>
-            <ListAccount key={account.id} selectedAccount={account?.selected}>
-              <ListItemButton onClick={() => handleAccountClick(account.id)}>
+            <ListAccount key={account._id} selectedAccount={account?.selected}>
+              <ListItemButton onClick={() => handleAccountClick(account._id)}>
                 <ListItemTextStyled primary={account.title} />
                 <ListItemTextStyled primary={account.amount} />
               </ListItemButton>
