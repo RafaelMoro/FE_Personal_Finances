@@ -7,7 +7,7 @@ import { IRecord } from '../../components/UI/Records/interface';
 
 const records: IRecord[] = [
   {
-    id: 1,
+    id: '1',
     shortName: 'Uber home to gym',
     description: 'Paying Uber to go to smartfit on Solesta',
     recordType: 'Expense',
@@ -21,7 +21,7 @@ const records: IRecord[] = [
     ],
   },
   {
-    id: 2,
+    id: '2',
     shortName: 'Uber home to gym',
     description: 'Paying Uber to go to smartfit on Solesta',
     recordType: 'Expense',
@@ -35,7 +35,7 @@ const records: IRecord[] = [
     ],
   },
   {
-    id: 3,
+    id: '3',
     shortName: 'Uber home to gym',
     description: 'Paying Uber to go to smartfit on Solesta',
     recordType: 'Income',
@@ -49,7 +49,7 @@ const records: IRecord[] = [
     ],
   },
   {
-    id: 4,
+    id: '4',
     shortName: 'Uber home to gym',
     description: 'Paying Uber to go to smartfit on Solesta',
     recordType: 'Expense',

@@ -14,7 +14,7 @@ export interface IRecordPayed {
 }
 
 export interface IRecord {
-  id: number;
+  id: string;
   shortName: string;
   description: string;
   recordType: RecordType;

@@ -3,7 +3,7 @@ import { Record } from './Record';
 import { IRecord } from './interface';
 
 const record: IRecord = {
-  id: 1,
+  id: '1',
   shortName: 'Uber home to gym',
   description: 'Paying Uber to go to smartfit on Solesta',
   recordType: 'Expense',
