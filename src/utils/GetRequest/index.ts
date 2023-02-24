@@ -15,6 +15,8 @@ export const GetRequest = async (route: string, authConfigObject: AxiosRequestHe
     return data;
   } catch (errorCatched) {
     const error = errorCatched as AxiosError;
-    return error.response?.data;
+    const { message } = error;
+    const errorData = error.response?.data;
+    return { message, errorData, error: true };
   }
 };

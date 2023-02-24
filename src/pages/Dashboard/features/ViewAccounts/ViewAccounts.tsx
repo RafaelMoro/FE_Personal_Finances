@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { AxiosRequestHeaders } from 'axios';
 
-import { Account, AddAccount } from '../../../../components/UI';
+import { Account, AddAccount, Notification } from '../../../../components/UI';
+import { SelectAccountDialog } from '../SelectAccountDialog';
+import { useNotification } from '../../../../hooks/useNotification';
+import { SystemStateEnum } from '../../../../enums';
+import { userAtom } from '../../../../atoms';
+import { GetRequest } from '../../../../utils';
+import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
 } from './ViewAccounts.styled';
-import { SelectAccountDialog } from '../SelectAccountDialog';
-
-import { userAtom } from '../../../../atoms';
-import { GetRequest } from '../../../../utils';
-import { GET_ACCOUNTS_ROUTE } from './constants';
 
 // const mockedAccounts: IAccount[] = [
 //   {
@@ -45,9 +46,22 @@ import { GET_ACCOUNTS_ROUTE } from './constants';
 //   },
 // ];
 
+const NOTIFICATION_ERROR_TITLE = 'Error.';
+const NOTIFICATION_ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
+const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Error;
+const NETWORK_CATCH_ERROR = 'Network Error';
+
 const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const {
+    showNotification, toggleShowNotification, notificationInfo,
+    updateTitle,
+  } = useNotification({
+    title: NOTIFICATION_ERROR_TITLE,
+    description: NOTIFICATION_ERROR_DESCRIPTION,
+    status: NOTIFICATION_ERROR_STATUS,
+  });
 
   const [accounts, setAccounts] = useState<IAccount [] | null>(null);
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
@@ -62,8 +76,10 @@ const ViewAccounts = () => {
         // catch error
         if (accountsData?.error) {
           const error = accountsData?.message as string;
-          // eslint-disable-next-line no-console
-          console.log(error);
+          if (error === NETWORK_CATCH_ERROR) {
+            // eslint-disable-next-line no-console
+            console.error('error in network');
+          }
           return;
         }
         setAccounts(accountsData);
@@ -75,12 +91,12 @@ const ViewAccounts = () => {
         }
         setSelectedAccount(accountsData[0]);
       } catch (errorCatched) {
-        const error = errorCatched as AxiosError;
         // eslint-disable-next-line no-console
-        console.log(error.response?.data);
+        console.error('error', errorCatched);
       }
     };
     if (user && bearerToken) getAccounts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bearerToken, user]);
 
   const handleClickOpen = () => {
