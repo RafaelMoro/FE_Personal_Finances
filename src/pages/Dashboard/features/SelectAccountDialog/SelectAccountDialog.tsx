@@ -20,8 +20,6 @@ const SelectAccountDialog = ({
   const accountsWithAmountFormatted = accounts.map((account) => {
     const { amount, _id: id } = account;
     if (id === selectedAccountId) {
-      // eslint-disable-next-line no-console
-      console.log('estoy aca');
       return { ...account, amount: formatNumberToCurrency(amount), selected: true };
     }
     return { ...account, amount: formatNumberToCurrency(amount), selected: false };

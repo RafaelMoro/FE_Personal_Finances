@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { Account } from '../../../../components/UI';
+import { Account, AddAccount } from '../../../../components/UI';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
@@ -50,15 +50,16 @@ const ViewAccounts = () => {
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [accounts, setAccounts] = useState<IAccount [] | null>(null);
+  const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openAccountModal, setOpenAccountModal] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
-  // eslint-disable-next-line no-console
-  console.log(selectedAccount);
 
   useEffect(() => {
     const getAccounts = async () => {
       try {
         const accountsData = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
+
+        // catch error
         if (accountsData?.error) {
           const error = accountsData?.message as string;
           // eslint-disable-next-line no-console
@@ -66,8 +67,13 @@ const ViewAccounts = () => {
           return;
         }
         setAccounts(accountsData);
-        // If there is data in the array, assign a selected account
-        if (accountsData.length > 0) setSelectedAccount(accountsData[0]);
+
+        // accounts array is empty, show add account component
+        if (accountsData.length === 0) {
+          setShowAddAccount(true);
+          return;
+        }
+        setSelectedAccount(accountsData[0]);
       } catch (errorCatched) {
         const error = errorCatched as AxiosError;
         // eslint-disable-next-line no-console
@@ -104,6 +110,9 @@ const ViewAccounts = () => {
             selected
           />
         )}
+        { (showAddAccount && !selectedAccount) && (
+          <AddAccount />
+        ) }
       </AccountsContainer>
       { selectedAccount && (
         <SelectAccountDialog
