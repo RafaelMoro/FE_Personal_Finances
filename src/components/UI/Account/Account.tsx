@@ -4,12 +4,12 @@ import { AccountContainerColoroued, AccountTitle } from './Account.styled';
 import { Paragraph } from '../../../styles';
 
 const Account = ({
-  title, amount, accountType, bgColor, color, selected = false,
+  title, amount, accountType, backgroundColor, color, selected = false,
 }: IAccount) => {
   const amountFormatted: string = formatNumberToCurrency(amount);
 
   return (
-    <AccountContainerColoroued bgColor={bgColor} color={color} selected={selected}>
+    <AccountContainerColoroued backgroundColor={backgroundColor} color={color} selected={selected}>
       <AccountTitle>{ title }</AccountTitle>
       <Paragraph>{ amountFormatted }</Paragraph>
       <Paragraph>{ accountType }</Paragraph>

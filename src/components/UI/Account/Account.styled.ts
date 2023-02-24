@@ -6,9 +6,9 @@ import { AppColors, Heading4 } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 
 const accountDynamicStyles = ({
-  color, bgColor, selected,
+  color, backgroundColor, selected,
 }: IAccountDynamicStylesProps) => css`
-  background-color: ${bgColor ?? AppColors.white};
+  background-color: ${backgroundColor ?? AppColors.white};
   color: ${color ?? AppColors.black};
   ${selected && 'opacity: 1;'}
 `;

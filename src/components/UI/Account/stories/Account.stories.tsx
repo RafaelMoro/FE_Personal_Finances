@@ -17,7 +17,7 @@ NormalAccount.args = {
   title: 'BBVA',
   amount: 25000,
   accountType: 'Debit',
-  bgColor: 'blue',
+  backgroundColor: 'blue',
   color: 'white',
 };
 
@@ -26,7 +26,7 @@ OtherAccount.args = {
   title: 'HSBC 2now',
   amount: 38000,
   accountType: 'Credit',
-  bgColor: 'grey',
+  backgroundColor: 'grey',
   color: 'white',
 };
 
@@ -35,7 +35,7 @@ AccountWithBigTitle.args = {
   title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
   amount: 38000,
   accountType: 'Credit',
-  bgColor: 'purple',
+  backgroundColor: 'purple',
   color: 'white',
 };
 
@@ -44,7 +44,7 @@ AccountWithDecimals.args = {
   title: 'Sodexo platinum',
   amount: 1350.78,
   accountType: 'Food Voucher',
-  bgColor: 'black',
+  backgroundColor: 'black',
   color: 'white',
 }
 
@@ -53,7 +53,7 @@ AccountSelected.args = {
   title: 'Santander',
   amount: 1350.78,
   accountType: 'Debit',
-  bgColor: 'red',
+  backgroundColor: 'red',
   color: 'white',
   selected: true,
 }

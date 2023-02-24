@@ -7,13 +7,13 @@ export interface IAccount {
   title: string;
   amount: number;
   accountType: AccountType;
-  bgColor: AccountBackgroundColorsKeys;
+  backgroundColor: AccountBackgroundColorsKeys;
   color?: string;
   selected?: boolean;
 }
 
 export interface IAccountDynamicStylesProps {
-  bgColor: string;
+  backgroundColor: string;
   color?: string;
   selected: boolean;
 }

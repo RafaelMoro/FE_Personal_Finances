@@ -8,7 +8,7 @@ const account: IAccount = {
   title: 'BBVA',
   amount: 20000,
   accountType: 'Debit',
-  bgColor: 'red',
+  backgroundColor: 'red',
   color: 'white',
 };
 
@@ -20,7 +20,7 @@ describe('<Account />', () => {
         title={account.title}
         amount={account.amount}
         accountType={account.accountType}
-        bgColor={account.bgColor}
+        backgroundColor={account.backgroundColor}
         color={account.color}
       />,
     );
