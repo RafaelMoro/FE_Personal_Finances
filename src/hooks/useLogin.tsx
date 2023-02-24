@@ -60,7 +60,8 @@ const useLogin = () => {
       toggleShowNotification();
     } else {
       const { accessToken, user: { email } } = loginInfo;
-      const user: IUser = { accessToken, email };
+      const bearerToken = { Authorization: `Bearer ${accessToken}` };
+      const user: IUser = { accessToken, email, bearerToken };
       updateLocalStorage(
         {
           user,
