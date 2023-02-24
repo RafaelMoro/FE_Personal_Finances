@@ -43,15 +43,15 @@ const SelectAccountDialog = ({
       <DialogTitleStyled>Choose other account</DialogTitleStyled>
       <List sx={{ pt: 0 }}>
         { accountsWithAmountFormatted.map((account) => (
-          <>
-            <ListAccount key={account._id} selectedAccount={account?.selected}>
+          <article key={account._id}>
+            <ListAccount selectedAccount={account?.selected}>
               <ListItemButton onClick={() => handleAccountClick(account._id)}>
                 <ListItemTextStyled primary={account.title} />
                 <ListItemTextStyled primary={account.amount} />
               </ListItemButton>
             </ListAccount>
             <Divider />
-          </>
+          </article>
         )) }
         <ListItem>
           <ListItemButton

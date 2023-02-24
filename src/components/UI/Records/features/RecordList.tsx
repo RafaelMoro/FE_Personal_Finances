@@ -5,8 +5,8 @@ import { Record } from '../Record';
 const RecordList = ({ records }: IRecordListProps) => (
   <List component="nav">
     { records.length > 0 && records.map((record) => (
-      <>
-        <ListItem button key={record.id}>
+      <article key={record.id}>
+        <ListItem button>
           <Record
             shortName={record.shortName}
             description={record.description}
@@ -17,7 +17,7 @@ const RecordList = ({ records }: IRecordListProps) => (
           />
         </ListItem>
         <Divider />
-      </>
+      </article>
     )) }
   </List>
 );

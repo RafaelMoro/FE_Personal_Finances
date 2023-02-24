@@ -59,8 +59,6 @@ const ViewAccounts = () => {
     const getAccounts = async () => {
       try {
         const accountsData = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
-        // eslint-disable-next-line no-console
-        console.log(accountsData);
         if (accountsData?.error) {
           const error = accountsData?.message as string;
           // eslint-disable-next-line no-console
