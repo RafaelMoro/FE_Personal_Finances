@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { Account, AddAccount, Error } from '../../../../components/UI';
+import {
+  Account, AddAccount, Error, AccountLoading,
+} from '../../../../components/UI';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
@@ -10,7 +12,8 @@ import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import { ErrorResponse } from './interface';
 import {
-  AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer, AccountSectionError,
+  AccountSection, AccountsTitle, ChangeAccountButton,
+  AccountsContainer, AccountSectionError, AccountSectionLoading,
 } from './ViewAccounts.styled';
 
 let ERROR_TITLE = 'Error.';
@@ -69,6 +72,14 @@ const ViewAccounts = () => {
     setOpenAccountModal(false);
     setSelectedAccount(account);
   };
+
+  if (accounts === null && error === 'No error') {
+    return (
+      <AccountSectionLoading>
+        <AccountLoading />
+      </AccountSectionLoading>
+    );
+  }
 
   if (error !== 'No error') {
     return (

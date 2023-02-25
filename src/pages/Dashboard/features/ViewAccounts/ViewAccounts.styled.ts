@@ -26,6 +26,14 @@ export const AccountSectionError = styled(AccountSection)`
   place-items: center;
 `;
 
+export const AccountSectionLoading = styled.article`
+  width: 100%;
+  height: 23rem;
+  margin-top: 2rem;
+  display: grid;
+  place-items: center;
+`;
+
 export const AccountsTitle = styled(Heading3)`
   padding-left: 10px;
   place-self: center;

@@ -14,7 +14,7 @@ const accountDynamicStyles = ({
 `;
 
 const AccountContainerBasicStyles = styled.article`
-  min-width: 180px;
+  min-width: 18rem;
   width: 100%;
   max-width: 30rem;
   min-height: 14rem;
@@ -32,6 +32,10 @@ const AccountContainerBasicStyles = styled.article`
   &:hover {
     opacity: 1;
   }
+
+  @media (min-width: 480px) {
+    grid-template-columns: 21rem 1fr;
+  }
 `;
 
 export const AccountContainerColoroued = styled(AccountContainerBasicStyles)`
@@ -39,6 +43,8 @@ export const AccountContainerColoroued = styled(AccountContainerBasicStyles)`
 `;
 
 export const AccountContainerLoading = styled(AccountContainerBasicStyles)`
+  min-width: 20rem;
+  min-height: 18rem;
   background-color: ${AppColors.white};
 `;
 
