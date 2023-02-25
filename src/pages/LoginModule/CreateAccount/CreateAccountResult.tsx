@@ -1,5 +1,5 @@
 import {
-  ErrorOutlineOutlined, CheckCircleOutlineOutlined,
+  CheckCircleOutlineOutlined,
 } from '@mui/icons-material';
 
 import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
@@ -7,12 +7,13 @@ import { LOGIN_ROUTE } from '../constants';
 import {
   AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
 } from '../../../styles';
+import { Error } from '../../../components/UI';
 import { AnimateBox } from '../../../animations';
 import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
 import { Loader } from '../../../animations/Loader';
 
 const {
-  positive, negative,
+  positive,
 } = AppColors;
 
 const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount) => {
@@ -38,16 +39,14 @@ const SuccessCreateAccount = () => (
 );
 
 const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) => (
-  <MessageContainer>
-    <ErrorOutlineOutlined sx={{ fontSize: '4.5rem', fill: negative }} />
-    <Paragraph>{error}</Paragraph>
+  <Error description={error}>
     <AnchorContainer>
       <AnchorButton to={LOGIN_ROUTE}>
         <SecondaryButton variant="contained" size="medium">Go to Login</SecondaryButton>
       </AnchorButton>
       <PrimaryButton variant="contained" onClick={() => resetCounterView()} size="medium">Try Again</PrimaryButton>
     </AnchorContainer>
-  </MessageContainer>
+  </Error>
 );
 
 const CreateAccountResult = ({

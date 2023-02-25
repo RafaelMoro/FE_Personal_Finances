@@ -2,67 +2,24 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { Account, AddAccount, Notification } from '../../../../components/UI';
+import { Account, AddAccount, Error } from '../../../../components/UI';
 import { SelectAccountDialog } from '../SelectAccountDialog';
-import { useNotification } from '../../../../hooks/useNotification';
-import { SystemStateEnum } from '../../../../enums';
 import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import { ErrorResponse } from './interface';
 import {
-  AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
+  AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer, AccountSectionError,
 } from './ViewAccounts.styled';
 
-// const mockedAccounts: IAccount[] = [
-//   {
-//     id: '1',
-//     title: 'Zero',
-//     amount: 7500,
-//     accountType: 'Credit',
-//     bgColor: 'grey',
-//   },
-//   {
-//     id: '2',
-//     title: '2now',
-//     amount: 15000,
-//     accountType: 'Credit',
-//     bgColor: 'black',
-//   },
-//   {
-//     id: '3',
-//     title: 'Santander',
-//     amount: 678,
-//     accountType: 'Debit',
-//     bgColor: 'darkRed',
-//   },
-//   {
-//     id: '4',
-//     title: 'BBVA',
-//     amount: 3700,
-//     accountType: 'Savings',
-//     bgColor: 'azure',
-//     color: 'black',
-//   },
-// ];
-
-const NOTIFICATION_ERROR_TITLE = 'Error.';
-let NOTIFICATION_ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
-const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Error;
+let ERROR_TITLE = 'Error.';
+let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
 const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-  const {
-    showNotification, toggleShowNotification, notificationInfo,
-    updateTitle,
-  } = useNotification({
-    title: NOTIFICATION_ERROR_TITLE,
-    description: NOTIFICATION_ERROR_DESCRIPTION,
-    status: NOTIFICATION_ERROR_STATUS,
-  });
 
   const [accounts, setAccounts] = useState<IAccount [] | null>(null);
   const [error, setError] = useState<ErrorResponse>('No error');
@@ -78,11 +35,12 @@ const ViewAccounts = () => {
         // catch error
         if (accountsData?.error) {
           const errorMessage = accountsData?.message as string;
-          NOTIFICATION_ERROR_DESCRIPTION = errorMessage;
           if (errorMessage === NETWORK_CATCH_ERROR) {
+            ERROR_TITLE = 'Error #401';
             setError('Network Error');
             return;
           }
+          ERROR_DESCRIPTION = errorMessage;
           setError('Other Error');
           return;
         }
@@ -96,7 +54,7 @@ const ViewAccounts = () => {
         setSelectedAccount(accountsData[0]);
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
-        NOTIFICATION_ERROR_DESCRIPTION = newError.message;
+        ERROR_DESCRIPTION = newError.message;
         setError('Other Error');
       }
     };
@@ -111,6 +69,14 @@ const ViewAccounts = () => {
     setOpenAccountModal(false);
     setSelectedAccount(account);
   };
+
+  if (error !== 'No error') {
+    return (
+      <AccountSectionError>
+        <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
+      </AccountSectionError>
+    );
+  }
 
   return (
     <AccountSection>
@@ -141,7 +107,7 @@ const ViewAccounts = () => {
           open={openAccountModal}
           onClose={handleClickClose}
         />
-      ) }
+      )}
     </AccountSection>
   );
 };

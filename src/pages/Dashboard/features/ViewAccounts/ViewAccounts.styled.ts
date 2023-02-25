@@ -19,6 +19,13 @@ export const AccountSection = styled.aside`
   }
 `;
 
+export const AccountSectionError = styled(AccountSection)`
+  padding: 0 2rem;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+`;
+
 export const AccountsTitle = styled(Heading3)`
   padding-left: 10px;
   place-self: center;
