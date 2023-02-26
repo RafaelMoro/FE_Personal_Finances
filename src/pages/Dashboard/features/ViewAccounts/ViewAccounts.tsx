@@ -12,8 +12,8 @@ import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount } from '../../../../components/UI/Account/interface';
 import { ErrorResponse, WindowSizeValues } from './interface';
 import {
-  AccountSection, AccountsTitle, ChangeAccountButton,
-  AccountsContainer, AccountSectionError, AccountSectionLoading,
+  AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
+  AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
 } from './ViewAccounts.styled';
 
 let ERROR_TITLE = 'Error.';
@@ -110,7 +110,24 @@ const ViewAccounts = () => {
 
   if (windowSize === 'Tablet') {
     return (
-      <p>Estamos en tablet</p>
+      <AccountSectionTablet>
+        <AccountsTitle>Account: </AccountsTitle>
+        <AccountSlider>
+          <AddAccount />
+          { (accounts && accounts.length > 0) && accounts.map((account, index) => (
+            <Account
+              key={account._id}
+              _id={account._id}
+              title={account.title}
+              amount={account.amount}
+              accountType={account.accountType}
+              backgroundColor={account.backgroundColor}
+              color={account.color ?? 'white'}
+              selected={index === 0}
+            />
+          ))}
+        </AccountSlider>
+      </AccountSectionTablet>
     );
   }
 

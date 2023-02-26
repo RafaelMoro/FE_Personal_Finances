@@ -16,7 +16,6 @@ const accountDynamicStyles = ({
 const AccountContainerBasicStyles = styled.article`
   min-width: 18rem;
   width: 100%;
-  max-width: 30rem;
   min-height: 14rem;
   padding: 1.5rem 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
@@ -31,10 +30,6 @@ const AccountContainerBasicStyles = styled.article`
 
   &:hover {
     opacity: 1;
-  }
-
-  @media (min-width: 480px) {
-    grid-template-columns: 21rem 1fr;
   }
 `;
 

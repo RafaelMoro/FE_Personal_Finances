@@ -56,3 +56,25 @@ export const AccountsContainer = styled.div`
   display: grid;
   place-items: center;
 `;
+
+// **************************** Tablet
+
+export const AccountSectionTablet = styled.aside`
+  width: 100%;
+  height: 23rem;
+  padding: 3rem 0 0 3rem;
+  display: grid;
+  grid-template-rows: 30% 70%;
+`;
+
+export const AccountSlider = styled.div`
+  padding: 1rem;
+  overflow-x: scroll;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  display: grid;
+  gap: 2rem;
+  grid-auto-flow: column;
+  grid-template-rows: 1fr;
+  grid-auto-columns: 20rem;
+`;
