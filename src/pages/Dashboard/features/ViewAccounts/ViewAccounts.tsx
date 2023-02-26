@@ -10,7 +10,7 @@ import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount } from '../../../../components/UI/Account/interface';
-import { ErrorResponse } from './interface';
+import { ErrorResponse, WindowSizeValues } from './interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton,
   AccountsContainer, AccountSectionError, AccountSectionLoading,
@@ -26,8 +26,9 @@ const ViewAccounts = () => {
 
   const [accounts, setAccounts] = useState<IAccount [] | null>(null);
   const [error, setError] = useState<ErrorResponse>('No error');
+  const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
-  const [openAccountModal, setOpenAccountModal] = useState(false);
+  const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
   const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
 
   useEffect(() => {
@@ -64,6 +65,24 @@ const ViewAccounts = () => {
     if (user && bearerToken) getAccounts();
   }, [bearerToken, user]);
 
+  useEffect(() => {
+    function handleResize(event: UIEvent) {
+      const target = event.target as Window;
+
+      if (window.innerWidth < 480 && target.innerWidth < 480) setWindowSize('Mobile');
+
+      if ((window.innerWidth > 480 && window.innerWidth < 1024)
+      || (target.innerWidth > 480 && target.innerWidth < 1024)) {
+        setWindowSize('Tablet');
+      }
+      if (window.innerWidth > 1024 && target.innerWidth > 1024) setWindowSize('Desktop');
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleClickOpen = () => {
     setOpenAccountModal(true);
   };
@@ -86,6 +105,18 @@ const ViewAccounts = () => {
       <AccountSectionError>
         <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
       </AccountSectionError>
+    );
+  }
+
+  if (windowSize === 'Tablet') {
+    return (
+      <p>Estamos en tablet</p>
+    );
+  }
+
+  if (windowSize === 'Desktop') {
+    return (
+      <p>Estamos en Desktop</p>
     );
   }
 

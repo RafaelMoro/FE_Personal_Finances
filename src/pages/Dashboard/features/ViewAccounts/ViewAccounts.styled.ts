@@ -11,7 +11,7 @@ export const AccountSection = styled.aside`
   justify-content: center;
   row-gap: 1rem;
 
-  @media (min-width: 480px) {
+  @media (min-width: 1024px) {
     height: 100vh;
     grid-template-columns: 21rem 1fr;
     grid-auto-rows: 14rem;
