@@ -14,6 +14,7 @@ import { ErrorResponse, WindowSizeValues } from './interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
+  AccountSectionDesktop,
 } from './ViewAccounts.styled';
 
 let ERROR_TITLE = 'Error.';
@@ -133,7 +134,21 @@ const ViewAccounts = () => {
 
   if (windowSize === 'Desktop') {
     return (
-      <p>Estamos en Desktop</p>
+      <AccountSectionDesktop>
+        <AccountsTitle>Account: </AccountsTitle>
+        { (accounts && accounts.length > 0) && accounts.map((account, index) => (
+          <Account
+            key={account._id}
+            _id={account._id}
+            title={account.title}
+            amount={account.amount}
+            accountType={account.accountType}
+            backgroundColor={account.backgroundColor}
+            color={account.color ?? 'white'}
+            selected={index === 0}
+          />
+        ))}
+      </AccountSectionDesktop>
     );
   }
 

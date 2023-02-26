@@ -78,3 +78,14 @@ export const AccountSlider = styled.div`
   grid-template-rows: 1fr;
   grid-auto-columns: 20rem;
 `;
+
+// **************************** Desktop
+
+export const AccountSectionDesktop = styled.aside`
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-auto-rows: 17rem;
+  gap: 2rem;
+  padding: 0 1rem;
+`;
