@@ -1,3 +1,3 @@
 export interface IListAccountDynamicStylesProps {
-  selectedAccount?: boolean;
+  showSelectedAccount?: boolean;
 }

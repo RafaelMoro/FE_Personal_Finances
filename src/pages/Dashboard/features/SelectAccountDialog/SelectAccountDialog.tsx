@@ -35,14 +35,13 @@ const SelectAccountDialog = ({
     onClose(accountToBePassed);
   };
 
-  // Missing to add handler to create account
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitleStyled>Choose other account</DialogTitleStyled>
       <List sx={{ pt: 0 }}>
         { accountsWithAmountFormatted.map((account) => (
           <article key={account._id}>
-            <ListAccount selectedAccount={account?.selected}>
+            <ListAccount showSelectedAccount={account.selected}>
               <ListItemButton onClick={() => handleAccountClick(account._id)}>
                 <ListItemTextStyled primary={account.title} />
                 <ListItemTextStyled primary={account.amount} />

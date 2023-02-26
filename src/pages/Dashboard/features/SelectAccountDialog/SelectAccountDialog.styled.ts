@@ -4,8 +4,8 @@ import { ListItem } from '@mui/material';
 import { AppColors } from '../../../../styles';
 import { IListAccountDynamicStylesProps } from './interface';
 
-const ListAccountDynamicStyles = ({ selectedAccount }: IListAccountDynamicStylesProps) => css`
-  ${selectedAccount && `background-color: ${AppColors.bgColorGrey};`}
+const ListAccountDynamicStyles = ({ showSelectedAccount }: IListAccountDynamicStylesProps) => css`
+  ${showSelectedAccount && `background-color: ${AppColors.bgColorGrey};`}
 `;
 
 export const ListAccount = styled(ListItem)`
