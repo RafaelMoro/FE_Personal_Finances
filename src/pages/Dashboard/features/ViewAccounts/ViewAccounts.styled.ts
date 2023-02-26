@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Heading3, SecondaryButton } from '../../../../styles';
+import { Heading3, PrimaryButton, SecondaryButton } from '../../../../styles';
 
 export const AccountSection = styled.aside`
   width: 100%;
@@ -44,8 +44,14 @@ export const AccountsTitle = styled(Heading3)`
 `;
 
 export const ChangeAccountButton = styled(SecondaryButton)`
-  width: 120px;
-  height: 60px;
+  width: 12rem;
+  height: 6rem;
+  place-self: center;
+`;
+
+export const CreateAccountButton = styled(PrimaryButton)`
+  width: 12rem;
+  height: 6rem;
   place-self: center;
 `;
 

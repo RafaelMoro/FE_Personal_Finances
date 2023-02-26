@@ -12,6 +12,14 @@ export interface IAccount {
   selected?: boolean;
 }
 
+export interface ICreateAccount {
+  title: string;
+  amount: number;
+  accountType: AccountType;
+  backgroundColor: AccountBackgroundColorsKeys;
+  color: string;
+}
+
 export interface IAccountDynamicStylesProps {
   backgroundColor: string;
   color?: string;

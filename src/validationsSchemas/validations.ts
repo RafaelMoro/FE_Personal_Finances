@@ -21,3 +21,8 @@ export const passwordValidation = (requiredMessage: string, onlyRequired = false
     .matches(/^\S*$/, 'The password should not contain white spaces')
     .matches(/[!@#$%^&*()[\]{}+*\-_.,;:/<>?=`~\\|']+/, 'The password should contain at least 1 special character');
 };
+
+//  ****** Account validations
+
+export const accountTitleValidation = Yup.string().required('The title of your account is required.');
+export const accountAmountValidation = Yup.number().required('The initial amount of your account is required.');

@@ -1,5 +1,5 @@
 import {
-  Dialog, List, ListItem, ListItemButton, Divider,
+  Dialog, List, ListItemButton, Divider,
 } from '@mui/material';
 import { ListAccount } from './SelectAccountDialog.styled';
 import { DialogTitleStyled, ListItemTextStyled } from '../../../../styles';
@@ -51,13 +51,6 @@ const SelectAccountDialog = ({
             <Divider />
           </article>
         )) }
-        <ListItem>
-          <ListItemButton
-            autoFocus
-          >
-            <ListItemTextStyled primary="Add account" />
-          </ListItemButton>
-        </ListItem>
       </List>
     </Dialog>
   );

@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  Account, AddAccount, Error, AccountLoading,
+  Account, AddAccount, Error, AccountLoading, CreateAccountDialog,
 } from '../../../../components/UI';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import { userAtom } from '../../../../atoms';
@@ -14,7 +14,7 @@ import { ErrorResponse, WindowSizeValues } from './interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
-  AccountSectionDesktop,
+  AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
 
 let ERROR_TITLE = 'Error.';
@@ -29,7 +29,8 @@ const ViewAccounts = () => {
   const [error, setError] = useState<ErrorResponse>('No error');
   const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
-  const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
+  const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
+  const [openCreateAccountModal, setOpenCreateAccountModal] = useState<boolean>(false);
   const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
 
   useEffect(() => {
@@ -84,14 +85,15 @@ const ViewAccounts = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleClickOpen = () => {
-    setOpenAccountModal(true);
-  };
+  const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
 
-  const handleClickClose = (account: IAccount) => {
-    setOpenAccountModal(false);
+  const handleCloseChangeAccount = (account: IAccount) => {
+    setOpenChangeAccountModal(false);
     setSelectedAccount(account);
   };
+
+  const handleCloseCreateAccount = () => setOpenCreateAccountModal(false);
+  const handleOpenCreateAccount = () => setOpenCreateAccountModal(true);
 
   if (accounts === null && error === 'No error') {
     return (
@@ -154,9 +156,9 @@ const ViewAccounts = () => {
 
   return (
     <AccountSection>
-      <AccountsTitle>Account: </AccountsTitle>
+      <CreateAccountButton variant="contained" size="medium" onClick={handleOpenCreateAccount}>Create Account</CreateAccountButton>
       { selectedAccount && (
-        <ChangeAccountButton variant="contained" size="medium" onClick={handleClickOpen}>Change account</ChangeAccountButton>
+        <ChangeAccountButton variant="contained" size="medium" onClick={handleOpenChangeAccount}>Change account</ChangeAccountButton>
       )}
       <AccountsContainer>
         { selectedAccount && (
@@ -178,10 +180,11 @@ const ViewAccounts = () => {
         <SelectAccountDialog
           accounts={accounts as IAccount[]}
           selectedAccount={selectedAccount}
-          open={openAccountModal}
-          onClose={handleClickClose}
+          open={openChangeAccountModal}
+          onClose={handleCloseChangeAccount}
         />
       )}
+      <CreateAccountDialog open={openCreateAccountModal} onClose={handleCloseCreateAccount} />
     </AccountSection>
   );
 };
