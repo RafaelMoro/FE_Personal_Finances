@@ -1,17 +1,11 @@
 import {
   Dialog, List, ListItemButton, Divider,
 } from '@mui/material';
+
 import { ListAccount } from './SelectAccountDialog.styled';
 import { DialogTitleStyled, ListItemTextStyled } from '../../../../styles';
-import { IAccount } from '../../../../components/UI/Account/interface';
+import { AccountDialogProps } from './interface';
 import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
-
-interface AccountDialogProps {
-  open: boolean;
-  selectedAccount: IAccount;
-  accounts: IAccount[];
-  onClose: (selectedAccount: IAccount) => void;
-}
 
 const SelectAccountDialog = ({
   open, selectedAccount, onClose, accounts,
