@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
-import { IAccount } from './interface';
+import { IAccountUI } from './interface';
 import { Account } from './Account';
 
-const account: IAccount = {
+const account: IAccountUI = {
   _id: '1',
   title: 'BBVA',
   amount: 20000,

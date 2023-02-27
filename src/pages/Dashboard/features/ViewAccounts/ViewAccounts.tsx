@@ -9,7 +9,7 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
-import { IAccount } from '../../../../components/UI/Account/interface';
+import { IAccount, IAccountUI } from '../../../../components/UI/Account/interface';
 import { ErrorResponse, WindowSizeValues } from './interface';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
@@ -25,13 +25,13 @@ const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
-  const [accounts, setAccounts] = useState<IAccount [] | null>(null);
+  const [accounts, setAccounts] = useState<IAccountUI [] | null>(null);
   const [error, setError] = useState<ErrorResponse>('No error');
   const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
   const [openCreateAccountModal, setOpenCreateAccountModal] = useState<boolean>(false);
-  const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
+  const [selectedAccount, setSelectedAccount] = useState<IAccountUI | null>(null);
 
   useEffect(() => {
     const getAccounts = async () => {
@@ -125,7 +125,7 @@ const ViewAccounts = () => {
               amount={account.amount}
               accountType={account.accountType}
               backgroundColor={account.backgroundColor}
-              color={account.color ?? 'white'}
+              color={account.color}
               selected={index === 0}
             />
           ))}
@@ -168,7 +168,7 @@ const ViewAccounts = () => {
             amount={selectedAccount.amount}
             accountType={selectedAccount.accountType}
             backgroundColor={selectedAccount.backgroundColor}
-            color={selectedAccount?.color ?? 'white'}
+            color={selectedAccount?.color}
             selected
           />
         )}

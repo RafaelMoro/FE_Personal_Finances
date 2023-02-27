@@ -1,4 +1,4 @@
-import { IGlobalConfiguration, IBackgroundColors } from './interface';
+import { IGlobalConfiguration, IBackgroundColors, ITextColors } from './interface';
 
 /*
 * This file saves colors, breakpoints for responsive web design, font sizes
@@ -20,6 +20,11 @@ export const AppColors = {
   bgColorGrey: '#dbcaca',
   grey: '#9F9B94',
   subtitleColor: '#B5BFCA',
+};
+
+export const TextColors: ITextColors = {
+  black: '#1D1305',
+  white: '#fbfbfb',
 };
 
 export const BackgroundColors: IBackgroundColors = {

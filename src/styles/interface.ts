@@ -18,6 +18,11 @@ export interface IGlobalConfiguration {
   }
 }
 
+export interface ITextColors {
+  black: string;
+  white: string;
+}
+
 export interface IBackgroundColors {
   crimson: string;
   red: string;
@@ -71,3 +76,4 @@ export interface IBackgroundColors {
 }
 
 export type AccountBackgroundColorsKeys = keyof IBackgroundColors;
+export type AccountTextColorsKeys = keyof ITextColors;

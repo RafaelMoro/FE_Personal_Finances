@@ -1,4 +1,4 @@
-import { AccountBackgroundColorsKeys } from '../../../styles/interface';
+import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
 
 export type AccountType = 'Debit' | 'Credit' | 'Food Voucher' | 'Restaurant Voucher' | 'Savings';
 
@@ -8,7 +8,10 @@ export interface IAccount {
   amount: number;
   accountType: AccountType;
   backgroundColor: AccountBackgroundColorsKeys;
-  color?: string;
+  color: AccountTextColorsKeys;
+}
+
+export interface IAccountUI extends IAccount {
   selected?: boolean;
 }
 
@@ -17,11 +20,13 @@ export interface ICreateAccount {
   amount: number;
   accountType: AccountType;
   backgroundColor: AccountBackgroundColorsKeys;
-  color: string;
+  color: AccountTextColorsKeys;
 }
 
+// backgroundColor and color are string because in the Account component, the
+// background color and color are transformed using the global config object.
 export interface IAccountDynamicStylesProps {
   backgroundColor: string;
-  color?: string;
+  color: string;
   selected: boolean;
 }
