@@ -1,6 +1,5 @@
+import { AccountType } from '../../../constants';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
-
-export type AccountType = 'Debit' | 'Credit' | 'Food Voucher' | 'Restaurant Voucher' | 'Savings';
 
 export interface IAccount {
   _id: string;
@@ -29,4 +28,9 @@ export interface IAccountDynamicStylesProps {
   backgroundColor: string;
   color: string;
   selected: boolean;
+}
+
+export interface CreateAccountDialogProps {
+  open: boolean;
+  onClose: () => void;
 }

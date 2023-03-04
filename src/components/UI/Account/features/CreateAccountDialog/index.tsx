@@ -3,18 +3,14 @@ import {
 } from '@mui/material';
 import { Field, Formik } from 'formik';
 
-import { AccountType, ICreateAccount } from '../../interface';
+import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
+import { ICreateAccount, CreateAccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { SelectFormik } from '../../../SelectFormik';
 import {
   DialogTitleStyled, InputForm, PrimaryButton, InputLabel,
 } from '../../../../../styles';
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
-
-interface CreateAccountDialogProps {
-  open: boolean;
-  onClose: () => void;
-}
 
 const initialValuesPersonalInfo: ICreateAccount = {
   title: '',
@@ -25,8 +21,6 @@ const initialValuesPersonalInfo: ICreateAccount = {
 };
 
 const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
-  const accountsType: AccountType[] = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'];
-
   const handleSubmit = (values: ICreateAccount) => {
     // eslint-disable-next-line no-console
     console.log(values);
@@ -59,9 +53,9 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
                 label="Account Amount"
               />
               <FormControl>
-                <InputLabel id="demo-simple-select-label">Account Type:</InputLabel>
+                <InputLabel id="select-account-type">Account Type:</InputLabel>
                 <Field name="accountType" component={SelectFormik}>
-                  { accountsType.map((account) => (
+                  { TYPE_OF_ACCOUNTS.map((account) => (
                     <MenuItem key={`account-${account}`} value={account}>{account}</MenuItem>
                   )) }
                 </Field>
