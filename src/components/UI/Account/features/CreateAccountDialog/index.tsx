@@ -1,14 +1,14 @@
 import {
-  Dialog, FormControl,
+  Dialog,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
 
 import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
 import { ICreateAccount, CreateAccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
-import { SelectFormik } from '../../../SelectFormik';
+import { SelectInput } from '../../../SelectInput';
 import {
-  DialogTitle, InputForm, PrimaryButton, InputLabel, MenuItem, BackgroundColors, TextColors,
+  DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
 } from '../../../../../styles';
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
 
@@ -52,30 +52,9 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
                 variant="standard"
                 label="Account Amount"
               />
-              <FormControl variant="standard">
-                <InputLabel id="select-account-type">Account Type:</InputLabel>
-                <Field name="accountType" component={SelectFormik}>
-                  { TYPE_OF_ACCOUNTS.map((account) => (
-                    <MenuItem key={`account-${account}`} value={account}>{account}</MenuItem>
-                  )) }
-                </Field>
-              </FormControl>
-              <FormControl variant="standard">
-                <InputLabel id="select-background-color">Background Color:</InputLabel>
-                <Field name="backgroundColor" component={SelectFormik}>
-                  { Object.keys(BackgroundColors).map((color) => (
-                    <MenuItem key={`backgroundColor-${color}`} value={color}>{color}</MenuItem>
-                  )) }
-                </Field>
-              </FormControl>
-              <FormControl variant="standard">
-                <InputLabel id="select-color">Color:</InputLabel>
-                <Field name="color" component={SelectFormik}>
-                  { Object.keys(TextColors).map((color) => (
-                    <MenuItem key={`color-${color}`} value={color}>{color}</MenuItem>
-                  )) }
-                </Field>
-              </FormControl>
+              <SelectInput labelId="select-account-type" labelName="Type of Account" fieldName="accountType" options={TYPE_OF_ACCOUNTS} />
+              <SelectInput labelId="select-background-color" labelName="Background Color:" fieldName="backgroundColor" options={BackgroundColors} />
+              <SelectInput labelId="select-color" labelName="Color:" fieldName="color" options={TextColors} />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
             </FormContainer>
           )}
