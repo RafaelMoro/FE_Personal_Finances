@@ -5,7 +5,7 @@ import { AxiosError, AxiosRequestHeaders } from 'axios';
 import {
   Account, AddAccount, Error, AccountLoading, CreateAccountDialog,
 } from '../../../../components/UI';
-import { SelectAccountDialog } from '../SelectAccountDialog';
+import { SelectAccountDialog } from '../../../../components/UI/Account/features/SelectAccountDialog';
 import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';

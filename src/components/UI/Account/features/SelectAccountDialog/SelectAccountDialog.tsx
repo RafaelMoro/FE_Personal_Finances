@@ -3,9 +3,9 @@ import {
 } from '@mui/material';
 
 import { ListAccount } from './SelectAccountDialog.styled';
-import { DialogTitle, ListItemText } from '../../../../styles';
+import { DialogTitle, ListItemText } from '../../../../../styles';
 import { AccountDialogProps } from './interface';
-import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
+import { formatNumberToCurrency } from '../../../../../utils/FormatNumberToCurrency';
 
 const SelectAccountDialog = ({
   open, selectedAccount, onClose, accounts,

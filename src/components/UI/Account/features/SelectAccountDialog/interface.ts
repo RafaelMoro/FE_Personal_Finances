@@ -1,4 +1,4 @@
-import { IAccount } from '../../../../components/UI/Account/interface';
+import { IAccount } from '../../interface';
 
 export interface AccountDialogProps {
   open: boolean;
