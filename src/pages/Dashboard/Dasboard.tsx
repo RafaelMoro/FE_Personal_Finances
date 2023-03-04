@@ -1,5 +1,7 @@
+import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from './features';
 import { RecordList } from '../../components/UI';
+import { SecondaryButton } from '../../styles';
 import {
   DashboardContainer, RecordsBox,
 } from './Dashboard.styled';
@@ -64,13 +66,17 @@ const records: IRecord[] = [
   },
 ];
 
-const Dashboard = () => (
-  <DashboardContainer>
-    <ViewAccounts />
-    <RecordsBox>
-      <RecordList records={records} />
-    </RecordsBox>
-  </DashboardContainer>
-);
+const Dashboard = () => {
+  const { signOut } = useLogin();
+  return (
+    <DashboardContainer>
+      <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
+      <ViewAccounts />
+      <RecordsBox>
+        <RecordList records={records} />
+      </RecordsBox>
+    </DashboardContainer>
+  );
+};
 
 export { Dashboard };

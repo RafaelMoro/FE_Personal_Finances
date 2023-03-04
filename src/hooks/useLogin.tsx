@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
-import { DASHBOARD_ROUTE } from '../pages/LoginModule/constants';
+import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/LoginModule/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { IUser } from '../atoms/interface';
@@ -11,7 +11,7 @@ import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { userAtom } from '../atoms';
 import { postRequest } from '../utils/PostRequest.ts';
-import { getLocalStorageInfo, updateLocalStorage } from '../utils';
+import { getLocalStorageInfo, updateLocalStorage, saveInfoToLocalStorage } from '../utils';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -72,9 +72,16 @@ const useLogin = () => {
     }
   };
 
+  const signOut = () => {
+    setUser(null);
+    saveInfoToLocalStorage({});
+    navigate(LOGIN_ROUTE);
+  };
+
   return {
     handleSubmit,
     handleShowNotification: toggleShowNotification,
+    signOut,
     notificationInfo,
     showNotification,
   };
