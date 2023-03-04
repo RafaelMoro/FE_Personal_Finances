@@ -1,4 +1,4 @@
-import { AccountType } from '../../../constants';
+import { AccountType } from '../../../aliasType';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
 
 export interface IAccount {

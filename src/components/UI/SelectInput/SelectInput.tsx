@@ -5,6 +5,7 @@ import { SelectFormik } from './SelectFormik';
 import { ISelectInputProps } from './interface';
 import { InputLabel, MenuItem } from '../../../styles';
 
+// This component only can be used with Formik because it was included MUI component with Formik
 const SelectInput = ({
   labelId, labelName, fieldName, options,
 }: ISelectInputProps) => {

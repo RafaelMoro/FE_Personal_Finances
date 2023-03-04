@@ -10,7 +10,7 @@ import { userAtom } from '../../../../atoms';
 import { GetRequest } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { IAccount, IAccountUI } from '../../../../components/UI/Account/interface';
-import { ErrorResponse, WindowSizeValues } from './interface';
+import { ErrorResponse, WindowSizeValues } from '../../../../aliasType';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
