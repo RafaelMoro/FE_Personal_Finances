@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import {
-  Account, AddAccount, Error, AccountLoading, CreateAccountDialog,
-} from '../../../../components/UI';
-import { SelectAccountDialog } from '../../../../components/UI/Account/features/SelectAccountDialog';
-import { userAtom } from '../../../../atoms';
-import { GetRequest } from '../../../../utils';
+import { Error } from '../../../Error';
+import { Account } from '../../Account';
+import { AccountLoading } from '../AccountLoading';
+import { AddAccount } from '../AddAccount';
+import { CreateAccountDialog } from '../CreateAccountDialog';
+import { SelectAccountDialog } from '../SelectAccountDialog';
+import { userAtom } from '../../../../../atoms';
+import { GetRequest } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
-import { IAccount, IAccountUI } from '../../../../components/UI/Account/interface';
-import { ErrorResponse, WindowSizeValues } from '../../../../aliasType';
+import { IAccount, IAccountUI } from '../../interface';
+import { ErrorResponse, WindowSizeValues } from '../../../../../aliasType';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,

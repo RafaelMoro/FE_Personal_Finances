@@ -1,5 +1,5 @@
 import { useLogin } from '../../hooks/useLogin';
-import { ViewAccounts } from './features';
+import { ViewAccounts } from '../../components/UI/Account';
 import { RecordList } from '../../components/UI';
 import { SecondaryButton } from '../../styles';
 import {

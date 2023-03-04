@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Heading3, PrimaryButton, SecondaryButton } from '../../../../styles';
+import { Heading3, PrimaryButton, SecondaryButton } from '../../../../../styles';
 
 export const AccountSection = styled.aside`
   width: 100%;
