@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import {
-  Button, Chip, DialogTitle, ListItemText,
+  Button, Chip, DialogTitle, ListItemText, InputLabel as InputLabelMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -123,6 +123,12 @@ export const InputForm = styled(TextField)`
   input {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
+  label {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+`;
+
+export const InputLabel = styled(InputLabelMUI)`
   label {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
