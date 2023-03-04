@@ -1,7 +1,13 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import {
-  Button, Chip, DialogTitle, ListItemText, InputLabel as InputLabelMUI,
+  Button,
+  Chip as ChipMUI,
+  DialogTitle as DialogTitleMUI,
+  ListItemText as ListItemTextMUI,
+  InputLabel as InputLabelMUI,
+  Select as SelectMUI,
+  MenuItem as MenuItemMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -109,11 +115,11 @@ export const AnchorButton = styled(Link)`
   ${dynamicPadding}
 `;
 
-export const DialogTitleStyled = styled(DialogTitle)`
+export const DialogTitle = styled(DialogTitleMUI)`
   ${createResponsiveProps({ fontSize: 'H2' })}
 `;
 
-export const ListItemTextStyled = styled(ListItemText)`
+export const ListItemText = styled(ListItemTextMUI)`
   span {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
@@ -129,12 +135,20 @@ export const InputForm = styled(TextField)`
 `;
 
 export const InputLabel = styled(InputLabelMUI)`
-  label {
+  ${createResponsiveProps({ fontSize: 'P' })}
+`;
+
+export const Select = styled(SelectMUI)`
+  div {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
 
-export const StyledChip = styled(Chip)`
+export const MenuItem = styled(MenuItemMUI)`
+  ${createResponsiveProps({ fontSize: 'P' })}
+`;
+
+export const Chip = styled(ChipMUI)`
   span {
     ${createResponsiveProps({ fontSize: 'Sub' })}
   }

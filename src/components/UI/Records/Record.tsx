@@ -7,7 +7,7 @@ import { IncomeRecord } from './features/IncomeRecord';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
 } from './Records.styled';
-import { StyledChip, ParagraphTitle } from '../../../styles';
+import { Chip, ParagraphTitle } from '../../../styles';
 
 const Record = ({
   shortName, description, price, budgets = [], date,
@@ -37,9 +37,9 @@ const Record = ({
         </RecordIncome>
       ) }
       <Stack direction="row" spacing={1}>
-        { budgets.length === 0 && (<StyledChip label="No Budget" variant="outlined" color="secondary" />) }
+        { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
         { budgets.length > 0 && budgets.map((budget) => (
-          <StyledChip key={budget.id} label={budget.name} variant="outlined" color="primary" />
+          <Chip key={budget.id} label={budget.name} variant="outlined" color="primary" />
         ))}
       </Stack>
       { (!isExpense && linkedPayedRecords.length > 0) && (

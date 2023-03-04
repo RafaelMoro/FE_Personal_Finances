@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
-import { Select, SelectChangeEvent } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material';
+import { Select } from '../../../styles';
 
 interface ISelectFormikField {
   name: string;

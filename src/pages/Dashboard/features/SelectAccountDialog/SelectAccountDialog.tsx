@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 
 import { ListAccount } from './SelectAccountDialog.styled';
-import { DialogTitleStyled, ListItemTextStyled } from '../../../../styles';
+import { DialogTitle, ListItemText } from '../../../../styles';
 import { AccountDialogProps } from './interface';
 import { formatNumberToCurrency } from '../../../../utils/FormatNumberToCurrency';
 
@@ -31,14 +31,14 @@ const SelectAccountDialog = ({
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <DialogTitleStyled>Choose other account</DialogTitleStyled>
+      <DialogTitle>Choose other account</DialogTitle>
       <List sx={{ pt: 0 }}>
         { accountsWithAmountFormatted.map((account) => (
           <article key={account._id}>
             <ListAccount showSelectedAccount={account.selected}>
               <ListItemButton onClick={() => handleAccountClick(account._id)}>
-                <ListItemTextStyled primary={account.title} />
-                <ListItemTextStyled primary={account.amount} />
+                <ListItemText primary={account.title} />
+                <ListItemText primary={account.amount} />
               </ListItemButton>
             </ListAccount>
             <Divider />

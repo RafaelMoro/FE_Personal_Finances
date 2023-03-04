@@ -1,5 +1,5 @@
 import {
-  Dialog, MenuItem, FormControl,
+  Dialog, FormControl,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
 
@@ -8,7 +8,7 @@ import { ICreateAccount, CreateAccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { SelectFormik } from '../../../SelectFormik';
 import {
-  DialogTitleStyled, InputForm, PrimaryButton, InputLabel,
+  DialogTitle, InputForm, PrimaryButton, InputLabel, MenuItem,
 } from '../../../../../styles';
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
 
@@ -29,7 +29,7 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
   return (
     <Dialog onClose={onClose} open={open}>
       <>
-        <DialogTitleStyled> Create Account:</DialogTitleStyled>
+        <DialogTitle> Create Account:</DialogTitle>
         <Formik
           initialValues={initialValuesPersonalInfo}
           validationSchema={CreateAccountSchema}
@@ -52,7 +52,7 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
                 variant="standard"
                 label="Account Amount"
               />
-              <FormControl>
+              <FormControl variant="standard">
                 <InputLabel id="select-account-type">Account Type:</InputLabel>
                 <Field name="accountType" component={SelectFormik}>
                   { TYPE_OF_ACCOUNTS.map((account) => (
