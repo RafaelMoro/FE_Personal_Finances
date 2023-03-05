@@ -1,4 +1,4 @@
-import { IAccount } from '../../interface';
+import { IAccount } from '../../../../../globalInterface';
 
 export interface AccountDialogProps {
   open: boolean;

@@ -1,4 +1,4 @@
-import { IUser } from '../../atoms/interface';
+import { IUser } from '../../globalInterface';
 
 export interface ICountOnMeLocalStorage {
   user: IUser;

@@ -1,14 +1,6 @@
 import { AccountType } from '../../../aliasType';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
-
-export interface IAccount {
-  _id: string;
-  title: string;
-  amount: number;
-  accountType: AccountType;
-  backgroundColor: AccountBackgroundColorsKeys;
-  color: AccountTextColorsKeys;
-}
+import { IAccount } from '../../../globalInterface';
 
 export interface IAccountUI extends IAccount {
   selected?: boolean;

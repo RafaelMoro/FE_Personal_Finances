@@ -11,7 +11,8 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 import { userAtom } from '../../../../../atoms';
 import { GetRequest } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
-import { IAccount, IAccountUI } from '../../interface';
+import { IAccountUI } from '../../interface';
+import { IAccount } from '../../../../../globalInterface';
 import { ErrorResponse, WindowSizeValues } from '../../../../../aliasType';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,

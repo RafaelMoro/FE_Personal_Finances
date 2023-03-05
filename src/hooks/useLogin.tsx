@@ -6,7 +6,7 @@ import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/LoginModule/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
-import { IUser } from '../atoms/interface';
+import { IUser } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { userAtom } from '../atoms';
