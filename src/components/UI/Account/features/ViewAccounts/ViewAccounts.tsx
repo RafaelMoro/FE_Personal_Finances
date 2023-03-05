@@ -19,6 +19,7 @@ import {
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
+import { accountsAtom } from '../../../../../atoms/atoms';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -26,9 +27,9 @@ const NETWORK_CATCH_ERROR = 'Network Error';
 
 const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
+  const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
-  const [accounts, setAccounts] = useState<IAccountUI [] | null>(null);
   const [error, setError] = useState<ErrorResponse>('No error');
   const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
@@ -68,7 +69,7 @@ const ViewAccounts = () => {
       }
     };
     if (user && bearerToken) getAccounts();
-  }, [bearerToken, user]);
+  }, [bearerToken, setAccounts, user]);
 
   useEffect(() => {
     function handleResize(event: UIEvent) {
