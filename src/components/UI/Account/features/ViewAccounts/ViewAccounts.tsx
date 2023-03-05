@@ -161,7 +161,7 @@ const ViewAccounts = () => {
   return (
     <AccountSection>
       <CreateAccountButton variant="contained" size="medium" onClick={handleOpenCreateAccount}>Create Account</CreateAccountButton>
-      { selectedAccount && (
+      { (selectedAccount && accounts) && (
         <ChangeAccountButton variant="contained" size="medium" onClick={handleOpenChangeAccount}>Change account</ChangeAccountButton>
       )}
       <AccountsContainer>
@@ -180,9 +180,8 @@ const ViewAccounts = () => {
           <AddAccount />
         ) }
       </AccountsContainer>
-      { selectedAccount && (
+      { (selectedAccount && accounts) && (
         <SelectAccountDialog
-          accounts={accounts as IAccount[]}
           selectedAccount={selectedAccount}
           open={openChangeAccountModal}
           onClose={handleCloseChangeAccount}

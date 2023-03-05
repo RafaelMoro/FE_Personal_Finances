@@ -16,6 +16,8 @@ import {
   DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
 } from '../../../../../styles';
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
+import { accountsAtom } from '../../../../../atoms/atoms';
+import { IAccount } from '../../../../../globalInterface';
 
 const initialValuesPersonalInfo: ICreateAccount = {
   title: '',
@@ -27,6 +29,7 @@ const initialValuesPersonalInfo: ICreateAccount = {
 
 const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
   const [user] = useAtom(userAtom);
+  const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const handleSubmit = async (values: ICreateAccount) => {
@@ -43,6 +46,12 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
       console.log(responseCreateAccountRequest);
     }
     // Update account state
+    if (Array.isArray(accounts) && responseCreateAccountRequest?._id) {
+      const newAccounts: IAccount[] = [...accounts];
+      newAccounts.push(responseCreateAccountRequest as IAccount);
+      setAccounts(newAccounts);
+      onClose();
+    }
     // Update account local storage
   };
 

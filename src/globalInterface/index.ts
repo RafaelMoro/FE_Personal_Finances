@@ -11,7 +11,7 @@ export interface IUser {
 export interface IAccount {
   _id: string;
   title: string;
-  amount: number;
+  amount: number | string;
   accountType: AccountType;
   backgroundColor: AccountBackgroundColorsKeys;
   color: AccountTextColorsKeys;

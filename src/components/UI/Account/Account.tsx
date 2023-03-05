@@ -6,7 +6,7 @@ import { AccountContainerColoroued, AccountTitle } from './Account.styled';
 const Account = ({
   title, amount, accountType, backgroundColor, color, selected = false,
 }: IAccountUI) => {
-  const amountFormatted: string = formatNumberToCurrency(amount);
+  const amountFormatted: string = formatNumberToCurrency(amount as number);
   const newBgColor = BackgroundColors[backgroundColor];
   const newColor = TextColors[color];
 
