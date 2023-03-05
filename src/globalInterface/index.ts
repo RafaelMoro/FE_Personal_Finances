@@ -1,5 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import { AccountType } from '../aliasType';
+import { SystemStateEnum } from '../enums';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../styles/interface';
 
 export interface IUser {
@@ -15,4 +16,10 @@ export interface IAccount {
   accountType: AccountType;
   backgroundColor: AccountBackgroundColorsKeys;
   color: AccountTextColorsKeys;
+}
+
+export interface IGlobalNotification {
+  title: string;
+  description: string;
+  status: SystemStateEnum;
 }

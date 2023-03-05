@@ -18,6 +18,7 @@ import {
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
 import { accountsAtom } from '../../../../../atoms/atoms';
 import { IAccount } from '../../../../../globalInterface';
+import { SystemStateEnum } from '../../../../../enums';
 
 const initialValuesPersonalInfo: ICreateAccount = {
   title: '',
@@ -27,7 +28,14 @@ const initialValuesPersonalInfo: ICreateAccount = {
   color: 'black',
 };
 
-const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
+const CreateAccountDialog = ({
+  open,
+  onClose,
+  updateGlobalTitle,
+  updateGlobalDescription,
+  updateGlobalStatus,
+  toggleShowNotification,
+}: CreateAccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
@@ -41,7 +49,12 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
     // eslint-disable-next-line no-console
     console.log(responseCreateAccountRequest);
 
-    if (responseCreateAccountRequest?.error) {
+    if (responseCreateAccountRequest?.error || !responseCreateAccountRequest) {
+      updateGlobalTitle('Create Account: Error');
+      updateGlobalDescription('Oops! An error ocurred. Try again later.');
+      updateGlobalStatus(SystemStateEnum.Error);
+      onClose();
+      toggleShowNotification();
       // eslint-disable-next-line no-console
       console.log(responseCreateAccountRequest);
     }
@@ -52,7 +65,6 @@ const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
       setAccounts(newAccounts);
       onClose();
     }
-    // Update account local storage
   };
 
   return (

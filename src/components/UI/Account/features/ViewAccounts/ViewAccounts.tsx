@@ -20,12 +20,18 @@ import {
   AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
 import { accountsAtom } from '../../../../../atoms/atoms';
+import { IViewAccountsProps } from './interface';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
-const ViewAccounts = () => {
+const ViewAccounts = ({
+  updateGlobalTitle,
+  updateGlobalDescription,
+  updateGlobalStatus,
+  toggleShowNotification,
+}: IViewAccountsProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
@@ -187,7 +193,14 @@ const ViewAccounts = () => {
           onClose={handleCloseChangeAccount}
         />
       )}
-      <CreateAccountDialog open={openCreateAccountModal} onClose={handleCloseCreateAccount} />
+      <CreateAccountDialog
+        open={openCreateAccountModal}
+        onClose={handleCloseCreateAccount}
+        updateGlobalTitle={updateGlobalTitle}
+        updateGlobalDescription={updateGlobalDescription}
+        updateGlobalStatus={updateGlobalStatus}
+        toggleShowNotification={toggleShowNotification}
+      />
     </AccountSection>
   );
 };
