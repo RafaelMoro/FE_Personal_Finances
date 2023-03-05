@@ -2,10 +2,15 @@ import {
   Dialog,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
+import { useAtom } from 'jotai';
+import { AxiosRequestHeaders } from 'axios';
 
+import { userAtom } from '../../../../../atoms';
 import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
 import { ICreateAccount, CreateAccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
+import { postRequestWithBearerToken } from '../../../../../utils';
+import { POST_CREATE_ACCOUNT_ROUTE } from '../../constants';
 import { SelectInput } from '../../../SelectInput';
 import {
   DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
@@ -21,9 +26,24 @@ const initialValuesPersonalInfo: ICreateAccount = {
 };
 
 const CreateAccountDialog = ({ open, onClose }: CreateAccountDialogProps) => {
-  const handleSubmit = (values: ICreateAccount) => {
+  const [user] = useAtom(userAtom);
+  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+
+  const handleSubmit = async (values: ICreateAccount) => {
+    const responseCreateAccountRequest = await postRequestWithBearerToken(
+      values,
+      POST_CREATE_ACCOUNT_ROUTE,
+      bearerToken,
+    );
     // eslint-disable-next-line no-console
-    console.log(values);
+    console.log(responseCreateAccountRequest);
+
+    if (responseCreateAccountRequest?.error) {
+      // eslint-disable-next-line no-console
+      console.log(responseCreateAccountRequest);
+    }
+    // Update account state
+    // Update account local storage
   };
 
   return (
