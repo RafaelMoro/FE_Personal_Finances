@@ -134,6 +134,7 @@ const ViewAccounts = ({
               backgroundColor={account.backgroundColor}
               color={account.color}
               selected={index === 0}
+              openModifyAccountModal={handleOpenCreateAccount}
             />
           ))}
         </AccountSlider>
@@ -161,6 +162,7 @@ const ViewAccounts = ({
             backgroundColor={account.backgroundColor}
             color={account.color ?? 'white'}
             selected={index === 0}
+            openModifyAccountModal={handleOpenCreateAccount}
           />
         ))}
         <CreateAccountDialog
@@ -188,6 +190,7 @@ const ViewAccounts = ({
             backgroundColor={selectedAccount.backgroundColor}
             color={selectedAccount?.color}
             selected
+            openModifyAccountModal={handleOpenCreateAccount}
           />
         )}
         { (showAddAccount && !selectedAccount) && (

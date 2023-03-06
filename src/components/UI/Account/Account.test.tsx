@@ -22,6 +22,7 @@ describe('<Account />', () => {
         accountType={account.accountType}
         backgroundColor={account.backgroundColor}
         color={account.color}
+        openModifyAccountModal={() => {}}
       />,
     );
 

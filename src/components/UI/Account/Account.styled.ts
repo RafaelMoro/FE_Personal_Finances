@@ -22,6 +22,7 @@ const AccountContainerBasicStyles = styled.article`
   opacity: 0.7;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   align-items: center;
   cursor: pointer;
@@ -52,6 +53,7 @@ export const AddAccountContainer = styled(AccountContainerBasicStyles)`
 export const AccountTitle = styled(Heading4)`
   align-self: start;
   margin-bottom: 1rem;
+  grid-column: 1 / 3;
 `;
 
 export const AccountSkeletonHolder = styled.div`

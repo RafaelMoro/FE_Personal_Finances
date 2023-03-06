@@ -7,6 +7,10 @@ export interface IAccountUI extends IAccount {
   selected?: boolean;
 }
 
+export interface IAccountProps extends IAccountUI {
+  openModifyAccountModal: () => void;
+}
+
 export interface ICreateAccount {
   title: string;
   amount: number;
