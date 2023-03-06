@@ -2,16 +2,16 @@ import { AxiosRequestHeaders } from 'axios';
 import { AccountType } from '../aliasType';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../styles/interface';
 
-export interface IUser {
+export interface User {
   accessToken: string;
   email: string;
   bearerToken: AxiosRequestHeaders;
 }
 
-export interface IAccount {
+export interface Account {
   _id: string;
   title: string;
-  amount: number | string;
+  amount: number;
   accountType: AccountType;
   backgroundColor: AccountBackgroundColorsKeys;
   color: AccountTextColorsKeys;

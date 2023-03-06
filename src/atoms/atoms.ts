@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import { IAccount, IUser } from '../globalInterface';
+import { Account, User } from '../globalInterface';
 
-export const userAtom = atom<IUser | null>(null);
-export const accountsAtom = atom<IAccount[] | null>(null);
+export const userAtom = atom<User | null>(null);
+export const accountsAtom = atom<Account[] | null>(null);

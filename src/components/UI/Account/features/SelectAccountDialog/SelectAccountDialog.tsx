@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import { useAtom } from 'jotai';
 
-import { IAccountUI } from '../../interface';
+import { AccountUI } from '../../interface';
 import { ListAccount } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
 import { AccountDialogProps } from './interface';
@@ -14,7 +14,7 @@ const SelectAccountDialog = ({
   open, selectedAccount, onClose,
 }: AccountDialogProps) => {
   const [accounts] = useAtom(accountsAtom);
-  let accountsWithAmountFormatted: IAccountUI[] = [];
+  let accountsWithAmountFormatted: AccountUI[] = [];
   const selectedAccountId = selectedAccount._id;
 
   if (Array.isArray(accounts)) {
@@ -33,9 +33,15 @@ const SelectAccountDialog = ({
 
   const handleAccountClick = (id: string) => {
     if (Array.isArray(accounts)) {
-      const newSelectedAccount = accounts.find((account) => account._id === id);
-      const accountToBePassed = newSelectedAccount || accounts[0];
-      onClose(accountToBePassed);
+      const accountFound = accounts.find((account) => account._id === id);
+      if (accountFound) {
+        const { amount } = accountFound;
+        const newSelectedAccount: AccountUI = {
+          ...accountFound,
+          amount: formatNumberToCurrency(amount),
+        };
+        onClose(newSelectedAccount);
+      }
     }
   };
 

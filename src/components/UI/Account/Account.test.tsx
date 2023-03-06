@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 
-import { IAccountUI } from './interface';
+import { AccountUI } from './interface';
 import { Account } from './Account';
 
-const account: IAccountUI = {
+const account: AccountUI = {
   _id: '1',
   title: 'BBVA',
-  amount: 20000,
+  amount: '$20,000.00',
   accountType: 'Debit',
   backgroundColor: 'red',
   color: 'white',

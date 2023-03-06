@@ -1,5 +1,5 @@
-import { IUser } from '../../globalInterface';
+import { User } from '../../globalInterface';
 
 export interface ICountOnMeLocalStorage {
-  user: IUser;
+  user: User;
 }

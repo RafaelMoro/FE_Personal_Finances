@@ -15,7 +15,7 @@ const Template: ComponentStory<typeof Account> = (args) => (
 export const NormalAccount = Template.bind({});
 NormalAccount.args = {
   title: 'BBVA',
-  amount: 25000,
+  amount: '$25,000.00',
   accountType: 'Debit',
   backgroundColor: 'blue',
   color: 'white',
@@ -24,7 +24,7 @@ NormalAccount.args = {
 export const OtherAccount = Template.bind({});
 OtherAccount.args = {
   title: 'HSBC 2now',
-  amount: 38000,
+  amount: '$38,000.00',
   accountType: 'Credit',
   backgroundColor: 'grey',
   color: 'white',
@@ -33,7 +33,7 @@ OtherAccount.args = {
 export const AccountWithBigTitle = Template.bind({});
 AccountWithBigTitle.args = {
   title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
-  amount: 38000,
+  amount: '$38,000.00',
   accountType: 'Credit',
   backgroundColor: 'purple',
   color: 'white',
@@ -42,7 +42,7 @@ AccountWithBigTitle.args = {
 export const AccountWithDecimals = Template.bind({});
 AccountWithDecimals.args = {
   title: 'Sodexo platinum',
-  amount: 1350.78,
+  amount: '$1,350.78',
   accountType: 'Food Voucher',
   backgroundColor: 'black',
   color: 'white',
@@ -51,7 +51,7 @@ AccountWithDecimals.args = {
 export const AccountSelected = Template.bind({});
 AccountSelected.args = {
   title: 'Santander',
-  amount: 1350.78,
+  amount: '$1,350.78',
   accountType: 'Debit',
   backgroundColor: 'red',
   color: 'white',

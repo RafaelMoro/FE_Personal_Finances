@@ -6,7 +6,7 @@ import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/LoginModule/constants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
-import { IUser } from '../globalInterface';
+import { User } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { userAtom } from '../atoms';
@@ -61,7 +61,7 @@ const useLogin = () => {
     } else {
       const { accessToken, user: { email } } = loginInfo;
       const bearerToken = { Authorization: `Bearer ${accessToken}` };
-      const user: IUser = { accessToken, email, bearerToken };
+      const user: User = { accessToken, email, bearerToken };
       updateLocalStorage(
         {
           user,

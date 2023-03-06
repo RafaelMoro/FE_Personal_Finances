@@ -7,7 +7,7 @@ import { AxiosRequestHeaders } from 'axios';
 
 import { userAtom } from '../../../../../atoms';
 import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
-import { ICreateAccount, CreateAccountDialogProps } from '../../interface';
+import { CreateAccount, CreateAccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { postRequestWithBearerToken } from '../../../../../utils';
 import { POST_CREATE_ACCOUNT_ROUTE } from '../../constants';
@@ -17,10 +17,10 @@ import {
 } from '../../../../../styles';
 import { FormContainer } from '../../../../../styles/LoginModule.styled';
 import { accountsAtom } from '../../../../../atoms/atoms';
-import { IAccount } from '../../../../../globalInterface';
+import { Account } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 
-const initialValuesPersonalInfo: ICreateAccount = {
+const initialValuesCreateAccount: CreateAccount = {
   title: '',
   accountType: 'Debit',
   amount: 0,
@@ -32,6 +32,8 @@ const CreateAccountDialog = ({
   open,
   onClose,
   dashboardNotificationFunctions,
+  accountAction,
+  account,
 }: CreateAccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
@@ -42,15 +44,16 @@ const CreateAccountDialog = ({
     updateStatus,
     toggleShowNotification,
   } = dashboardNotificationFunctions;
+  const titleModal = accountAction === 'Create' ? 'Create Account' : 'Modify Account:';
+  // eslint-disable-next-line max-len
+  const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as Account;
 
-  const handleSubmit = async (values: ICreateAccount) => {
+  const handleSubmit = async (values: CreateAccount) => {
     const responseCreateAccountRequest = await postRequestWithBearerToken(
       values,
       POST_CREATE_ACCOUNT_ROUTE,
       bearerToken,
     );
-    // eslint-disable-next-line no-console
-    console.log(responseCreateAccountRequest);
 
     if (responseCreateAccountRequest?.error || !responseCreateAccountRequest) {
       updateTitle('Create Account: Error');
@@ -62,8 +65,8 @@ const CreateAccountDialog = ({
     }
     // Update account state
     if (Array.isArray(accounts) && responseCreateAccountRequest?._id) {
-      const newAccounts: IAccount[] = [...accounts];
-      newAccounts.push(responseCreateAccountRequest as IAccount);
+      const newAccounts: Account[] = [...accounts];
+      newAccounts.push(responseCreateAccountRequest as Account);
       setAccounts(newAccounts);
       onClose();
     }
@@ -78,9 +81,9 @@ const CreateAccountDialog = ({
   return (
     <Dialog onClose={onClose} open={open}>
       <>
-        <DialogTitle> Create Account:</DialogTitle>
+        <DialogTitle>{ titleModal }</DialogTitle>
         <Formik
-          initialValues={initialValuesPersonalInfo}
+          initialValues={initialValues}
           validationSchema={CreateAccountSchema}
           onSubmit={(values) => handleSubmit(values)}
           validateOnMount

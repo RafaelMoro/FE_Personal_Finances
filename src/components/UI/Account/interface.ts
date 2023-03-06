@@ -1,23 +1,17 @@
-import { AccountType } from '../../../aliasType';
-import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
-import { IAccount } from '../../../globalInterface';
+import { AccountAction } from '../../../aliasType';
+import { Account } from '../../../globalInterface';
 import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interface';
 
-export interface IAccountUI extends IAccount {
+export interface AccountUI extends Omit<Account, 'amount'> {
+  amount: string;
   selected?: boolean;
 }
 
-export interface IAccountProps extends IAccountUI {
-  openModifyAccountModal: () => void;
+export interface AccountComponentProps extends AccountUI {
+  openModifyAccountModal: (id: string) => void;
 }
 
-export interface ICreateAccount {
-  title: string;
-  amount: number;
-  accountType: AccountType;
-  backgroundColor: AccountBackgroundColorsKeys;
-  color: AccountTextColorsKeys;
-}
+export type CreateAccount = Omit<Account, '_id'>;
 
 // backgroundColor and color are string because in the Account component, the
 // background color and color are transformed using the global config object.
@@ -31,4 +25,6 @@ export interface CreateAccountDialogProps {
   open: boolean;
   onClose: () => void;
   dashboardNotificationFunctions: DashboardNotificationFunctions;
+  accountAction: AccountAction;
+  account: Account | null;
 }
