@@ -6,7 +6,7 @@ import { Error } from '../../../Error';
 import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
 import { AddAccount } from '../AddAccount';
-import { CreateAccountDialog } from '../CreateAccountDialog';
+import { AccountDialog } from '../AccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import { userAtom } from '../../../../../atoms';
 import { formatNumberToCurrency, GetRequest } from '../../../../../utils';
@@ -39,7 +39,7 @@ const ViewAccounts = ({
   const [accountAction, setAccountAction] = useState<AccountAction>('Create');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
-  const [openCreateAccountModal, setOpenCreateAccountModal] = useState<boolean>(false);
+  const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
   const [selectedAccount, setSelectedAccount] = useState<AccountUI | null>(null);
   const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
 
@@ -105,11 +105,11 @@ const ViewAccounts = ({
     setSelectedAccount(account);
   };
 
-  const handleCloseCreateAccount = () => setOpenCreateAccountModal(false);
+  const handleCloseCreateAccount = () => setOpenAccountModal(false);
 
   const handleOpenCreateAccount = () => {
     setAccountAction('Create');
-    setOpenCreateAccountModal(true);
+    setOpenAccountModal(true);
   };
 
   const handleOpenModifyAccount = (accountId: string) => {
@@ -118,7 +118,7 @@ const ViewAccounts = ({
       setModifyAccount(accountFound);
     }
     setAccountAction('Modify');
-    setOpenCreateAccountModal(true);
+    setOpenAccountModal(true);
   };
 
   if (accounts === null && error === 'No error') {
@@ -160,8 +160,8 @@ const ViewAccounts = ({
             );
           })}
         </AccountSlider>
-        <CreateAccountDialog
-          open={openCreateAccountModal}
+        <AccountDialog
+          open={openAccountModal}
           onClose={handleCloseCreateAccount}
           dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
@@ -192,8 +192,8 @@ const ViewAccounts = ({
             />
           );
         })}
-        <CreateAccountDialog
-          open={openCreateAccountModal}
+        <AccountDialog
+          open={openAccountModal}
           onClose={handleCloseCreateAccount}
           dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
@@ -233,8 +233,8 @@ const ViewAccounts = ({
           onClose={handleCloseChangeAccount}
         />
       )}
-      <CreateAccountDialog
-        open={openCreateAccountModal}
+      <AccountDialog
+        open={openAccountModal}
         onClose={handleCloseCreateAccount}
         dashboardNotificationFunctions={dashboardNotificationFunctions}
         accountAction={accountAction}

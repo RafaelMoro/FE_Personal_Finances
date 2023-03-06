@@ -15,7 +15,7 @@ import { SelectInput } from '../../../SelectInput';
 import {
   DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
 } from '../../../../../styles';
-import { FormContainer } from '../../../../../styles/LoginModule.styled';
+import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom } from '../../../../../atoms/atoms';
 import { Account } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
@@ -28,7 +28,7 @@ const initialValuesCreateAccount: CreateAccount = {
   color: 'black',
 };
 
-const CreateAccountDialog = ({
+const AccountDialog = ({
   open,
   onClose,
   dashboardNotificationFunctions,
@@ -44,11 +44,11 @@ const CreateAccountDialog = ({
     updateStatus,
     toggleShowNotification,
   } = dashboardNotificationFunctions;
-  const titleModal = accountAction === 'Create' ? 'Create Account' : 'Modify Account:';
-  // eslint-disable-next-line max-len
+  const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
+  const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
   const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as Account;
 
-  const handleSubmit = async (values: CreateAccount) => {
+  const createAccount = async (values: CreateAccount) => {
     const responseCreateAccountRequest = await postRequestWithBearerToken(
       values,
       POST_CREATE_ACCOUNT_ROUTE,
@@ -78,6 +78,12 @@ const CreateAccountDialog = ({
     toggleShowNotification();
   };
 
+  const modifyAccount = (values: CreateAccount) => {
+    // Modifica cuenta acciones
+  };
+
+  const handleSubmit = accountAction === 'Create' ? createAccount : modifyAccount;
+
   return (
     <Dialog onClose={onClose} open={open}>
       <>
@@ -89,7 +95,7 @@ const CreateAccountDialog = ({
           validateOnMount
         >
           {({ submitForm }) => (
-            <FormContainer>
+            <AccountDialogFormContainer>
               <Field
                 component={InputForm}
                 name="title"
@@ -107,8 +113,8 @@ const CreateAccountDialog = ({
               <SelectInput labelId="select-account-type" labelName="Type of Account" fieldName="accountType" options={TYPE_OF_ACCOUNTS} />
               <SelectInput labelId="select-background-color" labelName="Background Color:" fieldName="backgroundColor" options={BackgroundColors} />
               <SelectInput labelId="select-color" labelName="Color:" fieldName="color" options={TextColors} />
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">Create Account</PrimaryButton>
-            </FormContainer>
+              <PrimaryButton variant="contained" onClick={submitForm} size="medium">{ buttonModalText }</PrimaryButton>
+            </AccountDialogFormContainer>
           )}
         </Formik>
       </>
@@ -116,4 +122,4 @@ const CreateAccountDialog = ({
   );
 };
 
-export { CreateAccountDialog };
+export { AccountDialog };

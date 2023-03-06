@@ -1,5 +1,5 @@
 export * from './SelectAccountDialog';
 export * from './ViewAccounts';
-export * from './CreateAccountDialog';
+export * from './AccountDialog';
 export * from './AccountLoading';
 export * from './AddAccount';

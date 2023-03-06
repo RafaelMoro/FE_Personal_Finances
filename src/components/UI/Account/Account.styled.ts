@@ -4,6 +4,7 @@ import { css } from '@emotion/react';
 import { IAccountDynamicStylesProps } from './interface';
 import { AppColors, Heading4 } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
+import { FormContainer } from '../../../styles/LoginModule.styled';
 
 const accountDynamicStyles = ({
   color, backgroundColor, selected,
@@ -63,4 +64,8 @@ export const AccountSkeletonHolder = styled.div`
   border-radius: 1rem;
   place-self: center;
   ${blinkAnimation}
+`;
+
+export const AccountDialogFormContainer = styled(FormContainer)`
+  margin-bottom: 2rem;
 `;
