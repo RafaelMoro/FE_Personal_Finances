@@ -150,6 +150,7 @@ const ViewAccounts = ({
     return (
       <AccountSectionDesktop>
         <AccountsTitle>Account: </AccountsTitle>
+        <AddAccount onClick={handleOpenCreateAccount} />
         { (accounts && accounts.length > 0) && accounts.map((account, index) => (
           <Account
             key={account._id}
@@ -162,6 +163,11 @@ const ViewAccounts = ({
             selected={index === 0}
           />
         ))}
+        <CreateAccountDialog
+          open={openCreateAccountModal}
+          onClose={handleCloseCreateAccount}
+          dashboardNotificationFunctions={dashboardNotificationFunctions}
+        />
       </AccountSectionDesktop>
     );
   }
