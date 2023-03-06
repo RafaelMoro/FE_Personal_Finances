@@ -3,3 +3,7 @@ import { DashboardNotificationFunctions } from '../../../../../pages/Dashboard/i
 export interface IViewAccountsProps {
   dashboardNotificationFunctions: DashboardNotificationFunctions;
 }
+
+export interface IAddAccountProps {
+  onClick: () => void;
+}

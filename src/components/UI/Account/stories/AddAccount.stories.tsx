@@ -8,6 +8,6 @@ export default {
 
 export const AddAccountSkeleton: ComponentStory<typeof AddAccount> = () => (
   <div style={{ width: '200px' }}>
-    <AddAccount />
+    <AddAccount onClick={() => {}} />
   </div>
 );

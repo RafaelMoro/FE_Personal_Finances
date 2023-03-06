@@ -123,7 +123,7 @@ const ViewAccounts = ({
       <AccountSectionTablet>
         <AccountsTitle>Account: </AccountsTitle>
         <AccountSlider>
-          <AddAccount />
+          <AddAccount onClick={handleOpenCreateAccount} />
           { (accounts && accounts.length > 0) && accounts.map((account, index) => (
             <Account
               key={account._id}
@@ -137,6 +137,11 @@ const ViewAccounts = ({
             />
           ))}
         </AccountSlider>
+        <CreateAccountDialog
+          open={openCreateAccountModal}
+          onClose={handleCloseCreateAccount}
+          dashboardNotificationFunctions={dashboardNotificationFunctions}
+        />
       </AccountSectionTablet>
     );
   }
@@ -180,7 +185,7 @@ const ViewAccounts = ({
           />
         )}
         { (showAddAccount && !selectedAccount) && (
-          <AddAccount />
+          <AddAccount onClick={handleOpenChangeAccount} />
         ) }
       </AccountsContainer>
       { (selectedAccount && accounts) && (
