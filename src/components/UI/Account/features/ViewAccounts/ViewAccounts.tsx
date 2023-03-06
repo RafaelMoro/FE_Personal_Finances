@@ -78,14 +78,13 @@ const ViewAccounts = ({
     function handleResize(event: UIEvent) {
       const target = event.target as Window;
 
-      if (window.innerWidth < 480 && target.innerWidth < 480) setWindowSize('Mobile');
-
-      if ((window.innerWidth > 480 && window.innerWidth < 1024)
-      || (target.innerWidth > 480 && target.innerWidth < 1024)) {
-        setWindowSize('Tablet');
-      }
-      if (window.innerWidth > 1024 && target.innerWidth > 1024) setWindowSize('Desktop');
+      if (target.innerWidth < 480) setWindowSize('Mobile');
+      if (target.innerWidth > 480 && target.innerWidth < 1024) setWindowSize('Tablet');
+      if (target.innerWidth > 1024) setWindowSize('Desktop');
     }
+
+    if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');
+    if (window.innerWidth > 1024) setWindowSize('Desktop');
 
     window.addEventListener('resize', handleResize);
 
