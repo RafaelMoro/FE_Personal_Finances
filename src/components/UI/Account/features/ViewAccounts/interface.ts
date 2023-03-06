@@ -1,8 +1,5 @@
-import { SystemStateEnum } from '../../../../../enums';
+import { DashboardNotificationFunctions } from '../../../../../pages/Dashboard/interface';
 
 export interface IViewAccountsProps {
-  updateGlobalTitle: (newTitle: string) => void;
-  updateGlobalDescription: (newDescription: string) => void;
-  updateGlobalStatus: (newStatus: SystemStateEnum) => void;
-  toggleShowNotification: () => void;
+  dashboardNotificationFunctions: DashboardNotificationFunctions;
 }

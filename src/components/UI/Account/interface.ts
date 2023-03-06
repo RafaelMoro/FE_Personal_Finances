@@ -1,7 +1,7 @@
 import { AccountType } from '../../../aliasType';
 import { AccountBackgroundColorsKeys, AccountTextColorsKeys } from '../../../styles/interface';
 import { IAccount } from '../../../globalInterface';
-import { SystemStateEnum } from '../../../enums';
+import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interface';
 
 export interface IAccountUI extends IAccount {
   selected?: boolean;
@@ -26,8 +26,5 @@ export interface IAccountDynamicStylesProps {
 export interface CreateAccountDialogProps {
   open: boolean;
   onClose: () => void;
-  updateGlobalTitle: (newTitle: string) => void;
-  updateGlobalDescription: (newDescription: string) => void;
-  updateGlobalStatus: (newStatus: SystemStateEnum) => void;
-  toggleShowNotification: () => void;
+  dashboardNotificationFunctions: DashboardNotificationFunctions;
 }

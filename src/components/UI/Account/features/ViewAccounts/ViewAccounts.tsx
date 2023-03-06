@@ -27,10 +27,7 @@ let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact 
 const NETWORK_CATCH_ERROR = 'Network Error';
 
 const ViewAccounts = ({
-  updateGlobalTitle,
-  updateGlobalDescription,
-  updateGlobalStatus,
-  toggleShowNotification,
+  dashboardNotificationFunctions,
 }: IViewAccountsProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
@@ -196,10 +193,7 @@ const ViewAccounts = ({
       <CreateAccountDialog
         open={openCreateAccountModal}
         onClose={handleCloseCreateAccount}
-        updateGlobalTitle={updateGlobalTitle}
-        updateGlobalDescription={updateGlobalDescription}
-        updateGlobalStatus={updateGlobalStatus}
-        toggleShowNotification={toggleShowNotification}
+        dashboardNotificationFunctions={dashboardNotificationFunctions}
       />
     </AccountSection>
   );

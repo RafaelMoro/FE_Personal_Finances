@@ -1,5 +1,3 @@
-import { useAtom } from 'jotai';
-
 import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList } from '../../components/UI';
@@ -9,8 +7,8 @@ import {
 } from './Dashboard.styled';
 import { IRecord } from '../../components/UI/Records/interface';
 import { useNotification } from '../../hooks/useNotification';
-
-import { globalNotificationAtom } from '../../atoms/atoms';
+import { SystemStateEnum } from '../../enums';
+import { DashboardNotificationFunctions } from './interface';
 
 const records: IRecord[] = [
   {
@@ -73,14 +71,18 @@ const records: IRecord[] = [
 
 const Dashboard = () => {
   const { signOut } = useLogin();
-  const [globalNotification] = useAtom(globalNotificationAtom);
-  const { title, description, status } = globalNotification;
   const {
     showNotification, toggleShowNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus,
   } = useNotification({
-    title, description, status,
+    title: '', description: '', status: SystemStateEnum.Info,
   });
+  const dashboardNotificationFunctions: DashboardNotificationFunctions = {
+    updateTitle,
+    updateDescription,
+    updateStatus,
+    toggleShowNotification,
+  };
   return (
     <DashboardContainer>
       {showNotification && (
@@ -93,10 +95,7 @@ const Dashboard = () => {
       )}
       <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
       <ViewAccounts
-        updateGlobalTitle={updateTitle}
-        updateGlobalDescription={updateDescription}
-        updateGlobalStatus={updateStatus}
-        toggleShowNotification={toggleShowNotification}
+        dashboardNotificationFunctions={dashboardNotificationFunctions}
       />
       <RecordsBox>
         <RecordList records={records} />

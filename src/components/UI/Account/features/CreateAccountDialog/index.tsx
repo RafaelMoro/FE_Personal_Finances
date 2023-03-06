@@ -31,14 +31,17 @@ const initialValuesPersonalInfo: ICreateAccount = {
 const CreateAccountDialog = ({
   open,
   onClose,
-  updateGlobalTitle,
-  updateGlobalDescription,
-  updateGlobalStatus,
-  toggleShowNotification,
+  dashboardNotificationFunctions,
 }: CreateAccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const {
+    updateTitle,
+    updateDescription,
+    updateStatus,
+    toggleShowNotification,
+  } = dashboardNotificationFunctions;
 
   const handleSubmit = async (values: ICreateAccount) => {
     const responseCreateAccountRequest = await postRequestWithBearerToken(
@@ -50,13 +53,12 @@ const CreateAccountDialog = ({
     console.log(responseCreateAccountRequest);
 
     if (responseCreateAccountRequest?.error || !responseCreateAccountRequest) {
-      updateGlobalTitle('Create Account: Error');
-      updateGlobalDescription('Oops! An error ocurred. Try again later.');
-      updateGlobalStatus(SystemStateEnum.Error);
+      updateTitle('Create Account: Error');
+      updateDescription('Oops! An error ocurred. Try again later.');
+      updateStatus(SystemStateEnum.Error);
       onClose();
       toggleShowNotification();
-      // eslint-disable-next-line no-console
-      console.log(responseCreateAccountRequest);
+      return;
     }
     // Update account state
     if (Array.isArray(accounts) && responseCreateAccountRequest?._id) {
@@ -65,6 +67,12 @@ const CreateAccountDialog = ({
       setAccounts(newAccounts);
       onClose();
     }
+
+    // Show success notification
+    updateTitle(`Account ${values.title} created`);
+    updateStatus(SystemStateEnum.Success);
+    onClose();
+    toggleShowNotification();
   };
 
   return (
