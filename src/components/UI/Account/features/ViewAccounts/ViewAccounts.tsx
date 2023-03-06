@@ -32,6 +32,7 @@ const ViewAccounts = ({
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
   const [error, setError] = useState<ErrorResponse>('No error');
   const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
@@ -120,7 +121,7 @@ const ViewAccounts = ({
   if (windowSize === 'Tablet') {
     return (
       <AccountSectionTablet>
-        <AccountsTitle>Account: </AccountsTitle>
+        <AccountsTitle>{ accountTitle }</AccountsTitle>
         <AccountSlider>
           <AddAccount onClick={handleOpenCreateAccount} />
           { (accounts && accounts.length > 0) && accounts.map((account, index) => (

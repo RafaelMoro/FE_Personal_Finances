@@ -12,3 +12,7 @@ export const RecordsBox = styled.main`
     padding: 14rem 2rem 0 2rem;
   }
 `;
+
+export const Header = styled.div`
+  grid-column: 1 / 3;
+`;

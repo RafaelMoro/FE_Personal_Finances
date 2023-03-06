@@ -3,7 +3,7 @@ import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList } from '../../components/UI';
 import { SecondaryButton } from '../../styles';
 import {
-  DashboardContainer, RecordsBox,
+  DashboardContainer, RecordsBox, Header,
 } from './Dashboard.styled';
 import { IRecord } from '../../components/UI/Records/interface';
 import { useNotification } from '../../hooks/useNotification';
@@ -93,7 +93,9 @@ const Dashboard = () => {
         close={toggleShowNotification}
       />
       )}
-      <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
+      <Header>
+        <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
+      </Header>
       <ViewAccounts
         dashboardNotificationFunctions={dashboardNotificationFunctions}
       />

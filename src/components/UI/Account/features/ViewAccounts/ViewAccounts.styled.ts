@@ -4,6 +4,7 @@ import { Heading3, PrimaryButton, SecondaryButton } from '../../../../../styles'
 export const AccountSection = styled.aside`
   width: 100%;
   height: 23rem;
+  grid-column: 1 / 3;
   margin-top: 2rem;
   display: grid;
   grid-template-rows: 30% 70%;
@@ -68,6 +69,7 @@ export const AccountsContainer = styled.div`
 export const AccountSectionTablet = styled.aside`
   width: 100%;
   height: 23rem;
+  grid-column: 1 / 3;
   padding: 3rem 0 0 3rem;
   display: grid;
   grid-template-rows: 30% 70%;
