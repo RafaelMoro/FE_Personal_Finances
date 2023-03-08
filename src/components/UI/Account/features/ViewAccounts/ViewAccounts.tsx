@@ -121,6 +121,8 @@ const ViewAccounts = ({
     setOpenAccountModal(true);
   };
 
+  const updateSelectedAccount = (newAccount: AccountUI) => setSelectedAccount(newAccount);
+
   if (accounts === null && error === 'No error') {
     return (
       <AccountSectionLoading>
@@ -166,6 +168,7 @@ const ViewAccounts = ({
           dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
           account={modifyAccount}
+          updateSelectedAccount={updateSelectedAccount}
         />
       </AccountSectionTablet>
     );
@@ -198,6 +201,7 @@ const ViewAccounts = ({
           dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
           account={modifyAccount}
+          updateSelectedAccount={updateSelectedAccount}
         />
       </AccountSectionDesktop>
     );
@@ -239,6 +243,7 @@ const ViewAccounts = ({
         dashboardNotificationFunctions={dashboardNotificationFunctions}
         accountAction={accountAction}
         account={modifyAccount}
+        updateSelectedAccount={updateSelectedAccount}
       />
     </AccountSection>
   );

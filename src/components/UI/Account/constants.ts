@@ -1,1 +1,1 @@
-export const POST_CREATE_ACCOUNT_ROUTE = 'accounts';
+export const POST_PUT_ACCOUNT_ROUTE = 'accounts';
