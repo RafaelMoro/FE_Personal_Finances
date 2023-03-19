@@ -1,5 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Account } from '../Account';
+import { AccountUI } from '../interface';
 
 export default {
   title: 'UI/Account',
@@ -12,48 +13,92 @@ const Template: ComponentStory<typeof Account> = (args) => (
   </div>
 );
 
+interface IaccountsMock {
+  normalAccount: AccountUI,
+  otherAccount: AccountUI,
+  accountWithBigTitle: AccountUI,
+  accountWithDecimal: AccountUI,
+  accountSelected: AccountUI,
+}
+
+const accountsMock: IaccountsMock = {
+  normalAccount: {
+    _id: '1234',
+    title: 'BBVA',
+    amount: '$25,000.00',
+    accountType: 'Debit',
+    backgroundColor: 'blue',
+    color: 'white',
+    selected: false,
+  },
+  otherAccount: {
+    _id: '1234',
+    title: 'HSBC 2now',
+    amount: '$38,000.00',
+    accountType: 'Credit',
+    backgroundColor: 'grey',
+    color: 'white',
+    selected: false,
+  },
+  accountWithBigTitle: {
+    _id: '1234',
+    title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
+    amount: '$38,000.00',
+    accountType: 'Credit',
+    backgroundColor: 'purple',
+    color: 'white',
+    selected: false,
+  },
+  accountWithDecimal: {
+    _id: '1234',
+    title: 'Sodexo platinum',
+    amount: '$1,350.78',
+    accountType: 'Food Voucher',
+    backgroundColor: 'black',
+    color: 'white',
+    selected: false,
+  },
+  accountSelected: {
+    _id: '1234',
+    title: 'Santander',
+    amount: '$1,350.78',
+    accountType: 'Debit',
+    backgroundColor: 'red',
+    color: 'white',
+    selected: true,
+  }
+}
 export const NormalAccount = Template.bind({});
 NormalAccount.args = {
-  title: 'BBVA',
-  amount: '$25,000.00',
-  accountType: 'Debit',
-  backgroundColor: 'blue',
-  color: 'white',
+  account: accountsMock.normalAccount,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
 };
 
 export const OtherAccount = Template.bind({});
 OtherAccount.args = {
-  title: 'HSBC 2now',
-  amount: '$38,000.00',
-  accountType: 'Credit',
-  backgroundColor: 'grey',
-  color: 'white',
+  account: accountsMock.otherAccount,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
 };
 
 export const AccountWithBigTitle = Template.bind({});
 AccountWithBigTitle.args = {
-  title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
-  amount: '$38,000.00',
-  accountType: 'Credit',
-  backgroundColor: 'purple',
-  color: 'white',
+  account: accountsMock.accountWithBigTitle,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
 };
 
 export const AccountWithDecimals = Template.bind({});
 AccountWithDecimals.args = {
-  title: 'Sodexo platinum',
-  amount: '$1,350.78',
-  accountType: 'Food Voucher',
-  backgroundColor: 'black',
-  color: 'white',
+  account: accountsMock.accountWithDecimal,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
 }
 
 export const AccountSelected = Template.bind({});
 AccountSelected.args = {
-  title: 'Santander',
-  amount: '$1,350.78',
-  accountType: 'Debit',
-  backgroundColor: 'red',
-  color: 'white',
-  selected: true,
+  account: accountsMock.accountSelected,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
 }

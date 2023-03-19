@@ -4,11 +4,13 @@ import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interfa
 
 export interface AccountUI extends Omit<Account, 'amount'> {
   amount: string;
-  selected?: boolean;
+  selected: boolean;
 }
 
-export interface AccountComponentProps extends AccountUI {
+export interface AccountComponentProps {
+  account: AccountUI;
   openModifyAccountModal: (id: string) => void;
+  selectAccountOnClick: () => void;
 }
 
 export type CreateAccount = Omit<Account, '_id'>;

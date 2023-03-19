@@ -10,19 +10,18 @@ const account: AccountUI = {
   accountType: 'Debit',
   backgroundColor: 'red',
   color: 'white',
+  selected: false,
 };
 
 describe('<Account />', () => {
   test('Render account name, price, account type', () => {
+    const selectNewAccount = jest.fn();
+    const handleOpenModifyAccount = jest.fn();
     render(
       <Account
-        _id={account._id}
-        title={account.title}
-        amount={account.amount}
-        accountType={account.accountType}
-        backgroundColor={account.backgroundColor}
-        color={account.color}
-        openModifyAccountModal={() => {}}
+        account={account}
+        selectAccountOnClick={() => selectNewAccount(account)}
+        openModifyAccountModal={handleOpenModifyAccount}
       />,
     );
 

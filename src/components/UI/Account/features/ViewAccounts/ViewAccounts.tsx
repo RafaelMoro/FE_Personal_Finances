@@ -8,7 +8,9 @@ import { AccountLoading } from '../AccountLoading';
 import { AddAccount } from '../AddAccount';
 import { AccountDialog } from '../AccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
-import { userAtom } from '../../../../../atoms';
+import {
+  userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom,
+} from '../../../../../atoms';
 import { formatNumberToCurrency, GetRequest } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
@@ -19,7 +21,6 @@ import {
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
-import { accountsAtom } from '../../../../../atoms/atoms';
 import { IViewAccountsProps } from './interface';
 
 let ERROR_TITLE = 'Error.';
@@ -31,6 +32,8 @@ const ViewAccounts = ({
 }: IViewAccountsProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
+  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
+  const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
@@ -40,7 +43,6 @@ const ViewAccounts = ({
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
   const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
-  const [selectedAccount, setSelectedAccount] = useState<AccountUI | null>(null);
   const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
 
   useEffect(() => {
@@ -67,11 +69,28 @@ const ViewAccounts = ({
           setShowAddAccount(true);
           return;
         }
-        const currentSelectedAccount: AccountUI = {
-          ...accountsData[0],
-          amount: formatNumberToCurrency(accountsData[0].amount),
-        };
-        setSelectedAccount(currentSelectedAccount);
+
+        const newAccountsUI: AccountUI[] = accountsData.map((
+          account: AccountInterface,
+          index: number,
+        ) => {
+          if (index === 0) {
+            return {
+              ...account,
+              selected: true,
+              amount: formatNumberToCurrency(account.amount),
+            };
+          }
+          return {
+            ...account,
+            selected: false,
+            amount: formatNumberToCurrency(account.amount),
+          };
+        });
+        setAccountsUI(newAccountsUI);
+
+        const firstAccount = newAccountsUI[0];
+        setSelectedAccount(firstAccount);
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
         ERROR_DESCRIPTION = newError.message;
@@ -79,7 +98,7 @@ const ViewAccounts = ({
       }
     };
     if (user && bearerToken) getAccounts();
-  }, [bearerToken, setAccounts, user]);
+  }, [bearerToken, setAccounts, setAccountsUI, setSelectedAccount, user]);
 
   useEffect(() => {
     function handleResize(event: UIEvent) {
@@ -100,9 +119,8 @@ const ViewAccounts = ({
 
   const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
 
-  const handleCloseChangeAccount = (account: AccountUI) => {
+  const handleCloseChangeAccount = () => {
     setOpenChangeAccountModal(false);
-    setSelectedAccount(account);
   };
 
   const handleCloseCreateAccount = () => setOpenAccountModal(false);
@@ -119,6 +137,11 @@ const ViewAccounts = ({
     }
     setAccountAction('Modify');
     setOpenAccountModal(true);
+  };
+
+  const selectNewAccount = (account: AccountUI) => {
+    if (selectedAccount?._id === account?._id) return;
+    setSelectedAccount(account);
   };
 
   const updateSelectedAccount = (newAccount: AccountUI) => setSelectedAccount(newAccount);
@@ -145,22 +168,14 @@ const ViewAccounts = ({
         <AccountsTitle>{ accountTitle }</AccountsTitle>
         <AccountSlider>
           <AddAccount onClick={handleOpenCreateAccount} />
-          { (accounts && accounts.length > 0) && accounts.map((account, index) => {
-            const amountFormatted = formatNumberToCurrency(account.amount);
-            return (
-              <Account
-                key={account._id}
-                _id={account._id}
-                title={account.title}
-                amount={amountFormatted}
-                accountType={account.accountType}
-                backgroundColor={account.backgroundColor}
-                color={account.color}
-                selected={index === 0}
-                openModifyAccountModal={handleOpenModifyAccount}
-              />
-            );
-          })}
+          { (accountsUI.length > 0) && accountsUI.map((account) => (
+            <Account
+              key={account._id}
+              account={account}
+              selectAccountOnClick={() => selectNewAccount(account)}
+              openModifyAccountModal={handleOpenModifyAccount}
+            />
+          )) }
         </AccountSlider>
         <AccountDialog
           open={openAccountModal}
@@ -179,22 +194,14 @@ const ViewAccounts = ({
       <AccountSectionDesktop>
         <AccountsTitle>Account: </AccountsTitle>
         <AddAccount onClick={handleOpenCreateAccount} />
-        { (accounts && accounts.length > 0) && accounts.map((account, index) => {
-          const amountFormatted = formatNumberToCurrency(account.amount);
-          return (
-            <Account
-              key={account._id}
-              _id={account._id}
-              title={account.title}
-              amount={amountFormatted}
-              accountType={account.accountType}
-              backgroundColor={account.backgroundColor}
-              color={account.color ?? 'white'}
-              selected={index === 0}
-              openModifyAccountModal={handleOpenModifyAccount}
-            />
-          );
-        })}
+        { (accountsUI.length > 0) && accountsUI.map((account) => (
+          <Account
+            key={account._id}
+            account={account}
+            selectAccountOnClick={() => selectNewAccount(account)}
+            openModifyAccountModal={handleOpenModifyAccount}
+          />
+        ))}
         <AccountDialog
           open={openAccountModal}
           onClose={handleCloseCreateAccount}
@@ -216,13 +223,8 @@ const ViewAccounts = ({
       <AccountsContainer>
         { selectedAccount && (
           <Account
-            _id={selectedAccount._id}
-            title={selectedAccount.title}
-            amount={selectedAccount.amount}
-            accountType={selectedAccount.accountType}
-            backgroundColor={selectedAccount.backgroundColor}
-            color={selectedAccount?.color}
-            selected
+            account={selectedAccount}
+            selectAccountOnClick={() => selectNewAccount(selectedAccount)}
             openModifyAccountModal={handleOpenModifyAccount}
           />
         )}
@@ -232,7 +234,6 @@ const ViewAccounts = ({
       </AccountsContainer>
       { (selectedAccount && accounts) && (
         <SelectAccountDialog
-          selectedAccount={selectedAccount}
           open={openChangeAccountModal}
           onClose={handleCloseChangeAccount}
         />

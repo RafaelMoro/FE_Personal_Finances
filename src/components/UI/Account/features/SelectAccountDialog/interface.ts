@@ -1,9 +1,6 @@
-import { AccountUI } from '../../interface';
-
 export interface AccountDialogProps {
   open: boolean;
-  selectedAccount: AccountUI;
-  onClose: (selectedAccount: AccountUI) => void;
+  onClose: () => void;
 }
 
 export interface IListAccountDynamicStylesProps {

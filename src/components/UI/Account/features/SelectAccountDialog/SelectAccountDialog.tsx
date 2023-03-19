@@ -7,49 +7,36 @@ import { AccountUI } from '../../interface';
 import { ListAccount } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
 import { AccountDialogProps } from './interface';
-import { formatNumberToCurrency } from '../../../../../utils/FormatNumberToCurrency';
-import { accountsAtom } from '../../../../../atoms/atoms';
+import { accountsUIAtom, selectedAccountAtom } from '../../../../../atoms/atoms';
 
 const SelectAccountDialog = ({
-  open, selectedAccount, onClose,
+  open, onClose,
 }: AccountDialogProps) => {
-  const [accounts] = useAtom(accountsAtom);
-  let accountsWithAmountFormatted: AccountUI[] = [];
-  const selectedAccountId = selectedAccount._id;
+  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
+  const [, setSelectedAccount] = useAtom(selectedAccountAtom);
 
-  if (Array.isArray(accounts)) {
-    accountsWithAmountFormatted = accounts.map((account) => {
-      const { amount, _id: id } = account;
-      if (id === selectedAccountId) {
-        return { ...account, amount: formatNumberToCurrency(amount as number), selected: true };
+  const handleAccountClick = (accountId: string) => {
+    const newAccounts: AccountUI[] = accountsUI.map((account) => {
+      if (account._id === accountId) {
+        const newSelectedAccount = { ...account, selected: true };
+        setSelectedAccount(newSelectedAccount);
+        return newSelectedAccount;
       }
-      return { ...account, amount: formatNumberToCurrency(amount as number), selected: false };
+
+      return {
+        ...account,
+        selected: false,
+      };
     });
-  }
-
-  const handleClose = () => {
-    onClose(selectedAccount);
-  };
-
-  const handleAccountClick = (id: string) => {
-    if (Array.isArray(accounts)) {
-      const accountFound = accounts.find((account) => account._id === id);
-      if (accountFound) {
-        const { amount } = accountFound;
-        const newSelectedAccount: AccountUI = {
-          ...accountFound,
-          amount: formatNumberToCurrency(amount),
-        };
-        onClose(newSelectedAccount);
-      }
-    }
+    setAccountsUI(newAccounts);
+    onClose();
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={onClose} open={open}>
       <DialogTitle>Choose other account</DialogTitle>
       <List sx={{ pt: 0 }}>
-        { accountsWithAmountFormatted.map((account) => (
+        { accountsUI.map((account) => (
           <article key={account._id}>
             <ListAccount showSelectedAccount={account.selected}>
               <ListItemButton onClick={() => handleAccountClick(account._id)}>
