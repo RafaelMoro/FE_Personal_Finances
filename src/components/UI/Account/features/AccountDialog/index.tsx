@@ -7,7 +7,7 @@ import { AxiosRequestHeaders } from 'axios';
 
 import { userAtom } from '../../../../../atoms';
 import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
-import { AccountUI, CreateAccount, CreateAccountDialogProps } from '../../interface';
+import { AccountUI, CreateAccount, AccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../constants';
@@ -16,7 +16,7 @@ import {
   DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
-import { accountsAtom } from '../../../../../atoms/atoms';
+import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
 import { Account } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { formatNumberToCurrency } from '../../../../../utils';
@@ -35,10 +35,11 @@ const AccountDialog = ({
   dashboardNotificationFunctions,
   accountAction,
   account,
-  updateSelectedAccount,
-}: CreateAccountDialogProps) => {
+}: AccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
+  const [, setAccountsUI] = useAtom(accountsUIAtom);
+  const [, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const {
     updateTitle,
@@ -87,10 +88,6 @@ const AccountDialog = ({
       sub, __v: version, _id: accountId, ...rest
     } = values;
     const valuesToSubmit = { ...rest, accountId };
-    const newSelectedAccount: AccountUI = {
-      ...values,
-      amount: formatNumberToCurrency(values.amount),
-    };
 
     const responsePutAccountRequest = await HttpRequestWithBearerToken(
       valuesToSubmit,
@@ -114,8 +111,22 @@ const AccountDialog = ({
         .filter((filteredAccount) => filteredAccount._id !== accountId);
       filteredAccounts.push(values);
       setAccounts(filteredAccounts);
-      // update selected account.
-      updateSelectedAccount(newSelectedAccount);
+
+      const newAccountsUI = filteredAccounts.map((accountUIMapped) => {
+        if (accountUIMapped._id === accountId) {
+          const newSelectedAccount: AccountUI = {
+            ...accountUIMapped, amount: formatNumberToCurrency(values.amount), selected: true,
+          };
+          setSelectedAccount(newSelectedAccount);
+          return newSelectedAccount;
+        }
+        return {
+          ...accountUIMapped,
+          amount: formatNumberToCurrency(accountUIMapped.amount),
+          selected: false,
+        };
+      });
+      setAccountsUI(newAccountsUI);
     }
 
     // Show success notification

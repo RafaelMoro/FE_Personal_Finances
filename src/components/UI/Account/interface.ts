@@ -23,10 +23,9 @@ export interface IAccountDynamicStylesProps {
   selected: boolean;
 }
 
-export interface CreateAccountDialogProps {
+export interface AccountDialogProps {
   open: boolean;
   onClose: () => void;
-  updateSelectedAccount: (newAccount: AccountUI) => void;
   dashboardNotificationFunctions: DashboardNotificationFunctions;
   accountAction: AccountAction;
   account: Account | null;
