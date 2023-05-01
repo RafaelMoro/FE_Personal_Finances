@@ -4,7 +4,7 @@ import { SelectFormik } from './SelectFormik';
 
 import { ISelectInputProps } from './interface';
 import { InputLabel, MenuItem } from '../../../styles';
-import { PersonalizedMenuItem } from './SelectInput.styled';
+import { ColorCircle, PersonalizedMenuItem } from './SelectInput.styled';
 
 // This component only can be used with Formik because it was included MUI component with Formik
 const SelectInput = ({
@@ -15,11 +15,11 @@ const SelectInput = ({
     <Field name={fieldName} component={SelectFormik}>
       { (colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
         <PersonalizedMenuItem
-          backgroundColor={option.color}
           key={`${fieldName}-${option.name}`}
           value={option.name}
         >
           {option.name}
+          <ColorCircle backgroundColor={option.color} />
         </PersonalizedMenuItem>
       )) }
       { (stringOptions.length > 0) && (

@@ -8,5 +8,14 @@ const accountDynamicStyles = ({ backgroundColor }: ISelectInputDynamicProps) => 
 `;
 
 export const PersonalizedMenuItem = styled(MenuItem)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const ColorCircle = styled.div`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: solid 1px black;
   ${accountDynamicStyles}
 `;
