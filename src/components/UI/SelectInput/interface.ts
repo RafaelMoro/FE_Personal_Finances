@@ -21,4 +21,9 @@ export interface ISelectInputProps {
   labelName: string;
   fieldName: string;
   options: string[] | object;
+  selectInputColors?: boolean;
+}
+
+export interface ISelectInputDynamicProps {
+  backgroundColor: string;
 }

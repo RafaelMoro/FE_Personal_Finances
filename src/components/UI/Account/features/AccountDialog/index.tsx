@@ -165,8 +165,14 @@ const AccountDialog = ({
                 label="Account Amount"
               />
               <SelectInput labelId="select-account-type" labelName="Type of Account" fieldName="accountType" options={TYPE_OF_ACCOUNTS} />
-              <SelectInput labelId="select-background-color" labelName="Background Color:" fieldName="backgroundColor" options={BackgroundColors} />
-              <SelectInput labelId="select-color" labelName="Color:" fieldName="color" options={TextColors} />
+              <SelectInput
+                labelId="select-background-color"
+                labelName="Background Color:"
+                fieldName="backgroundColor"
+                options={BackgroundColors}
+                selectInputColors
+              />
+              <SelectInput selectInputColors labelId="select-color" labelName="Text Color:" fieldName="color" options={TextColors} />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">{ buttonModalText }</PrimaryButton>
             </AccountDialogFormContainer>
           )}
