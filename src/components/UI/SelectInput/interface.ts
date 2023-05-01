@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { ITextColors, IBackgroundColors } from '../../../styles/interface';
 
 interface ISelectFormikField {
   name: string;
@@ -20,7 +21,8 @@ export interface ISelectInputProps {
   labelId: string;
   labelName: string;
   fieldName: string;
-  options: string[] | object;
+  stringOptions: string[];
+  colorOptions: | ITextColors[] | IBackgroundColors[];
   selectInputColors?: boolean;
 }
 

@@ -8,34 +8,34 @@ import { PersonalizedMenuItem } from './SelectInput.styled';
 
 // This component only can be used with Formik because it was included MUI component with Formik
 const SelectInput = ({
-  labelId, labelName, fieldName, options, selectInputColors = false,
-}: ISelectInputProps) => {
-  const optionsIsArray = Array.isArray(options);
-  const newOptions = optionsIsArray ? options : Object.entries(options);
-
-  return (
-    <FormControl variant="standard">
-      <InputLabel id={labelId}>{ labelName }</InputLabel>
-      <Field name={fieldName} component={SelectFormik}>
-        { newOptions.map((item) => {
-          if (selectInputColors) {
-            return (
-              <PersonalizedMenuItem
-                backgroundColor={item[1]}
-                key={`${fieldName}-${item[0]}`}
-                value={item[0]}
-              >
-                {item[0]}
-              </PersonalizedMenuItem>
-            );
-          }
+  labelId, labelName, fieldName, stringOptions, colorOptions, selectInputColors = false,
+}: ISelectInputProps) => (
+  <FormControl variant="standard">
+    <InputLabel id={labelId}>{ labelName }</InputLabel>
+    <Field name={fieldName} component={SelectFormik}>
+      { (colorOptions.length > 0) && colorOptions.map((option) => {
+        if (selectInputColors) {
           return (
-            <MenuItem key={`${fieldName}-${item}`} value={item}>{item}</MenuItem>
+            <PersonalizedMenuItem
+              backgroundColor={option.color}
+              key={`${fieldName}-${option.name}`}
+              value={option.name}
+            >
+              {option.name}
+            </PersonalizedMenuItem>
           );
-        }) }
-      </Field>
-    </FormControl>
-  );
-};
+        }
+        return (
+          <MenuItem key={`${fieldName}-${option.name}`} value={option.name}>{option.name}</MenuItem>
+        );
+      }) }
+      { (stringOptions.length > 0) && (
+        stringOptions.map((option) => (
+          <MenuItem key={`${fieldName}-${option}`} value={option}>{option}</MenuItem>
+        ))
+      ) }
+    </Field>
+  </FormControl>
+);
 
 export { SelectInput };

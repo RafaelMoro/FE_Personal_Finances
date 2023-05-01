@@ -36,6 +36,8 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
+  // Copying constant because it is readyonly
+  const typeAccounts = [...TYPE_OF_ACCOUNTS];
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [, setAccountsUI] = useAtom(accountsUIAtom);
@@ -70,9 +72,42 @@ const AccountDialog = ({
 
     // Update account state
     if (Array.isArray(accounts) && responseCreateAccountRequest?._id) {
+      // Update Account atom
       const newAccounts: Account[] = [...accounts];
       newAccounts.push(responseCreateAccountRequest as Account);
       setAccounts(newAccounts);
+
+      // Update AccountUI atom
+      const newAccountUI = newAccounts.map((accountUI, index) => {
+        // Set the first account as selected
+        if (index === 0) {
+          return {
+            ...accountUI,
+            selected: true,
+            amount: formatNumberToCurrency(accountUI.amount),
+            backgroundColor: findColor({
+              colorName: accountUI.backgroundColor,
+            }),
+            color: findColor({
+              colorName: accountUI.color,
+              findTextColor: true,
+            }),
+          };
+        }
+        return {
+          ...accountUI,
+          selected: false,
+          amount: formatNumberToCurrency(accountUI.amount),
+          backgroundColor: findColor({
+            colorName: accountUI.backgroundColor,
+          }),
+          color: findColor({
+            colorName: accountUI.color,
+            findTextColor: true,
+          }),
+        };
+      });
+      setAccountsUI(newAccountUI);
     }
 
     // Show success notification
@@ -180,15 +215,29 @@ const AccountDialog = ({
                 variant="standard"
                 label="Account Amount"
               />
-              <SelectInput labelId="select-account-type" labelName="Type of Account" fieldName="accountType" options={TYPE_OF_ACCOUNTS} />
+              <SelectInput
+                labelId="select-account-type"
+                labelName="Type of Account"
+                fieldName="accountType"
+                stringOptions={typeAccounts}
+                colorOptions={[]}
+              />
               <SelectInput
                 labelId="select-background-color"
                 labelName="Background Color:"
                 fieldName="backgroundColor"
-                options={BackgroundColors}
+                stringOptions={[]}
+                colorOptions={BackgroundColors}
                 selectInputColors
               />
-              <SelectInput selectInputColors labelId="select-color" labelName="Text Color:" fieldName="color" options={TextColors} />
+              <SelectInput
+                selectInputColors
+                labelId="select-color"
+                labelName="Text Color:"
+                fieldName="color"
+                stringOptions={[]}
+                colorOptions={TextColors}
+              />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">{ buttonModalText }</PrimaryButton>
             </AccountDialogFormContainer>
           )}
