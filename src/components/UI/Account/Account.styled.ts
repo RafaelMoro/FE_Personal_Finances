@@ -20,7 +20,7 @@ const AccountContainerBasicStyles = styled.article`
   min-height: 14rem;
   padding: 1.5rem 1.5rem 1rem 1.5rem;
   border-radius: 1rem;
-  opacity: 0.7;
+  opacity: 0.5;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
   display: grid;
   grid-template-columns: repeat(2, 1fr);

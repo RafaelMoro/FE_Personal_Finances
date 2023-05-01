@@ -105,7 +105,7 @@ const AccountDialog = ({
       return;
     }
 
-    // Modifica cuenta acciones
+    // Modify accounts, accountsUI and selectedAccount atom
     if (Array.isArray(accounts) && responsePutAccountRequest?._id) {
       const filteredAccounts = accounts
         .filter((filteredAccount) => filteredAccount._id !== accountId);

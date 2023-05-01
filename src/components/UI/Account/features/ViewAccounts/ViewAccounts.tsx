@@ -139,9 +139,19 @@ const ViewAccounts = ({
     setOpenAccountModal(true);
   };
 
-  const selectNewAccount = (account: AccountUI) => {
-    if (selectedAccount?._id === account?._id) return;
-    setSelectedAccount(account);
+  const selectNewAccount = (accountSelected: AccountUI) => {
+    if (selectedAccount?._id === accountSelected?._id) return;
+    const accountId = accountSelected._id;
+
+    const newAccountsUI = accountsUI.map((account) => {
+      if (account._id === accountId) {
+        const newSelectedAccount = { ...account, selected: true };
+        setSelectedAccount(newSelectedAccount);
+        return newSelectedAccount;
+      }
+      return { ...account, selected: false };
+    });
+    setAccountsUI(newAccountsUI);
   };
 
   if (accounts === null && error === 'No error') {
