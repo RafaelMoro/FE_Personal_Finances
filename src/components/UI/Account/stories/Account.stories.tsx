@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof Account> = (args) => (
   </div>
 );
 
-interface IaccountsMock {
+interface IAccountsMock {
   normalAccount: AccountUI,
   otherAccount: AccountUI,
   accountWithBigTitle: AccountUI,
@@ -21,14 +21,14 @@ interface IaccountsMock {
   accountSelected: AccountUI,
 }
 
-const accountsMock: IaccountsMock = {
+const accountsMock: IAccountsMock = {
   normalAccount: {
     _id: '1234',
     title: 'BBVA',
     amount: '$25,000.00',
     accountType: 'Debit',
-    backgroundColor: 'blue',
-    color: 'white',
+    backgroundColor: { name: 'blue', color: 'blue' },
+    color: { name: 'white', color: 'white' },
     selected: false,
   },
   otherAccount: {
@@ -36,8 +36,8 @@ const accountsMock: IaccountsMock = {
     title: 'HSBC 2now',
     amount: '$38,000.00',
     accountType: 'Credit',
-    backgroundColor: 'grey',
-    color: 'white',
+    backgroundColor: { name: 'grey', color: 'grey' },
+    color: { name: 'white', color: 'white' },
     selected: false,
   },
   accountWithBigTitle: {
@@ -45,8 +45,8 @@ const accountsMock: IaccountsMock = {
     title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
     amount: '$38,000.00',
     accountType: 'Credit',
-    backgroundColor: 'purple',
-    color: 'white',
+    backgroundColor: { name: 'purple', color: 'purple' },
+    color: { name: 'white', color: 'white' },
     selected: false,
   },
   accountWithDecimal: {
@@ -54,8 +54,8 @@ const accountsMock: IaccountsMock = {
     title: 'Sodexo platinum',
     amount: '$1,350.78',
     accountType: 'Food Voucher',
-    backgroundColor: 'black',
-    color: 'white',
+    backgroundColor: { name: 'black', color: 'black' },
+    color: { name: 'white', color: 'white' },
     selected: false,
   },
   accountSelected: {
@@ -63,8 +63,8 @@ const accountsMock: IaccountsMock = {
     title: 'Santander',
     amount: '$1,350.78',
     accountType: 'Debit',
-    backgroundColor: 'red',
-    color: 'white',
+    backgroundColor: { name: 'red', color: 'red' },
+    color: { name: 'white', color: 'white' },
     selected: true,
   }
 }

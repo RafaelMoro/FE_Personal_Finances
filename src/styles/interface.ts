@@ -19,61 +19,11 @@ export interface IGlobalConfiguration {
 }
 
 export interface ITextColors {
-  black: string;
-  white: string;
+  name: string;
+  color: string;
 }
 
 export interface IBackgroundColors {
-  crimson: string;
-  red: string;
-  fireBrick: string;
-  darkRed: string;
-  tomato: string;
-  orange: string;
-  darkOrange: string;
-  gold: string;
-  yellow: string;
-  chartreuseGreen: string;
-  lime: string;
-  paleGreen: string;
-  green: string;
-  springGreen: string;
-  seaGreen: string;
-  forestGreen: string;
-  darkSeaGreen: string;
-  lightSeaGreen: string;
-  teal: string;
-  lightCyan: string;
-  turquoise: string;
-  steelBlue: string;
-  skyBlue: string;
-  dodgerBlue: string;
-  royalBlue: string;
-  cyan: string;
-  azure: string;
-  blue: string;
-  navy: string;
-  midnightBlue: string;
-  stateblue: string;
-  mediumStateBlue: string;
-  indigo: string;
-  violet: string;
-  magenta: string;
-  rebeccaPurple: string;
-  blueViolet: string;
-  rose: string;
-  wheat: string;
-  sandyBrown: string;
-  chocolate: string;
-  brown: string;
-  lightGrey: string;
-  silver: string;
-  grey: string;
-  dimGrey: string;
-  black: string;
-  white: string;
-  purple: string;
+  name: string;
+  color: string;
 }
-
-export type AccountBackgroundColorsKeys = keyof IBackgroundColors;
-export type AccountTextColorsKeys = keyof ITextColors;

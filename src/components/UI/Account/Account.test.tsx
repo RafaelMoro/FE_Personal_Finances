@@ -8,8 +8,8 @@ const account: AccountUI = {
   title: 'BBVA',
   amount: '$20,000.00',
   accountType: 'Debit',
-  backgroundColor: 'red',
-  color: 'white',
+  backgroundColor: { name: 'red', color: 'red' },
+  color: { name: 'white', color: 'white' },
   selected: false,
 };
 

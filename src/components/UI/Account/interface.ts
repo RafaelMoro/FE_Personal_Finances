@@ -1,9 +1,12 @@
 import { AccountAction } from '../../../aliasType';
 import { Account } from '../../../globalInterface';
 import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interface';
+import { IBackgroundColors, ITextColors } from '../../../styles/interface';
 
-export interface AccountUI extends Omit<Account, 'amount'> {
+export interface AccountUI extends Omit<Account, 'amount' | 'backgroundColor' | 'color'> {
   amount: string;
+  backgroundColor: IBackgroundColors;
+  color: ITextColors;
   selected: boolean;
 }
 

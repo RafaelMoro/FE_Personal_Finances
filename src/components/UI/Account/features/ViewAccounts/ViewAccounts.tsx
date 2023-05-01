@@ -11,9 +11,10 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom,
 } from '../../../../../atoms';
-import { formatNumberToCurrency, GetRequest } from '../../../../../utils';
+import { formatNumberToCurrency, GetRequest, findColor } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
+import { IViewAccountsProps } from './interface';
 import { Account as AccountInterface } from '../../../../../globalInterface';
 import { ErrorResponse, WindowSizeValues, AccountAction } from '../../../../../aliasType';
 import {
@@ -21,7 +22,6 @@ import {
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
-import { IViewAccountsProps } from './interface';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -79,12 +79,24 @@ const ViewAccounts = ({
               ...account,
               selected: true,
               amount: formatNumberToCurrency(account.amount),
+              backgroundColor: findColor({
+                colorName: account.backgroundColor,
+              }),
+              color: findColor({
+                colorName: account.color, findTextColor: true,
+              }),
             };
           }
           return {
             ...account,
             selected: false,
             amount: formatNumberToCurrency(account.amount),
+            backgroundColor: findColor({
+              colorName: account.backgroundColor,
+            }),
+            color: findColor({
+              colorName: account.color, findTextColor: true,
+            }),
           };
         });
         setAccountsUI(newAccountsUI);

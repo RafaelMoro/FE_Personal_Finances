@@ -19,7 +19,7 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
 import { Account } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { formatNumberToCurrency } from '../../../../../utils';
+import { findColor, formatNumberToCurrency } from '../../../../../utils';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -115,7 +115,16 @@ const AccountDialog = ({
       const newAccountsUI = filteredAccounts.map((accountUIMapped) => {
         if (accountUIMapped._id === accountId) {
           const newSelectedAccount: AccountUI = {
-            ...accountUIMapped, amount: formatNumberToCurrency(values.amount), selected: true,
+            ...accountUIMapped,
+            amount: formatNumberToCurrency(values.amount),
+            selected: true,
+            backgroundColor: findColor({
+              colorName: accountUIMapped.backgroundColor,
+            }),
+            color: findColor({
+              colorName: accountUIMapped.color,
+              findTextColor: true,
+            }),
           };
           setSelectedAccount(newSelectedAccount);
           return newSelectedAccount;
@@ -123,6 +132,13 @@ const AccountDialog = ({
         return {
           ...accountUIMapped,
           amount: formatNumberToCurrency(accountUIMapped.amount),
+          backgroundColor: findColor({
+            colorName: accountUIMapped.backgroundColor,
+          }),
+          color: findColor({
+            colorName: accountUIMapped.color,
+            findTextColor: true,
+          }),
           selected: false,
         };
       });
