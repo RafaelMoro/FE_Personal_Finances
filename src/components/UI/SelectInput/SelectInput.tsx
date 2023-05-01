@@ -13,22 +13,15 @@ const SelectInput = ({
   <FormControl variant="standard">
     <InputLabel id={labelId}>{ labelName }</InputLabel>
     <Field name={fieldName} component={SelectFormik}>
-      { (colorOptions.length > 0) && colorOptions.map((option) => {
-        if (selectInputColors) {
-          return (
-            <PersonalizedMenuItem
-              backgroundColor={option.color}
-              key={`${fieldName}-${option.name}`}
-              value={option.name}
-            >
-              {option.name}
-            </PersonalizedMenuItem>
-          );
-        }
-        return (
-          <MenuItem key={`${fieldName}-${option.name}`} value={option.name}>{option.name}</MenuItem>
-        );
-      }) }
+      { (colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
+        <PersonalizedMenuItem
+          backgroundColor={option.color}
+          key={`${fieldName}-${option.name}`}
+          value={option.name}
+        >
+          {option.name}
+        </PersonalizedMenuItem>
+      )) }
       { (stringOptions.length > 0) && (
         stringOptions.map((option) => (
           <MenuItem key={`${fieldName}-${option}`} value={option}>{option}</MenuItem>

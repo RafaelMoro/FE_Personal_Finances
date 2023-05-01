@@ -25,8 +25,8 @@ const initialValuesCreateAccount: CreateAccount = {
   title: '',
   accountType: 'Debit',
   amount: 0,
-  backgroundColor: 'white',
-  color: 'black',
+  backgroundColor: 'White',
+  color: 'Black',
 };
 
 const AccountDialog = ({
