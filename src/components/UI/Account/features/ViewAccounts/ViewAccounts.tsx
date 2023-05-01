@@ -11,7 +11,7 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom,
 } from '../../../../../atoms';
-import { formatNumberToCurrency, GetRequest, findColor } from '../../../../../utils';
+import { GetRequest, formatAccounts } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
 import { IViewAccountsProps } from './interface';
@@ -70,35 +70,7 @@ const ViewAccounts = ({
           return;
         }
 
-        const newAccountsUI: AccountUI[] = accountsData.map((
-          account: AccountInterface,
-          index: number,
-        ) => {
-          if (index === 0) {
-            return {
-              ...account,
-              selected: true,
-              amount: formatNumberToCurrency(account.amount),
-              backgroundColor: findColor({
-                colorName: account.backgroundColor,
-              }),
-              color: findColor({
-                colorName: account.color, findTextColor: true,
-              }),
-            };
-          }
-          return {
-            ...account,
-            selected: false,
-            amount: formatNumberToCurrency(account.amount),
-            backgroundColor: findColor({
-              colorName: account.backgroundColor,
-            }),
-            color: findColor({
-              colorName: account.color, findTextColor: true,
-            }),
-          };
-        });
+        const newAccountsUI = formatAccounts({ accounts: accountsData });
         setAccountsUI(newAccountsUI);
 
         const firstAccount = newAccountsUI[0];

@@ -7,7 +7,7 @@ import { AxiosRequestHeaders } from 'axios';
 
 import { userAtom } from '../../../../../atoms';
 import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
-import { AccountUI, CreateAccount, AccountDialogProps } from '../../interface';
+import { CreateAccount, AccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../constants';
@@ -19,7 +19,7 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
 import { Account } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { findColor, formatNumberToCurrency } from '../../../../../utils';
+import { formatAccounts } from '../../../../../utils';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -78,36 +78,8 @@ const AccountDialog = ({
       setAccounts(newAccounts);
 
       // Update AccountUI atom
-      const newAccountUI = newAccounts.map((accountUI, index) => {
-        // Set the first account as selected
-        if (index === 0) {
-          return {
-            ...accountUI,
-            selected: true,
-            amount: formatNumberToCurrency(accountUI.amount),
-            backgroundColor: findColor({
-              colorName: accountUI.backgroundColor,
-            }),
-            color: findColor({
-              colorName: accountUI.color,
-              findTextColor: true,
-            }),
-          };
-        }
-        return {
-          ...accountUI,
-          selected: false,
-          amount: formatNumberToCurrency(accountUI.amount),
-          backgroundColor: findColor({
-            colorName: accountUI.backgroundColor,
-          }),
-          color: findColor({
-            colorName: accountUI.color,
-            findTextColor: true,
-          }),
-        };
-      });
-      setAccountsUI(newAccountUI);
+      const newAccountsUI = formatAccounts({ accounts: newAccounts });
+      setAccountsUI(newAccountsUI);
     }
 
     // Show success notification
@@ -147,36 +119,12 @@ const AccountDialog = ({
       filteredAccounts.push(values);
       setAccounts(filteredAccounts);
 
-      const newAccountsUI = filteredAccounts.map((accountUIMapped) => {
-        if (accountUIMapped._id === accountId) {
-          const newSelectedAccount: AccountUI = {
-            ...accountUIMapped,
-            amount: formatNumberToCurrency(values.amount),
-            selected: true,
-            backgroundColor: findColor({
-              colorName: accountUIMapped.backgroundColor,
-            }),
-            color: findColor({
-              colorName: accountUIMapped.color,
-              findTextColor: true,
-            }),
-          };
-          setSelectedAccount(newSelectedAccount);
-          return newSelectedAccount;
-        }
-        return {
-          ...accountUIMapped,
-          amount: formatNumberToCurrency(accountUIMapped.amount),
-          backgroundColor: findColor({
-            colorName: accountUIMapped.backgroundColor,
-          }),
-          color: findColor({
-            colorName: accountUIMapped.color,
-            findTextColor: true,
-          }),
-          selected: false,
-        };
+      const newAccountsUI = formatAccounts({
+        accounts: filteredAccounts, selectedAccountId: accountId,
       });
+      // eslint-disable-next-line max-len
+      const newSelectedAccount = newAccountsUI.find((accountUI) => accountUI.selected === true) ?? newAccountsUI[0];
+      setSelectedAccount(newSelectedAccount);
       setAccountsUI(newAccountsUI);
     }
 
