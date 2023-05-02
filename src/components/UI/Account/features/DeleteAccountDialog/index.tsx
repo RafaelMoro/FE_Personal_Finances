@@ -8,8 +8,10 @@ import {
 } from '../../../../../styles';
 
 const DeleteAccountDialog = ({
-  open, onClose,
+  open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
+  // eslint-disable-next-line no-console
+  console.log(accountId);
   const handleSubmit = () => {
     // eslint-disable-next-line no-console
     console.log('dio click que si');
@@ -20,7 +22,12 @@ const DeleteAccountDialog = ({
       <DialogTitle>Delete Account</DialogTitle>
       <AccountDialogContainer>
         <DialogParagraph>THERE IS NO WAY OF RECOVERING YOUR ACCOUNT.</DialogParagraph>
-        <DialogParagraph>Are you sure you want to delete the account X?</DialogParagraph>
+        <DialogParagraph>
+          Are you sure you want to delete the account
+          {' '}
+          {accountName}
+          ?
+        </DialogParagraph>
         <SecondaryButton variant="contained" size="medium" onClick={onClose}>Go Back</SecondaryButton>
         <CancelButton variant="contained" onClick={handleSubmit} size="medium">Cancel Account</CancelButton>
       </AccountDialogContainer>

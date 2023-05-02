@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
@@ -46,6 +46,7 @@ const ViewAccounts = ({
   const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
   const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
   const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
+  const accountToBeDeleted = useRef({ accountId: '', accountName: '' });
 
   useEffect(() => {
     const getAccounts = async () => {
@@ -106,7 +107,11 @@ const ViewAccounts = ({
   const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
   const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);
 
-  const handleOpenDeleteAccount = () => setOpenDeleteAccountModal(true);
+  const handleOpenDeleteAccount = (accountId: string, accountName: string) => {
+    accountToBeDeleted.current.accountId = accountId;
+    accountToBeDeleted.current.accountName = accountName;
+    setOpenDeleteAccountModal(true);
+  };
   const handleCloseDeleteAccount = () => setOpenDeleteAccountModal(false);
 
   const handleCloseCreateAccount = () => setOpenAccountModal(false);
@@ -179,7 +184,12 @@ const ViewAccounts = ({
           accountAction={accountAction}
           account={modifyAccount}
         />
-        <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
+        <DeleteAccountDialog
+          open={openDeleteAccountModal}
+          onClose={handleCloseDeleteAccount}
+          accountId={accountToBeDeleted.current.accountId}
+          accountName={accountToBeDeleted.current.accountName}
+        />
       </AccountSectionTablet>
     );
   }
@@ -205,7 +215,12 @@ const ViewAccounts = ({
           accountAction={accountAction}
           account={modifyAccount}
         />
-        <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
+        <DeleteAccountDialog
+          open={openDeleteAccountModal}
+          onClose={handleCloseDeleteAccount}
+          accountId={accountToBeDeleted.current.accountId}
+          accountName={accountToBeDeleted.current.accountName}
+        />
       </AccountSectionDesktop>
     );
   }
@@ -242,7 +257,12 @@ const ViewAccounts = ({
         accountAction={accountAction}
         account={modifyAccount}
       />
-      <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
+      <DeleteAccountDialog
+        open={openDeleteAccountModal}
+        onClose={handleCloseDeleteAccount}
+        accountId={accountToBeDeleted.current.accountId}
+        accountName={accountToBeDeleted.current.accountName}
+      />
     </AccountSection>
   );
 };

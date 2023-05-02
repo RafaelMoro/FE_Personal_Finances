@@ -28,7 +28,7 @@ const Account = ({
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
           <EditOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
         </IconButton>
-        <IconButton onClick={() => openDeleteAccountModal()}>
+        <IconButton onClick={() => openDeleteAccountModal(accountId, title)}>
           <DeleteOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
         </IconButton>
       </AccountIconsContainer>
