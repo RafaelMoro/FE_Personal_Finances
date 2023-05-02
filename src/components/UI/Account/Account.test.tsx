@@ -17,11 +17,13 @@ describe('<Account />', () => {
   test('Render account name, price, account type', () => {
     const selectNewAccount = jest.fn();
     const handleOpenModifyAccount = jest.fn();
+    const handleOpenDeleteAccountModal = jest.fn();
     render(
       <Account
         account={account}
         selectAccountOnClick={() => selectNewAccount(account)}
         openModifyAccountModal={handleOpenModifyAccount}
+        openDeleteAccountModal={handleOpenDeleteAccountModal}
       />,
     );
 

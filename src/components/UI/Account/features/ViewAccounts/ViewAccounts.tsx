@@ -42,6 +42,7 @@ const ViewAccounts = ({
   const [accountAction, setAccountAction] = useState<AccountAction>('Create');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
+  const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
   const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
   const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
 
@@ -102,10 +103,14 @@ const ViewAccounts = ({
   }, []);
 
   const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
+  const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);
 
-  const handleCloseChangeAccount = () => {
-    setOpenChangeAccountModal(false);
+  const handleOpenDeleteAccount = () => {
+    // eslint-disable-next-line no-console
+    console.log('delete account modal opened');
+    setOpenDeleteAccountModal(true);
   };
+  const handleCloseDeleteAccount = () => setOpenDeleteAccountModal(false);
 
   const handleCloseCreateAccount = () => setOpenAccountModal(false);
 
@@ -166,6 +171,7 @@ const ViewAccounts = ({
               account={account}
               selectAccountOnClick={() => selectNewAccount(account)}
               openModifyAccountModal={handleOpenModifyAccount}
+              openDeleteAccountModal={handleOpenDeleteAccount}
             />
           )) }
         </AccountSlider>
@@ -191,6 +197,7 @@ const ViewAccounts = ({
             account={account}
             selectAccountOnClick={() => selectNewAccount(account)}
             openModifyAccountModal={handleOpenModifyAccount}
+            openDeleteAccountModal={handleOpenDeleteAccount}
           />
         ))}
         <AccountDialog
@@ -216,6 +223,7 @@ const ViewAccounts = ({
             account={selectedAccount}
             selectAccountOnClick={() => selectNewAccount(selectedAccount)}
             openModifyAccountModal={handleOpenModifyAccount}
+            openDeleteAccountModal={handleOpenDeleteAccount}
           />
         )}
         { (showAddAccount && !selectedAccount) && (

@@ -9,15 +9,11 @@ const Account = ({
   account,
   selectAccountOnClick,
   openModifyAccountModal,
+  openDeleteAccountModal,
 }: AccountComponentProps) => {
   const {
     _id: accountId, title, amount, backgroundColor, color, accountType, selected,
   } = account;
-
-  const myFn = () => {
-    // eslint-disable-next-line no-console
-    console.log('dio click en delete icon');
-  };
 
   return (
     <AccountContainerColoroued
@@ -32,7 +28,7 @@ const Account = ({
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
           <EditOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
         </IconButton>
-        <IconButton onClick={() => myFn()}>
+        <IconButton onClick={() => openDeleteAccountModal()}>
           <DeleteOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
         </IconButton>
       </AccountIconsContainer>

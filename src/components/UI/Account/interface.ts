@@ -13,6 +13,7 @@ export interface AccountUI extends Omit<Account, 'amount' | 'backgroundColor' | 
 export interface AccountComponentProps {
   account: AccountUI;
   openModifyAccountModal: (id: string) => void;
+  openDeleteAccountModal: () => void;
   selectAccountOnClick: () => void;
 }
 
