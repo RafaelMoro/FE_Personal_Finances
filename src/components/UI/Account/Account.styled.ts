@@ -57,6 +57,11 @@ export const AccountTitle = styled(Heading4)`
   grid-column: 1 / 3;
 `;
 
+export const AccountIconsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const AccountSkeletonHolder = styled.div`
   width: 100%;
   height: 4rem;
