@@ -7,6 +7,7 @@ import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
 import { AddAccount } from '../AddAccount';
 import { AccountDialog } from '../AccountDialog';
+import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom,
@@ -105,11 +106,7 @@ const ViewAccounts = ({
   const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
   const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);
 
-  const handleOpenDeleteAccount = () => {
-    // eslint-disable-next-line no-console
-    console.log('delete account modal opened');
-    setOpenDeleteAccountModal(true);
-  };
+  const handleOpenDeleteAccount = () => setOpenDeleteAccountModal(true);
   const handleCloseDeleteAccount = () => setOpenDeleteAccountModal(false);
 
   const handleCloseCreateAccount = () => setOpenAccountModal(false);
@@ -182,6 +179,7 @@ const ViewAccounts = ({
           accountAction={accountAction}
           account={modifyAccount}
         />
+        <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
       </AccountSectionTablet>
     );
   }
@@ -207,6 +205,7 @@ const ViewAccounts = ({
           accountAction={accountAction}
           account={modifyAccount}
         />
+        <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
       </AccountSectionDesktop>
     );
   }
@@ -243,6 +242,7 @@ const ViewAccounts = ({
         accountAction={accountAction}
         account={modifyAccount}
       />
+      <DeleteAccountDialog open={openDeleteAccountModal} onClose={handleCloseDeleteAccount} />
     </AccountSection>
   );
 };
