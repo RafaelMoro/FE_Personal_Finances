@@ -253,7 +253,7 @@ const ViewAccounts = ({
           />
         )}
         { (showAddAccount && !selectedAccount) && (
-          <AddAccount onClick={handleOpenChangeAccount} />
+          <AddAccount onClick={handleOpenCreateAccount} />
         ) }
       </AccountsContainer>
       { (selectedAccount && accounts) && (
