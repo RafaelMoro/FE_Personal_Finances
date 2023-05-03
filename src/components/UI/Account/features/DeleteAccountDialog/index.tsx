@@ -7,6 +7,7 @@ import { AxiosRequestHeaders } from 'axios';
 import {
   userAtom, accountsAtom, accountsUIAtom, selectedAccountAtom,
 } from '../../../../../atoms';
+import { SystemStateEnum } from '../../../../../enums';
 import { DeleteAccountDialogProps } from './interface';
 import { DELETE_ACCOUNT_ROUTE } from '../../constants';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
@@ -16,13 +17,20 @@ import {
 } from '../../../../../styles';
 
 const DeleteAccountDialog = ({
-  open, onClose, accountId, accountName,
+  open, onClose, accountId, accountName, dashboardNotificationFunctions,
 }: DeleteAccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
   const [, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+
+  const {
+    updateTitle,
+    updateDescription,
+    updateStatus,
+    toggleShowNotification,
+  } = dashboardNotificationFunctions;
 
   const handleSubmit = async () => {
     const valuesSubmitted = { accountId };
@@ -35,9 +43,12 @@ const DeleteAccountDialog = ({
 
     if (responseDeleteAccountRequest?.error || !responseDeleteAccountRequest) {
       // Handle error notification
-
-      // eslint-disable-next-line no-console
-      console.log('An error ocurred');
+      updateTitle('Delete Account: Error');
+      updateDescription('Oops! An error ocurred. Try again later.');
+      updateStatus(SystemStateEnum.Error);
+      onClose();
+      toggleShowNotification();
+      return;
     }
 
     // Update account state
@@ -55,7 +66,12 @@ const DeleteAccountDialog = ({
       const newSelectedAccount = newAccountsUI.length === 0 ? null : newAccountsUI[0];
       setSelectedAccount(newSelectedAccount);
     }
+
+    // Show success notification
+    updateTitle(`Account ${accountName} deleted`);
+    updateStatus(SystemStateEnum.Success);
     onClose();
+    toggleShowNotification();
   };
 
   return (

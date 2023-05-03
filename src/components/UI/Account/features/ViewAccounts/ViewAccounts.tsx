@@ -199,6 +199,7 @@ const ViewAccounts = ({
           onClose={handleCloseDeleteAccount}
           accountId={accountToBeDeleted.current.accountId}
           accountName={accountToBeDeleted.current.accountName}
+          dashboardNotificationFunctions={dashboardNotificationFunctions}
         />
       </AccountSectionTablet>
     );
@@ -230,6 +231,7 @@ const ViewAccounts = ({
           onClose={handleCloseDeleteAccount}
           accountId={accountToBeDeleted.current.accountId}
           accountName={accountToBeDeleted.current.accountName}
+          dashboardNotificationFunctions={dashboardNotificationFunctions}
         />
       </AccountSectionDesktop>
     );
@@ -272,6 +274,7 @@ const ViewAccounts = ({
         onClose={handleCloseDeleteAccount}
         accountId={accountToBeDeleted.current.accountId}
         accountName={accountToBeDeleted.current.accountName}
+        dashboardNotificationFunctions={dashboardNotificationFunctions}
       />
     </AccountSection>
   );
