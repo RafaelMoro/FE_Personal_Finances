@@ -88,6 +88,16 @@ const ViewAccounts = ({
   }, [bearerToken, setAccounts, setAccountsUI, setSelectedAccount, user]);
 
   useEffect(() => {
+    // If the only account is deleted, show AddAccount
+    if (accountsUI.length < 1) {
+      setShowAddAccount(true);
+    } else {
+      // If an account is created, don't show AddAccount
+      setShowAddAccount(false);
+    }
+  }, [accountsUI.length]);
+
+  useEffect(() => {
     function handleResize(event: UIEvent) {
       const target = event.target as Window;
 

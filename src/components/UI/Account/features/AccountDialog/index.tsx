@@ -80,6 +80,9 @@ const AccountDialog = ({
       // Update AccountUI atom
       const newAccountsUI = formatAccounts({ accounts: newAccounts });
       setAccountsUI(newAccountsUI);
+
+      // Update SelectedAccount atom
+      setSelectedAccount(newAccountsUI[0]);
     }
 
     // Show success notification
