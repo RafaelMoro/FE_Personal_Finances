@@ -84,7 +84,7 @@ export const AccountSlider = styled.div`
   gap: 2rem;
   grid-auto-flow: column;
   grid-template-rows: 1fr;
-  grid-auto-columns: 20rem;
+  grid-auto-columns: 25rem;
 `;
 
 // **************************** Desktop
