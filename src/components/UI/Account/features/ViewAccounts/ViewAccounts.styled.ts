@@ -59,7 +59,7 @@ export const CreateAccountButton = styled(PrimaryButton)`
 export const AccountsContainer = styled.div`
   grid-column: 1 / 3;
   justify-self: center;
-  width: 20rem;
+  width: 25rem;
   display: grid;
   place-items: center;
 `;

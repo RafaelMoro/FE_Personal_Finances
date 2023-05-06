@@ -8,13 +8,14 @@ export default {
 } as ComponentMeta<typeof Account>;
 
 const Template: ComponentStory<typeof Account> = (args) => (
-  <div style={{ width: '200px' }}>
+  <div style={{ width: '250px' }}>
     <Account {...args} />
   </div>
 );
 
 interface IAccountsMock {
   normalAccount: AccountUI,
+  accountWithBigAmount: AccountUI,
   otherAccount: AccountUI,
   accountWithBigTitle: AccountUI,
   accountWithDecimal: AccountUI,
@@ -26,6 +27,15 @@ const accountsMock: IAccountsMock = {
     _id: '1234',
     title: 'BBVA',
     amount: '$25,000.00',
+    accountType: 'Debit',
+    backgroundColor: { name: 'blue', color: 'blue' },
+    color: { name: 'white', color: 'white' },
+    selected: false,
+  },
+  accountWithBigAmount: {
+    _id: '1234',
+    title: 'Santander premium',
+    amount: '$25,000,000,000.00',
     accountType: 'Debit',
     backgroundColor: { name: 'blue', color: 'blue' },
     color: { name: 'white', color: 'white' },
@@ -71,6 +81,13 @@ const accountsMock: IAccountsMock = {
 export const NormalAccount = Template.bind({});
 NormalAccount.args = {
   account: accountsMock.normalAccount,
+  selectAccountOnClick: () => {},
+  openModifyAccountModal: () => {},
+};
+
+export const AccountWithReallyBigNumber = Template.bind({});
+AccountWithReallyBigNumber.args = {
+  account: accountsMock.accountWithBigAmount,
   selectAccountOnClick: () => {},
   openModifyAccountModal: () => {},
 };
