@@ -92,6 +92,9 @@ export const AccountSlider = styled.div`
 export const AccountSectionDesktop = styled.aside`
   width: 100%;
   height: 100vh;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y proximity;
   display: grid;
   grid-auto-rows: 17rem;
   gap: 2rem;
