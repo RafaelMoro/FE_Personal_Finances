@@ -1,4 +1,3 @@
-import { Stack } from '@mui/material';
 import { useAtom } from 'jotai';
 
 import { windowSizeAtom } from '../../../atoms';
@@ -8,7 +7,8 @@ import { formatDateToString } from '../../../utils/FormatDateToString';
 import { IncomeRecord } from './features/IncomeRecord';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordIncome, RecordExpense,
-  RecordContainerMobile,
+  RecordContainerMobile, RecordTitleMobile, RecordDateTimeContainer, RecordIncomeMobile,
+  RecordExpenseMobile, BudgetChipContainer,
 } from './Records.styled';
 import { Chip, ParagraphTitle } from '../../../styles';
 
@@ -41,12 +41,12 @@ const Record = ({
             { formattedPrice }
           </RecordIncome>
         ) }
-        <Stack direction="row" spacing={1}>
+        <BudgetChipContainer>
           { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
           { budgets.length > 0 && budgets.map((budget) => (
             <Chip key={budget.id} label={budget.name} variant="outlined" color="primary" />
           ))}
-        </Stack>
+        </BudgetChipContainer>
         { (!isExpense && linkedPayedRecords.length > 0) && (
         <IncomeRecord payedLinkedRecords={linkedPayedRecords} shortView={shortView} />
         )}
@@ -56,23 +56,34 @@ const Record = ({
 
   return (
     <RecordContainerMobile>
-      <ParagraphTitle>{ shortName }</ParagraphTitle>
-      <RecordDateTime>{ fullDate }</RecordDateTime>
-      <RecordDateTime>{ formattedTime }</RecordDateTime>
-      <RecordDescription>{ description }</RecordDescription>
+      <RecordTitleMobile>{ shortName }</RecordTitleMobile>
+      <RecordDateTimeContainer>
+        <RecordDateTime>{ fullDate }</RecordDateTime>
+        <RecordDateTime>{ formattedTime }</RecordDateTime>
+      </RecordDateTimeContainer>
       { isExpense ? (
-        <RecordExpense>
+        <RecordExpenseMobile>
           -
           {' '}
           { formattedPrice }
-        </RecordExpense>
+        </RecordExpenseMobile>
       ) : (
-        <RecordIncome>
+        <RecordIncomeMobile>
           +
           {' '}
           { formattedPrice }
-        </RecordIncome>
+        </RecordIncomeMobile>
       ) }
+      <BudgetChipContainer>
+        { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+        { budgets.length > 0 && budgets.map((budget) => (
+          <Chip key={budget.id} label={budget.name} variant="outlined" color="primary" />
+        ))}
+      </BudgetChipContainer>
+      <RecordDescription>{ description }</RecordDescription>
+      { (!isExpense && linkedPayedRecords.length > 0) && (
+        <IncomeRecord payedLinkedRecords={linkedPayedRecords} shortView={shortView} />
+      )}
     </RecordContainerMobile>
   );
 };

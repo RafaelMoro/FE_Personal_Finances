@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { blinkAnimation } from '../../../styles/animations/blink';
-import { AppColors, Paragraph, Sub } from '../../../styles';
+import {
+  AppColors, Paragraph, Sub, ParagraphTitle,
+} from '../../../styles';
 
 export const RecordContainer = styled.article`
   width: 100%;
@@ -18,8 +20,18 @@ export const RecordContainerMobile = styled.article`
   min-height: 10rem;
   padding: 1rem;
   border-radius: 1rem;
+  display: grid;
+  row-gap: 1rem;
+`;
+
+export const RecordTitleMobile = styled(ParagraphTitle)`
+  text-align: center;
+`;
+
+export const RecordDateTimeContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
 `;
 
 export const RecordSkeletonContainer = styled(RecordContainer)`
@@ -50,9 +62,23 @@ export const RecordIncome = styled(Paragraph)`
   color: ${AppColors.positive};
 `;
 
+export const RecordIncomeMobile = styled(RecordIncome)`
+  text-align: center;
+`;
+
 export const RecordExpense = styled(Paragraph)`
   font-weight: 500;
   color: ${AppColors.negative};
+`;
+
+export const RecordExpenseMobile = styled(RecordExpense)`
+  text-align: center;
+`;
+
+export const BudgetChipContainer = styled.div`
+  justify-self: center;
+  display: flex;
+  gap: 1rem;
 `;
 
 export const RecordSkeletonHolder = styled.div`
