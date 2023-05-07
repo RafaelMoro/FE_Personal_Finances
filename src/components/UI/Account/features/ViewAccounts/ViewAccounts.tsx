@@ -10,14 +10,14 @@ import { AccountDialog } from '../AccountDialog';
 import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
-  userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom,
+  userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom, windowSizeAtom,
 } from '../../../../../atoms';
 import { GetRequest, formatAccounts } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
 import { IViewAccountsProps } from './interface';
 import { Account as AccountInterface } from '../../../../../globalInterface';
-import { ErrorResponse, WindowSizeValues, AccountAction } from '../../../../../aliasType';
+import { ErrorResponse, AccountAction } from '../../../../../aliasType';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
@@ -35,11 +35,11 @@ const ViewAccounts = ({
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
+  const [windowSize] = useAtom(windowSizeAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
   const [error, setError] = useState<ErrorResponse>('No error');
-  const [windowSize, setWindowSize] = useState<WindowSizeValues>('Mobile');
   const [accountAction, setAccountAction] = useState<AccountAction>('Create');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
   const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
@@ -96,23 +96,6 @@ const ViewAccounts = ({
       setShowAddAccount(false);
     }
   }, [accountsUI.length]);
-
-  useEffect(() => {
-    function handleResize(event: UIEvent) {
-      const target = event.target as Window;
-
-      if (target.innerWidth < 480) setWindowSize('Mobile');
-      if (target.innerWidth > 480 && target.innerWidth < 1024) setWindowSize('Tablet');
-      if (target.innerWidth > 1024) setWindowSize('Desktop');
-    }
-
-    if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');
-    if (window.innerWidth > 1024) setWindowSize('Desktop');
-
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
   const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);

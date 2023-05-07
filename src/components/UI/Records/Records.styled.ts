@@ -13,6 +13,15 @@ export const RecordContainer = styled.article`
   row-gap: 1.5rem;
 `;
 
+export const RecordContainerMobile = styled.article`
+  width: 100%;
+  min-height: 10rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const RecordSkeletonContainer = styled(RecordContainer)`
   border: 1px solid grey;
 `;

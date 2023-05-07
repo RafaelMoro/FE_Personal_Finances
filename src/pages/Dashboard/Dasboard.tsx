@@ -1,3 +1,8 @@
+import { useEffect } from 'react';
+import { useAtom } from 'jotai';
+
+import { windowSizeAtom } from '../../atoms';
+import { handleResizeWindow } from '../../utils';
 import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList } from '../../components/UI';
@@ -70,6 +75,7 @@ const records: IRecord[] = [
 ];
 
 const Dashboard = () => {
+  const [,setWindowSize] = useAtom(windowSizeAtom);
   const { signOut } = useLogin();
   const {
     showNotification, toggleShowNotification, notificationInfo,
@@ -83,6 +89,22 @@ const Dashboard = () => {
     updateStatus,
     toggleShowNotification,
   };
+
+  useEffect(() => {
+    if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');
+    if (window.innerWidth > 1024) setWindowSize('Desktop');
+
+    window.addEventListener('resize', (event: UIEvent) => {
+      const windowResized = handleResizeWindow(event);
+      setWindowSize(windowResized);
+    });
+
+    return () => window.removeEventListener('resize', (event: UIEvent) => {
+      const windowResized = handleResizeWindow(event);
+      setWindowSize(windowResized);
+    });
+  }, [setWindowSize]);
+
   return (
     <DashboardContainer>
       {showNotification && (
