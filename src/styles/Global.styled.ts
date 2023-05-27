@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import { dynamicPadding } from './DynamicStyles.styled';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
+import { FlexContainerProps } from './interface';
 
 /*
 * This file has generic emotion components to use accross the application and
@@ -44,6 +45,24 @@ export const GlobalStyles = css`
     ${createResponsiveProps({ fontSize: 'Sub', important: true })}
   }
 `;
+
+// **** Containers
+
+const flexContainerStyles = ({
+  justifyContent, alignItems, gap, flexDirection,
+}: FlexContainerProps) => css`
+  justify-content: ${justifyContent ?? 'start'};
+  align-items: ${alignItems ?? 'start'};
+  gap: ${gap ?? '0'}rem;
+  flex-direction: ${flexDirection ?? 'row'};
+`;
+
+export const FlexContainer = styled.div`
+  display: flex;
+  ${flexContainerStyles}
+`;
+
+// **** Buttons
 
 export const PrimaryButton = styled(Button)`
   ${createResponsiveProps({ fontSize: 'P' })}
@@ -77,6 +96,8 @@ export const CancelButton = styled(Button)`
   }
 `;
 
+// **** Headings
+
 export const Heading1 = styled.h1`
   ${createResponsiveProps({ fontSize: 'H1', fontWeight: 'bold' })}
 `;
@@ -92,6 +113,8 @@ export const Heading3 = styled.h3`
 export const Heading4 = styled.h4`
   ${createResponsiveProps({ fontSize: 'H4' })}
 `;
+
+// **** Paragraphs
 
 export const ParagraphTitle = styled.p`
   ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
@@ -125,6 +148,8 @@ export const ListItemText = styled(ListItemTextMUI)`
   }
 `;
 
+// **** Input and Forms
+
 export const InputForm = styled(TextField)`
   input {
     ${createResponsiveProps({ fontSize: 'P' })}
@@ -143,6 +168,8 @@ export const Select = styled(SelectMUI)`
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
+
+// **** Miscelanea
 
 export const MenuItem = styled(MenuItemMUI)`
   ${createResponsiveProps({ fontSize: 'P' })}

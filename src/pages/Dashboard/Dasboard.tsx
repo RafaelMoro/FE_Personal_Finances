@@ -10,67 +10,60 @@ import { SecondaryButton } from '../../styles';
 import {
   DashboardContainer, RecordsBox, Header,
 } from './Dashboard.styled';
-import { IRecord } from '../../components/UI/Records/interface';
 import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
 import { DashboardNotificationFunctions } from './interface';
+import { AccountRecordUI } from '../../components/UI/Records/interface';
 
-const records: IRecord[] = [
+const records: AccountRecordUI[] = [
   {
-    id: '1',
-    shortName: 'Uber home to gym',
-    description: 'Paying Uber to go to smartfit on Solesta',
-    recordType: 'Expense',
-    date: new Date(),
-    price: 168.02,
-    budgets: [
+    _id: '123-456',
+    shortName: 'Casa a solesta gym',
+    description: 'Didi para ir al gym',
+    category: 'Transport',
+    subCategory: 'Didi/Uber',
+    tag: ['Pending'],
+    indebtedPeople: [
       {
-        id: 1,
-        name: 'Transport',
+        name: 'Beto',
+        amount: 30,
+        amountPaid: 0,
+        isPaid: false,
+      },
+      {
+        name: 'George',
+        amount: 70,
+        amountPaid: 50,
+        isPaid: false,
+      },
+      {
+        name: 'Dad',
+        amount: 150,
+        amountPaid: 150,
+        isPaid: true,
       },
     ],
+    budgets: [],
+    shortView: true,
+    formattedTime: '12:34pm',
+    fullDate: 'May 20',
+    amount: '$150.09',
+    account: '123-456-789',
   },
   {
-    id: '2',
-    shortName: 'Uber home to gym',
-    description: 'Paying Uber to go to smartfit on Solesta',
-    recordType: 'Expense',
-    date: new Date(),
-    price: 168.02,
-    budgets: [
-      {
-        id: 1,
-        name: 'Transport',
-      },
-    ],
-  },
-  {
-    id: '3',
-    shortName: 'Uber home to gym',
-    description: 'Paying Uber to go to smartfit on Solesta',
-    recordType: 'Income',
-    date: new Date(),
-    price: 168.02,
-    budgets: [
-      {
-        id: 1,
-        name: 'Transport',
-      },
-    ],
-  },
-  {
-    id: '4',
-    shortName: 'Uber home to gym',
-    description: 'Paying Uber to go to smartfit on Solesta',
-    recordType: 'Expense',
-    date: new Date(),
-    price: 168.02,
-    budgets: [
-      {
-        id: 1,
-        name: 'Transport',
-      },
-    ],
+    _id: '456-789',
+    shortName: 'Solesta gym a casa',
+    description: 'Didi para ir a casa',
+    category: 'Transport',
+    subCategory: 'Didi/Uber',
+    tag: ['Pending'],
+    indebtedPeople: [],
+    budgets: [],
+    shortView: true,
+    formattedTime: '1:50pm',
+    fullDate: 'May 20',
+    amount: '$110.24',
+    account: '123-456-789',
   },
 ];
 

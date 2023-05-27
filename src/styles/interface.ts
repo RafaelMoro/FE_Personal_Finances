@@ -27,3 +27,10 @@ export interface IBackgroundColors {
   name: string;
   color: string;
 }
+
+export interface FlexContainerProps {
+  justifyContent?: string;
+  alignItems?: string;
+  gap?: string;
+  flexDirection?: string;
+}

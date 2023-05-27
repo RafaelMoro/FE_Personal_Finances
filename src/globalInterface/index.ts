@@ -15,3 +15,32 @@ export interface Account {
   backgroundColor: string;
   color: string;
 }
+
+interface IndebtedPeople {
+  name: string;
+  amount: number;
+  amountPaid: number;
+  isPaid: boolean;
+}
+
+export interface AccountRecord {
+  _id: string;
+  shortName: string;
+  description: string;
+  amount: number;
+  date: Date;
+  category: string;
+  subCategory: string;
+  tag: string[];
+  indebtedPeople: IndebtedPeople[];
+  account: string;
+  budgets: string[];
+}
+
+export interface ExpenseInterface extends AccountRecord {
+  isPaid: boolean;
+}
+
+export interface Income extends AccountRecord {
+  expensesPaid: ExpenseInterface[];
+}

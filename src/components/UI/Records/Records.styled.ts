@@ -8,30 +8,50 @@ export const RecordContainer = styled.article`
   width: 100%;
   min-height: 10rem;
   padding: 1rem;
-  border-radius: 1rem;
   display: grid;
   grid-template-columns: 70% 15% 15%;
   grid-template-rows: repeat(1, 1fr);
   row-gap: 1.5rem;
 `;
 
+export const RecordDateTime = styled(Sub)`
+  opacity: 0.7;
+`;
+
+export const RecordText = styled(Paragraph)`
+  color: ${AppColors.subtitleColor};
+`;
+
+export const RecordDescription = styled(RecordText)`
+  grid-row: 2 / 4;
+`;
+
+export const RecordCategory = styled(RecordText)`
+  grid-column: 2 / 3;
+`;
+
+export const RecordSubCategory = styled(RecordText)`
+  grid-column: 3 / 4;
+`;
+
+export const BudgetChipContainer = styled.div`
+  justify-self: start;
+  display: flex;
+  gap: 1rem;
+`;
+
+// Mobile
+
 export const RecordContainerMobile = styled.article`
   width: 100%;
   min-height: 10rem;
   padding: 1rem;
-  border-radius: 1rem;
   display: grid;
   row-gap: 1rem;
 `;
 
 export const RecordTitleMobile = styled(ParagraphTitle)`
   text-align: center;
-`;
-
-export const RecordDateTimeContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
 `;
 
 export const RecordSkeletonContainer = styled(RecordContainer)`
@@ -47,14 +67,6 @@ export const ExpensesPayed = styled.section`
 export const Expense = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-`;
-
-export const RecordDescription = styled(Paragraph)`
-  color: ${AppColors.subtitleColor};
-`;
-
-export const RecordDateTime = styled(Sub)`
-  opacity: 0.7;
 `;
 
 export const RecordIncome = styled(Paragraph)`
@@ -73,12 +85,6 @@ export const RecordExpense = styled(Paragraph)`
 
 export const RecordExpenseMobile = styled(RecordExpense)`
   text-align: center;
-`;
-
-export const BudgetChipContainer = styled.div`
-  justify-self: center;
-  display: flex;
-  gap: 1rem;
 `;
 
 export const RecordSkeletonHolder = styled.div`
