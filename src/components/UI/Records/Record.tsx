@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  ListItem, Table, TableHead, TableRow, TableCell, TableBody,
+  ListItem, Table, TableHead, TableRow, TableBody,
 } from '@mui/material';
 
 import { windowSizeAtom } from '../../../atoms';
@@ -12,7 +12,7 @@ import {
   RecordSubCategory,
 } from './Records.styled';
 import {
-  Chip, ParagraphTitle, Paragraph, FlexContainer,
+  Chip, ParagraphTitle, Paragraph, FlexContainer, TableCell,
 } from '../../../styles';
 
 const Record = ({

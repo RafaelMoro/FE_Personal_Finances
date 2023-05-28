@@ -8,6 +8,7 @@ import {
   InputLabel as InputLabelMUI,
   Select as SelectMUI,
   MenuItem as MenuItemMUI,
+  TableCell as TableCellMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -43,6 +44,9 @@ export const GlobalStyles = css`
   }
   .MuiFormHelperText-root {
     ${createResponsiveProps({ fontSize: 'Sub', important: true })}
+  }
+  .MuiTableCell-root {
+    ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
 
@@ -146,6 +150,12 @@ export const ListItemText = styled(ListItemTextMUI)`
   span {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
+`;
+
+// Tables
+
+export const TableCell = styled(TableCellMUI)`
+  ${createResponsiveProps({ fontSize: 'P' })}
 `;
 
 // **** Input and Forms
