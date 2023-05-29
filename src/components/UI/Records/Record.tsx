@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
   ListItem, Table, TableHead, TableRow, TableBody, Drawer,
@@ -23,10 +23,20 @@ const Record = ({
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
   const [shortViewState, setShortViewState] = useState(shortView);
+  const [shortedDescription, setShortedDescription] = useState('');
+  const descriptionIsLong = description.length > 50;
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;
   });
+
+  useEffect(() => {
+    if (descriptionIsLong) {
+      const descriptionSliced = description.slice(0, 50);
+      const descriptionWithEllipsis = descriptionSliced.concat('...');
+      setShortedDescription(descriptionWithEllipsis);
+    }
+  }, [description, descriptionIsLong]);
 
   const toggleShortView = () => setShortViewState(!shortViewState);
 
@@ -115,7 +125,7 @@ const Record = ({
             ))}
           </BudgetChipContainer>
         </FlexContainer>
-        <RecordText>{ description }</RecordText>
+        <RecordText>{ (descriptionIsLong) ? shortedDescription : description }</RecordText>
         { children }
         { (indebtedPeople.length > 0 && shortViewState) && (
           <Paragraph>

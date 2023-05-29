@@ -119,7 +119,7 @@ export const RecordDrawerText = styled(RecordText)`
   text-align: center;
 `;
 
-export const RecordDrawerDescription = styled(Paragraph)`
+export const RecordDrawerDescription = styled(RecordText)`
   grid-column: 1 / 3;
 `;
 

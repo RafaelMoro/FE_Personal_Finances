@@ -19,7 +19,7 @@ const records: AccountRecordUI[] = [
   {
     _id: '123-456',
     shortName: 'Casa a solesta gym',
-    description: 'Didi para ir al gym',
+    description: 'Esta es una descripcion muy larga para darme una idea de cuanto debo de cortar aproximadamente para la vista corta y la vista larga',
     category: 'Transport',
     subCategory: 'Didi/Uber',
     tag: ['Pending'],
