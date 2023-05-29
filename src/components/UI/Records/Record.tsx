@@ -23,7 +23,10 @@ const Record = ({
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
   const [shortViewState, setShortViewState] = useState(shortView);
-  const indebtedPeopleNames = indebtedPeople.map((person) => person.name);
+  const indebtedPeopleNames = indebtedPeople.map((person, index) => {
+    if (index === indebtedPeople.length - 1) return person.name;
+    return `${person.name} - `;
+  });
 
   const toggleShortView = () => setShortViewState(!shortViewState);
 
@@ -116,10 +119,10 @@ const Record = ({
         { children }
         { (indebtedPeople.length > 0 && shortViewState) && (
           <Paragraph>
-            People who owe you money:
+            People involved:
             {' '}
             {
-              indebtedPeopleNames.map((personName) => (`${personName} - `))
+              indebtedPeopleNames.map((personName) => (personName))
             }
           </Paragraph>
         ) }
