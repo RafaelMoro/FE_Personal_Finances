@@ -1,24 +1,38 @@
 import {
-  Table, TableHead, TableRow, TableBody,
+  TableHead, TableRow, TableBody,
 } from '@mui/material';
 import { RecordDrawerProps } from '../interface';
-import { ParagraphTitle, Paragraph, TableCell } from '../../../../styles';
+import {
+  RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
+  RecordDrawerDescription, RecordTable, BudgetChipContainer,
+} from '../Records.styled';
+import { TableCell, Chip } from '../../../../styles';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime,
   category, subCategory, tag, indebtedPeople, budgets,
 }: RecordDrawerProps) => (
-  <div>
-    <ParagraphTitle>{shortName}</ParagraphTitle>
-    <Paragraph>{fullDate}</Paragraph>
-    <Paragraph>{formattedTime}</Paragraph>
-    <Paragraph>{category}</Paragraph>
-    <Paragraph>{subCategory}</Paragraph>
-    <Paragraph>{subCategory}</Paragraph>
-    <Paragraph>{subCategory}</Paragraph>
-    <Paragraph>{description}</Paragraph>
+  <RecordDrawerContainer>
+    <RecordDrawerTitle>{shortName}</RecordDrawerTitle>
+    <RecordDrawerDatetime>{fullDate}</RecordDrawerDatetime>
+    <RecordDrawerDatetime>{formattedTime}</RecordDrawerDatetime>
+    <RecordDrawerText>{category}</RecordDrawerText>
+    <RecordDrawerText>{subCategory}</RecordDrawerText>
+    <BudgetChipContainer>
+      { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+      { budgets.length > 0 && budgets.map((budget, index) => (
+        <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" color="primary" />
+      ))}
+    </BudgetChipContainer>
+    <BudgetChipContainer>
+      { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+      { tag.length > 0 && tag.map((item, index) => (
+        <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" color="primary" />
+      ))}
+    </BudgetChipContainer>
+    <RecordDrawerDescription>{description}</RecordDrawerDescription>
     { (indebtedPeople.length > 0) && (
-    <Table>
+    <RecordTable>
       <TableHead>
         <TableRow>
           <TableCell>Name:</TableCell>
@@ -31,16 +45,13 @@ const RecordDrawer = ({
         { indebtedPeople.map((person, index) => (
           <TableRow key={`${person.name}-${index + 1}`}>
             <TableCell>{person.name}</TableCell>
+            <TableCell>{person.amount}</TableCell>
             { (person.isPaid)
               ? (
-                <>
-                  <TableCell>{person.amount}</TableCell>
-                  <TableCell>Debt paid</TableCell>
-                </>
+                <TableCell>Debt paid</TableCell>
               )
               : (
                 <>
-                  <TableCell>{person.amount}</TableCell>
                   <TableCell>{person.amountPaid}</TableCell>
                   <TableCell>{person.amount - person.amountPaid}</TableCell>
                 </>
@@ -48,9 +59,9 @@ const RecordDrawer = ({
           </TableRow>
         )) }
       </TableBody>
-    </Table>
+    </RecordTable>
     ) }
-  </div>
+  </RecordDrawerContainer>
 );
 
 export { RecordDrawer };

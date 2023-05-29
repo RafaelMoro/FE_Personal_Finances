@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { Table } from '@mui/material';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle,
@@ -93,4 +94,35 @@ export const RecordSkeletonHolder = styled.div`
   background-color: ${AppColors.grey};
   border-radius: 1rem;
   ${blinkAnimation}
+`;
+
+// Record Drawer
+
+export const RecordDrawerContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 1rem;
+  justify-content: center;
+  gap: 1rem;
+`;
+
+export const RecordDrawerTitle = styled(ParagraphTitle)`
+  text-align: center;
+  grid-column: 1 / 3;
+`;
+
+export const RecordDrawerDatetime = styled(RecordDateTime)`
+  text-align: center;
+`;
+
+export const RecordDrawerText = styled(RecordText)`
+  text-align: center;
+`;
+
+export const RecordDrawerDescription = styled(Paragraph)`
+  grid-column: 1 / 3;
+`;
+
+export const RecordTable = styled(Table)`
+  grid-column: 1 / 3;
 `;
