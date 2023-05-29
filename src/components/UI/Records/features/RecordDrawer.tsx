@@ -4,14 +4,14 @@ import {
 import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
-  RecordDrawerDescription, RecordTable, BudgetChipContainer, DebtPaid,
+  RecordDrawerDescription, RecordTable, BudgetChipContainer, DebtPaid, RecordDrawerPriceContainer,
 } from '../Records.styled';
 import { TableCell, Chip } from '../../../../styles';
 import { formatNumberToCurrency } from '../../../../utils';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime,
-  category, subCategory, tag, indebtedPeople, budgets,
+  category, subCategory, tag, indebtedPeople, budgets, children,
 }: RecordDrawerProps) => {
   const formattedIndebtedPeople = indebtedPeople.map((person) => ({
     ...person,
@@ -27,6 +27,9 @@ const RecordDrawer = ({
       <RecordDrawerDatetime>{formattedTime}</RecordDrawerDatetime>
       <RecordDrawerText>{category}</RecordDrawerText>
       <RecordDrawerText>{subCategory}</RecordDrawerText>
+      <RecordDrawerPriceContainer>
+        { children }
+      </RecordDrawerPriceContainer>
       <BudgetChipContainer>
         { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
         { budgets.length > 0 && budgets.map((budget, index) => (

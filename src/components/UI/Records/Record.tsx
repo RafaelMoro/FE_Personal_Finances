@@ -84,7 +84,9 @@ const Record = ({
               tag={tag}
               budgets={budgets}
               shortView={shortView}
-            />
+            >
+              { children }
+            </RecordDrawer>
           </Drawer>
         </RecordContainer>
       </ListItem>
@@ -138,7 +140,9 @@ const Record = ({
             tag={tag}
             budgets={budgets}
             shortView={shortView}
-          />
+          >
+            { children }
+          </RecordDrawer>
         </Drawer>
       </RecordContainerMobile>
     </ListItem>

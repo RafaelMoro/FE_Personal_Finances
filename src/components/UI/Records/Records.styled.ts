@@ -119,6 +119,11 @@ export const RecordDrawerDescription = styled(RecordText)`
   grid-column: 1 / 3;
 `;
 
+export const RecordDrawerPriceContainer = styled.div`
+  text-align: center;
+  grid-column: 1 / 3;
+`;
+
 export const RecordTable = styled(Table)`
   grid-column: 1 / 3;
 `;

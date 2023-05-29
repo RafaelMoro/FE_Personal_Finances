@@ -31,4 +31,6 @@ export interface IRecordListProps {
   records: ExpenseUI [];
 }
 
-export type RecordDrawerProps = Omit<AccountRecordUI, 'amount' | 'account' | '_id'>;
+export interface RecordDrawerProps extends Omit<AccountRecordUI, 'amount' | 'account' | '_id'> {
+  children: ReactNode;
+}
