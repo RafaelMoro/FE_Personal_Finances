@@ -26,11 +26,11 @@ const Expense = ({
         budgets={budgets}
         shortView={shortView}
       >
-        <RecordExpenseMobile>
+        <RecordExpense>
           -
           {' '}
           { amount }
-        </RecordExpenseMobile>
+        </RecordExpense>
       </Record>
     );
   }
@@ -49,11 +49,11 @@ const Expense = ({
       budgets={budgets}
       shortView={shortView}
     >
-      <RecordExpense>
+      <RecordExpenseMobile>
         -
         {' '}
         { amount }
-      </RecordExpense>
+      </RecordExpenseMobile>
     </Record>
   );
 };

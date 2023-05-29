@@ -8,7 +8,7 @@ export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> 
   shortView: boolean;
 }
 
-export interface ExpenseUI extends AccountRecordUI {
+export interface ExpenseUI extends Omit<AccountRecordUI, 'account'> {
   isPaid: boolean;
 }
 
@@ -20,10 +20,6 @@ export interface RecordProps extends Omit<AccountRecordUI, 'amount' | 'account'>
   children: ReactNode;
 }
 
-export interface ExpenseProps {
-  amount: string;
-}
-
 export interface IncomeProps {
   amount: string;
   expensesPaid: ExpenseUI[];
@@ -32,7 +28,7 @@ export interface IncomeProps {
 // Change this. Should take Income or expenses.
 // Maybe create a interface for expenses list or income list.
 export interface IRecordListProps {
-  records: AccountRecordUI [];
+  records: ExpenseUI [];
 }
 
 export type RecordDrawerProps = Omit<AccountRecordUI, 'amount' | 'account' | '_id'>;

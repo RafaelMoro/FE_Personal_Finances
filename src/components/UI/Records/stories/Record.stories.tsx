@@ -21,7 +21,6 @@ MorningRecord.args = {
   subCategory: 'Uber/Didi',
   tag: ['Paid'],
   indebtedPeople: [],
-  account: '123-456-789',
   budgets: ['Transport'],
 };
 

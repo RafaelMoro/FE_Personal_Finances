@@ -8,7 +8,7 @@ import { windowSizeAtom } from '../../../atoms';
 import { RecordProps } from './interface';
 import { RecordDrawer } from './features/RecordDrawer';
 import {
-  RecordContainer, RecordDescription, RecordDateTime, RecordContainerMobile,
+  RecordContainer, RecordDateTime, RecordContainerMobile,
   RecordTitleMobile, BudgetChipContainer, RecordCategory, RecordText,
   RecordSubCategory,
 } from './Records.styled';
@@ -47,9 +47,10 @@ const Record = ({
           <ParagraphTitle>{ shortName }</ParagraphTitle>
           <RecordDateTime>{ fullDate }</RecordDateTime>
           <RecordDateTime>{ formattedTime }</RecordDateTime>
+          { children }
           <RecordCategory>{ category }</RecordCategory>
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
-          <RecordDescription>{ description }</RecordDescription>
+          <Paragraph>{ description }</Paragraph>
           <BudgetChipContainer>
             { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
             { budgets.length > 0 && budgets.map((budget) => (
@@ -62,15 +63,14 @@ const Record = ({
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
             ))}
           </BudgetChipContainer>
-          { children }
           { (indebtedPeople.length > 0 && shortViewState) && (
-          <Paragraph>
+          <RecordText>
             People involved:
             {' '}
             {
               indebtedPeopleNames.map((personName) => (personName))
             }
-          </Paragraph>
+          </RecordText>
           ) }
           <Drawer anchor="right" open={!shortViewState} onClose={toggleShortView}>
             <RecordDrawer
@@ -115,16 +115,16 @@ const Record = ({
             ))}
           </BudgetChipContainer>
         </FlexContainer>
-        <RecordText>{ (descriptionIsLong) ? shortedDescription : description }</RecordText>
         { children }
+        <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
         { (indebtedPeople.length > 0 && shortViewState) && (
-          <Paragraph>
+          <RecordText>
             People involved:
             {' '}
             {
               indebtedPeopleNames.map((personName) => (personName))
             }
-          </Paragraph>
+          </RecordText>
         ) }
         <Drawer anchor="bottom" open={!shortViewState} onClose={toggleShortView}>
           <RecordDrawer

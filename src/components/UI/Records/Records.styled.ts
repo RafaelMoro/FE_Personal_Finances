@@ -23,10 +23,6 @@ export const RecordText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
 `;
 
-export const RecordDescription = styled(RecordText)`
-  grid-row: 2 / 4;
-`;
-
 export const RecordCategory = styled(RecordText)`
   grid-column: 2 / 3;
 `;
