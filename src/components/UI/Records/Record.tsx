@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  ListItem, Table, TableHead, TableRow, TableBody,
+  ListItem, Table, TableHead, TableRow, TableBody, Drawer,
 } from '@mui/material';
 
 import { windowSizeAtom } from '../../../atoms';
 import { RecordProps } from './interface';
+import { RecordDrawer } from './features/RecordDrawer';
 import {
   RecordContainer, RecordDescription, RecordDateTime, RecordContainerMobile,
   RecordTitleMobile, BudgetChipContainer, RecordCategory, RecordText,
@@ -122,30 +123,20 @@ const Record = ({
             }
           </Paragraph>
         ) }
-        { (indebtedPeople.length > 0 && !shortViewState) && (
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name:</TableCell>
-                <TableCell>Amount:</TableCell>
-                <TableCell>Amount Paid:</TableCell>
-                <TableCell>Resting Debt:</TableCell>
-                <TableCell>The debt is completely paid:</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { indebtedPeople.map((person, index) => (
-                <TableRow key={`${person.name}-${index + 1}`}>
-                  <TableCell>{person.name}</TableCell>
-                  <TableCell>{person.amount}</TableCell>
-                  <TableCell>{person.amountPaid}</TableCell>
-                  <TableCell>{person.amount - person.amountPaid}</TableCell>
-                  <TableCell>{person.isPaid ? 'Yes' : 'No'}</TableCell>
-                </TableRow>
-              )) }
-            </TableBody>
-          </Table>
-        ) }
+        <Drawer anchor="bottom" open={!shortViewState} onClose={toggleShortView}>
+          <RecordDrawer
+            shortName={shortName}
+            description={description}
+            fullDate={fullDate}
+            formattedTime={formattedTime}
+            category={category}
+            subCategory={subCategory}
+            indebtedPeople={indebtedPeople}
+            tag={tag}
+            budgets={budgets}
+            shortView={shortView}
+          />
+        </Drawer>
       </RecordContainerMobile>
     </ListItem>
   );

@@ -34,3 +34,5 @@ export interface IncomeProps {
 export interface IRecordListProps {
   records: AccountRecordUI [];
 }
+
+export type RecordDrawerProps = Omit<AccountRecordUI, 'amount' | 'account' | '_id'>;
