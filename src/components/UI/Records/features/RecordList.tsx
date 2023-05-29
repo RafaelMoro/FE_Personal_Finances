@@ -1,12 +1,12 @@
 import { List, Divider } from '@mui/material';
 import { IRecordListProps } from '../interface';
-import { Expense } from '../Expense';
+import { Record } from '../Record';
 
 const RecordList = ({ records }: IRecordListProps) => (
   <List component="nav">
     { records.length > 0 && records.map((record) => (
       <article key={record._id}>
-        <Expense
+        <Record
           _id={record._id}
           shortName={record.shortName}
           description={record.description}

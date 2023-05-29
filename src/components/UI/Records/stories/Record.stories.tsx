@@ -1,13 +1,13 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Expense } from '../Expense';
+import { Record } from '../Record';
 
 export default {
   title: 'UI/Expense',
-  component: Expense
-} as ComponentMeta<typeof Expense>;
+  component: Record
+} as ComponentMeta<typeof Record>;
 
-const Template: ComponentStory<typeof Expense> = (args) => (
-  <Expense {...args} />
+const Template: ComponentStory<typeof Record> = (args) => (
+  <Record {...args} />
 );
 
 export const MorningRecord = Template.bind({});

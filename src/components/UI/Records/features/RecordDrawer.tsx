@@ -11,7 +11,7 @@ import { formatNumberToCurrency } from '../../../../utils';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime,
-  category, subCategory, tag, indebtedPeople, budgets, children,
+  category, subCategory, tag, indebtedPeople, budgets, amountShown,
 }: RecordDrawerProps) => {
   const formattedIndebtedPeople = indebtedPeople.map((person) => ({
     ...person,
@@ -28,7 +28,7 @@ const RecordDrawer = ({
       <RecordDrawerText>{category}</RecordDrawerText>
       <RecordDrawerText>{subCategory}</RecordDrawerText>
       <RecordDrawerPriceContainer>
-        { children }
+        { amountShown }
       </RecordDrawerPriceContainer>
       <BudgetChipContainer>
         { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }

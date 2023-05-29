@@ -13,9 +13,9 @@ import {
 import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
 import { DashboardNotificationFunctions } from './interface';
-import { ExpenseUI } from '../../components/UI/Records/interface';
+import { AnyRecord } from '../../components/UI/Records/interface';
 
-const records: ExpenseUI[] = [
+const records: AnyRecord[] = [
   {
     _id: '123-456',
     shortName: 'Casa a solesta gym',
@@ -48,6 +48,7 @@ const records: ExpenseUI[] = [
     formattedTime: '12:34pm',
     fullDate: 'May 20',
     amount: '$150.09',
+    account: '123-456-789',
     isPaid: false,
   },
   {
@@ -63,7 +64,7 @@ const records: ExpenseUI[] = [
     formattedTime: '1:50pm',
     fullDate: 'May 20',
     amount: '$110.24',
-    isPaid: true,
+    account: '123-456-789',
   },
 ];
 

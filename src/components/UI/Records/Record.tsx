@@ -10,7 +10,8 @@ import { RecordDrawer } from './features/RecordDrawer';
 import {
   RecordContainer, RecordDateTime, RecordContainerMobile,
   RecordTitleMobile, BudgetChipContainer, RecordCategory, RecordText,
-  RecordSubCategory,
+  RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
+  RecordIncome,
 } from './Records.styled';
 import {
   Chip, ParagraphTitle, Paragraph, FlexContainer,
@@ -19,12 +20,14 @@ import {
 const Record = ({
   _id, shortName, description, category, subCategory, tag = [],
   indebtedPeople = [], budgets = [], shortView = true,
-  formattedTime, fullDate, children,
+  formattedTime, fullDate, isPaid, amount,
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
   const [shortViewState, setShortViewState] = useState(shortView);
   const [shortedDescription, setShortedDescription] = useState('');
+
   const descriptionIsLong = description.length > 50;
+  const isExpense = typeof isPaid !== 'undefined';
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;
@@ -40,6 +43,38 @@ const Record = ({
 
   const toggleShortView = () => setShortViewState(!shortViewState);
 
+  const amountShownMobile = isExpense
+    ? (
+      <RecordExpenseMobile>
+        -
+        {' '}
+        { amount }
+      </RecordExpenseMobile>
+    )
+    : (
+      <RecordIncomeMobile>
+        +
+        {' '}
+        { amount }
+      </RecordIncomeMobile>
+    );
+
+  const amountShown = isExpense
+    ? (
+      <RecordExpense>
+        -
+        {' '}
+        { amount }
+      </RecordExpense>
+    )
+    : (
+      <RecordIncome>
+        +
+        {' '}
+        { amount }
+      </RecordIncome>
+    );
+
   if (windowSize !== 'Mobile') {
     return (
       <ListItem button onClick={toggleShortView}>
@@ -47,7 +82,7 @@ const Record = ({
           <ParagraphTitle>{ shortName }</ParagraphTitle>
           <RecordDateTime>{ fullDate }</RecordDateTime>
           <RecordDateTime>{ formattedTime }</RecordDateTime>
-          { children }
+          { amountShown }
           <RecordCategory>{ category }</RecordCategory>
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           <Paragraph>{ description }</Paragraph>
@@ -84,9 +119,8 @@ const Record = ({
               tag={tag}
               budgets={budgets}
               shortView={shortView}
-            >
-              { children }
-            </RecordDrawer>
+              amountShown={amountShown}
+            />
           </Drawer>
         </RecordContainer>
       </ListItem>
@@ -117,7 +151,7 @@ const Record = ({
             ))}
           </BudgetChipContainer>
         </FlexContainer>
-        { children }
+        { amountShownMobile }
         <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
         { (indebtedPeople.length > 0 && shortViewState) && (
           <RecordText>
@@ -140,9 +174,8 @@ const Record = ({
             tag={tag}
             budgets={budgets}
             shortView={shortView}
-          >
-            { children }
-          </RecordDrawer>
+            amountShown={amountShownMobile}
+          />
         </Drawer>
       </RecordContainerMobile>
     </ListItem>
