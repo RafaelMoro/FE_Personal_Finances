@@ -4,7 +4,7 @@ import {
 import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
-  RecordDrawerDescription, RecordTable, BudgetChipContainer,
+  RecordDrawerDescription, RecordTable, BudgetChipContainer, DebtPaid,
 } from '../Records.styled';
 import { TableCell, Chip } from '../../../../styles';
 
@@ -44,14 +44,17 @@ const RecordDrawer = ({
       <TableBody>
         { indebtedPeople.map((person, index) => (
           <TableRow key={`${person.name}-${index + 1}`}>
-            <TableCell>{person.name}</TableCell>
-            <TableCell>{person.amount}</TableCell>
             { (person.isPaid)
               ? (
-                <TableCell>Debt paid</TableCell>
+                <>
+                  <DebtPaid>{person.name}</DebtPaid>
+                  <DebtPaid>{person.amount}</DebtPaid>
+                </>
               )
               : (
                 <>
+                  <TableCell>{person.name}</TableCell>
+                  <TableCell>{person.amount}</TableCell>
                   <TableCell>{person.amountPaid}</TableCell>
                   <TableCell>{person.amount - person.amountPaid}</TableCell>
                 </>

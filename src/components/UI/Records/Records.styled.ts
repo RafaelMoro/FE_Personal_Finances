@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Table } from '@mui/material';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Paragraph, Sub, ParagraphTitle,
+  AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
 } from '../../../styles';
 
 export const RecordContainer = styled.article`
@@ -125,4 +125,9 @@ export const RecordDrawerDescription = styled(Paragraph)`
 
 export const RecordTable = styled(Table)`
   grid-column: 1 / 3;
+`;
+
+export const DebtPaid = styled(TableCell)`
+  color: ${AppColors.subtitleColor};
+  text-decoration: line-through;
 `;
