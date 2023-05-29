@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  ListItem, Table, TableHead, TableRow, TableBody, Drawer,
+  ListItem, Drawer,
 } from '@mui/material';
 
 import { windowSizeAtom } from '../../../atoms';
@@ -13,7 +13,7 @@ import {
   RecordSubCategory,
 } from './Records.styled';
 import {
-  Chip, ParagraphTitle, Paragraph, FlexContainer, TableCell,
+  Chip, ParagraphTitle, Paragraph, FlexContainer,
 } from '../../../styles';
 
 const Record = ({
@@ -65,37 +65,27 @@ const Record = ({
           { children }
           { (indebtedPeople.length > 0 && shortViewState) && (
           <Paragraph>
-            People who owe you money:
+            People involved:
             {' '}
             {
-              indebtedPeopleNames.map((personName) => (`${personName} - `))
+              indebtedPeopleNames.map((personName) => (personName))
             }
           </Paragraph>
           ) }
-          { (indebtedPeople.length > 0 && !shortViewState) && (
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name:</TableCell>
-                <TableCell>Amount:</TableCell>
-                <TableCell>Amount Paid:</TableCell>
-                <TableCell>Resting Debt:</TableCell>
-                <TableCell>The debt is completely paid:</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              { indebtedPeople.map((person, index) => (
-                <TableRow key={`${person.name}-${index + 1}`}>
-                  <TableCell>{person.name}</TableCell>
-                  <TableCell>{person.amount}</TableCell>
-                  <TableCell>{person.amountPaid}</TableCell>
-                  <TableCell>{person.amount - person.amountPaid}</TableCell>
-                  <TableCell>{person.isPaid ? 'Yes' : 'No'}</TableCell>
-                </TableRow>
-              )) }
-            </TableBody>
-          </Table>
-          ) }
+          <Drawer anchor="right" open={!shortViewState} onClose={toggleShortView}>
+            <RecordDrawer
+              shortName={shortName}
+              description={description}
+              fullDate={fullDate}
+              formattedTime={formattedTime}
+              category={category}
+              subCategory={subCategory}
+              indebtedPeople={indebtedPeople}
+              tag={tag}
+              budgets={budgets}
+              shortView={shortView}
+            />
+          </Drawer>
         </RecordContainer>
       </ListItem>
     );
