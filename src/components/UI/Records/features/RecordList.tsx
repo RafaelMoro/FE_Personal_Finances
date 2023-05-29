@@ -17,7 +17,6 @@ const RecordList = ({ records }: IRecordListProps) => (
           budgets={record.budgets}
           fullDate={record.fullDate}
           formattedTime={record.formattedTime}
-          shortView={record.shortView}
           amount={record.amount}
           isPaid={record.isPaid}
         />

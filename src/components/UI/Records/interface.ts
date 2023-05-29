@@ -5,7 +5,6 @@ export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> 
   fullDate: string;
   formattedTime: string;
   amount: string;
-  shortView: boolean;
 }
 
 export interface ExpenseUI extends Omit<AccountRecordUI, 'account'> {

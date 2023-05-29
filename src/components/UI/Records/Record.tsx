@@ -19,11 +19,11 @@ import {
 
 const Record = ({
   _id, shortName, description, category, subCategory, tag = [],
-  indebtedPeople = [], budgets = [], shortView = true,
+  indebtedPeople = [], budgets = [],
   formattedTime, fullDate, isPaid, amount,
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
-  const [shortViewState, setShortViewState] = useState(shortView);
+  const [shortViewState, setShortViewState] = useState(true);
   const [shortedDescription, setShortedDescription] = useState('');
 
   const descriptionIsLong = description.length > 50;
@@ -118,7 +118,6 @@ const Record = ({
               indebtedPeople={indebtedPeople}
               tag={tag}
               budgets={budgets}
-              shortView={shortView}
               amountShown={amountShown}
             />
           </Drawer>
@@ -173,7 +172,6 @@ const Record = ({
             indebtedPeople={indebtedPeople}
             tag={tag}
             budgets={budgets}
-            shortView={shortView}
             amountShown={amountShownMobile}
           />
         </Drawer>
