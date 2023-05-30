@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Table } from '@mui/material';
+import { List as ListMUI, Table } from '@mui/material';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
@@ -119,6 +119,11 @@ export const RecordDrawerDescription = styled(RecordText)`
   grid-column: 1 / 3;
 `;
 
+export const TableTitle = styled(Paragraph)`
+  grid-column: 1 / 3;
+  text-align: center;
+`;
+
 export const RecordDrawerPriceContainer = styled.div`
   text-align: center;
   grid-column: 1 / 3;
@@ -131,4 +136,10 @@ export const RecordTable = styled(Table)`
 export const DebtPaid = styled(TableCell)`
   color: ${AppColors.subtitleColor};
   text-decoration: line-through;
+`;
+
+// Record List
+
+export const List = styled(ListMUI)`
+  margin-top: 1.5rem;
 `;

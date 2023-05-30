@@ -1,11 +1,14 @@
-import { List, Divider } from '@mui/material';
-import { IRecordListProps } from '../interface';
+import { Divider } from '@mui/material';
+
+import { RecordListProps } from '../interface';
+import { List } from '../Records.styled';
 import { Record } from '../Record';
 
-const RecordList = ({ records }: IRecordListProps) => (
-  <List component="nav">
-    { records.length > 0 && records.map((record) => (
-      <article key={record._id}>
+const RecordList = ({ records }: RecordListProps) => (
+  <List>
+    { records.length > 0 && records.map((record, index) => (
+      <div key={record._id}>
+        { (index === 0) && (<Divider />) }
         <Record
           _id={record._id}
           shortName={record.shortName}
@@ -19,9 +22,10 @@ const RecordList = ({ records }: IRecordListProps) => (
           formattedTime={record.formattedTime}
           amount={record.amount}
           isPaid={record.isPaid}
+          expensesPaid={record.expensesPaid}
         />
         <Divider />
-      </article>
+      </div>
     )) }
   </List>
 );

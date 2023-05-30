@@ -20,7 +20,7 @@ import {
 const Record = ({
   _id, shortName, description, category, subCategory, tag = [],
   indebtedPeople = [], budgets = [],
-  formattedTime, fullDate, isPaid, amount,
+  formattedTime, fullDate, isPaid, amount, expensesPaid = [],
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
   const [shortViewState, setShortViewState] = useState(true);
@@ -107,6 +107,13 @@ const Record = ({
             }
           </RecordText>
           ) }
+          { (!isExpense && expensesPaid.length > 0 && shortViewState) && (
+            <RecordText>
+              Records Paid:
+              {' '}
+              { expensesPaid.length }
+            </RecordText>
+          ) }
           <Drawer anchor="right" open={!shortViewState} onClose={toggleShortView}>
             <RecordDrawer
               shortName={shortName}
@@ -119,6 +126,7 @@ const Record = ({
               tag={tag}
               budgets={budgets}
               amountShown={amountShown}
+              expensesPaid={expensesPaid}
             />
           </Drawer>
         </RecordContainer>
@@ -161,6 +169,13 @@ const Record = ({
             }
           </RecordText>
         ) }
+        { (!isExpense && expensesPaid.length > 0 && shortViewState) && (
+        <RecordText>
+          Records Paid:
+          {' '}
+          { expensesPaid.length }
+        </RecordText>
+        ) }
         <Drawer anchor="bottom" open={!shortViewState} onClose={toggleShortView}>
           <RecordDrawer
             shortName={shortName}
@@ -173,6 +188,7 @@ const Record = ({
             tag={tag}
             budgets={budgets}
             amountShown={amountShownMobile}
+            expensesPaid={expensesPaid}
           />
         </Drawer>
       </RecordContainerMobile>

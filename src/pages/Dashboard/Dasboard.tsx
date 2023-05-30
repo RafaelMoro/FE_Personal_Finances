@@ -63,6 +63,24 @@ const records: AnyRecord[] = [
     fullDate: 'May 20',
     amount: '$110.24',
     account: '123-456-789',
+    expensesPaid: [
+      {
+        _id: '64600b8f2bb57b9d17843d87',
+        shortName: 'Chilaquiles',
+        description: 'totopos, chile, tomate, cilantro',
+        amount: '$96.03',
+        fullDate: 'May 20',
+        formattedTime: '1:50pm',
+      },
+      {
+        _id: '64600b8f2bb57b9d17843d87',
+        shortName: 'Chilaquiles',
+        description: 'totopos, chile, tomate, cilantro',
+        amount: '$96.03',
+        fullDate: 'May 20',
+        formattedTime: '1:50pm',
+      },
+    ],
   },
 ];
 

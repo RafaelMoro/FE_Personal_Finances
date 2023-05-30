@@ -5,12 +5,13 @@ import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
   RecordDrawerDescription, RecordTable, BudgetChipContainer, DebtPaid, RecordDrawerPriceContainer,
+  TableTitle,
 } from '../Records.styled';
 import { TableCell, Chip } from '../../../../styles';
 import { formatNumberToCurrency } from '../../../../utils';
 
 const RecordDrawer = ({
-  shortName, description, fullDate, formattedTime,
+  shortName, description, fullDate, formattedTime, expensesPaid,
   category, subCategory, tag, indebtedPeople, budgets, amountShown,
 }: RecordDrawerProps) => {
   const formattedIndebtedPeople = indebtedPeople.map((person) => ({
@@ -44,37 +45,65 @@ const RecordDrawer = ({
       </BudgetChipContainer>
       <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (indebtedPeople.length > 0) && (
-      <RecordTable>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name:</TableCell>
-            <TableCell>Amount:</TableCell>
-            <TableCell>Amount Paid:</TableCell>
-            <TableCell>Resting Debt:</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { formattedIndebtedPeople.map((person, index) => (
-            <TableRow key={`${person.name}-${index + 1}`}>
-              { (person.isPaid)
-                ? (
-                  <>
-                    <DebtPaid>{person.name}</DebtPaid>
-                    <DebtPaid>{person.amount}</DebtPaid>
-                  </>
-                )
-                : (
-                  <>
-                    <TableCell>{person.name}</TableCell>
-                    <TableCell>{person.amount}</TableCell>
-                    <TableCell>{person.amountPaid}</TableCell>
-                    <TableCell>{person.restingDebt}</TableCell>
-                  </>
-                ) }
-            </TableRow>
-          )) }
-        </TableBody>
-      </RecordTable>
+        <>
+          <TableTitle>People related to this transaction: </TableTitle>
+          <RecordTable>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name:</TableCell>
+                <TableCell>Amount:</TableCell>
+                <TableCell>Amount Paid:</TableCell>
+                <TableCell>Resting Debt:</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { formattedIndebtedPeople.map((person, index) => (
+                <TableRow key={`${person.name}-${index + 1}`}>
+                  { (person.isPaid)
+                    ? (
+                      <>
+                        <DebtPaid>{person.name}</DebtPaid>
+                        <DebtPaid>{person.amount}</DebtPaid>
+                      </>
+                    )
+                    : (
+                      <>
+                        <TableCell>{person.name}</TableCell>
+                        <TableCell>{person.amount}</TableCell>
+                        <TableCell>{person.amountPaid}</TableCell>
+                        <TableCell>{person.restingDebt}</TableCell>
+                      </>
+                    ) }
+                </TableRow>
+              )) }
+            </TableBody>
+          </RecordTable>
+        </>
+      ) }
+      { (expensesPaid.length > 0) && (
+        <>
+          <TableTitle>Expenses Paid:</TableTitle>
+          <RecordTable>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name:</TableCell>
+                <TableCell>Date:</TableCell>
+                <TableCell>Time:</TableCell>
+                <TableCell>Amount</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { expensesPaid.map((expense, index) => (
+                <TableRow key={`${expense._id}-${index + 1}`}>
+                  <TableCell>{expense.shortName}</TableCell>
+                  <TableCell>{expense.fullDate}</TableCell>
+                  <TableCell>{expense.formattedTime}</TableCell>
+                  <TableCell>{expense.amount}</TableCell>
+                </TableRow>
+              )) }
+            </TableBody>
+          </RecordTable>
+        </>
       ) }
     </RecordDrawerContainer>
   );
