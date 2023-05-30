@@ -18,7 +18,6 @@ export interface IncomeUI extends AccountRecordUI {
 export interface ExpensePaid {
   _id: string;
   shortName: string;
-  description: string;
   amount: string;
   fullDate: string;
   formattedTime: string;

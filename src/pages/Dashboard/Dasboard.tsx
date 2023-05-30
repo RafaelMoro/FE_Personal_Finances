@@ -67,7 +67,6 @@ const records: AnyRecord[] = [
       {
         _id: '64600b8f2bb57b9d17843d87',
         shortName: 'Chilaquiles',
-        description: 'totopos, chile, tomate, cilantro',
         amount: '$96.03',
         fullDate: 'May 20',
         formattedTime: '1:50pm',
@@ -75,7 +74,6 @@ const records: AnyRecord[] = [
       {
         _id: '64600b8f2bb57b9d17843d87',
         shortName: 'Chilaquiles',
-        description: 'totopos, chile, tomate, cilantro',
         amount: '$96.03',
         fullDate: 'May 20',
         formattedTime: '1:50pm',
