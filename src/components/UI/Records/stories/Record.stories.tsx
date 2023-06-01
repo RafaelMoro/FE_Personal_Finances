@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Record } from '../Record';
 
 export default {
-  title: 'UI/Expense',
+  title: 'UI/Record',
   component: Record
 } as ComponentMeta<typeof Record>;
 
@@ -10,18 +10,20 @@ const Template: ComponentStory<typeof Record> = (args) => (
   <Record {...args} />
 );
 
-export const MorningRecord = Template.bind({});
-MorningRecord.args = {
+export const NormalRecord = Template.bind({});
+NormalRecord.args = {
+  _id: '456-789',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
-  amount: '$109.95',
-  fullDate: 'May 14',
-  formattedTime: '17:16pm',
   category: 'Transport',
   subCategory: 'Uber/Didi',
-  tag: ['Paid'],
+  tag: ['Important'],
   indebtedPeople: [],
   budgets: ['Transport'],
+  formattedTime: '17:16pm',
+  fullDate: 'May 14',
+  amount: '$109.95',
+  isPaid: false,
 };
 
 // export const EveningRecord = Template.bind({});
