@@ -1,17 +1,30 @@
+import { withJotai } from 'storybook-addon-jotai';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { windowSizeAtom } from '../../../../atoms';
 import { Record } from '../Record';
 
 export default {
   title: 'UI/Record',
-  component: Record
+  component: Record,
+  decorators: [withJotai]
 } as ComponentMeta<typeof Record>;
 
 const Template: ComponentStory<typeof Record> = (args) => (
   <Record {...args} />
 );
 
-export const NormalRecord = Template.bind({});
-NormalRecord.args = {
+export const DesktopRecord = Template.bind({});
+DesktopRecord.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+DesktopRecord.args = {
   _id: '456-789',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
