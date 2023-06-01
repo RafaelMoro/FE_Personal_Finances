@@ -33,7 +33,9 @@ export const RecordSubCategory = styled(RecordText)`
 
 export const BudgetChipContainer = styled.div`
   justify-self: start;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: min-content;
   gap: 1rem;
 `;
 

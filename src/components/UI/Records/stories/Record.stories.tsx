@@ -13,8 +13,8 @@ const Template: ComponentStory<typeof Record> = (args) => (
   <Record {...args} />
 );
 
-export const DesktopRecord = Template.bind({});
-DesktopRecord.parameters = {
+export const DesktopIncome = Template.bind({});
+DesktopIncome.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -24,7 +24,7 @@ DesktopRecord.parameters = {
     }
   }
 }
-DesktopRecord.args = {
+DesktopIncome.args = {
   _id: '456-789',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
@@ -39,32 +39,109 @@ DesktopRecord.args = {
   isPaid: false,
 };
 
-// export const EveningRecord = Template.bind({});
-// EveningRecord.args = {
-//   shortName: 'Uber home to bar.',
-//   description: 'Paying Uber to go to a bar.',
-//   recordType: 'Expense',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 67.43,
-// };
+export const DesktopIncomeWithLongDescription = Template.bind({});
+DesktopIncomeWithLongDescription.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+DesktopIncomeWithLongDescription.args = {
+  _id: '456-789',
+  shortName: 'Groceries for the week.',
+  description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
+  category: 'Food',
+  subCategory: 'Groceries',
+  tag: ['Important'],
+  indebtedPeople: [],
+  budgets: ['Food'],
+  formattedTime: '15:31pm',
+  fullDate: 'May 19',
+  amount: '$970.44',
+  isPaid: false,
+};
 
-// export const LongShortNameRecord = Template.bind({});
-// LongShortNameRecord.args = {
-//   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
-//   description: 'Paying Uber to go to a bar.',
-//   recordType: 'Expense',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 67.43,
-// };
+export const DesktopIncomeWithLongShortName = Template.bind({});
+DesktopIncomeWithLongShortName.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+DesktopIncomeWithLongShortName.args = {
+  _id: '456-789',
+  shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
+  description: 'Paying Uber to go to a bar.',
+  category: 'Food',
+  subCategory: 'Groceries',
+  tag: ['Important'],
+  indebtedPeople: [],
+  budgets: ['Food'],
+  formattedTime: '05:21pm',
+  fullDate: 'Feb 10',
+  amount: '$67.43',
+  isPaid: false,
+};
 
-// export const LongDescriptionRecord = Template.bind({});
-// LongDescriptionRecord.args = {
-//   shortName: "McDonald's didi food 2 combos of $99 each. ",
-//   description: "Going to Mcdonald's with Eric for 2 combos of $99 each. Robb owes me $198 still on Feb 16. He'll check if he can pay me next paycheck. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt, nemo exercitationem a voluptas eveniet quod inventore nulla aliquid delectus porro nostrum, quis accusamus minus consectetur ea natus ipsum quae sunt?",
-//   recordType: 'Expense',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 67.43,
-// };
+export const DesktopIncomeWithoutTagsAndBudgets = Template.bind({});
+DesktopIncomeWithoutTagsAndBudgets.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+DesktopIncomeWithoutTagsAndBudgets.args = {
+  _id: '456-789',
+  shortName: "2 Mcdonalds ",
+  description: "Mine and Eric's",
+  category: 'Food',
+  subCategory: 'Groceries',
+  tag: [],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '08:45pm',
+  fullDate: 'March 26',
+  amount: '$156.00',
+  isPaid: false,
+};
+
+export const DesktopIncomeWithManyBudgets = Template.bind({});
+DesktopIncomeWithManyBudgets.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+DesktopIncomeWithManyBudgets.args = {
+  _id: '456-789',
+  shortName: "Imagine Dragons concert ",
+  description: "CDMX Concert",
+  category: 'Leisure',
+  subCategory: 'Outdoors',
+  tag: [],
+  indebtedPeople: [],
+  budgets: ['Leisure', 'Debt', 'AMEX', 'Transport'],
+  formattedTime: '21:11pm',
+  fullDate: 'May 10',
+  amount: '$2,256.00',
+  isPaid: false,
+};
 
 // export const IncomeRecord = Template.bind({});
 // IncomeRecord.args = {
