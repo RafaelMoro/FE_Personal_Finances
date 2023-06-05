@@ -24,9 +24,11 @@ const Record = ({
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
   const [shortViewState, setShortViewState] = useState(true);
+  const [shortedName, setShortedName] = useState('');
   const [shortedDescription, setShortedDescription] = useState('');
 
   const descriptionIsLong = description.length > 50;
+  const nameIsLong = shortName.length > 80;
   const isExpense = typeof isPaid !== 'undefined';
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
@@ -40,6 +42,14 @@ const Record = ({
       setShortedDescription(descriptionWithEllipsis);
     }
   }, [description, descriptionIsLong]);
+
+  useEffect(() => {
+    if (nameIsLong) {
+      const nameSliced = shortName.slice(0, 80);
+      const nameWithEllipsis = nameSliced.concat('...');
+      setShortedName(nameWithEllipsis);
+    }
+  }, [nameIsLong, shortName]);
 
   const toggleShortView = () => setShortViewState(!shortViewState);
 
@@ -137,7 +147,7 @@ const Record = ({
   return (
     <ListItem button onClick={toggleShortView}>
       <RecordContainerMobile>
-        <RecordTitleMobile>{ shortName }</RecordTitleMobile>
+        <RecordTitleMobile>{ (nameIsLong) ? shortedName : shortName }</RecordTitleMobile>
         <FlexContainer justifyContent="center" gap="1">
           <RecordDateTime>{ fullDate }</RecordDateTime>
           <RecordDateTime>{ formattedTime }</RecordDateTime>
