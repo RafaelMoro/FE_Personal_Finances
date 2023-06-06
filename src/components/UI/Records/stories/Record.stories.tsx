@@ -4,7 +4,7 @@ import { windowSizeAtom } from '../../../../atoms';
 import { Record } from '../Record';
 
 export default {
-  title: 'UI/Record',
+  title: 'UI/Record/Desktop',
   component: Record,
   decorators: [withJotai]
 } as ComponentMeta<typeof Record>;
@@ -13,8 +13,8 @@ const Template: ComponentStory<typeof Record> = (args) => (
   <Record {...args} />
 );
 
-export const DesktopIncome = Template.bind({});
-DesktopIncome.parameters = {
+export const Income = Template.bind({});
+Income.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -24,7 +24,7 @@ DesktopIncome.parameters = {
     }
   }
 }
-DesktopIncome.args = {
+Income.args = {
   _id: '456-789',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
@@ -39,8 +39,8 @@ DesktopIncome.args = {
   isPaid: false,
 };
 
-export const DesktopIncomeWithLongDescription = Template.bind({});
-DesktopIncomeWithLongDescription.parameters = {
+export const IncomeWithLongDescription = Template.bind({});
+IncomeWithLongDescription.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -50,7 +50,7 @@ DesktopIncomeWithLongDescription.parameters = {
     }
   }
 }
-DesktopIncomeWithLongDescription.args = {
+IncomeWithLongDescription.args = {
   _id: '456-789',
   shortName: 'Groceries for the week.',
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
@@ -65,8 +65,8 @@ DesktopIncomeWithLongDescription.args = {
   isPaid: false,
 };
 
-export const DesktopIncomeWithLongShortName = Template.bind({});
-DesktopIncomeWithLongShortName.parameters = {
+export const IncomeWithLongShortName = Template.bind({});
+IncomeWithLongShortName.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -76,7 +76,7 @@ DesktopIncomeWithLongShortName.parameters = {
     }
   }
 }
-DesktopIncomeWithLongShortName.args = {
+IncomeWithLongShortName.args = {
   _id: '456-789',
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
@@ -91,8 +91,8 @@ DesktopIncomeWithLongShortName.args = {
   isPaid: false,
 };
 
-export const DesktopIncomeWithoutTagsAndBudgets = Template.bind({});
-DesktopIncomeWithoutTagsAndBudgets.parameters = {
+export const IncomeWithoutTagsAndBudgets = Template.bind({});
+IncomeWithoutTagsAndBudgets.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -102,7 +102,7 @@ DesktopIncomeWithoutTagsAndBudgets.parameters = {
     }
   }
 }
-DesktopIncomeWithoutTagsAndBudgets.args = {
+IncomeWithoutTagsAndBudgets.args = {
   _id: '456-789',
   shortName: "2 Mcdonalds ",
   description: "Mine and Eric's",
@@ -117,8 +117,8 @@ DesktopIncomeWithoutTagsAndBudgets.args = {
   isPaid: false,
 };
 
-export const DesktopIncomeWithManyBudgets = Template.bind({});
-DesktopIncomeWithManyBudgets.parameters = {
+export const IncomeWithManyBudgets = Template.bind({});
+IncomeWithManyBudgets.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -128,7 +128,7 @@ DesktopIncomeWithManyBudgets.parameters = {
     }
   }
 }
-DesktopIncomeWithManyBudgets.args = {
+IncomeWithManyBudgets.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",

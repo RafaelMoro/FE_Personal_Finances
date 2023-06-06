@@ -1,10 +1,9 @@
 import { withJotai } from 'storybook-addon-jotai';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { windowSizeAtom } from '../../../../atoms';
 import { Record } from '../Record';
 
 export default {
-  title: 'UI/Record',
+  title: 'UI/Record/Mobile',
   component: Record,
   decorators: [withJotai]
 } as ComponentMeta<typeof Record>;
@@ -15,8 +14,8 @@ const Template: ComponentStory<typeof Record> = (args) => (
   </div>
 );
 
-export const MobileIncome = Template.bind({});
-MobileIncome.args = {
+export const Income = Template.bind({});
+Income.args = {
   _id: '456-789',
   shortName: 'Gym to home.',
   description: 'Paying Uber to return home',
@@ -31,8 +30,8 @@ MobileIncome.args = {
   isPaid: false,
 };
 
-export const MobileIncomeWithLongDescription = Template.bind({});
-MobileIncomeWithLongDescription.args = {
+export const IncomeWithLongDescription = Template.bind({});
+IncomeWithLongDescription.args = {
   _id: '456-789',
   shortName: 'Groceries for the week.',
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
@@ -47,8 +46,8 @@ MobileIncomeWithLongDescription.args = {
   isPaid: false,
 };
 
-export const MobileIncomeWithLongShortName = Template.bind({});
-MobileIncomeWithLongShortName.args = {
+export const IncomeWithLongShortName = Template.bind({});
+IncomeWithLongShortName.args = {
   _id: '456-789',
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
@@ -63,8 +62,8 @@ MobileIncomeWithLongShortName.args = {
   isPaid: false,
 };
 
-export const MobileIncomeWithoutTagsAndBudgets = Template.bind({});
-MobileIncomeWithoutTagsAndBudgets.args = {
+export const IncomeWithoutTagsAndBudgets = Template.bind({});
+IncomeWithoutTagsAndBudgets.args = {
   _id: '456-789',
   shortName: "2 Mcdonalds ",
   description: "Mine and Eric's",
@@ -79,8 +78,8 @@ MobileIncomeWithoutTagsAndBudgets.args = {
   isPaid: false,
 };
 
-export const MobileIncomeWithManyBudgets = Template.bind({});
-MobileIncomeWithManyBudgets.args = {
+export const IncomeWithManyBudgets = Template.bind({});
+IncomeWithManyBudgets.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
