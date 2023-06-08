@@ -39,6 +39,10 @@ export const BudgetChipContainer = styled.div`
   gap: 1rem;
 `;
 
+export const BudgetChipContainerDrawer = styled(BudgetChipContainer)`
+  grid-template-columns: repeat(5, 1fr);
+`;
+
 // Mobile
 
 export const RecordContainerMobile = styled.article`

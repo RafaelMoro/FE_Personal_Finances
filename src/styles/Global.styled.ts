@@ -190,3 +190,18 @@ export const Chip = styled(ChipMUI)`
     ${createResponsiveProps({ fontSize: 'Sub' })}
   }
 `;
+
+export const MobileChip = styled(Chip)`
+  height: auto;
+
+  span {
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    line-height: 1.3;
+  }
+
+  .MuiChip-label {
+    display: block;
+    white-space: normal;
+  }
+`;

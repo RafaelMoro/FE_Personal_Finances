@@ -4,8 +4,8 @@ import {
 import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
-  RecordDrawerDescription, RecordTable, BudgetChipContainer, DebtPaid, RecordDrawerPriceContainer,
-  TableTitle,
+  RecordDrawerDescription, RecordTable, BudgetChipContainerDrawer, DebtPaid,
+  TableTitle, RecordDrawerPriceContainer,
 } from '../Records.styled';
 import { TableCell, Chip } from '../../../../styles';
 import { formatNumberToCurrency } from '../../../../utils';
@@ -31,18 +31,18 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <BudgetChipContainer>
+      <BudgetChipContainerDrawer>
         { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
         { budgets.length > 0 && budgets.map((budget, index) => (
           <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" color="primary" />
         ))}
-      </BudgetChipContainer>
-      <BudgetChipContainer>
+      </BudgetChipContainerDrawer>
+      <BudgetChipContainerDrawer>
         { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
         { tag.length > 0 && tag.map((item, index) => (
           <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" color="primary" />
         ))}
-      </BudgetChipContainer>
+      </BudgetChipContainerDrawer>
       <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (indebtedPeople.length > 0) && (
         <>

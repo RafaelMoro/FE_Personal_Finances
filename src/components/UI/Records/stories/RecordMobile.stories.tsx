@@ -93,3 +93,19 @@ IncomeWithManyBudgets.args = {
   amount: '$2,256.00',
   isPaid: false,
 };
+
+export const IncomeWithManyBudgetsAndLongNameBudget = Template.bind({});
+IncomeWithManyBudgetsAndLongNameBudget.args = {
+  _id: '456-789',
+  shortName: "Imagine Dragons concert ",
+  description: "CDMX Concert",
+  category: 'Leisure',
+  subCategory: 'Outdoors',
+  tag: [],
+  indebtedPeople: [],
+  budgets: ['A very long name', 'Debt', 'AMEX', 'Transport', 'Other Budget', 'New Budget'],
+  formattedTime: '21:11pm',
+  fullDate: 'May 10',
+  amount: '$2,256.00',
+  isPaid: false,
+};
