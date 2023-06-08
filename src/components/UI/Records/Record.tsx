@@ -26,6 +26,8 @@ const Record = ({
   const [shortViewState, setShortViewState] = useState(true);
   const [shortedName, setShortedName] = useState('');
   const [shortedDescription, setShortedDescription] = useState('');
+  const firstTwoBudgets = budgets.slice(0, 2);
+  const firstTwoTags = tag.slice(0, 2);
 
   const descriptionIsLong = description.length > 50;
   const nameIsLong = shortName.length > 80;
@@ -157,15 +159,21 @@ const Record = ({
         <FlexContainer justifyContent="center" gap="1">
           <BudgetChipContainer>
             { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
-            { budgets.length > 0 && budgets.map((budget) => (
+            { budgets.length > 0 && firstTwoBudgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
             ))}
+            { budgets.length > 2 && (
+            <Chip label={`Remaining budgets: ${budgets.length}`} variant="outlined" color="primary" />
+            ) }
           </BudgetChipContainer>
           <BudgetChipContainer>
             { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
-            { tag.length > 0 && tag.map((item) => (
+            { tag.length > 0 && firstTwoTags.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
             ))}
+            { tag.length > 2 && (
+            <Chip label={`Remaining tags: ${tag.length}`} variant="outlined" color="primary" />
+            ) }
           </BudgetChipContainer>
         </FlexContainer>
         { amountShownMobile }
