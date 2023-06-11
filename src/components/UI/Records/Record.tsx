@@ -9,9 +9,9 @@ import { RecordProps } from './interface';
 import { RecordDrawer } from './features/RecordDrawer';
 import {
   RecordContainer, RecordDateTime, RecordContainerMobile,
-  RecordTitleMobile, BudgetChipContainer, RecordCategory, RecordText,
+  RecordTitleMobile, ChipContainerMobile, RecordCategory, RecordText,
   RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
-  RecordIncome,
+  RecordIncome, ChipContainer,
 } from './Records.styled';
 import {
   Chip, ParagraphTitle, Paragraph, FlexContainer,
@@ -98,18 +98,18 @@ const Record = ({
           <RecordCategory>{ category }</RecordCategory>
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           <Paragraph>{ description }</Paragraph>
-          <BudgetChipContainer>
+          <ChipContainer>
             { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
             { budgets.length > 0 && budgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
             ))}
-          </BudgetChipContainer>
-          <BudgetChipContainer>
+          </ChipContainer>
+          <ChipContainer>
             { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
             { tag.length > 0 && tag.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
             ))}
-          </BudgetChipContainer>
+          </ChipContainer>
           { (indebtedPeople.length > 0 && shortViewState) && (
           <RecordText>
             People involved:
@@ -157,24 +157,24 @@ const Record = ({
           <RecordText>{ subCategory }</RecordText>
         </FlexContainer>
         <FlexContainer justifyContent="center" gap="1">
-          <BudgetChipContainer>
+          <ChipContainerMobile>
             { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
             { budgets.length > 0 && firstTwoBudgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
             ))}
             { budgets.length > 2 && (
-            <Chip label={`Remaining budgets: ${budgets.length}`} variant="outlined" color="primary" />
+            <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" color="primary" />
             ) }
-          </BudgetChipContainer>
-          <BudgetChipContainer>
+          </ChipContainerMobile>
+          <ChipContainerMobile>
             { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
             { tag.length > 0 && firstTwoTags.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
             ))}
             { tag.length > 2 && (
-            <Chip label={`Remaining tags: ${tag.length}`} variant="outlined" color="primary" />
+            <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" color="primary" />
             ) }
-          </BudgetChipContainer>
+          </ChipContainerMobile>
         </FlexContainer>
         { amountShownMobile }
         <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>

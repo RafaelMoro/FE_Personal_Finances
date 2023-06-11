@@ -10,7 +10,7 @@ export const RecordContainer = styled.article`
   min-height: 10rem;
   padding: 1rem;
   display: grid;
-  grid-template-columns: 70% 15% 15%;
+  grid-template-columns: 60% 20% 20%;
   grid-template-rows: repeat(1, 1fr);
   row-gap: 1.5rem;
 `;
@@ -31,15 +31,19 @@ export const RecordSubCategory = styled(RecordText)`
   grid-column: 3 / 4;
 `;
 
-export const BudgetChipContainer = styled.div`
+export const ChipContainerMobile = styled.div`
   justify-self: start;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: min-content;
   gap: 1rem;
 `;
 
-export const BudgetChipContainerDrawer = styled(BudgetChipContainer)`
+export const ChipContainer = styled(ChipContainerMobile)`
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-auto-rows: minmax(3.2rem, auto);
+`;
+
+export const BudgetChipContainerDrawer = styled(ChipContainerMobile)`
   grid-template-columns: repeat(5, 1fr);
 `;
 

@@ -143,6 +143,84 @@ IncomeWithManyBudgets.args = {
   isPaid: false,
 };
 
+export const IncomeWithManyBudgetsAndLongNameBudget = Template.bind({});
+IncomeWithManyBudgetsAndLongNameBudget.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+IncomeWithManyBudgetsAndLongNameBudget.args = {
+  _id: '456-789',
+  shortName: "Imagine Dragons concert ",
+  description: "CDMX Concert",
+  category: 'Leisure',
+  subCategory: 'Outdoors',
+  tag: [],
+  indebtedPeople: [],
+  budgets: ['A very long name', 'Debt', 'AMEX', 'Transport', 'Other Budget', 'New Budget'],
+  formattedTime: '21:11pm',
+  fullDate: 'May 10',
+  amount: '$2,256.00',
+  isPaid: false,
+};
+
+export const IncomeWithManyBudgetsAndTags = Template.bind({});
+IncomeWithManyBudgetsAndTags.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+IncomeWithManyBudgetsAndTags.args = {
+  _id: '456-789',
+  shortName: "Imagine Dragons concert ",
+  description: "CDMX Concert",
+  category: 'Leisure',
+  subCategory: 'Outdoors',
+  tag: ['Pending', 'Important', 'Beto', 'Other tag'],
+  indebtedPeople: [],
+  budgets: ['A very long name', 'Debt', 'AMEX', 'Transport', 'Other Budget', 'New Budget'],
+  formattedTime: '21:11pm',
+  fullDate: 'May 10',
+  amount: '$2,256.00',
+  isPaid: false,
+};
+
+export const IncomeWithNoBudgetsAndManyTags = Template.bind({});
+IncomeWithNoBudgetsAndManyTags.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+IncomeWithNoBudgetsAndManyTags.args = {
+  _id: '456-789',
+  shortName: "Imagine Dragons concert ",
+  description: "CDMX Concert",
+  category: 'Leisure',
+  subCategory: 'Outdoors',
+  tag: ['Pending', 'Important', 'Beto', 'Other tag'],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '21:11pm',
+  fullDate: 'May 10',
+  amount: '$2,256.00',
+  isPaid: false,
+};
+
 // export const IncomeRecord = Template.bind({});
 // IncomeRecord.args = {
 //   shortName: 'Payment',
