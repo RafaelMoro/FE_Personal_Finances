@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { List as ListMUI, Table } from '@mui/material';
+
+import { DrawerChipContainerProps } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
@@ -43,11 +45,27 @@ export const ChipContainer = styled(ChipContainerMobile)`
   grid-auto-rows: minmax(3.2rem, auto);
 `;
 
-export const BudgetChipContainerDrawer = styled(ChipContainerMobile)`
+export const DrawerChipContainer = styled(ChipContainerMobile)`
   grid-template-columns: repeat(5, 1fr);
-`;
+  position: relative;
+  border: 0.1rem solid ${AppColors.bgColorGrey};
+  padding: 1.5rem;
+  border-radius: 1rem;
 
-// Mobile
+  &:after {
+    content: '${(props: DrawerChipContainerProps) => props.afterContent}';
+    position: absolute;
+    top: -1rem;
+    left: 1.6rem;
+    bottom: 0;
+    right: 0;
+    height: 1rem;
+    width: 6rem;
+    background-color: white;
+    font-size: 1.5rem;
+    color: ${AppColors.grey};
+  }
+`;
 
 export const RecordContainerMobile = styled.article`
   width: 100%;

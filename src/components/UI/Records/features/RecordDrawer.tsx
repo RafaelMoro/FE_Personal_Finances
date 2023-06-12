@@ -1,10 +1,11 @@
 import {
   TableHead, TableRow, TableBody,
 } from '@mui/material';
+
 import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
-  RecordDrawerDescription, RecordTable, BudgetChipContainerDrawer, DebtPaid,
+  RecordDrawerDescription, RecordTable, DrawerChipContainer, DebtPaid,
   TableTitle, RecordDrawerPriceContainer,
 } from '../Records.styled';
 import { TableCell, Chip } from '../../../../styles';
@@ -31,18 +32,18 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <BudgetChipContainerDrawer>
+      <DrawerChipContainer afterContent="Budgets">
         { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
         { budgets.length > 0 && budgets.map((budget, index) => (
           <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" color="primary" />
         ))}
-      </BudgetChipContainerDrawer>
-      <BudgetChipContainerDrawer>
+      </DrawerChipContainer>
+      <DrawerChipContainer afterContent="Tags">
         { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
         { tag.length > 0 && tag.map((item, index) => (
           <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" color="primary" />
         ))}
-      </BudgetChipContainerDrawer>
+      </DrawerChipContainer>
       <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (indebtedPeople.length > 0) && (
         <>

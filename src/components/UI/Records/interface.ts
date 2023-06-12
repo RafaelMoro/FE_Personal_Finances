@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 import { AccountRecord } from '../../../globalInterface';
 
+export interface DrawerChipContainerProps {
+  afterContent: string;
+}
+
 export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> {
   fullDate: string;
   formattedTime: string;
