@@ -13,8 +13,8 @@ const Template: ComponentStory<typeof Record> = (args) => (
   <Record {...args} />
 );
 
-export const Income = Template.bind({});
-Income.parameters = {
+export const Expense = Template.bind({});
+Expense.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -24,7 +24,7 @@ Income.parameters = {
     }
   }
 }
-Income.args = {
+Expense.args = {
   _id: '456-789',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
@@ -39,8 +39,8 @@ Income.args = {
   isPaid: false,
 };
 
-export const IncomeWithLongDescription = Template.bind({});
-IncomeWithLongDescription.parameters = {
+export const ExpenseWithLongDescription = Template.bind({});
+ExpenseWithLongDescription.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -50,7 +50,7 @@ IncomeWithLongDescription.parameters = {
     }
   }
 }
-IncomeWithLongDescription.args = {
+ExpenseWithLongDescription.args = {
   _id: '456-789',
   shortName: 'Groceries for the week.',
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
@@ -65,8 +65,8 @@ IncomeWithLongDescription.args = {
   isPaid: false,
 };
 
-export const IncomeWithLongShortName = Template.bind({});
-IncomeWithLongShortName.parameters = {
+export const ExpenseWithLongShortName = Template.bind({});
+ExpenseWithLongShortName.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -76,7 +76,7 @@ IncomeWithLongShortName.parameters = {
     }
   }
 }
-IncomeWithLongShortName.args = {
+ExpenseWithLongShortName.args = {
   _id: '456-789',
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
@@ -91,8 +91,8 @@ IncomeWithLongShortName.args = {
   isPaid: false,
 };
 
-export const IncomeWithoutTagsAndBudgets = Template.bind({});
-IncomeWithoutTagsAndBudgets.parameters = {
+export const ExpenseWithoutTagsAndBudgets = Template.bind({});
+ExpenseWithoutTagsAndBudgets.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -102,7 +102,7 @@ IncomeWithoutTagsAndBudgets.parameters = {
     }
   }
 }
-IncomeWithoutTagsAndBudgets.args = {
+ExpenseWithoutTagsAndBudgets.args = {
   _id: '456-789',
   shortName: "2 Mcdonalds ",
   description: "Mine and Eric's",
@@ -117,8 +117,8 @@ IncomeWithoutTagsAndBudgets.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgets = Template.bind({});
-IncomeWithManyBudgets.parameters = {
+export const ExpenseWithManyBudgets = Template.bind({});
+ExpenseWithManyBudgets.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -128,7 +128,7 @@ IncomeWithManyBudgets.parameters = {
     }
   }
 }
-IncomeWithManyBudgets.args = {
+ExpenseWithManyBudgets.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -143,8 +143,8 @@ IncomeWithManyBudgets.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgetsAndLongNameBudget = Template.bind({});
-IncomeWithManyBudgetsAndLongNameBudget.parameters = {
+export const ExpenseWithManyBudgetsAndLongNameBudget = Template.bind({});
+ExpenseWithManyBudgetsAndLongNameBudget.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -154,7 +154,7 @@ IncomeWithManyBudgetsAndLongNameBudget.parameters = {
     }
   }
 }
-IncomeWithManyBudgetsAndLongNameBudget.args = {
+ExpenseWithManyBudgetsAndLongNameBudget.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -169,8 +169,8 @@ IncomeWithManyBudgetsAndLongNameBudget.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgetsAndTags = Template.bind({});
-IncomeWithManyBudgetsAndTags.parameters = {
+export const ExpenseWithManyBudgetsAndTags = Template.bind({});
+ExpenseWithManyBudgetsAndTags.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -180,7 +180,7 @@ IncomeWithManyBudgetsAndTags.parameters = {
     }
   }
 }
-IncomeWithManyBudgetsAndTags.args = {
+ExpenseWithManyBudgetsAndTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -195,8 +195,8 @@ IncomeWithManyBudgetsAndTags.args = {
   isPaid: false,
 };
 
-export const IncomeWithNoBudgetsAndManyTags = Template.bind({});
-IncomeWithNoBudgetsAndManyTags.parameters = {
+export const ExpenseWithNoBudgetsAndManyTags = Template.bind({});
+ExpenseWithNoBudgetsAndManyTags.parameters = {
   jotai: {
     atoms: {
       windowSize: windowSizeAtom
@@ -206,7 +206,7 @@ IncomeWithNoBudgetsAndManyTags.parameters = {
     }
   }
 }
-IncomeWithNoBudgetsAndManyTags.args = {
+ExpenseWithNoBudgetsAndManyTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -220,33 +220,3 @@ IncomeWithNoBudgetsAndManyTags.args = {
   amount: '$2,256.00',
   isPaid: false,
 };
-
-// export const IncomeRecord = Template.bind({});
-// IncomeRecord.args = {
-//   shortName: 'Payment',
-//   description: 'Paying $2100',
-//   recordType: 'Income',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 2100,
-// };
-
-// export const IncomeRecordWithExpenses = Template.bind({});
-// IncomeRecordWithExpenses.args = {
-//   shortName: 'Payment Feb 01 - 15.',
-//   description: 'Paying every expense within this timeframe',
-//   recordType: 'Income',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 1234.69,
-//   linkedPayedRecords: payedRecords
-// };
-
-// export const IncomeRecordExpandedWithExpenses = Template.bind({});
-// IncomeRecordExpandedWithExpenses.args = {
-//   shortName: 'Payment Feb 01 - 15.',
-//   description: 'Paying every expense within this timeframe',
-//   recordType: 'Income',
-//   date: new Date('February 10, 2023 17:21:18'),
-//   price: 1234.69,
-//   linkedPayedRecords: payedRecords,
-//   shortView: false,
-// };

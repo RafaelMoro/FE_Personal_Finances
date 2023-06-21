@@ -14,8 +14,8 @@ const Template: ComponentStory<typeof Record> = (args) => (
   </div>
 );
 
-export const Income = Template.bind({});
-Income.args = {
+export const Expense = Template.bind({});
+Expense.args = {
   _id: '456-789',
   shortName: 'Gym to home.',
   description: 'Paying Uber to return home',
@@ -30,8 +30,8 @@ Income.args = {
   isPaid: false,
 };
 
-export const IncomeWithLongDescription = Template.bind({});
-IncomeWithLongDescription.args = {
+export const ExpenseWithLongDescription = Template.bind({});
+ExpenseWithLongDescription.args = {
   _id: '456-789',
   shortName: 'Groceries for the week.',
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
@@ -46,8 +46,8 @@ IncomeWithLongDescription.args = {
   isPaid: false,
 };
 
-export const IncomeWithLongShortName = Template.bind({});
-IncomeWithLongShortName.args = {
+export const ExpenseWithLongShortName = Template.bind({});
+ExpenseWithLongShortName.args = {
   _id: '456-789',
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
@@ -62,8 +62,8 @@ IncomeWithLongShortName.args = {
   isPaid: false,
 };
 
-export const IncomeWithoutTagsAndBudgets = Template.bind({});
-IncomeWithoutTagsAndBudgets.args = {
+export const ExpenseWithoutTagsAndBudgets = Template.bind({});
+ExpenseWithoutTagsAndBudgets.args = {
   _id: '456-789',
   shortName: "2 Mcdonalds ",
   description: "Mine and Eric's",
@@ -78,8 +78,8 @@ IncomeWithoutTagsAndBudgets.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgets = Template.bind({});
-IncomeWithManyBudgets.args = {
+export const ExpenseWithManyBudgets = Template.bind({});
+ExpenseWithManyBudgets.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -94,8 +94,8 @@ IncomeWithManyBudgets.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgetsAndLongNameBudget = Template.bind({});
-IncomeWithManyBudgetsAndLongNameBudget.args = {
+export const ExpenseWithManyBudgetsAndLongNameBudget = Template.bind({});
+ExpenseWithManyBudgetsAndLongNameBudget.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -110,8 +110,8 @@ IncomeWithManyBudgetsAndLongNameBudget.args = {
   isPaid: false,
 };
 
-export const IncomeWithManyBudgetsAndTags = Template.bind({});
-IncomeWithManyBudgetsAndTags.args = {
+export const ExpenseWithManyBudgetsAndTags = Template.bind({});
+ExpenseWithManyBudgetsAndTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -126,8 +126,8 @@ IncomeWithManyBudgetsAndTags.args = {
   isPaid: false,
 };
 
-export const IncomeWithNoBudgetsAndManyTags = Template.bind({});
-IncomeWithNoBudgetsAndManyTags.args = {
+export const ExpenseWithNoBudgetsAndManyTags = Template.bind({});
+ExpenseWithNoBudgetsAndManyTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
@@ -140,4 +140,51 @@ IncomeWithNoBudgetsAndManyTags.args = {
   fullDate: 'May 10',
   amount: '$2,256.00',
   isPaid: false,
+};
+
+export const Income = Template.bind({});
+Income.args = {
+  _id: '456-789',
+  shortName: "Payment to credit card",
+  description: "From May 12th to May 19th",
+  category: 'Payment',
+  subCategory: 'Credit Card',
+  tag: [],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '21:18pm',
+  fullDate: 'June 10',
+  amount: '$2,256.00',
+  expensesPaid: [],
+};
+
+export const IncomeWithExpensesPaid = Template.bind({});
+IncomeWithExpensesPaid.args = {
+  _id: '456-789',
+  shortName: "Payment to credit card",
+  description: "From May 12th to May 19th",
+  category: 'Payment',
+  subCategory: 'Credit Card',
+  tag: [],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '21:18pm',
+  fullDate: 'June 10',
+  amount: '$2,256.00',
+  expensesPaid: [
+    {
+      _id: '64600b8f2bb57b9d17843d87',
+      shortName: 'Chilaquiles',
+      amount: '$96.03',
+      fullDate: 'May 20',
+      formattedTime: '1:50pm',
+    },
+    {
+      _id: '64600b8f2bb57b9d17843d87',
+      shortName: 'Chilaquiles',
+      amount: '$96.03',
+      fullDate: 'May 20',
+      formattedTime: '1:50pm',
+    },
+  ],
 };
