@@ -220,3 +220,70 @@ ExpenseWithNoBudgetsAndManyTags.args = {
   amount: '$2,256.00',
   isPaid: false,
 };
+
+export const Income = Template.bind({});
+Income.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+Income.args = {
+  _id: '456-789',
+  shortName: "Payment to credit card",
+  description: "From May 12th to May 19th",
+  category: 'Payment',
+  subCategory: 'Credit Card',
+  tag: [],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '21:18pm',
+  fullDate: 'June 10',
+  amount: '$2,256.00',
+  expensesPaid: [],
+};
+
+export const IncomeWithExpensesPaid = Template.bind({});
+IncomeWithExpensesPaid.parameters = {
+  jotai: {
+    atoms: {
+      windowSize: windowSizeAtom
+    },
+    values: {
+      windowSize: 'Desktop'
+    }
+  }
+}
+IncomeWithExpensesPaid.args = {
+  _id: '456-789',
+  shortName: "Payment to credit card",
+  description: "From May 12th to May 19th",
+  category: 'Payment',
+  subCategory: 'Credit Card',
+  tag: [],
+  indebtedPeople: [],
+  budgets: [],
+  formattedTime: '21:18pm',
+  fullDate: 'June 10',
+  amount: '$2,256.00',
+  expensesPaid: [
+    {
+      _id: '64600b8f2bb57b9d17843d87',
+      shortName: 'Chilaquiles',
+      amount: '$96.03',
+      fullDate: 'May 20',
+      formattedTime: '1:50pm',
+    },
+    {
+      _id: '64600b8f2bb57b9d17843d87',
+      shortName: 'Chilaquiles',
+      amount: '$96.03',
+      fullDate: 'May 20',
+      formattedTime: '1:50pm',
+    },
+  ],
+};
