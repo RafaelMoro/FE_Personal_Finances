@@ -84,7 +84,7 @@ const ViewAccounts = ({
         setError('Other Error');
       }
     };
-    if (user && bearerToken) getAccounts();
+    if (!!user && bearerToken) getAccounts();
   }, [bearerToken, setAccounts, setAccountsUI, setSelectedAccount, user]);
 
   useEffect(() => {
