@@ -45,3 +45,9 @@ export interface RecordDrawerProps extends Omit<AccountRecordUI, 'amount' | 'acc
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
 }
+
+export interface IncomeAndExpensesResponse {
+  records: AnyRecord []
+  message: string;
+  error?: boolean
+}

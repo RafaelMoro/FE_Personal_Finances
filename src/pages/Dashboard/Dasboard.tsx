@@ -130,7 +130,7 @@ const Dashboard = () => {
         dashboardNotificationFunctions={dashboardNotificationFunctions}
       />
       <RecordsBox>
-        <RecordList records={records} />
+        <RecordList />
       </RecordsBox>
     </DashboardContainer>
   );

@@ -4,15 +4,21 @@ import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
-import { selectedAccountAtom, userAtom } from '../../../../atoms';
-import { GET_EXPENSES_ROUTE, GET_INCOMES_ROUTE, NO_EXPENSES_FOUND } from '../constants';
-import { GetRequest } from '../../../../utils';
-import { RecordListProps } from '../interface';
+import { allRecordsAtom, selectedAccountAtom, userAtom } from '../../../../atoms';
+import {
+  GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
+} from '../constants';
+import { GetRequest, MONTHS } from '../../../../utils';
+import { IncomeAndExpensesResponse } from '../interface';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 
-const RecordList = ({ records }: RecordListProps) => {
+const RecordList = () => {
+  const dateOfToday = new Date();
+  const currentMonth = MONTHS[dateOfToday.getMonth()];
   const [user] = useAtom(userAtom);
+  const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
+  const records = allRecords ?? [];
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
@@ -20,20 +26,24 @@ const RecordList = ({ records }: RecordListProps) => {
   useEffect(() => {
     const getRecords = async () => {
       const accountId = selectedAccount?._id;
-      console.log(accountId);
-      const expensesFullRoute = `${GET_EXPENSES_ROUTE}/${accountId}`;
-      const incomesFullRooute = `${GET_INCOMES_ROUTE}/${accountId}`;
-      const expenses = await GetRequest(expensesFullRoute, bearerToken);
-      const incomes = await GetRequest(incomesFullRooute, bearerToken);
+      const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}`;
+      // eslint-disable-next-line max-len
+      const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
+      console.log(response);
 
-      if (expenses === NO_EXPENSES_FOUND) {
+      if (response?.error) {
+        // handle error
+      }
+
+      if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
         // Show that there are no records and the user may create one.
       }
 
-      console.log(expenses);
+      const recordFetched = response?.records;
+      setAllRecords(recordFetched);
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
-  }, [bearerToken, selectedAccount, user]);
+  }, [bearerToken, currentMonth, selectedAccount, setAllRecords, user]);
 
   return (
     <List>
