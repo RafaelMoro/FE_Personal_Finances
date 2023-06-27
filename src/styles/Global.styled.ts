@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { dynamicPadding } from './DynamicStyles.styled';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
-import { FlexContainerProps } from './interface';
+import { FlexContainerProps, ParagraphProps } from './interface';
 
 /*
 * This file has generic emotion components to use accross the application and
@@ -129,6 +129,7 @@ export const Sub = styled.p`
 `;
 
 export const Paragraph = styled.p`
+  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
 

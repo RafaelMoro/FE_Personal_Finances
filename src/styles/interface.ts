@@ -28,6 +28,10 @@ export interface IBackgroundColors {
   color: string;
 }
 
+export interface ParagraphProps {
+  align?: string;
+}
+
 export interface FlexContainerProps {
   justifyContent?: string;
   alignItems?: string;

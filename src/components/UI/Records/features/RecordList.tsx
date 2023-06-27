@@ -10,6 +10,7 @@ import {
 } from '../constants';
 import { GetRequest, MONTHS } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
+import { Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 
@@ -18,7 +19,6 @@ const RecordList = () => {
   const currentMonth = MONTHS[dateOfToday.getMonth()];
   const [user] = useAtom(userAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
-  const records = allRecords ?? [];
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
@@ -37,6 +37,8 @@ const RecordList = () => {
 
       if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
         // Show that there are no records and the user may create one.
+        setAllRecords([]);
+        return;
       }
 
       const recordFetched = response?.records;
@@ -47,7 +49,10 @@ const RecordList = () => {
 
   return (
     <List>
-      { records.length > 0 && records.map((record, index) => (
+      { (Array.isArray(allRecords) && allRecords.length === 0) && (
+        <Paragraph align="center">There are no records for this account.</Paragraph>
+      ) }
+      { (Array.isArray(allRecords) && allRecords.length > 0) && allRecords.map((record, index) => (
         <div key={record._id}>
           { (index === 0) && (<Divider />) }
           <Record
