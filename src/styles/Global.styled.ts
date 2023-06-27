@@ -9,6 +9,7 @@ import {
   Select as SelectMUI,
   MenuItem as MenuItemMUI,
   TableCell as TableCellMUI,
+  SpeedDial as SpeedDialMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -204,5 +205,14 @@ export const MobileChip = styled(Chip)`
   .MuiChip-label {
     display: block;
     white-space: normal;
+  }
+`;
+
+export const SpeedDialComponent = styled(SpeedDialMUI)`
+  svg {
+    font-size: 2.5rem;
+  }
+  span {
+    ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;

@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 
 export const DashboardContainer = styled.div`
-  display: grid;
+  height: 100vh;
+  position: relative;
   @media (min-width: 1024px) {
     grid-template-columns: 28rem 1fr;
   }

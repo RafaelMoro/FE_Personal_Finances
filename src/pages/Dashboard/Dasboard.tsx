@@ -5,7 +5,7 @@ import { windowSizeAtom } from '../../atoms';
 import { handleResizeWindow } from '../../utils';
 import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from '../../components/UI/Account';
-import { Notification, RecordList } from '../../components/UI';
+import { Notification, RecordList, SpeedDial } from '../../components/UI';
 import { SecondaryButton } from '../../styles';
 import {
   DashboardContainer, RecordsBox, Header,
@@ -116,12 +116,12 @@ const Dashboard = () => {
   return (
     <DashboardContainer>
       {showNotification && (
-      <Notification
-        title={notificationInfo.current.title}
-        description={notificationInfo.current.description}
-        status={notificationInfo.current.status}
-        close={toggleShowNotification}
-      />
+        <Notification
+          title={notificationInfo.current.title}
+          description={notificationInfo.current.description}
+          status={notificationInfo.current.status}
+          close={toggleShowNotification}
+        />
       )}
       <Header>
         <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
@@ -132,6 +132,7 @@ const Dashboard = () => {
       <RecordsBox>
         <RecordList />
       </RecordsBox>
+      <SpeedDial />
     </DashboardContainer>
   );
 };
