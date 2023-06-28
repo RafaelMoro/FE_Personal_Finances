@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
@@ -16,13 +16,13 @@ import { GetRequest, formatAccounts } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
 import { IViewAccountsProps } from './interface';
-import { Account as AccountInterface } from '../../../../../globalInterface';
-import { ErrorResponse, AccountAction } from '../../../../../aliasType';
+import { ErrorResponse } from '../../../../../aliasType';
 import {
   AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop, CreateAccountButton,
 } from './ViewAccounts.styled';
+import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -40,13 +40,23 @@ const ViewAccounts = ({
   const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
   const [error, setError] = useState<ErrorResponse>('No error');
-  const [accountAction, setAccountAction] = useState<AccountAction>('Create');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
-  const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
-  const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
-  const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
-  const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
-  const accountToBeDeleted = useRef({ accountId: '', accountName: '' });
+
+  const {
+    accountAction,
+    openAccountModal,
+    modifyAccount,
+    openChangeAccountModal,
+    openDeleteAccountModal,
+    accountToBeDeleted,
+    handleCloseCreateAccount,
+    handleOpenCreateAccount,
+    handleOpenModifyAccount,
+    handleOpenChangeAccount,
+    handleCloseChangeAccount,
+    handleCloseDeleteAccount,
+    handleOpenDeleteAccount,
+  } = useAccountsActions();
 
   useEffect(() => {
     const getAccounts = async () => {
@@ -96,32 +106,6 @@ const ViewAccounts = ({
       setShowAddAccount(false);
     }
   }, [accountsUI.length]);
-
-  const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
-  const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);
-
-  const handleOpenDeleteAccount = (accountId: string, accountName: string) => {
-    accountToBeDeleted.current.accountId = accountId;
-    accountToBeDeleted.current.accountName = accountName;
-    setOpenDeleteAccountModal(true);
-  };
-  const handleCloseDeleteAccount = () => setOpenDeleteAccountModal(false);
-
-  const handleCloseCreateAccount = () => setOpenAccountModal(false);
-
-  const handleOpenCreateAccount = () => {
-    setAccountAction('Create');
-    setOpenAccountModal(true);
-  };
-
-  const handleOpenModifyAccount = (accountId: string) => {
-    const accountFound = accounts?.find((account) => account._id === accountId);
-    if (accountFound) {
-      setModifyAccount(accountFound);
-    }
-    setAccountAction('Modify');
-    setOpenAccountModal(true);
-  };
 
   const selectNewAccount = (accountSelected: AccountUI) => {
     if (selectedAccount?._id === accountSelected?._id) return;
