@@ -85,7 +85,7 @@ const records: AnyRecord[] = [
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
-  const [,setWindowSize] = useAtom(windowSizeAtom);
+  const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
   const { signOut } = useLogin();
   const {
     showNotification, toggleShowNotification, notificationInfo,
@@ -102,7 +102,7 @@ const Dashboard = () => {
 
   const { dashboardActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
-    hideChangeAccount: (accountsUI.length < 1),
+    hideChangeAccount: (accountsUI.length < 2 || windowSize !== 'Mobile'),
     // Set it as true if accountsUI array is empty
     hideAddRecord: (accountsUI.length === 0),
   });

@@ -19,9 +19,9 @@ import { AccountUI } from '../../interface';
 import { IViewAccountsProps } from './interface';
 import { ErrorResponse } from '../../../../../aliasType';
 import {
-  AccountSection, AccountsTitle, ChangeAccountButton, AccountsContainer,
+  AccountSection, AccountsTitle, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
-  AccountSectionDesktop, CreateAccountButton,
+  AccountSectionDesktop,
 } from './ViewAccounts.styled';
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 
@@ -53,7 +53,6 @@ const ViewAccounts = ({
     handleCloseCreateAccount,
     handleOpenCreateAccount,
     handleOpenModifyAccount,
-    handleOpenChangeAccount,
     handleCloseChangeAccount,
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
@@ -207,10 +206,6 @@ const ViewAccounts = ({
 
   return (
     <AccountSection>
-      <CreateAccountButton variant="contained" size="medium" onClick={handleOpenCreateAccount}>Create Account</CreateAccountButton>
-      { (selectedAccount && accounts) && (
-        <ChangeAccountButton variant="contained" size="medium" onClick={handleOpenChangeAccount}>Change account</ChangeAccountButton>
-      )}
       <AccountsContainer>
         { selectedAccount && (
           <Account
