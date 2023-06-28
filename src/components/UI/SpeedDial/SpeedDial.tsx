@@ -18,7 +18,7 @@ const SpeedDial = ({ actions, ariaLabelDescription }: SpeedDialProps) => {
         ariaLabel={ariaLabelDescription}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
-        onOpen={handleOpen}
+        onClick={handleOpen}
         open={open}
       >
         { (actions.length > 0) && actions.map((action) => (
