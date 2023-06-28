@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
-import { windowSizeAtom } from '../../atoms';
+import { windowSizeAtom, accountsUIAtom } from '../../atoms';
 import { handleResizeWindow } from '../../utils';
 import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from '../../components/UI/Account';
@@ -12,6 +12,7 @@ import {
 } from './Dashboard.styled';
 import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
+import { currentDashboardActions } from '../../components/UI/SpeedDial/dashboardActions';
 import { DashboardNotificationFunctions } from './interface';
 import { AnyRecord } from '../../components/UI/Records/interface';
 
@@ -83,6 +84,7 @@ const records: AnyRecord[] = [
 ];
 
 const Dashboard = () => {
+  const [accountsUI] = useAtom(accountsUIAtom);
   const [,setWindowSize] = useAtom(windowSizeAtom);
   const { signOut } = useLogin();
   const {
@@ -97,6 +99,13 @@ const Dashboard = () => {
     updateStatus,
     toggleShowNotification,
   };
+
+  const dashboardActions = currentDashboardActions({
+    // Set it as true if accountsUI array has more than 1 item.
+    hideChangeAccount: (accountsUI.length < 1),
+    // Set it as true if accountsUI array is empty
+    hideAddRecord: (accountsUI.length === 0),
+  });
 
   useEffect(() => {
     if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');
@@ -132,7 +141,10 @@ const Dashboard = () => {
       <RecordsBox>
         <RecordList />
       </RecordsBox>
-      <SpeedDial />
+      <SpeedDial
+        actions={dashboardActions}
+        ariaLabelDescription="SpeedDial Accounts and Records actions"
+      />
     </DashboardContainer>
   );
 };

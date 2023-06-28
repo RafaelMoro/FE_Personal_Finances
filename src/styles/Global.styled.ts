@@ -213,6 +213,7 @@ export const SpeedDialComponent = styled(SpeedDialMUI)`
     font-size: 2.5rem;
   }
   span {
+    margin: 1rem 0 1rem 0;
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;

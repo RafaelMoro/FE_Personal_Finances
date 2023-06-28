@@ -1,19 +1,12 @@
 import { useState } from 'react';
-import {
-  FileCopy, AddCard, AdfScanner,
-} from '@mui/icons-material';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import { SpeedDialAction } from '@mui/material';
+
+import { SpeedDialProps } from './interface';
 import { SpeedDialComponent } from '../../../styles';
 import { SpeedDialContainer } from './SpeedDial.styled';
 
-const actions = [
-  { icon: <FileCopy />, name: 'Copy' },
-  { icon: <AddCard />, name: 'Save' },
-  { icon: <AdfScanner />, name: 'Print' },
-];
-
-const SpeedDial = () => {
+const SpeedDial = ({ actions, ariaLabelDescription }: SpeedDialProps) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -22,13 +15,13 @@ const SpeedDial = () => {
   return (
     <SpeedDialContainer>
       <SpeedDialComponent
-        ariaLabel="SpeedDial Accounts and Records actions"
+        ariaLabel={ariaLabelDescription}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
         onOpen={handleOpen}
         open={open}
       >
-        { actions.map((action) => (
+        { (actions.length > 0) && actions.map((action) => (
           <SpeedDialAction
             key={action.name}
             icon={action.icon}
