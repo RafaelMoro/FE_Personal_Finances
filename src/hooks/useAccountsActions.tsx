@@ -1,14 +1,15 @@
 import { useState, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { accountsAtom } from '../atoms';
+import {
+  accountsAtom, accountActionAtom, openAccountModalAtom, openChangeAccountModalAtom,
+} from '../atoms';
 import { Account as AccountInterface } from '../globalInterface';
-import { AccountAction } from '../aliasType';
 
 const useAccountsActions = () => {
   const [accounts] = useAtom(accountsAtom);
-  const [accountAction, setAccountAction] = useState<AccountAction>('Create');
-  const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
-  const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
+  const [, setAccountAction] = useAtom(accountActionAtom);
+  const [, setOpenAccountModal] = useAtom(openAccountModalAtom);
+  const [, setOpenChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
   const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
 
@@ -41,10 +42,7 @@ const useAccountsActions = () => {
   };
 
   return {
-    accountAction,
-    openAccountModal,
     modifyAccount,
-    openChangeAccountModal,
     openDeleteAccountModal,
     accountToBeDeleted,
     handleCloseCreateAccount,

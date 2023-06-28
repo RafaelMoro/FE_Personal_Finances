@@ -27,7 +27,10 @@ const SpeedDial = ({ actions, ariaLabelDescription }: SpeedDialProps) => {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={handleClose}
+            onClick={() => {
+              handleClose();
+              action.actionCallback();
+            }}
           />
         )) }
       </SpeedDialComponent>

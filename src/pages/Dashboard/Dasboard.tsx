@@ -12,7 +12,7 @@ import {
 } from './Dashboard.styled';
 import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
-import { currentDashboardActions } from '../../components/UI/SpeedDial/dashboardActions';
+import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
 import { DashboardNotificationFunctions } from './interface';
 import { AnyRecord } from '../../components/UI/Records/interface';
 
@@ -100,7 +100,7 @@ const Dashboard = () => {
     toggleShowNotification,
   };
 
-  const dashboardActions = currentDashboardActions({
+  const { dashboardActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
     hideChangeAccount: (accountsUI.length < 1),
     // Set it as true if accountsUI array is empty
