@@ -4,7 +4,9 @@ import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
-import { allRecordsAtom, selectedAccountAtom, userAtom } from '../../../../atoms';
+import {
+  allRecordsAtom, selectedAccountAtom, userAtom, accountsUIAtom,
+} from '../../../../atoms';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../constants';
@@ -18,6 +20,7 @@ const RecordList = () => {
   const dateOfToday = new Date();
   const currentMonth = MONTHS[dateOfToday.getMonth()];
   const [user] = useAtom(userAtom);
+  const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
@@ -29,7 +32,6 @@ const RecordList = () => {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}`;
       // eslint-disable-next-line max-len
       const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
-      console.log(response);
 
       if (response?.error) {
         // handle error
@@ -49,7 +51,10 @@ const RecordList = () => {
 
   return (
     <List>
-      { (Array.isArray(allRecords) && allRecords.length === 0) && (
+      { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length === 0) && (
+        <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
+      ) }
+      { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length > 0) && (
         <Paragraph align="center">There are no records for this account.</Paragraph>
       ) }
       { (Array.isArray(allRecords) && allRecords.length > 0) && allRecords.map((record, index) => (
