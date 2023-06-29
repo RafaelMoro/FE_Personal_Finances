@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { useRef } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 
@@ -6,12 +7,16 @@ import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps } from './interface';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton,
+  CancelButton, AnchorButton, FlexContainer,
 } from '../../../../../styles';
+import { SelectInput } from '../../../SelectInput';
+import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplate.styled';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action = edit ? 'Edit' : 'Create';
+  // const formValues = useRef(null);
+  const onlyCategories = CATEGORIES_RECORDS.map((category) => category.category);
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +36,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         Record
       </ParagraphTitle>
       <Formik
+        // innerRef={formValues}
         initialValues={{ password: '', confirmPassword: '' }}
         onSubmit={(values) => handleSubmit(values)}
         validateOnMount
@@ -63,14 +69,23 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               variant="standard"
               label="Description"
             />
-            <AnchorButton to={DASHBOARD_ROUTE}>
-              <CancelButton variant="contained" size="medium">Cancel</CancelButton>
-            </AnchorButton>
-            <PrimaryButton variant="contained" onClick={submitForm} size="medium">
-              { action }
-              {' '}
-              Record
-            </PrimaryButton>
+            <SelectInput
+              labelId="select-record-category"
+              labelName="Category"
+              fieldName="category"
+              stringOptions={onlyCategories}
+              colorOptions={[]}
+            />
+            <FlexContainer justifyContent="space-between">
+              <AnchorButton to={DASHBOARD_ROUTE}>
+                <CancelButton variant="contained" size="medium">Cancel</CancelButton>
+              </AnchorButton>
+              <PrimaryButton variant="contained" onClick={submitForm} size="medium">
+                { action }
+                {' '}
+                Record
+              </PrimaryButton>
+            </FlexContainer>
           </FormContainer>
         )}
       </Formik>
