@@ -10,6 +10,7 @@ import {
   MenuItem as MenuItemMUI,
   TableCell as TableCellMUI,
   SpeedDial as SpeedDialMUI,
+  InputAdornment as InputAdornmentMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -167,7 +168,17 @@ export const InputForm = styled(TextField)`
   input {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
+  textarea {
+    line-height: 1.5;
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
   label {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+`;
+
+export const InputAdornment = styled(InputAdornmentMUI)`
+  p {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
