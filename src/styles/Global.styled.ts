@@ -122,6 +122,7 @@ export const Heading4 = styled.h4`
 // **** Paragraphs
 
 export const ParagraphTitle = styled.p`
+  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
   ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
 `;
 
