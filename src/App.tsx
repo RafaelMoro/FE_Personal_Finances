@@ -5,6 +5,7 @@ import { Global } from '@emotion/react';
 import {
   Login, ForgotPassword, ProtectedRoute, Dashboard, ResetPassword, CreateAccount,
 } from './pages/LoginModule';
+import { CreateRecord } from './pages/Records/CreateRecords/CreateRecord';
 import { GlobalStyles } from './styles/Global.styled';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/register" element={<CreateAccount />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/create-record" element={<CreateRecord />} />
         </Route>
       </Routes>
     </>

@@ -1,15 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import { AddCard, AddTask, CompareArrows } from '@mui/icons-material';
 
 import { SpeedDialActions, CurrentDashboardActionsProps } from './interface';
 import { useAccountsActions } from '../../../hooks/useAccountsActions';
+import { CREATE_RECORD_ROUTE } from '../../../pages/Dashboard/constants';
 
 const useDashboardActions = ({
   hideChangeAccount = false, hideAddRecord = false,
 }: CurrentDashboardActionsProps) => {
   const { handleOpenCreateAccount, handleOpenChangeAccount } = useAccountsActions();
-  // need to change create record action
+  const navigate = useNavigate();
+  const navigateToCreateRecord = () => navigate(CREATE_RECORD_ROUTE);
+
   const createRecord: SpeedDialActions = {
-    icon: <AddTask />, name: 'Create Record', actionCallback: () => {},
+    icon: <AddTask />, name: 'Create Record', actionCallback: navigateToCreateRecord,
   };
   const changeAccount: SpeedDialActions = {
     icon: <CompareArrows />, name: 'Change Account', actionCallback: handleOpenChangeAccount,
