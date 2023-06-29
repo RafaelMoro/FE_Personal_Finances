@@ -7,7 +7,7 @@ import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { useNotification } from '../../../hooks/useNotification';
 import { FORGOT_PASSWORD_POST_ROUTE } from './constants';
-import { LOGIN_ROUTE } from '../constants';
+import { LOGIN_ROUTE } from '../../RoutesConstants';
 import { IForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';

@@ -6,7 +6,7 @@ import { Notification } from '../../../components/UI';
 import { IResetPasswordValues } from './interface';
 import { postRequest } from '../../../utils/PostRequest.ts';
 import { RESET_PASSWORD_POST_ROUTE } from './constants';
-import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../constants';
+import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../../RoutesConstants';
 import { useNotification } from '../../../hooks/useNotification';
 import { SystemStateEnum } from '../../../enums';
 import {

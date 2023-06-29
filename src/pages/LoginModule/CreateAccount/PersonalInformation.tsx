@@ -1,6 +1,6 @@
 import { Field, Formik } from 'formik';
 
-import { LOGIN_ROUTE } from '../constants';
+import { LOGIN_ROUTE } from '../../RoutesConstants';
 import { IPersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
 import {

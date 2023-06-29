@@ -3,7 +3,7 @@ import {
   Formik, Form, Field,
 } from 'formik';
 
-import { REGISTER_ROUTE } from '../constants';
+import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';

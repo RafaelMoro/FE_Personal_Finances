@@ -3,7 +3,7 @@ import {
 } from '@mui/icons-material';
 
 import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
-import { LOGIN_ROUTE } from '../constants';
+import { LOGIN_ROUTE } from '../../RoutesConstants';
 import {
   AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
 } from '../../../styles';

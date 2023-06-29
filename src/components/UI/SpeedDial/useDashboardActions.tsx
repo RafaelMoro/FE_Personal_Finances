@@ -3,7 +3,7 @@ import { AddCard, AddTask, CompareArrows } from '@mui/icons-material';
 
 import { SpeedDialActions, CurrentDashboardActionsProps } from './interface';
 import { useAccountsActions } from '../../../hooks/useAccountsActions';
-import { CREATE_RECORD_ROUTE } from '../../../pages/Dashboard/constants';
+import { CREATE_RECORD_ROUTE } from '../../../pages/RoutesConstants';
 
 const useDashboardActions = ({
   hideChangeAccount = false, hideAddRecord = false,

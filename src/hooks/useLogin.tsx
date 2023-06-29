@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/LoginModule/constants';
+import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
 import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { User } from '../globalInterface';
