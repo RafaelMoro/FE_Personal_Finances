@@ -21,7 +21,10 @@ const records: AnyRecord[] = [
     _id: '123-456',
     shortName: 'Casa a solesta gym',
     description: 'Esta es una descripcion muy larga para darme una idea de cuanto debo de cortar aproximadamente para la vista corta y la vista larga',
-    category: 'Transport',
+    category: {
+      _id: '123-456-789',
+      categoryName: 'Transport',
+    },
     subCategory: 'Didi/Uber',
     tag: ['Pending'],
     indebtedPeople: [
@@ -55,7 +58,10 @@ const records: AnyRecord[] = [
     _id: '456-789',
     shortName: 'Solesta gym a casa',
     description: 'Didi para ir a casa',
-    category: 'Transport',
+    category: {
+      _id: '123-456-789',
+      categoryName: 'Transport',
+    },
     subCategory: 'Didi/Uber',
     tag: ['Pending'],
     indebtedPeople: [],

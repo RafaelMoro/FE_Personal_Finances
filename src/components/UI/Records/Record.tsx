@@ -95,7 +95,7 @@ const Record = ({
           <RecordDateTime>{ fullDate }</RecordDateTime>
           <RecordDateTime>{ formattedTime }</RecordDateTime>
           { amountShown }
-          <RecordCategory>{ category }</RecordCategory>
+          <RecordCategory>{ category.categoryName }</RecordCategory>
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           <Paragraph>{ description }</Paragraph>
           <ChipContainer>
@@ -153,7 +153,7 @@ const Record = ({
         <FlexContainer justifyContent="center" gap="1">
           <RecordDateTime>{ fullDate }</RecordDateTime>
           <RecordDateTime>{ formattedTime }</RecordDateTime>
-          <RecordText>{ category }</RecordText>
+          <RecordText>{ category.categoryName }</RecordText>
           <RecordText>{ subCategory }</RecordText>
         </FlexContainer>
         <FlexContainer justifyContent="center" gap="1">

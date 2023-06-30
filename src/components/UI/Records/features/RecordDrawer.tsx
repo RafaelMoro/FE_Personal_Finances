@@ -27,7 +27,7 @@ const RecordDrawer = ({
       <RecordDrawerTitle>{shortName}</RecordDrawerTitle>
       <RecordDrawerDatetime>{fullDate}</RecordDrawerDatetime>
       <RecordDrawerDatetime>{formattedTime}</RecordDrawerDatetime>
-      <RecordDrawerText>{category}</RecordDrawerText>
+      <RecordDrawerText>{category.categoryName}</RecordDrawerText>
       <RecordDrawerText>{subCategory}</RecordDrawerText>
       <RecordDrawerPriceContainer>
         { amountShown }

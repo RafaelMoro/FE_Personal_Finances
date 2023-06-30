@@ -19,7 +19,10 @@ Expense.args = {
   _id: '456-789',
   shortName: 'Gym to home.',
   description: 'Paying Uber to return home',
-  category: 'Transport',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Transport'
+  },
   subCategory: 'Uber/Didi',
   tag: ['Important'],
   indebtedPeople: [],
@@ -35,7 +38,10 @@ ExpenseWithLongDescription.args = {
   _id: '456-789',
   shortName: 'Groceries for the week.',
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
-  category: 'Food',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Food'
+  },
   subCategory: 'Groceries',
   tag: ['Important'],
   indebtedPeople: [],
@@ -51,7 +57,10 @@ ExpenseWithLongShortName.args = {
   _id: '456-789',
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
-  category: 'Food',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Food'
+  },
   subCategory: 'Groceries',
   tag: ['Important'],
   indebtedPeople: [],
@@ -67,7 +76,10 @@ ExpenseWithoutTagsAndBudgets.args = {
   _id: '456-789',
   shortName: "2 Mcdonalds ",
   description: "Mine and Eric's",
-  category: 'Food',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Food'
+  },
   subCategory: 'Groceries',
   tag: [],
   indebtedPeople: [],
@@ -83,7 +95,10 @@ ExpenseWithManyBudgets.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
-  category: 'Leisure',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Food'
+  },
   subCategory: 'Outdoors',
   tag: [],
   indebtedPeople: [],
@@ -99,7 +114,10 @@ ExpenseWithManyBudgetsAndLongNameBudget.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
-  category: 'Leisure',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Leisure'
+  },
   subCategory: 'Outdoors',
   tag: [],
   indebtedPeople: [],
@@ -115,7 +133,10 @@ ExpenseWithManyBudgetsAndTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
-  category: 'Leisure',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Leisure'
+  },
   subCategory: 'Outdoors',
   tag: ['Pending', 'Important', 'Beto', 'Other tag'],
   indebtedPeople: [],
@@ -131,7 +152,10 @@ ExpenseWithNoBudgetsAndManyTags.args = {
   _id: '456-789',
   shortName: "Imagine Dragons concert ",
   description: "CDMX Concert",
-  category: 'Leisure',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Leisure'
+  },
   subCategory: 'Outdoors',
   tag: ['Pending', 'Important', 'Beto', 'Other tag'],
   indebtedPeople: [],
@@ -147,7 +171,10 @@ Income.args = {
   _id: '456-789',
   shortName: "Payment to credit card",
   description: "From May 12th to May 19th",
-  category: 'Payment',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Payment'
+  },
   subCategory: 'Credit Card',
   tag: [],
   indebtedPeople: [],
@@ -163,7 +190,10 @@ IncomeWithExpensesPaid.args = {
   _id: '456-789',
   shortName: "Payment to credit card",
   description: "From May 12th to May 19th",
-  category: 'Payment',
+  category: {
+    _id: '123-456-789',
+    categoryName: 'Payment'
+  },
   subCategory: 'Credit Card',
   tag: [],
   indebtedPeople: [],

@@ -23,13 +23,18 @@ interface IndebtedPeople {
   isPaid: boolean;
 }
 
+interface CategoryRecord {
+  _id: string;
+  categoryName: string;
+}
+
 export interface AccountRecord {
   _id: string;
   shortName: string;
   description: string;
   amount: number;
   date: Date;
-  category: string;
+  category: CategoryRecord;
   subCategory: string;
   tag: string[];
   indebtedPeople: IndebtedPeople[];
