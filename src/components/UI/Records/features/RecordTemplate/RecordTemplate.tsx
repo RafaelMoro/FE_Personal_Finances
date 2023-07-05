@@ -15,8 +15,13 @@ import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplat
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action = edit ? 'Edit' : 'Create';
-  // const formValues = useRef(null);
   const onlyCategories = CATEGORIES_RECORDS.map((category) => category.category);
+  const initialValues = {
+    amount: '',
+    shortDescription: '',
+    description: '',
+    category: onlyCategories[0],
+  };
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,7 +42,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       </ParagraphTitle>
       <Formik
         // innerRef={formValues}
-        initialValues={{ password: '', confirmPassword: '' }}
+        initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
         validateOnMount
       >
