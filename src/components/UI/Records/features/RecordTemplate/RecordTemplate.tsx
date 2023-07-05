@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
+import { useAtom } from 'jotai';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 
@@ -12,16 +13,32 @@ import {
 import { SelectInput } from '../../../SelectInput';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplate.styled';
+import { selectInputInfoAtom } from '../../../../../atoms';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+  const [selectInputInfo] = useAtom(selectInputInfoAtom);
   const action = edit ? 'Edit' : 'Create';
   const onlyCategories = CATEGORIES_RECORDS.map((category) => category.category);
+  const firstCategory = onlyCategories[0];
+  const subcategoriesOfFirstCategory = CATEGORIES_RECORDS[0].subCategories;
+  const [currentSubcategories, setCurrentSubcategories] = useState(subcategoriesOfFirstCategory);
+  console.log(subcategoriesOfFirstCategory);
+
   const initialValues = {
     amount: '',
     shortDescription: '',
     description: '',
-    category: onlyCategories[0],
+    category: firstCategory,
+    subcategory: subcategoriesOfFirstCategory,
   };
+
+  useEffect(() => {
+    const newSubcategories = CATEGORIES_RECORDS
+      .filter((item) => selectInputInfo.value === item.category)
+      .map((item) => item.subCategories)
+      .flat();
+    setCurrentSubcategories(newSubcategories);
+  }, [selectInputInfo.value]);
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,7 +58,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         Record
       </ParagraphTitle>
       <Formik
-        // innerRef={formValues}
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
         validateOnMount
@@ -79,6 +95,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               labelName="Category"
               fieldName="category"
               stringOptions={onlyCategories}
+              colorOptions={[]}
+            />
+            <SelectInput
+              labelId="select-record-subcategory"
+              labelName="Subcategory"
+              fieldName="subcategory"
+              stringOptions={currentSubcategories}
               colorOptions={[]}
             />
             <FlexContainer justifyContent="space-between">
