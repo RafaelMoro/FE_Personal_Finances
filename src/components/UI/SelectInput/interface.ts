@@ -14,7 +14,8 @@ export interface ISelectFormikProps {
   children: ReactNode;
   field: ISelectFormikField;
   form: ISelectFormikForm;
-
+  // Callback to do any action depending on the name and value of the select input
+  processSelectDataFn?: (name: string, value: string | string[]) => void;
 }
 
 export interface ISelectInputProps {
@@ -24,6 +25,8 @@ export interface ISelectInputProps {
   stringOptions: string[];
   colorOptions: | ITextColors[] | IBackgroundColors[];
   selectInputColors?: boolean;
+  // Callback to do any action depending on the name and value of the select input
+  processSelectDataFn?: (name: string, value: string | string[]) => void;
 }
 
 export interface ISelectInputDynamicProps {

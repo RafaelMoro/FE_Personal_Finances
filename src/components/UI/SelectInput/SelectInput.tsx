@@ -6,13 +6,20 @@ import { ISelectInputProps } from './interface';
 import { InputLabel, MenuItem } from '../../../styles';
 import { ColorCircle, PersonalizedMenuItem } from './SelectInput.styled';
 
-// This component only can be used with Formik because it was included MUI component with Formik
+/*
+** This component only can be used with Formik because it was included MUI component with Formik
+** Passing processSelectDataFn to Field as other props that Field does not need, it will pass to
+** the component prop that is the SelectFormik component.
+** The processSelectDataFn is a callback to do any action needed depending on
+** the value and name of the select input
+*/
 const SelectInput = ({
-  labelId, labelName, fieldName, stringOptions, colorOptions, selectInputColors = false,
+  labelId, labelName, fieldName, stringOptions, colorOptions,
+  selectInputColors = false, processSelectDataFn,
 }: ISelectInputProps) => (
   <FormControl variant="standard">
     <InputLabel id={labelId}>{ labelName }</InputLabel>
-    <Field name={fieldName} component={SelectFormik}>
+    <Field processSelectDataFn={processSelectDataFn} name={fieldName} component={SelectFormik}>
       { (colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
         <PersonalizedMenuItem
           key={`${fieldName}-${option.name}`}

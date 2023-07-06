@@ -49,8 +49,3 @@ export interface ExpenseInterface extends AccountRecord {
 export interface Income extends AccountRecord {
   expensesPaid: ExpenseInterface[];
 }
-
-export interface SelectInputValueProps {
-  name: string;
-  value: string;
-}

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 
@@ -13,32 +12,37 @@ import {
 import { SelectInput } from '../../../SelectInput';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplate.styled';
-import { selectInputInfoAtom } from '../../../../../atoms';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
-  const [selectInputInfo] = useAtom(selectInputInfoAtom);
-  const action = edit ? 'Edit' : 'Create';
-  const onlyCategories = CATEGORIES_RECORDS.map((category) => category.category);
-  const firstCategory = onlyCategories[0];
-  const subcategoriesOfFirstCategory = CATEGORIES_RECORDS[0].subCategories;
-  const [currentSubcategories, setCurrentSubcategories] = useState(subcategoriesOfFirstCategory);
-  console.log(subcategoriesOfFirstCategory);
+  const action: string = edit ? 'Edit' : 'Create';
+  const categories: string[] = CATEGORIES_RECORDS.map((category) => category.category);
+  const firstCategory: string = categories[0];
+  const subcategoriesOfFirstCategory: string[] = CATEGORIES_RECORDS[0].subCategories;
+  const [currentCategory, setCurrentCategory] = useState<string>(firstCategory);
+  // eslint-disable-next-line max-len
+  const [currentSubcategories, setCurrentSubcategories] = useState<string[]>(subcategoriesOfFirstCategory);
 
   const initialValues = {
     amount: '',
     shortDescription: '',
     description: '',
     category: firstCategory,
-    subcategory: subcategoriesOfFirstCategory,
+    subcategory: currentSubcategories[0],
   };
 
   useEffect(() => {
     const newSubcategories = CATEGORIES_RECORDS
-      .filter((item) => selectInputInfo.value === item.category)
+      .filter((item) => currentCategory === item.category)
       .map((item) => item.subCategories)
       .flat();
     setCurrentSubcategories(newSubcategories);
-  }, [selectInputInfo.value]);
+  }, [currentCategory]);
+
+  const setNewCategory = (name: string, value: string | string[]) => {
+    if (name === 'category' && typeof value === 'string') {
+      setCurrentCategory(value);
+    }
+  };
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -94,8 +98,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               labelId="select-record-category"
               labelName="Category"
               fieldName="category"
-              stringOptions={onlyCategories}
+              stringOptions={categories}
               colorOptions={[]}
+              processSelectDataFn={setNewCategory}
             />
             <SelectInput
               labelId="select-record-subcategory"
