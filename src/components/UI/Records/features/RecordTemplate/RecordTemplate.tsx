@@ -27,7 +27,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     shortDescription: '',
     description: '',
     category: firstCategory,
-    subcategory: currentSubcategories[0],
+    subcategory: '',
   };
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
+        enableReinitialize
         validateOnMount
       >
         {({ submitForm }) => (
