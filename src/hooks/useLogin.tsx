@@ -34,8 +34,8 @@ const useLogin = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
   const {
-    showNotification, toggleShowNotification, notificationInfo,
-    updateDescription,
+    toggleShowNotification, notificationInfo,
+    updateDescription, notification,
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
@@ -83,7 +83,7 @@ const useLogin = () => {
     handleShowNotification: toggleShowNotification,
     signOut,
     notificationInfo,
-    showNotification,
+    notification,
   };
 };
 

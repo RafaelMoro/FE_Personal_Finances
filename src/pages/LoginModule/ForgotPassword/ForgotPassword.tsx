@@ -31,8 +31,8 @@ const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contai
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
   const {
-    showNotification, toggleShowNotification, notificationInfo,
-    updateTitle, updateDescription, updateStatus,
+    showNotification, hideNotification, notificationInfo,
+    updateTitle, updateDescription, updateStatus, notification,
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
@@ -45,7 +45,7 @@ const ForgotPassword = (): ReactElement => {
       updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
       updateStatus(NOTIFICATION_ERROR_STATUS);
 
-      toggleShowNotification();
+      showNotification();
       return;
     }
 
@@ -56,7 +56,7 @@ const ForgotPassword = (): ReactElement => {
       updateStatus(NOTIFICATION_STATUS);
     }
 
-    toggleShowNotification();
+    showNotification();
     setTimeout(() => {
       navigate(LOGIN_ROUTE);
     }, 5000);
@@ -64,12 +64,12 @@ const ForgotPassword = (): ReactElement => {
 
   return (
     <>
-      {showNotification && (
+      {notification && (
       <Notification
         title={notificationInfo.current.title}
         description={notificationInfo.current.description}
         status={notificationInfo.current.status}
-        close={toggleShowNotification}
+        close={hideNotification}
         UIElement={
           notificationInfo.current.status === NOTIFICATION_ERROR_STATUS
             ? createAccountButton

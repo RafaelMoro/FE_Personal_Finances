@@ -25,7 +25,7 @@ const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Error;
 
 const ResetPassword = (): ReactElement => {
   const {
-    showNotification, toggleShowNotification, notificationInfo,
+    notification, toggleShowNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus,
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
@@ -59,7 +59,7 @@ const ResetPassword = (): ReactElement => {
 
   return (
     <>
-      {showNotification && (
+      {notification && (
         <Notification
           title={notificationInfo.current.title}
           description={notificationInfo.current.description}

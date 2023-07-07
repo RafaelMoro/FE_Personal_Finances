@@ -99,7 +99,7 @@ const Dashboard = () => {
   const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
   const { signOut } = useLogin();
   const {
-    showNotification, toggleShowNotification, notificationInfo,
+    notification, toggleShowNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus,
   } = useNotification({
     title: '', description: '', status: SystemStateEnum.Info,
@@ -135,7 +135,7 @@ const Dashboard = () => {
 
   return (
     <DashboardContainer>
-      {showNotification && (
+      {notification && (
         <Notification
           title={notificationInfo.current.title}
           description={notificationInfo.current.description}

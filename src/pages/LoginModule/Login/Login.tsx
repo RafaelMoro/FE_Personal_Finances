@@ -16,12 +16,12 @@ import logo from '../../../assets/logo.png';
 
 const Login = () => {
   const {
-    handleSubmit, handleShowNotification, notificationInfo, showNotification,
+    handleSubmit, handleShowNotification, notificationInfo, notification,
   } = useLogin();
 
   return (
     <>
-      {showNotification && (
+      {notification && (
       <Notification
         title={notificationInfo.current.title}
         description={notificationInfo.current.description}

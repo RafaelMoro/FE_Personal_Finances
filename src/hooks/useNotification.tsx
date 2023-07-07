@@ -22,7 +22,7 @@ interface UseNotificationProps {
 *   - updateStatus: Function that updates the notification status.
 */
 const useNotification = ({ title, description, status }: UseNotificationProps) => {
-  const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [notification, setShowNotification] = useState<boolean>(false);
   const notificationInfo = useRef({
     title,
     description,
@@ -32,6 +32,9 @@ const useNotification = ({ title, description, status }: UseNotificationProps) =
   const toggleShowNotification = () => {
     setShowNotification((prevState) => !prevState);
   };
+
+  const showNotification = () => setShowNotification(true);
+  const hideNotification = () => setShowNotification(false);
 
   const updateTitle = (newTitle: string):void => {
     notificationInfo.current.title = newTitle;
@@ -46,9 +49,11 @@ const useNotification = ({ title, description, status }: UseNotificationProps) =
   };
 
   return {
-    showNotification,
+    notification,
     notificationInfo,
     toggleShowNotification,
+    showNotification,
+    hideNotification,
     updateTitle,
     updateDescription,
     updateStatus,
