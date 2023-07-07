@@ -171,3 +171,15 @@ export const DebtPaid = styled(TableCell)`
 export const List = styled(ListMUI)`
   margin-top: 1.5rem;
 `;
+
+// Categories and subcategories
+
+export const RecordLoaderContainer = styled.div`
+  margin: 0 auto;
+`;
+
+export const LoadingCategoriesContainer = styled.div`
+  display: grid;
+  width: 100%;
+  justify-content: center;
+`;

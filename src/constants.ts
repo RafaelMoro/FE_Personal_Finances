@@ -1,12 +1,12 @@
+// eslint-disable-next-line import/no-cycle
+import { Categories } from './components/UI/Records/interface';
+
 export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
 
-export interface CategoriesRecords {
-  category: string;
-  subCategories: string[];
-}
-
-const FOOD_AND_DRINK_CATEGORY: CategoriesRecords = {
-  category: 'Food and Drink',
+const FOOD_AND_DRINK_CATEGORY: Categories = {
+  _id: 'local-category-1',
+  __v: 0,
+  categoryName: 'Food and Drink',
   subCategories: [
     'Bar',
     'Alcohol',
@@ -17,8 +17,10 @@ const FOOD_AND_DRINK_CATEGORY: CategoriesRecords = {
     'Groceries',
   ],
 };
-const HOUSING_CATEGORY: CategoriesRecords = {
-  category: 'Housing',
+const HOUSING_CATEGORY: Categories = {
+  _id: 'local-category-2',
+  __v: 0,
+  categoryName: 'Housing',
   subCategories: [
     'Rent',
     'Mortgage',
@@ -26,8 +28,10 @@ const HOUSING_CATEGORY: CategoriesRecords = {
     'Property taxes',
   ],
 };
-const UTILITIES_CATEGORY: CategoriesRecords = {
-  category: 'Utilities',
+const UTILITIES_CATEGORY: Categories = {
+  _id: 'local-category-3',
+  __v: 0,
+  categoryName: 'Utilities',
   subCategories: [
     'Electricity',
     'Gas',
@@ -39,16 +43,20 @@ const UTILITIES_CATEGORY: CategoriesRecords = {
     'Cellphone',
   ],
 };
-const SUSCRIPTIONS_CATEGORY: CategoriesRecords = {
-  category: 'Subscriptions',
+const SUSCRIPTIONS_CATEGORY: Categories = {
+  _id: 'local-category-4',
+  __v: 0,
+  categoryName: 'Subscriptions',
   subCategories: [
     'Streaming services',
     'Gym',
     'Software',
   ],
 };
-const TRANSPORTATION_CATEGORY: CategoriesRecords = {
-  category: 'Transportation',
+const TRANSPORTATION_CATEGORY: Categories = {
+  _id: 'local-category-5',
+  __v: 0,
+  categoryName: 'Transportation',
   subCategories: [
     'Gas/Fuel',
     'Car maintenance and repair',
@@ -60,8 +68,10 @@ const TRANSPORTATION_CATEGORY: CategoriesRecords = {
     'Taxis',
   ],
 };
-const DEBT_AND_LOANS_CATEGORY: CategoriesRecords = {
-  category: 'Debt & Loans Payments',
+const DEBT_AND_LOANS_CATEGORY: Categories = {
+  _id: 'local-category-6',
+  __v: 0,
+  categoryName: 'Debt & Loans Payments',
   subCategories: [
     'Credit card debt',
     'Student loans',
@@ -70,8 +80,10 @@ const DEBT_AND_LOANS_CATEGORY: CategoriesRecords = {
     'Auto loan',
   ],
 };
-const INSURANCE_CATEGORY: CategoriesRecords = {
-  category: 'Insurance',
+const INSURANCE_CATEGORY: Categories = {
+  _id: 'local-category-7',
+  __v: 0,
+  categoryName: 'Insurance',
   subCategories: [
     'Medical insurance',
     'Dental insurance',
@@ -80,8 +92,10 @@ const INSURANCE_CATEGORY: CategoriesRecords = {
     'Property Insurance',
   ],
 };
-const HEALTHCARE_CATEGORY: CategoriesRecords = {
-  category: 'HealthCare',
+const HEALTHCARE_CATEGORY: Categories = {
+  _id: 'local-category-8',
+  __v: 0,
+  categoryName: 'HealthCare',
   subCategories: [
     'Speciality Care',
     'Dental care',
@@ -92,8 +106,10 @@ const HEALTHCARE_CATEGORY: CategoriesRecords = {
     'Health supplements',
   ],
 };
-const KIDS_CATEGORY: CategoriesRecords = {
-  category: 'Kids',
+const KIDS_CATEGORY: Categories = {
+  _id: 'local-category-9',
+  __v: 0,
+  categoryName: 'Kids',
   subCategories: [
     'Child support',
     'Baby necessities',
@@ -106,8 +122,10 @@ const KIDS_CATEGORY: CategoriesRecords = {
     'Footwear',
   ],
 };
-const CLOTHING_AND_PERSONAL_CARE: CategoriesRecords = {
-  category: 'Clothing & Personal Care',
+const CLOTHING_AND_PERSONAL_CARE: Categories = {
+  _id: 'local-category-10',
+  __v: 0,
+  categoryName: 'Clothing & Personal Care',
   subCategories: [
     'Clothes',
     'Haircuts',
@@ -116,8 +134,10 @@ const CLOTHING_AND_PERSONAL_CARE: CategoriesRecords = {
   ],
 };
 
-const ENTERTAINMENT_AND_LEISURE_CATEGORY: CategoriesRecords = {
-  category: 'Entertainment and Leisure',
+const ENTERTAINMENT_AND_LEISURE_CATEGORY: Categories = {
+  _id: 'local-category-11',
+  __v: 0,
+  categoryName: 'Entertainment and Leisure',
   subCategories: [
     'Go Out',
     'Hobbies',
@@ -125,8 +145,10 @@ const ENTERTAINMENT_AND_LEISURE_CATEGORY: CategoriesRecords = {
     'Cinema',
   ],
 };
-const SAVINGS_CATEGORY: CategoriesRecords = {
-  category: 'Savings',
+const SAVINGS_CATEGORY: Categories = {
+  _id: 'local-category-12',
+  __v: 0,
+  categoryName: 'Savings',
   subCategories: [
     'Emergency Fund',
     'Retirement',
@@ -136,7 +158,7 @@ const SAVINGS_CATEGORY: CategoriesRecords = {
   ],
 };
 
-export const CATEGORIES_RECORDS: CategoriesRecords[] = [
+export const CATEGORIES_RECORDS: Categories[] = [
   FOOD_AND_DRINK_CATEGORY,
   HOUSING_CATEGORY,
   UTILITIES_CATEGORY,
