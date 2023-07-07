@@ -49,5 +49,17 @@ export interface RecordDrawerProps extends Omit<AccountRecordUI, 'amount' | 'acc
 export interface IncomeAndExpensesResponse {
   records: AnyRecord []
   message: string;
-  error?: boolean
+  error?: boolean;
+}
+
+export interface Categories {
+  _id: string;
+  __v: number;
+  categoryName: string;
+  subCategories: string[];
+}
+
+export interface CategoriesResponse {
+  categories: Categories[];
+  error: boolean;
 }

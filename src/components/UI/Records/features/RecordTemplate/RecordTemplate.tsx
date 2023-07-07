@@ -2,18 +2,26 @@
 import { useEffect, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
+import { useAtom } from 'jotai';
+import { AxiosRequestHeaders } from 'axios';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps } from './interface';
+import { CategoriesResponse } from '../../interface';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer,
 } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
+import { GET_CATEGORIES } from '../../constants';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplate.styled';
+import { userAtom } from '../../../../../atoms';
+import { GetRequest } from '../../../../../utils';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+  const [user] = useAtom(userAtom);
+  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const action: string = edit ? 'Edit' : 'Create';
   const categories: string[] = CATEGORIES_RECORDS.map((category) => category.category);
   const firstCategory: string = categories[0];
@@ -29,6 +37,24 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     category: firstCategory,
     subcategory: '',
   };
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
+
+      if (response.error) {
+      // handle error
+      }
+
+      if (response.categories.length === 0) {
+        // there are no categories created
+        return;
+      }
+
+      const userCategories = response.categories.map((item) => item.categoryName);
+    };
+    if (!!user && bearerToken) getCategories();
+  }, [bearerToken, user]);
 
   useEffect(() => {
     const newSubcategories = CATEGORIES_RECORDS
