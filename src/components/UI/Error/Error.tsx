@@ -5,9 +5,11 @@ import { IErrorProps } from './interface';
 
 const { negative } = AppColors;
 
-const Error = ({ title, description, children }: IErrorProps) => (
+const Error = ({
+  title, description, children, hideIcon = false,
+}: IErrorProps) => (
   <MessageContainer>
-    <ErrorOutlineOutlined sx={{ fontSize: '4.5rem', fill: negative }} />
+    { !hideIcon && (<ErrorOutlineOutlined sx={{ fontSize: '4.5rem', fill: negative }} />) }
     { title && (<Paragraph>{title}</Paragraph>) }
     <Paragraph>{description}</Paragraph>
     { children }

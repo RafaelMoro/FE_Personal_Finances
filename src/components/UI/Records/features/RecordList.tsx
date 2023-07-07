@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
-import { AxiosRequestHeaders } from 'axios';
+import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
   allRecordsAtom, selectedAccountAtom, userAtom, accountsUIAtom,
 } from '../../../../atoms';
+import { Error } from '../../Error';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../constants';
@@ -15,6 +16,11 @@ import { IncomeAndExpensesResponse } from '../interface';
 import { Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
+import { ErrorResponse } from '../../../../aliasType';
+
+let ERROR_TITLE = 'Error.';
+let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
+const NETWORK_CATCH_ERROR = 'Network Error';
 
 const RecordList = () => {
   const dateOfToday = new Date();
@@ -25,29 +31,51 @@ const RecordList = () => {
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
+  const [error, setError] = useState<ErrorResponse>('No error');
 
   useEffect(() => {
     const getRecords = async () => {
-      const accountId = selectedAccount?._id;
-      const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}`;
-      // eslint-disable-next-line max-len
-      const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
+      try {
+        const accountId = selectedAccount?._id;
+        const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}`;
+        const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
 
-      if (response?.error) {
-        // handle error
+        if (response?.error) {
+          // handle error
+          const errorMessage = response?.message as string;
+          if (errorMessage === NETWORK_CATCH_ERROR) {
+            ERROR_TITLE = 'Error #401';
+            setError('Network Error');
+            return;
+          }
+          ERROR_DESCRIPTION = errorMessage;
+          setError('Other Error');
+          return;
+        }
+
+        if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
+          // Show that there are no records and the user may create one.
+          setAllRecords([]);
+          return;
+        }
+
+        const recordFetched = response?.records;
+        setAllRecords(recordFetched);
+      } catch (errorCatched) {
+        const newError = errorCatched as AxiosError;
+        console.log(' ~ newError:', newError);
+        ERROR_DESCRIPTION = newError.message;
+        setError('Other Error');
       }
-
-      if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
-        // Show that there are no records and the user may create one.
-        setAllRecords([]);
-        return;
-      }
-
-      const recordFetched = response?.records;
-      setAllRecords(recordFetched);
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
   }, [bearerToken, currentMonth, selectedAccount, setAllRecords, user]);
+
+  if (error !== 'No error') {
+    return (
+      <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
+    );
+  }
 
   return (
     <List>
