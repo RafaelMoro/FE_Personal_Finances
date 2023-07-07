@@ -17,3 +17,8 @@ export const FormContainer = styled(Form)`
   padding: 0 1rem 0 1rem;
   gap: 2rem;
 `;
+
+export const ChipsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+`;

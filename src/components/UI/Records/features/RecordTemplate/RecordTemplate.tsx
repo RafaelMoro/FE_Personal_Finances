@@ -10,7 +10,9 @@ import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer,
 } from '../../../../../styles';
-import { RecordTemplateMain, GoBackButton, FormContainer } from './RecordTemplate.styled';
+import {
+  RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
+} from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
@@ -22,6 +24,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   const updateTags = (newTags: string[]):void => {
     tagsAndBudgets.current = { ...tagsAndBudgets.current, tags: newTags };
+  };
+
+  const updateBudgets = (newBudgets: string[]):void => {
+    tagsAndBudgets.current = { ...tagsAndBudgets.current, budgets: newBudgets };
   };
 
   const initialValues = {
@@ -84,7 +90,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               label="Description"
             />
             <CategoriesAndSubcategories />
-            <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
+            <ChipsContainer>
+              <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
+              <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
+            </ChipsContainer>
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
