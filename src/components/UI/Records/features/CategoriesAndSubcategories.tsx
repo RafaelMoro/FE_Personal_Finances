@@ -25,11 +25,13 @@ const CategoriesAndSubcategories = () => {
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [categories, setCategories] = useState<Category[]>(CATEGORIES_RECORDS);
   // If category has not been selected yet, disabled subcategory select input.
   const [categoryNotSelected, setCategoryNotSelected] = useState<boolean>(true);
-  const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
+  // Error flag to set to true if the response come with error and don't keep fetching.
+  const [error, setError] = useState<boolean>(false);
 
+  const [categories, setCategories] = useState<Category[]>(CATEGORIES_RECORDS);
+  const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
   const onlyCategories = useMemo(() => categories.map((item) => item.categoryName), [categories]);
 
   const {
@@ -43,9 +45,9 @@ const CategoriesAndSubcategories = () => {
       const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
 
       if (response.error) {
-        // handle error
         setTimeout(() => setIsLoading(false), 1000);
         showNotification();
+        setError(true);
         return;
       }
 
@@ -59,8 +61,10 @@ const CategoriesAndSubcategories = () => {
       setCategories([...categories, ...response.categories]);
     };
 
-    if (!!user && bearerToken && categories.length === 12) getCategories();
-  }, [bearerToken, categories, showNotification, user]);
+    // Fetch while the categories are 12 because are the total of the local categories.
+    // If there are more, categories has been fetched already.
+    if (!!user && bearerToken && categories.length === 12 && !error) getCategories();
+  }, [bearerToken, categories, error, showNotification, user]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
