@@ -20,6 +20,20 @@ const AddChip = ({
     setChips(newInfo);
   };
 
+  const checkRepeatedValue = (value: string) => {
+    let error;
+    const repeatedChip = chips.find((chip) => chip === value);
+    if (!repeatedChip) return error;
+    error = `${value} cannot be repeated. Try a different one.`;
+    return error;
+  };
+
+  const handleDeleteChip = (value: string) => {
+    const newChips = chips.filter((chip) => chip !== value);
+    updateData(newChips);
+    setChips(newChips);
+  };
+
   return (
     <FlexContainer gap="3" justifyContent="center">
       <Formik
@@ -40,6 +54,7 @@ const AddChip = ({
               type="text"
               variant="standard"
               label={label}
+              validate={checkRepeatedValue}
             />
             <SecondaryButton variant="contained" onClick={submitForm} size="medium">
               Add
@@ -50,8 +65,8 @@ const AddChip = ({
         )}
       </Formik>
       { (chips.length === 0) && (<Chip label={`No ${name}s added`} variant="outlined" color="primary" />) }
-      { (chips.length > 0) && chips.map((chip, index) => (
-        <Chip key={`${chip}-${index + 1}`} label={chip} variant="outlined" color="primary" />
+      { (chips.length > 0) && chips.map((chip) => (
+        <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
       ))}
     </FlexContainer>
   );
