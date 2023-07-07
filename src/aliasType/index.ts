@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-cycle
 import { TYPE_OF_ACCOUNTS } from '../constants';
 
 export type HttpMethods = 'post' | 'put' | 'delete';

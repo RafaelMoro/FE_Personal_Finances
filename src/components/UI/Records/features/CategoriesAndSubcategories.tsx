@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable no-console */
+import { useEffect, useState, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
@@ -6,7 +7,7 @@ import { userAtom } from '../../../../atoms';
 import { Loader } from '../../../../animations/Loader';
 import { Paragraph } from '../../../../styles';
 import { SelectInput } from '../../SelectInput';
-import { CategoriesResponse } from '../interface';
+import { CategoriesResponse, Category } from '../interface';
 import { GET_CATEGORIES } from '../constants';
 import { GetRequest } from '../../../../utils';
 import { CATEGORIES_RECORDS } from '../../../../constants';
@@ -16,17 +17,12 @@ const CategoriesAndSubcategories = () => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
-  const defaultCategories: string[] = CATEGORIES_RECORDS.map((category) => category.categoryName);
-  const firstCategory: string = defaultCategories[0];
-  const subcategoriesOfFirstCategory: string[] = CATEGORIES_RECORDS[0].subCategories;
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [category, setCategory] = useState<string>(firstCategory);
-  const [categories, setCategories] = useState(defaultCategories);
-  // eslint-disable-next-line max-len
-  const [categoriesAndSubcategories, setCategoriesAndSubcategories] = useState(CATEGORIES_RECORDS);
-  // eslint-disable-next-line max-len
-  const [currentSubcategories, setCurrentSubcategories] = useState<string[]>(subcategoriesOfFirstCategory);
+  const [categories, setCategories] = useState<Category[]>(CATEGORIES_RECORDS);
+
+  const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
+
+  const onlyCategories = useMemo(() => categories.map((item) => item.categoryName), [categories]);
 
   useEffect(() => {
     const getCategories = async () => {
@@ -43,28 +39,16 @@ const CategoriesAndSubcategories = () => {
       }
 
       setTimeout(() => setIsLoading(false), 1000);
-      // // eslint-disable-next-line max-len
-      // setCategoriesAndSubcategories([...categoriesAndSubcategories, ...response.categories]);
-      // const userCategories = response.categories.map((item) => item.categoryName);
-      // setCategories({
-      //   ...categories,
-      //   ...userCategories,
-      // });
+      setCategories([...categories, ...response.categories]);
     };
-    if (!!user && bearerToken) getCategories();
-  }, [bearerToken, categories, categoriesAndSubcategories, user]);
 
-  useEffect(() => {
-    const newSubcategories = categoriesAndSubcategories
-      .filter((item) => category === item.categoryName)
-      .map((item) => item.subCategories)
-      .flat();
-    setCurrentSubcategories(newSubcategories);
-  }, [categoriesAndSubcategories, category]);
+    if (!!user && bearerToken && categories.length === 12) getCategories();
+  }, [bearerToken, categories, user]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
-      setCategory(value);
+      const selectedCategory = categories.find((item) => item.categoryName === value) ?? CATEGORIES_RECORDS[0];
+      setCurrentCategory(selectedCategory);
     }
   };
 
@@ -89,7 +73,7 @@ const CategoriesAndSubcategories = () => {
         labelId="select-record-category"
         labelName="Category"
         fieldName="category"
-        stringOptions={categories}
+        stringOptions={onlyCategories}
         colorOptions={[]}
         processSelectDataFn={setNewCategory}
       />
@@ -97,7 +81,7 @@ const CategoriesAndSubcategories = () => {
         labelId="select-record-subcategory"
         labelName="Subcategory"
         fieldName="subcategory"
-        stringOptions={currentSubcategories}
+        stringOptions={currentCategory.subCategories}
         colorOptions={[]}
       />
     </>

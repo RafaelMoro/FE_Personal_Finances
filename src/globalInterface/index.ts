@@ -1,4 +1,5 @@
 import { AxiosRequestHeaders } from 'axios';
+// eslint-disable-next-line import/no-cycle
 import { AccountType } from '../aliasType';
 
 export interface User {

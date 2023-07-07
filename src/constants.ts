@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-cycle
-import { Categories } from './components/UI/Records/interface';
+import { Category } from './components/UI/Records/interface';
 
 export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
 
-const FOOD_AND_DRINK_CATEGORY: Categories = {
+const FOOD_AND_DRINK_CATEGORY: Category = {
   _id: 'local-category-1',
   __v: 0,
   categoryName: 'Food and Drink',
@@ -17,7 +17,7 @@ const FOOD_AND_DRINK_CATEGORY: Categories = {
     'Groceries',
   ],
 };
-const HOUSING_CATEGORY: Categories = {
+const HOUSING_CATEGORY: Category = {
   _id: 'local-category-2',
   __v: 0,
   categoryName: 'Housing',
@@ -28,7 +28,7 @@ const HOUSING_CATEGORY: Categories = {
     'Property taxes',
   ],
 };
-const UTILITIES_CATEGORY: Categories = {
+const UTILITIES_CATEGORY: Category = {
   _id: 'local-category-3',
   __v: 0,
   categoryName: 'Utilities',
@@ -43,7 +43,7 @@ const UTILITIES_CATEGORY: Categories = {
     'Cellphone',
   ],
 };
-const SUSCRIPTIONS_CATEGORY: Categories = {
+const SUSCRIPTIONS_CATEGORY: Category = {
   _id: 'local-category-4',
   __v: 0,
   categoryName: 'Subscriptions',
@@ -53,7 +53,7 @@ const SUSCRIPTIONS_CATEGORY: Categories = {
     'Software',
   ],
 };
-const TRANSPORTATION_CATEGORY: Categories = {
+const TRANSPORTATION_CATEGORY: Category = {
   _id: 'local-category-5',
   __v: 0,
   categoryName: 'Transportation',
@@ -68,7 +68,7 @@ const TRANSPORTATION_CATEGORY: Categories = {
     'Taxis',
   ],
 };
-const DEBT_AND_LOANS_CATEGORY: Categories = {
+const DEBT_AND_LOANS_CATEGORY: Category = {
   _id: 'local-category-6',
   __v: 0,
   categoryName: 'Debt & Loans Payments',
@@ -80,7 +80,7 @@ const DEBT_AND_LOANS_CATEGORY: Categories = {
     'Auto loan',
   ],
 };
-const INSURANCE_CATEGORY: Categories = {
+const INSURANCE_CATEGORY: Category = {
   _id: 'local-category-7',
   __v: 0,
   categoryName: 'Insurance',
@@ -92,7 +92,7 @@ const INSURANCE_CATEGORY: Categories = {
     'Property Insurance',
   ],
 };
-const HEALTHCARE_CATEGORY: Categories = {
+const HEALTHCARE_CATEGORY: Category = {
   _id: 'local-category-8',
   __v: 0,
   categoryName: 'HealthCare',
@@ -106,7 +106,7 @@ const HEALTHCARE_CATEGORY: Categories = {
     'Health supplements',
   ],
 };
-const KIDS_CATEGORY: Categories = {
+const KIDS_CATEGORY: Category = {
   _id: 'local-category-9',
   __v: 0,
   categoryName: 'Kids',
@@ -122,7 +122,7 @@ const KIDS_CATEGORY: Categories = {
     'Footwear',
   ],
 };
-const CLOTHING_AND_PERSONAL_CARE: Categories = {
+const CLOTHING_AND_PERSONAL_CARE: Category = {
   _id: 'local-category-10',
   __v: 0,
   categoryName: 'Clothing & Personal Care',
@@ -134,7 +134,7 @@ const CLOTHING_AND_PERSONAL_CARE: Categories = {
   ],
 };
 
-const ENTERTAINMENT_AND_LEISURE_CATEGORY: Categories = {
+const ENTERTAINMENT_AND_LEISURE_CATEGORY: Category = {
   _id: 'local-category-11',
   __v: 0,
   categoryName: 'Entertainment and Leisure',
@@ -145,7 +145,7 @@ const ENTERTAINMENT_AND_LEISURE_CATEGORY: Categories = {
     'Cinema',
   ],
 };
-const SAVINGS_CATEGORY: Categories = {
+const SAVINGS_CATEGORY: Category = {
   _id: 'local-category-12',
   __v: 0,
   categoryName: 'Savings',
@@ -158,7 +158,7 @@ const SAVINGS_CATEGORY: Categories = {
   ],
 };
 
-export const CATEGORIES_RECORDS: Categories[] = [
+export const CATEGORIES_RECORDS: Category[] = [
   FOOD_AND_DRINK_CATEGORY,
   HOUSING_CATEGORY,
   UTILITIES_CATEGORY,
