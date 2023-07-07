@@ -2,7 +2,7 @@ import { FormControl } from '@mui/material';
 import { Field } from 'formik';
 import { SelectFormik } from './SelectFormik';
 
-import { ISelectInputProps } from './interface';
+import { SelectInputProps } from './interface';
 import { InputLabel, MenuItem } from '../../../styles';
 import { ColorCircle, PersonalizedMenuItem } from './SelectInput.styled';
 
@@ -15,11 +15,11 @@ import { ColorCircle, PersonalizedMenuItem } from './SelectInput.styled';
 */
 const SelectInput = ({
   labelId, labelName, fieldName, stringOptions, colorOptions,
-  selectInputColors = false, processSelectDataFn,
-}: ISelectInputProps) => (
+  selectInputColors = false, processSelectDataFn, disabled = false,
+}: SelectInputProps) => (
   <FormControl variant="standard">
     <InputLabel id={labelId}>{ labelName }</InputLabel>
-    <Field processSelectDataFn={processSelectDataFn} name={fieldName} component={SelectFormik}>
+    <Field disabled={disabled} processSelectDataFn={processSelectDataFn} name={fieldName} component={SelectFormik}>
       { (colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
         <PersonalizedMenuItem
           key={`${fieldName}-${option.name}`}

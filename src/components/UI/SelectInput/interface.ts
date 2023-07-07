@@ -16,9 +16,10 @@ export interface ISelectFormikProps {
   form: ISelectFormikForm;
   // Callback to do any action depending on the name and value of the select input
   processSelectDataFn?: (name: string, value: string | string[]) => void;
+  disabled?: boolean;
 }
 
-export interface ISelectInputProps {
+export interface SelectInputProps {
   labelId: string;
   labelName: string;
   fieldName: string;
@@ -27,6 +28,7 @@ export interface ISelectInputProps {
   selectInputColors?: boolean;
   // Callback to do any action depending on the name and value of the select input
   processSelectDataFn?: (name: string, value: string | string[]) => void;
+  disabled?: boolean;
 }
 
 export interface ISelectInputDynamicProps {

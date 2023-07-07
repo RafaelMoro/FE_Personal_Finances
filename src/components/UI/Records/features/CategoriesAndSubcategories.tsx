@@ -20,7 +20,8 @@ const CategoriesAndSubcategories = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<Category[]>(CATEGORIES_RECORDS);
-
+  // If category has not been selected yet, disabled subcategory select input.
+  const [categoryNotSelected, setCategoryNotSelected] = useState<boolean>(true);
   const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
 
   const onlyCategories = useMemo(() => categories.map((item) => item.categoryName), [categories]);
@@ -50,6 +51,7 @@ const CategoriesAndSubcategories = () => {
     if (name === 'category' && typeof value === 'string') {
       const selectedCategory = categories.find((item) => item.categoryName === value) ?? CATEGORIES_RECORDS[0];
       setCurrentCategory(selectedCategory);
+      setCategoryNotSelected(false);
     }
   };
 
@@ -84,6 +86,7 @@ const CategoriesAndSubcategories = () => {
         fieldName="subcategory"
         stringOptions={currentCategory.subCategories}
         colorOptions={[]}
+        disabled={categoryNotSelected}
       />
     </>
   );
