@@ -3,8 +3,9 @@ import { useState } from 'react';
 
 import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
+import { AddButton, AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  InputForm, SecondaryButton, Chip, FlexContainer,
+  InputForm, Chip, FlexContainer,
 } from '../../../../../styles';
 
 const AddChip = ({
@@ -56,18 +57,20 @@ const AddChip = ({
               label={label}
               validate={checkRepeatedValue}
             />
-            <SecondaryButton variant="contained" onClick={submitForm} size="medium">
+            <AddButton variant="contained" onClick={submitForm} size="medium">
               Add
               {' '}
               {action}
-            </SecondaryButton>
+            </AddButton>
           </>
         )}
       </Formik>
       { (chips.length === 0) && (<Chip label={`No ${name}s added`} variant="outlined" color="primary" />) }
-      { (chips.length > 0) && chips.map((chip) => (
-        <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
-      ))}
+      <AddChipContainer>
+        { (chips.length > 0) && chips.map((chip) => (
+          <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
+        ))}
+      </AddChipContainer>
     </FlexContainer>
   );
 };

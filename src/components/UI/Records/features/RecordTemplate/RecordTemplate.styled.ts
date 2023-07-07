@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
-import { AnchorButton, AppColors } from '../../../../../styles';
+import { AnchorButton, AppColors, SecondaryButton } from '../../../../../styles';
 
 export const RecordTemplateMain = styled.main`
   display: grid;
@@ -18,7 +18,19 @@ export const FormContainer = styled(Form)`
   gap: 2rem;
 `;
 
+export const AddButton = styled(SecondaryButton)`
+  min-width: 15rem;
+`;
+
+export const AddChipContainer = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min-content, 20%));
+  gap: 1rem;
+`;
+
 export const ChipsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.5rem;
 `;
