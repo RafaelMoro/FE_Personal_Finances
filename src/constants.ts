@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/no-cycle
-import { Category } from './components/UI/Records/interface';
-
-export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
+import { Category } from './globalInterface';
 
 const FOOD_AND_DRINK_CATEGORY: Category = {
   _id: 'local-category-1',

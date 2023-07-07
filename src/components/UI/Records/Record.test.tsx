@@ -6,10 +6,13 @@ const records: AnyRecord[] = [
   {
     _id: '123-456',
     shortName: 'Casa a solesta gym',
+    // eslint-disable-next-line max-len
     description: 'Esta es una descripcion muy larga para darme una idea de cuanto debo de cortar aproximadamente para la vista corta y la vista larga',
     category: {
       _id: '123-456-789',
+      __v: 0,
       categoryName: 'Category dummy',
+      subCategories: ['foo', 'var'],
     },
     subCategory: 'Didi/Uber',
     tag: [],
@@ -46,7 +49,9 @@ const records: AnyRecord[] = [
     description: 'Didi para ir a casa',
     category: {
       _id: '123-456-789',
+      __v: 0,
       categoryName: 'Category dummy',
+      subCategories: ['foo', 'var'],
     },
     subCategory: 'Didi/Uber',
     tag: [],

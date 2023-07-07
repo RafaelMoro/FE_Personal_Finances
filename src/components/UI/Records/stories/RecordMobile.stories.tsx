@@ -21,7 +21,9 @@ Expense.args = {
   description: 'Paying Uber to return home',
   category: {
     _id: '123-456-789',
-    categoryName: 'Transport'
+    categoryName: 'Transport',
+    __v: 0,
+    subCategories: ['Didi']
   },
   subCategory: 'Uber/Didi',
   tag: ['Important'],
@@ -40,7 +42,9 @@ ExpenseWithLongDescription.args = {
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
   category: {
     _id: '123-456-789',
-    categoryName: 'Food'
+    categoryName: 'Food',
+    __v: 0,
+    subCategories: ['Fast Food']
   },
   subCategory: 'Groceries',
   tag: ['Important'],
@@ -59,7 +63,9 @@ ExpenseWithLongShortName.args = {
   description: 'Paying Uber to go to a bar.',
   category: {
     _id: '123-456-789',
-    categoryName: 'Food'
+    categoryName: 'Food',
+    __v: 0,
+    subCategories: ['Fast Food']
   },
   subCategory: 'Groceries',
   tag: ['Important'],
@@ -78,7 +84,9 @@ ExpenseWithoutTagsAndBudgets.args = {
   description: "Mine and Eric's",
   category: {
     _id: '123-456-789',
-    categoryName: 'Food'
+    categoryName: 'Food',
+    __v: 0,
+    subCategories: ['Fast Food']
   },
   subCategory: 'Groceries',
   tag: [],
@@ -97,7 +105,9 @@ ExpenseWithManyBudgets.args = {
   description: "CDMX Concert",
   category: {
     _id: '123-456-789',
-    categoryName: 'Food'
+    categoryName: 'Food',
+    __v: 0,
+    subCategories: ['Fast Food']
   },
   subCategory: 'Outdoors',
   tag: [],
@@ -116,7 +126,9 @@ ExpenseWithManyBudgetsAndLongNameBudget.args = {
   description: "CDMX Concert",
   category: {
     _id: '123-456-789',
-    categoryName: 'Leisure'
+    categoryName: 'Leisure',
+    __v: 0,
+    subCategories: ['Concert']
   },
   subCategory: 'Outdoors',
   tag: [],
@@ -135,7 +147,9 @@ ExpenseWithManyBudgetsAndTags.args = {
   description: "CDMX Concert",
   category: {
     _id: '123-456-789',
-    categoryName: 'Leisure'
+    categoryName: 'Leisure',
+    __v: 0,
+    subCategories: ['Credit Card']
   },
   subCategory: 'Outdoors',
   tag: ['Pending', 'Important', 'Beto', 'Other tag'],
@@ -154,7 +168,9 @@ ExpenseWithNoBudgetsAndManyTags.args = {
   description: "CDMX Concert",
   category: {
     _id: '123-456-789',
-    categoryName: 'Leisure'
+    categoryName: 'Leisure',
+    __v: 0,
+    subCategories: ['Credit Card']
   },
   subCategory: 'Outdoors',
   tag: ['Pending', 'Important', 'Beto', 'Other tag'],
@@ -173,7 +189,9 @@ Income.args = {
   description: "From May 12th to May 19th",
   category: {
     _id: '123-456-789',
-    categoryName: 'Payment'
+    categoryName: 'Payment',
+    __v: 0,
+    subCategories: ['Credit Card']
   },
   subCategory: 'Credit Card',
   tag: [],
@@ -192,7 +210,9 @@ IncomeWithExpensesPaid.args = {
   description: "From May 12th to May 19th",
   category: {
     _id: '123-456-789',
-    categoryName: 'Payment'
+    categoryName: 'Payment',
+    __v: 0,
+    subCategories: ['Credit Card']
   },
   subCategory: 'Credit Card',
   tag: [],

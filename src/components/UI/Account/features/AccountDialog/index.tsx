@@ -6,7 +6,6 @@ import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
 import { userAtom } from '../../../../../atoms';
-import { TYPE_OF_ACCOUNTS } from '../../../../../constants';
 import { CreateAccount, AccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
@@ -17,7 +16,7 @@ import {
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
-import { Account } from '../../../../../globalInterface';
+import { Account, TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { formatAccounts } from '../../../../../utils';
 

@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
-// eslint-disable-next-line import/no-cycle
-import { AccountRecord } from '../../../globalInterface';
+import { AccountRecord, Category } from '../../../globalInterface';
 
 export interface DrawerChipContainerProps {
   afterContent: string;
@@ -51,13 +50,6 @@ export interface IncomeAndExpensesResponse {
   records: AnyRecord []
   message: string;
   error?: boolean;
-}
-
-export interface Category {
-  _id: string;
-  __v: number;
-  categoryName: string;
-  subCategories: string[];
 }
 
 export interface CategoriesResponse {

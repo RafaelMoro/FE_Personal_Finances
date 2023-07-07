@@ -1,12 +1,13 @@
 import { AxiosRequestHeaders } from 'axios';
-// eslint-disable-next-line import/no-cycle
-import { AccountType } from '../aliasType';
 
 export interface User {
   accessToken: string;
   email: string;
   bearerToken: AxiosRequestHeaders;
 }
+
+export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
+export type AccountType = typeof TYPE_OF_ACCOUNTS[number];
 
 export interface Account {
   _id: string;
@@ -24,9 +25,11 @@ interface IndebtedPeople {
   isPaid: boolean;
 }
 
-interface CategoryRecord {
+export interface Category {
   _id: string;
+  __v: number;
   categoryName: string;
+  subCategories: string[];
 }
 
 export interface AccountRecord {
@@ -35,7 +38,7 @@ export interface AccountRecord {
   description: string;
   amount: number;
   date: Date;
-  category: CategoryRecord;
+  category: Category;
   subCategory: string;
   tag: string[];
   indebtedPeople: IndebtedPeople[];
