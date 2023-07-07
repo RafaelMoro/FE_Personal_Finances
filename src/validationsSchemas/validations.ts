@@ -26,3 +26,6 @@ export const passwordValidation = (requiredMessage: string, onlyRequired = false
 
 export const accountTitleValidation = Yup.string().required('The title of your account is required.');
 export const accountAmountValidation = Yup.number().required('The initial amount of your account is required.');
+
+/** Record validations  */
+export const tagOrBudgetValidation = Yup.string().min(3).max(20);

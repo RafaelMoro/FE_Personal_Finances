@@ -2,6 +2,7 @@ import { Field, Formik } from 'formik';
 import { useState } from 'react';
 
 import { AddChipProps } from './interface';
+import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
 import {
   InputForm, SecondaryButton, Chip, FlexContainer,
 } from '../../../../../styles';
@@ -28,6 +29,7 @@ const AddChip = ({
           actions.setFieldValue(name, '');
           actions.setSubmitting(false);
         }}
+        validationSchema={() => TagOrBudgetSchema(name)}
         validateOnMount
       >
         {({ submitForm }) => (
