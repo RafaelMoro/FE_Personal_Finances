@@ -65,12 +65,18 @@ const AddChip = ({
           </>
         )}
       </Formik>
-      { (chips.length === 0) && (<Chip label={`No ${name}s added`} variant="outlined" color="primary" />) }
-      <AddChipContainer>
-        { (chips.length > 0) && chips.map((chip) => (
-          <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
-        ))}
-      </AddChipContainer>
+      { (chips.length === 0) && (
+        <AddChipContainer>
+          <Chip label={`No ${name}s added`} variant="outlined" color="primary" />
+        </AddChipContainer>
+      ) }
+      { (chips.length > 0) && (
+        <AddChipContainer>
+          { chips.map((chip) => (
+            <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
+          )) }
+        </AddChipContainer>
+      )}
     </FlexContainer>
   );
 };
