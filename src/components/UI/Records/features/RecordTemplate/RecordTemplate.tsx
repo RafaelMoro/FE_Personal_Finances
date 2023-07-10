@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 import { useRef } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
+import { formatDateToString } from '../../../../../utils';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps, TagsAndBudgets } from './interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
@@ -38,12 +41,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     category: '',
     subcategory: '',
     isPaid: false,
+    dateTime: new Date(),
   };
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
+    const currentDate = values?.dateTime;
+    const { fullDate, formattedTime } = formatDateToString(currentDate);
     console.log({ ...values, ...tagsAndBudgets.current });
+    console.log(fullDate, formattedTime);
   };
 
   return (
@@ -63,7 +70,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         enableReinitialize
         validateOnMount
       >
-        {({ submitForm, values }) => (
+        {({ submitForm, values, setFieldValue }) => (
           <FormContainer>
             <Field
               component={InputForm}
@@ -83,6 +90,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               variant="standard"
               label="Short Description"
             />
+            <Field component={DateTimePicker} name="dateTime" onChange={(value: any) => setFieldValue('dateTime', value.$d)} label="Time" />
             <Field
               component={InputForm}
               multiline

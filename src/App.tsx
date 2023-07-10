@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Routes, Route } from 'react-router-dom';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Global } from '@emotion/react';
 
 import {
@@ -10,7 +12,7 @@ import { GlobalStyles } from './styles/Global.styled';
 
 function App() {
   return (
-    <>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Global styles={GlobalStyles} />
       <Routes>
         <Route path="/" element={<Login />} />
@@ -22,7 +24,7 @@ function App() {
           <Route path="/create-record" element={<CreateRecord />} />
         </Route>
       </Routes>
-    </>
+    </LocalizationProvider>
   );
 }
 
