@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
@@ -11,18 +11,24 @@ import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
+  SecondaryButton,
 } from '../../../../../styles';
 import {
   RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
+import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
+  const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const tagsAndBudgets = useRef<TagsAndBudgets>({
     budgets: [],
     tags: [],
   });
+
+  const openAddPersonModal = () => setAddPersonModal(true);
+  const closeAddPersonModal = () => setAddPersonModal(false);
 
   const updateTags = (newTags: string[]):void => {
     tagsAndBudgets.current = { ...tagsAndBudgets.current, tags: newTags };
@@ -104,6 +110,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
+            <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
             <FormControlLabel
               control={(
                 <Field
@@ -129,6 +136,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           </FormContainer>
         )}
       </Formik>
+      <AddIndebtedPerson open={addPersonModal} onClose={closeAddPersonModal} />
     </RecordTemplateMain>
   );
 };
