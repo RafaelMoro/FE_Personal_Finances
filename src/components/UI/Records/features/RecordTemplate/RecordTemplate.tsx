@@ -4,14 +4,13 @@ import { useRef } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
-import { DateTimePicker } from '@mui/x-date-pickers';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps, TagsAndBudgets } from './interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton, FlexContainer, FormControlLabel,
+  CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
 } from '../../../../../styles';
 import {
   RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
@@ -80,6 +79,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             />
             <Field
               component={DateTimePicker}
+              disableFuture
               name="date"
               onChange={(value: any) => setFieldValue('date', value.$d)}
               label="Date and Time"

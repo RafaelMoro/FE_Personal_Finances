@@ -13,6 +13,7 @@ import {
   InputAdornment as InputAdornmentMUI,
   FormControlLabel as FormControlLabelMUI,
 } from '@mui/material';
+import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
@@ -50,6 +51,22 @@ export const GlobalStyles = css`
   }
   .MuiTableCell-root {
     ${createResponsiveProps({ fontSize: 'P' })}
+  }
+
+  // DateTimePicker css classes - calendar open.
+  .MuiPickersCalendarHeader-label{
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+  &.MuiDayCalendar-weekDayLabel,
+  &.MuiPickersDay-root,
+  .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
+  .css-1e3wlyl-MuiButtonBase-root-MuiMenuItem-root-MuiMultiSectionDigitalClockSection-item {
+    ${createResponsiveProps({ fontSize: 'P', important: true })}
+  }
+  .MuiPickersCalendarHeader-switchViewIcon,
+  .css-1vooibu-MuiSvgIcon-root {
+    width: 3rem !important;
+    height: 3rem !important;
   }
 `;
 
@@ -190,6 +207,18 @@ export const InputLabel = styled(InputLabelMUI)`
 
 export const Select = styled(SelectMUI)`
   div {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+`;
+
+export const DateTimePicker = styled(DateTimePickerMUI)`
+  label {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+  fieldset {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+  input {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
