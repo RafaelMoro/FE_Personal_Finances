@@ -11,6 +11,7 @@ import {
   TableCell as TableCellMUI,
   SpeedDial as SpeedDialMUI,
   InputAdornment as InputAdornmentMUI,
+  FormControlLabel as FormControlLabelMUI,
 } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
@@ -217,6 +218,12 @@ export const MobileChip = styled(Chip)`
   .MuiChip-label {
     display: block;
     white-space: normal;
+  }
+`;
+
+export const FormControlLabel = styled(FormControlLabelMUI)`
+  span {
+    ${createResponsiveProps({ fontSize: 'P' })}
   }
 `;
 

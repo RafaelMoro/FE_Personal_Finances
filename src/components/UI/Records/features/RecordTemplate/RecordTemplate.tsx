@@ -2,13 +2,14 @@
 import { useRef } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
+import { Switch } from 'formik-mui';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps, TagsAndBudgets } from './interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton, FlexContainer,
+  CancelButton, AnchorButton, FlexContainer, FormControlLabel,
 } from '../../../../../styles';
 import {
   RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
@@ -36,6 +37,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     description: '',
     category: '',
     subcategory: '',
+    isPaid: false,
   };
 
   // Change the handle Submit
@@ -61,7 +63,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         enableReinitialize
         validateOnMount
       >
-        {({ submitForm }) => (
+        {({ submitForm, values }) => (
           <FormContainer>
             <Field
               component={InputForm}
@@ -94,6 +96,18 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
+            <FormControlLabel
+              control={(
+                <Field
+                  type="checkbox"
+                  checked={values.isPaid}
+                  label="Transaction paid"
+                  name="isPaid"
+                  component={Switch}
+                />
+              )}
+              label="Transaction paid"
+            />
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
