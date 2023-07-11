@@ -5,6 +5,10 @@ export interface DrawerChipContainerProps {
   afterContent: string;
 }
 
+export interface RecordTableProps {
+  isGrid: boolean;
+}
+
 export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> {
   fullDate: string;
   formattedTime: string;

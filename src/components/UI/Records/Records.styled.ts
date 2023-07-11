@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { List as ListMUI, Table } from '@mui/material';
 
-import { DrawerChipContainerProps } from './interface';
+import { DrawerChipContainerProps, RecordTableProps } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
@@ -148,7 +148,7 @@ export const RecordDrawerDescription = styled(RecordText)`
 `;
 
 export const TableTitle = styled(Paragraph)`
-  grid-column: 1 / 3;
+  ${(props: RecordTableProps) => (props.isGrid ? 'grid-column: 1 / 3;' : '')}
   text-align: center;
 `;
 
@@ -158,7 +158,7 @@ export const RecordDrawerPriceContainer = styled.div`
 `;
 
 export const RecordTable = styled(Table)`
-  grid-column: 1 / 3;
+  ${(props: RecordTableProps) => (props.isGrid ? 'grid-column: 1 / 3;' : '')}
 `;
 
 export const DebtPaid = styled(TableCell)`
