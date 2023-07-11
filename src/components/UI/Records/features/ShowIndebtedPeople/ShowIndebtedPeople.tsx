@@ -3,15 +3,10 @@ import {
   TableHead, TableRow, TableBody,
 } from '@mui/material';
 
-import { IndebtedPeople } from '../../../../../globalInterface';
+import { ShowIndebtedPeopleProps } from './interface';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
 import { TableCell } from '../../../../../styles';
 import { DebtPaid, TableTitle, RecordTable } from '../../Records.styled';
-
-interface ShowIndebtedPeopleProps {
-  indebtedPeople: IndebtedPeople[];
-  inRecordDrawer?: boolean;
-}
 
 const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowIndebtedPeopleProps) => {
   const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
