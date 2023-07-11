@@ -18,7 +18,7 @@ export interface Account {
   color: string;
 }
 
-interface IndebtedPeople {
+export interface IndebtedPeople {
   name: string;
   amount: number;
   amountPaid: number;

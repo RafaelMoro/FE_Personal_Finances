@@ -6,7 +6,7 @@ import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { RecordTemplateProps, TagsAndBudgets } from './interface';
+import { RecordTemplateProps, AdditionalData } from './interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
@@ -18,24 +18,32 @@ import {
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
+import { IndebtedPeople } from '../../../../../globalInterface';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
-  const tagsAndBudgets = useRef<TagsAndBudgets>({
+  const additionalData = useRef<AdditionalData>({
     budgets: [],
     tags: [],
+    indebtedPeople: [],
   });
 
   const openAddPersonModal = () => setAddPersonModal(true);
   const closeAddPersonModal = () => setAddPersonModal(false);
 
   const updateTags = (newTags: string[]):void => {
-    tagsAndBudgets.current = { ...tagsAndBudgets.current, tags: newTags };
+    additionalData.current = { ...additionalData.current, tags: newTags };
   };
 
   const updateBudgets = (newBudgets: string[]):void => {
-    tagsAndBudgets.current = { ...tagsAndBudgets.current, budgets: newBudgets };
+    additionalData.current = { ...additionalData.current, budgets: newBudgets };
+  };
+
+  const updateIndebtedPeople = (indebtedPeople: IndebtedPeople):void => {
+    const oldData = [...additionalData.current.indebtedPeople];
+    oldData.push(indebtedPeople);
+    additionalData.current = { ...additionalData.current, indebtedPeople: oldData };
   };
 
   const initialValues = {
@@ -51,7 +59,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
-    console.log({ ...values, ...tagsAndBudgets.current });
+    console.log({ ...values, ...additionalData.current });
   };
 
   return (
@@ -136,7 +144,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           </FormContainer>
         )}
       </Formik>
-      <AddIndebtedPerson open={addPersonModal} onClose={closeAddPersonModal} />
+      <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} />
     </RecordTemplateMain>
   );
 };
