@@ -60,3 +60,13 @@ export interface CategoriesResponse {
   categories: Category[];
   error: boolean;
 }
+// Check the IndebtedPeople array and fields that may be different.
+export interface CreateRecordValues {
+  amount: string;
+  shortDescription: string;
+  description: string;
+  category: string;
+  subcategory: string;
+  isPaid?: boolean;
+  date: Date;
+}

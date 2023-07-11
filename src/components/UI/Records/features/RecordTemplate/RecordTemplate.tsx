@@ -4,9 +4,11 @@ import { useRef, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
+import { useAtom } from 'jotai';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplateProps, AdditionalData } from './interface';
+import { CreateRecordValues } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
@@ -20,9 +22,12 @@ import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
+import { selectedAccountAtom } from '../../../../../atoms';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
+  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const isCredit = selectedAccount?.accountType === 'Credit';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const additionalData = useRef<AdditionalData>({
@@ -47,7 +52,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     setIndebtedPeople(newData);
   };
 
-  const initialValues = {
+  const initialValues: CreateRecordValues = {
     amount: '',
     shortDescription: '',
     description: '',
@@ -119,18 +124,20 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
-            <FormControlLabel
-              control={(
-                <Field
-                  type="checkbox"
-                  checked={values.isPaid}
-                  label="Transaction paid"
-                  name="isPaid"
-                  component={Switch}
-                />
+            { (isCredit) && (
+              <FormControlLabel
+                control={(
+                  <Field
+                    type="checkbox"
+                    checked={values.isPaid}
+                    label="Transaction paid"
+                    name="isPaid"
+                    component={Switch}
+                  />
               )}
-              label="Transaction paid"
-            />
+                label="Transaction paid"
+              />
+            ) }
             <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
             <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
             <FlexContainer justifyContent="space-between">
