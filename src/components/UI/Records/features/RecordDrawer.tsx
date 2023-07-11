@@ -8,19 +8,14 @@ import {
   RecordDrawerDescription, RecordTable, DrawerChipContainer, DebtPaid,
   TableTitle, RecordDrawerPriceContainer,
 } from '../Records.styled';
+import { formatIndebtedPeople } from '../../../../utils/formatIndebtedPeople';
 import { TableCell, Chip } from '../../../../styles';
-import { formatNumberToCurrency } from '../../../../utils';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime, expensesPaid,
   category, subCategory, tag, indebtedPeople, budgets, amountShown,
 }: RecordDrawerProps) => {
-  const formattedIndebtedPeople = indebtedPeople.map((person) => ({
-    ...person,
-    amount: formatNumberToCurrency(person.amount),
-    amountPaid: formatNumberToCurrency(person.amountPaid),
-    restingDebt: formatNumberToCurrency(person.amount - person.amountPaid),
-  }));
+  const formattedIndebtedPeople = formatIndebtedPeople(indebtedPeople);
 
   return (
     <RecordDrawerContainer>

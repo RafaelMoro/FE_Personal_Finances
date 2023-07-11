@@ -25,6 +25,12 @@ export interface IndebtedPeople {
   isPaid: boolean;
 }
 
+export interface IndebtedPeopleTable extends Omit<IndebtedPeople, 'amount' | 'amountPaid'> {
+  amount: string;
+  amountPaid: string;
+  restingDebt: string;
+}
+
 export interface Category {
   _id: string;
   __v: number;

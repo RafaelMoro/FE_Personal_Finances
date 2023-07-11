@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import {
+  TableHead, TableRow, TableBody, Table,
+} from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
@@ -11,23 +14,27 @@ import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
-  SecondaryButton,
+  SecondaryButton, TableCell, Paragraph,
 } from '../../../../../styles';
 import {
   RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
 } from './RecordTemplate.styled';
+import { RecordTable, DebtPaid } from '../../Records.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
+import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
+  const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const additionalData = useRef<AdditionalData>({
     budgets: [],
     tags: [],
-    indebtedPeople: [],
   });
+
+  const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
 
   const openAddPersonModal = () => setAddPersonModal(true);
   const closeAddPersonModal = () => setAddPersonModal(false);
@@ -40,10 +47,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     additionalData.current = { ...additionalData.current, budgets: newBudgets };
   };
 
-  const updateIndebtedPeople = (indebtedPeople: IndebtedPeople):void => {
-    const oldData = [...additionalData.current.indebtedPeople];
-    oldData.push(indebtedPeople);
-    additionalData.current = { ...additionalData.current, indebtedPeople: oldData };
+  const updateIndebtedPeople = (indebtedPerson: IndebtedPeople):void => {
+    const newData = [...indebtedPeople];
+    newData.push(indebtedPerson);
+    setIndebtedPeople(newData);
   };
 
   const initialValues = {
@@ -59,7 +66,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
-    console.log({ ...values, ...additionalData.current });
+    console.log({ ...values, ...additionalData.current, indebtedPeople });
   };
 
   return (
@@ -118,7 +125,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
-            <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
             <FormControlLabel
               control={(
                 <Field
@@ -131,6 +137,43 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               )}
               label="Transaction paid"
             />
+            { (indebtedPeople.length > 0) && (
+            <>
+              <Paragraph align="center">People related to this transaction: </Paragraph>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name:</TableCell>
+                    <TableCell>Amount:</TableCell>
+                    <TableCell>Amount Paid:</TableCell>
+                    <TableCell>Resting Debt:</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { formattedIndebtedPeople.map((person, index) => (
+                    <TableRow key={`${person.name}-${index + 1}`}>
+                      { (person.isPaid)
+                        ? (
+                          <>
+                            <DebtPaid>{person.name}</DebtPaid>
+                            <DebtPaid>{person.amount}</DebtPaid>
+                          </>
+                        )
+                        : (
+                          <>
+                            <TableCell>{person.name}</TableCell>
+                            <TableCell>{person.amount}</TableCell>
+                            <TableCell>{person.amountPaid}</TableCell>
+                            <TableCell>{person.restingDebt}</TableCell>
+                          </>
+                        ) }
+                    </TableRow>
+                  )) }
+                </TableBody>
+              </Table>
+            </>
+            ) }
+            <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
