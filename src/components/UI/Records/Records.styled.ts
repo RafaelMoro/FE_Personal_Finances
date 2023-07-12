@@ -147,8 +147,8 @@ export const RecordDrawerDescription = styled(RecordText)`
   grid-column: 1 / 3;
 `;
 
-export const TableTitle = styled(Paragraph)`
-  ${(props: RecordTableProps) => (props.isGrid ? 'grid-column: 1 / 3;' : '')}
+export const TableTitle = styled(Paragraph, { shouldForwardProp: (props) => props !== 'isGrid' })`
+  ${(props: RecordTableProps) => (props.isGrid && 'grid-column: 1 / 3;')}
   text-align: center;
 `;
 
@@ -157,8 +157,8 @@ export const RecordDrawerPriceContainer = styled.div`
   grid-column: 1 / 3;
 `;
 
-export const RecordTable = styled(Table)`
-  ${(props: RecordTableProps) => (props.isGrid ? 'grid-column: 1 / 3;' : '')}
+export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !== 'isGrid' })`
+  ${(props: RecordTableProps) => (props.isGrid && 'grid-column: 1 / 3;')}
 `;
 
 export const DebtPaid = styled(TableCell)`
