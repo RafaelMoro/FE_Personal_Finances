@@ -30,6 +30,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
+  const startAdornment = typeOfRecord === 'expense'
+    ? <InputAdornment position="start">- $</InputAdornment>
+    : <InputAdornment position="start">+ $</InputAdornment>;
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const additionalData = useRef<AdditionalData>({
     budgets: [],
@@ -109,7 +112,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               variant="standard"
               label="Amount"
               InputProps={{
-                startAdornment: <InputAdornment position="start">- $</InputAdornment>,
+                startAdornment,
               }}
             />
             <Field
@@ -139,7 +142,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
-            { (isCredit) && (
+            { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
                 control={(
                   <Field
@@ -153,10 +156,15 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 label="Transaction paid"
               />
             ) }
-            <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
-            <FlexContainer justifyContent="center">
-              <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
-            </FlexContainer>
+            { (typeOfRecord === 'expense') && (
+              <>
+                <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
+                <FlexContainer justifyContent="center">
+                  <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
+                </FlexContainer>
+              </>
+            ) }
+
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
