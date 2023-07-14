@@ -23,6 +23,7 @@ import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
+import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
@@ -73,6 +74,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
+    // Convert amount to number
     console.log({ ...values, ...additionalData.current, indebtedPeople });
   };
 
@@ -108,11 +110,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             <Field
               component={InputForm}
               name="amount"
-              type="number"
+              type="text"
               variant="standard"
               label="Amount"
               InputProps={{
                 startAdornment,
+                inputComponent: NumericFormatCustom as any,
               }}
             />
             <Field
