@@ -7,28 +7,29 @@ import { Switch } from 'formik-mui';
 import { useAtom } from 'jotai';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { RecordTemplateProps, AdditionalData } from './interface';
+import { selectedAccountAtom } from '../../../../../atoms';
+import { RecordTemplateProps, AdditionalData, TypeOfRecord } from './interface';
 import { CreateRecordValues } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
-  SecondaryButton,
+  SecondaryButton, ToggleButton,
 } from '../../../../../styles';
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer,
+  RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer, ToggleButtonGroup,
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
-import { selectedAccountAtom } from '../../../../../atoms';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
+  const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const additionalData = useRef<AdditionalData>({
     budgets: [],
@@ -37,6 +38,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   const openAddPersonModal = () => setAddPersonModal(true);
   const closeAddPersonModal = () => setAddPersonModal(false);
+
+  const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
+    setTypeOfRecord(newTypeOfRecord);
+  };
 
   const updateTags = (newTags: string[]):void => {
     additionalData.current = { ...additionalData.current, tags: newTags };
@@ -73,11 +78,21 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <GoBackButton to={DASHBOARD_ROUTE}>
         <Close sx={{ fontSize: '3.5rem' }} />
       </GoBackButton>
+      <ToggleButtonGroup
+        color="primary"
+        exclusive
+        value={typeOfRecord}
+        onChange={changeTypeOfRecord}
+        aria-label="Select type of record"
+      >
+        <ToggleButton value="expense">Expense</ToggleButton>
+        <ToggleButton value="income">Income</ToggleButton>
+      </ToggleButtonGroup>
       <ParagraphTitle align="center">
         {' '}
         { action }
         {' '}
-        Record
+        { typeOfRecord }
       </ParagraphTitle>
       <Formik
         initialValues={initialValues}
@@ -139,7 +154,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               />
             ) }
             <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
-            <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
+            <FlexContainer justifyContent="center">
+              <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
+            </FlexContainer>
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>

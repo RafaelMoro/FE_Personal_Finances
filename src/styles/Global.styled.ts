@@ -12,6 +12,7 @@ import {
   SpeedDial as SpeedDialMUI,
   InputAdornment as InputAdornmentMUI,
   FormControlLabel as FormControlLabelMUI,
+  ToggleButton as ToggleButtonMui,
 } from '@mui/material';
 import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
@@ -220,6 +221,14 @@ export const DateTimePicker = styled(DateTimePickerMUI)`
   }
   input {
     ${createResponsiveProps({ fontSize: 'P' })}
+  }
+`;
+
+export const ToggleButton = styled(ToggleButtonMui)`
+  ${createResponsiveProps({ fontSize: 'P' })}
+  &.Mui-selected {
+    color: ${AppColors.primary};
+    background-color: ${AppColors.bgColorLight};
   }
 `;
 
