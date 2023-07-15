@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import { useRef, useState } from 'react';
 import { Close } from '@mui/icons-material';
+import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 import { useAtom } from 'jotai';
@@ -9,8 +10,9 @@ import { useAtom } from 'jotai';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { selectedAccountAtom } from '../../../../../atoms';
 import { RecordTemplateProps, AdditionalData, TypeOfRecord } from './interface';
-import { CreateRecordValues } from '../../interface';
+import { CreateRecordValues, ExpensePaid } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
+import { ShowExpenses } from '../ShowExpenses';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
@@ -31,6 +33,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
+  const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const startAdornment = typeOfRecord === 'expense'
     ? <InputAdornment position="start">- $</InputAdornment>
     : <InputAdornment position="start">+ $</InputAdornment>;
@@ -39,12 +42,28 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     budgets: [],
     tags: [],
   });
+  const expensesRelatedIncome = useRef<ExpensePaid []>([
+    {
+      _id: '123-456',
+      shortName: 'Burgers Hudson',
+      amount: '$230.1',
+      fullDate: 'June 20',
+      formattedTime: '13:20pm',
+    },
+  ]);
 
   const openAddPersonModal = () => setAddPersonModal(true);
   const closeAddPersonModal = () => setAddPersonModal(false);
+  const toggleShowExpenses = () => setShowExpenses(!showExpenses);
 
   const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
     setTypeOfRecord(newTypeOfRecord);
+  };
+
+  const addExpenseToIncome = (expense: ExpensePaid) => {
+    const currentExpenses = [...expensesRelatedIncome.current];
+    currentExpenses.push(expense);
+    expensesRelatedIncome.current = currentExpenses;
   };
 
   const updateTags = (newTags: string[]):void => {
@@ -74,7 +93,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
-    // Convert amount to number
+    // Agregar signo de peso al mandar el amount.
     console.log({ ...values, ...additionalData.current, indebtedPeople });
   };
 
@@ -167,7 +186,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 </FlexContainer>
               </>
             ) }
-
+            { (typeOfRecord === 'income') && (
+              <FlexContainer justifyContent="center">
+                <SecondaryButton variant="contained" onClick={toggleShowExpenses} size="medium">Add Expense</SecondaryButton>
+              </FlexContainer>
+            ) }
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
@@ -182,6 +205,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         )}
       </Formik>
       <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} />
+      <Drawer anchor="right" open={showExpenses} onClose={toggleShowExpenses}>
+        <ShowExpenses expenses={expensesRelatedIncome.current} addExpense={addExpenseToIncome} />
+      </Drawer>
     </RecordTemplateMain>
   );
 };
