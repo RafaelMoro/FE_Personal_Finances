@@ -1,4 +1,4 @@
-import { Order } from '../../components/UI/SortAndSelectTable/interface';
+import { Order } from './interface';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
