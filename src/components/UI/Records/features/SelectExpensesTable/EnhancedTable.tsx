@@ -6,7 +6,7 @@ import {
 
 import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
-import { TableCell } from '../../../styles';
+import { TableCell } from '../../../../../styles';
 import { Order, ExpensePaidTable } from './interface';
 import { stableSort, getComparator } from './utils';
 

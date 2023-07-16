@@ -8,7 +8,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import { ExpensePaid } from '../../interface';
-import { EnhancedTable } from '../../../SortAndSelectTable/EnhancedTable';
+import { EnhancedTable } from '../SelectExpensesTable/EnhancedTable';
 import { RecordTable, TableTitle } from '../../Records.styled';
 import { TableCell, PrimaryButton, Paragraph } from '../../../../../styles';
 import { selectedAccountAtom, userAtom } from '../../../../../atoms';

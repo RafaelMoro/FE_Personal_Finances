@@ -4,7 +4,7 @@ import {
 import { visuallyHidden } from '@mui/utils';
 
 import { EnhancedTableProps, ExpensePaidTable, HeadCell } from './interface';
-import { TableCell } from '../../../styles';
+import { TableCell } from '../../../../../styles';
 
 const headCells: readonly HeadCell[] = [
   {

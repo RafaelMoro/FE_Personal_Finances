@@ -1,4 +1,4 @@
-import { ExpensePaid } from '../Records/interface';
+import { ExpensePaid } from '../../interface';
 
 export type Order = 'asc' | 'desc';
 
