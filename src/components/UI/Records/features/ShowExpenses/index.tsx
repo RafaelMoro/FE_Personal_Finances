@@ -65,7 +65,7 @@ const ShowExpenses = ({ addExpense, seeTable = true }: ShowExpensesProps) => {
 
   if (seeTable) {
     return (
-      <EnhancedTable />
+      <EnhancedTable expenses={expenses} />
     );
   }
 

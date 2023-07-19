@@ -7,35 +7,16 @@ import {
 import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
+import { ExpensePaid } from '../../interface';
 import { stableSort, getComparator } from './utils';
 import { TableCell } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 
-const rows = [
-  {
-    _id: '123-456',
-    shortName: 'Burgers Hudson',
-    amount: '$230.1',
-    fullDate: 'June 20',
-    formattedTime: '13:20pm',
-  },
-  {
-    _id: '123-645',
-    shortName: 'Burgers Mcdonalds',
-    amount: '$75.00',
-    fullDate: 'June 25',
-    formattedTime: '16:22pm',
-  },
-  {
-    _id: '321-456',
-    shortName: 'Tacos arabes',
-    amount: '$161.1',
-    fullDate: 'June 17',
-    formattedTime: '15:36pm',
-  },
-];
+interface EnhancedTableProps {
+  expenses: ExpensePaid[];
+}
 
-function EnhancedTable() {
+function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -53,7 +34,7 @@ function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((row) => row.shortName);
+      const newSelected = expenses.map((row) => row._id);
       setSelected(newSelected);
       return;
     }
@@ -92,14 +73,14 @@ function EnhancedTable() {
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
 
   const visibleRows = useMemo(
-    () => stableSort(rows, getComparator(order, orderBy)).slice(
+    () => stableSort(expenses, getComparator(order, orderBy)).slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage,
     ),
-    [order, orderBy, page, rowsPerPage],
+    [expenses, order, orderBy, page, rowsPerPage],
   );
 
   return (
@@ -117,17 +98,17 @@ function EnhancedTable() {
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
+            rowCount={expenses.length}
           />
           <TableBody>
-            {visibleRows.map((row, index) => {
-              const isItemSelected = isSelected(row.shortName);
-              const labelId = `enhanced-table-checkbox-${index}`;
+            {visibleRows.map((row) => {
+              const isItemSelected = isSelected(row._id);
+              const labelId = `expense-${row._id}`;
 
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, row.shortName)}
+                  onClick={(event) => handleClick(event, row._id)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
@@ -173,7 +154,7 @@ function EnhancedTable() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={rows.length}
+        count={expenses.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
