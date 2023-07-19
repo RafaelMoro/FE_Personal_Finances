@@ -183,3 +183,10 @@ export const LoadingCategoriesContainer = styled.div`
   width: 100%;
   justify-content: center;
 `;
+
+// Show expenses
+
+export const SelectExpensesContainer = styled.div`
+  width: 100%;
+  margin-bottom: 1.6rem;
+`;

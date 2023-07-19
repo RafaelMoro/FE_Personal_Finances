@@ -69,6 +69,23 @@ export const GlobalStyles = css`
     width: 3rem !important;
     height: 3rem !important;
   }
+
+  // Table pagination of select expenses of the select and sort table MUI
+  .MuiTablePagination-selectIcon {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+
+  &.MuiTablePagination-selectLabel,
+  &.MuiTablePagination-displayedRows,
+  &.MuiTablePagination-select,
+  &.MuiTablePagination-menuItem {
+    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
+  }
+
+  [class*='MuiInputBase-root-MuiTablePagination-select']{
+    line-height: unset !important;
+  }
 `;
 
 // **** Containers
