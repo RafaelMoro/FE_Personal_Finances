@@ -29,6 +29,7 @@ export interface ExpensePaid {
   amount: string;
   fullDate: string;
   formattedTime: string;
+  date?: Date;
 }
 
 export interface AnyRecord extends AccountRecordUI {

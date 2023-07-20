@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useMemo } from 'react';
 import {
   TableRow, TableBody, Checkbox, TableContainer,
@@ -41,24 +42,24 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
+  const handleSelectExpense = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name);
-    let newSelected: readonly string[] = [];
+    let newSelectedExpense: readonly string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelectedExpense = newSelectedExpense.concat(selected, name);
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
+      newSelectedExpense = newSelectedExpense.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelectedExpense = newSelectedExpense.concat(selected.slice(0, -1));
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
+      newSelectedExpense = newSelectedExpense.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1),
       );
     }
 
-    setSelected(newSelected);
+    setSelected(newSelectedExpense);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -75,6 +76,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
 
+  console.log('order', order);
   const visibleRows = useMemo(
     () => stableSort(expenses, getComparator(order, orderBy)).slice(
       page * rowsPerPage,
@@ -108,7 +110,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleClick(event, row._id)}
+                  onClick={(event) => handleSelectExpense(event, row._id)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}

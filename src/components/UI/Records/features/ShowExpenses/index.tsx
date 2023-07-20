@@ -40,10 +40,10 @@ const ShowExpenses = ({ addExpense, seeTable = true }: ShowExpensesProps) => {
           const expensesShorted = expensesFetched.map((expense) => {
             const {
             // eslint-disable-next-line @typescript-eslint/naming-convention
-              _id, shortName, amount, fullDate, formattedTime,
+              _id, shortName, amount, fullDate, formattedTime, date,
             } = expense;
             const shortExpense: ExpensePaid = {
-              _id, shortName, amount, fullDate, formattedTime,
+              _id, shortName, amount, fullDate, formattedTime, date,
             };
             return shortExpense;
           });
