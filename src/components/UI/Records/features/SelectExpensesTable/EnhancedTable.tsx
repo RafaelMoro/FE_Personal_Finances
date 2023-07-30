@@ -9,7 +9,7 @@ import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../interface';
-import { stableSort, getComparator } from './utils';
+import { orderExpenses } from './utils';
 import { TableCell } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 
@@ -76,9 +76,8 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
 
-  console.log('order', order);
-  const visibleRows = useMemo(
-    () => stableSort(expenses, getComparator(order, orderBy)).slice(
+  const visibleRows: ExpensePaid[] = useMemo(
+    () => orderExpenses(expenses, order, orderBy).slice(
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage,
     ),
