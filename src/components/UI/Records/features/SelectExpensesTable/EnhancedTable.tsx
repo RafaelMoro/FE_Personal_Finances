@@ -20,7 +20,7 @@ interface EnhancedTableProps {
 function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
-  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [selected, setSelected] = useState<readonly ExpensePaid[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -35,27 +35,27 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = expenses.map((row) => row._id);
-      setSelected(newSelected);
+      setSelected(expenses);
       return;
     }
     setSelected([]);
   };
 
-  const handleSelectExpense = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelectedExpense: readonly string[] = [];
+  const handleSelectExpense = (event: React.MouseEvent<unknown>, expense: ExpensePaid) => {
+    const selectedExpeseIndex = selected.indexOf(expense);
+    let newSelectedExpense: readonly ExpensePaid[] = [];
 
-    if (selectedIndex === -1) {
-      newSelectedExpense = newSelectedExpense.concat(selected, name);
-    } else if (selectedIndex === 0) {
+    if (selectedExpeseIndex === -1) {
+      // The item does not exist in the array.
+      newSelectedExpense = newSelectedExpense.concat(selected, expense);
+    } else if (selectedExpeseIndex === 0) {
       newSelectedExpense = newSelectedExpense.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
+    } else if (selectedExpeseIndex === selected.length - 1) {
       newSelectedExpense = newSelectedExpense.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
+    } else if (selectedExpeseIndex > 0) {
       newSelectedExpense = newSelectedExpense.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(0, selectedExpeseIndex),
+        selected.slice(selectedExpeseIndex + 1),
       );
     }
 
@@ -71,7 +71,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
     setPage(0);
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (expenseId: string) => selected.some((expense) => expense._id === expenseId);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
@@ -109,7 +109,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
               return (
                 <TableRow
                   hover
-                  onClick={(event) => handleSelectExpense(event, row._id)}
+                  onClick={(event) => handleSelectExpense(event, row)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
