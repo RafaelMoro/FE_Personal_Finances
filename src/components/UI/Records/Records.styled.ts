@@ -148,7 +148,7 @@ export const RecordDrawerDescription = styled(RecordText)`
 `;
 
 export const TableTitle = styled(Paragraph, { shouldForwardProp: (props) => props !== 'isGrid' })`
-  ${(props: RecordTableProps) => (props.isGrid && 'grid-column: 1 / 3;')}
+  ${({ isGrid = false }: RecordTableProps) => (isGrid && 'grid-column: 1 / 3;')}
   text-align: center;
 `;
 

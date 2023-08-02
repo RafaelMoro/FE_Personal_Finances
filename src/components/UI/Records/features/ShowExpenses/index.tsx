@@ -16,8 +16,8 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
   }
   return (
     <>
-      <TableTitle isGrid>Select the expense:</TableTitle>
-      <RecordTable isGrid>
+      <TableTitle>Select the expense:</TableTitle>
+      <RecordTable>
         <TableHead>
           <TableRow>
             <TableCell>Name:</TableCell>

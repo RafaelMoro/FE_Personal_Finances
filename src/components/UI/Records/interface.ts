@@ -6,7 +6,7 @@ export interface DrawerChipContainerProps {
 }
 
 export interface RecordTableProps {
-  isGrid: boolean;
+  isGrid?: boolean;
 }
 
 export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> {
