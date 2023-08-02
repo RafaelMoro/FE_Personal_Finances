@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState, useMemo } from 'react';
 import {
   TableRow, TableBody, Checkbox, TableContainer,
@@ -13,14 +12,15 @@ import { orderExpenses } from './utils';
 import { TableCell } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 
-interface EnhancedTableProps {
+interface SelectExpensesTableProps {
   expenses: ExpensePaid[];
+  selectedExpenses: ExpensePaid[];
+  modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
 }
 
-function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
+function SelectExpensesTable({ expenses = [], modifySelectedExpenses, selectedExpenses }: SelectExpensesTableProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
-  const [selected, setSelected] = useState<readonly ExpensePaid[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -35,31 +35,31 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      setSelected(expenses);
+      modifySelectedExpenses(expenses);
       return;
     }
-    setSelected([]);
+    modifySelectedExpenses([]);
   };
 
   const handleSelectExpense = (event: React.MouseEvent<unknown>, expense: ExpensePaid) => {
-    const selectedExpeseIndex = selected.indexOf(expense);
-    let newSelectedExpense: readonly ExpensePaid[] = [];
+    const selectedExpeseIndex = selectedExpenses.indexOf(expense);
+    let newSelectedExpense: ExpensePaid[] = [];
 
     if (selectedExpeseIndex === -1) {
       // The item does not exist in the array.
-      newSelectedExpense = newSelectedExpense.concat(selected, expense);
+      newSelectedExpense = newSelectedExpense.concat(selectedExpenses, expense);
     } else if (selectedExpeseIndex === 0) {
-      newSelectedExpense = newSelectedExpense.concat(selected.slice(1));
-    } else if (selectedExpeseIndex === selected.length - 1) {
-      newSelectedExpense = newSelectedExpense.concat(selected.slice(0, -1));
+      newSelectedExpense = newSelectedExpense.concat(selectedExpenses.slice(1));
+    } else if (selectedExpeseIndex === selectedExpenses.length - 1) {
+      newSelectedExpense = newSelectedExpense.concat(selectedExpenses.slice(0, -1));
     } else if (selectedExpeseIndex > 0) {
       newSelectedExpense = newSelectedExpense.concat(
-        selected.slice(0, selectedExpeseIndex),
-        selected.slice(selectedExpeseIndex + 1),
+        selectedExpenses.slice(0, selectedExpeseIndex),
+        selectedExpenses.slice(selectedExpeseIndex + 1),
       );
     }
 
-    setSelected(newSelectedExpense);
+    modifySelectedExpenses(newSelectedExpense);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -71,7 +71,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
     setPage(0);
   };
 
-  const isSelected = (expenseId: string) => selected.some((expense) => expense._id === expenseId);
+  const isSelected = (expenseId: string) => selectedExpenses.some((expense) => expense._id === expenseId);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
@@ -86,7 +86,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
 
   return (
     <SelectExpensesContainer>
-      <EnhancedTableToolbar numSelected={selected.length} />
+      <EnhancedTableToolbar numSelected={selectedExpenses.length} />
       <TableContainer>
         <Table
           sx={{ minWidth: 750 }}
@@ -94,7 +94,7 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
           size="medium"
         >
           <EnhancedTableHead
-            numSelected={selected.length}
+            numSelected={selectedExpenses.length}
             order={order}
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
@@ -165,4 +165,4 @@ function EnhancedTable({ expenses = [] }: EnhancedTableProps) {
   );
 }
 
-export { EnhancedTable };
+export { SelectExpensesTable };

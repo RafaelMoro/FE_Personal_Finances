@@ -13,6 +13,7 @@ import { RecordTemplateProps, AdditionalData, TypeOfRecord } from './interface';
 import { CreateRecordValues, ExpensePaid } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
+import { SelectExpenses } from '../SelectExpenses';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
@@ -38,19 +39,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     ? <InputAdornment position="start">- $</InputAdornment>
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
+  const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const additionalData = useRef<AdditionalData>({
     budgets: [],
     tags: [],
   });
-  const expensesRelatedIncome = useRef<ExpensePaid []>([
-    {
-      _id: '123-456',
-      shortName: 'Burgers Hudson',
-      amount: '$230.1',
-      fullDate: 'June 20',
-      formattedTime: '13:20pm',
-    },
-  ]);
 
   const openAddPersonModal = () => setAddPersonModal(true);
   const closeAddPersonModal = () => setAddPersonModal(false);
@@ -60,11 +53,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     setTypeOfRecord(newTypeOfRecord);
   };
 
-  const addExpenseToIncome = (expense: ExpensePaid) => {
-    const currentExpenses = [...expensesRelatedIncome.current];
-    currentExpenses.push(expense);
-    expensesRelatedIncome.current = currentExpenses;
-  };
+  const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
 
   const updateTags = (newTags: string[]):void => {
     additionalData.current = { ...additionalData.current, tags: newTags };
@@ -187,9 +176,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               </>
             ) }
             { (typeOfRecord === 'income') && (
-              <FlexContainer justifyContent="center">
-                <SecondaryButton variant="contained" onClick={toggleShowExpenses} size="medium">Add Expense</SecondaryButton>
-              </FlexContainer>
+              <>
+                <ShowExpenses expenses={expensesSelected} />
+                <FlexContainer justifyContent="center">
+                  <SecondaryButton variant="contained" onClick={toggleShowExpenses} size="medium">Add Expense</SecondaryButton>
+                </FlexContainer>
+              </>
             ) }
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
@@ -206,7 +198,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       </Formik>
       <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} />
       <Drawer anchor="right" open={showExpenses} onClose={toggleShowExpenses}>
-        <ShowExpenses addExpense={addExpenseToIncome} />
+        <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} />
       </Drawer>
     </RecordTemplateMain>
   );
