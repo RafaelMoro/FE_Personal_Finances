@@ -64,10 +64,10 @@ export interface CategoriesResponse {
 // Check the IndebtedPeople array and fields that may be different.
 export interface CreateRecordValues {
   amount: string;
-  shortDescription: string;
+  shortName: string;
   description: string;
   category: string;
-  subcategory: string;
+  subCategory: string;
   isPaid?: boolean;
   date: Date;
 }

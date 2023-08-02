@@ -110,7 +110,7 @@ const CategoriesAndSubcategories = () => {
       <SelectInput
         labelId="select-record-subcategory"
         labelName="Subcategory"
-        fieldName="subcategory"
+        fieldName="subCategory"
         stringOptions={currentCategory.subCategories}
         colorOptions={[]}
         disabled={categoryNotSelected}

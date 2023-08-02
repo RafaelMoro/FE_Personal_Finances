@@ -34,15 +34,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
+  const isExpense = typeOfRecord === 'expense';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
-  const startAdornment = typeOfRecord === 'expense'
+  const startAdornment = isExpense
     ? <InputAdornment position="start">- $</InputAdornment>
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const additionalData = useRef<AdditionalData>({
     budgets: [],
-    tags: [],
+    tag: [],
   });
 
   const openAddPersonModal = () => setAddPersonModal(true);
@@ -56,7 +57,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
 
   const updateTags = (newTags: string[]):void => {
-    additionalData.current = { ...additionalData.current, tags: newTags };
+    additionalData.current = { ...additionalData.current, tag: newTags };
   };
 
   const updateBudgets = (newBudgets: string[]):void => {
@@ -71,19 +72,33 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   const initialValues: CreateRecordValues = {
     amount: '',
-    shortDescription: '',
+    shortName: '',
     description: '',
     category: '',
-    subcategory: '',
-    isPaid: false,
+    subCategory: '',
+    // If is credit, the prop is false, otherwise it's true because only credit is paid later.
+    isPaid: !isCredit,
     date: new Date(),
   };
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
+    const { isPaid, ...restValues } = values;
+    const newValues = isExpense ? {
+      ...values,
+      ...additionalData.current,
+      indebtedPeople,
+      account: selectedAccount?._id,
+    } : {
+      ...restValues,
+      ...additionalData.current,
+      indebtedPeople: [],
+      expensesPaid: expensesSelected,
+      account: selectedAccount?._id,
+    };
     // Agregar signo de peso al mandar el amount.
-    console.log({ ...values, ...additionalData.current, indebtedPeople });
+    console.log(newValues);
   };
 
   return (
@@ -135,7 +150,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             />
             <Field
               component={InputForm}
-              name="shortDescription"
+              name="shortName"
               type="text"
               variant="standard"
               label="Short Description"

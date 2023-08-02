@@ -16,7 +16,7 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
   }
   return (
     <>
-      <TableTitle>Select the expense:</TableTitle>
+      <TableTitle>Expenses Selected: </TableTitle>
       <RecordTable>
         <TableHead>
           <TableRow>

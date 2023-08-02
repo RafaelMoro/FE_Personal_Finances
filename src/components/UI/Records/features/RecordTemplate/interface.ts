@@ -4,7 +4,7 @@ export interface RecordTemplateProps {
 
 export interface AdditionalData {
   budgets: string[];
-  tags: string[];
+  tag: string[];
 }
 
 export type TypeOfRecord = 'expense' | 'income';
