@@ -41,6 +41,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
+  const initialValues = useRef<CreateRecordValues>({
+    amount: '',
+    shortName: '',
+    description: '',
+    category: '',
+    subCategory: '',
+    // If is credit, the prop is false, otherwise it's true because only credit is paid later.
+    isPaid: !isCredit,
+    date: new Date(),
+  });
   const additionalData = useRef<AdditionalData>({
     budgets: [],
     tag: [],
@@ -68,17 +78,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     const newData = [...indebtedPeople];
     newData.push(indebtedPerson);
     setIndebtedPeople(newData);
-  };
-
-  const initialValues: CreateRecordValues = {
-    amount: '',
-    shortName: '',
-    description: '',
-    category: '',
-    subCategory: '',
-    // If is credit, the prop is false, otherwise it's true because only credit is paid later.
-    isPaid: !isCredit,
-    date: new Date(),
   };
 
   // Change the handle Submit
@@ -123,7 +122,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         { typeOfRecord }
       </ParagraphTitle>
       <Formik
-        initialValues={initialValues}
+        initialValues={initialValues.current}
         onSubmit={(values) => handleSubmit(values)}
         enableReinitialize
         validateOnMount
