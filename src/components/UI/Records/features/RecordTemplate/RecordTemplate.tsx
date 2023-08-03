@@ -51,14 +51,26 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     isPaid: !isCredit,
     date: new Date(),
   });
+
+  // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
   const additionalData = useRef<AdditionalData>({
     budgets: [],
     tag: [],
   });
 
-  const openAddPersonModal = () => setAddPersonModal(true);
+  const openAddPersonModal = (values: any) => {
+    // save initial values
+    initialValues.current = values;
+    setAddPersonModal(true);
+  };
   const closeAddPersonModal = () => setAddPersonModal(false);
-  const toggleShowExpenses = () => setShowExpenses(!showExpenses);
+
+  const toggleShowExpenses = (values: any) => {
+    // save initial values
+    initialValues.current = values;
+    setShowExpenses(!showExpenses);
+  };
+  const closeShowExpenses = () => setShowExpenses(false);
 
   const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
     setTypeOfRecord(newTypeOfRecord);
@@ -185,7 +197,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <>
                 <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={openAddPersonModal} size="medium">Add Person</SecondaryButton>
+                  <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
                 </FlexContainer>
               </>
             ) }
@@ -193,7 +205,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <>
                 <ShowExpenses expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={toggleShowExpenses} size="medium">Add Expense</SecondaryButton>
+                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">Add Expense</SecondaryButton>
                 </FlexContainer>
               </>
             ) }
@@ -211,8 +223,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         )}
       </Formik>
       <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} />
-      <Drawer anchor="right" open={showExpenses} onClose={toggleShowExpenses}>
-        <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} />
+      <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
+        <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
       </Drawer>
     </RecordTemplateMain>
   );

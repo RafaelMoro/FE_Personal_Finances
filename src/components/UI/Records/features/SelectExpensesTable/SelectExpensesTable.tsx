@@ -9,16 +9,19 @@ import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../interface';
 import { orderExpenses } from './utils';
-import { TableCell } from '../../../../../styles';
+import { PrimaryButton, TableCell } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 
 interface SelectExpensesTableProps {
   expenses: ExpensePaid[];
   selectedExpenses: ExpensePaid[];
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
+  closeDrawer: () => void;
 }
 
-function SelectExpensesTable({ expenses = [], modifySelectedExpenses, selectedExpenses }: SelectExpensesTableProps) {
+function SelectExpensesTable({
+  expenses = [], modifySelectedExpenses, selectedExpenses, closeDrawer,
+}: SelectExpensesTableProps) {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
   const [page, setPage] = useState(0);
@@ -161,6 +164,7 @@ function SelectExpensesTable({ expenses = [], modifySelectedExpenses, selectedEx
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <PrimaryButton onClick={closeDrawer}>Select Expenses</PrimaryButton>
     </SelectExpensesContainer>
   );
 }

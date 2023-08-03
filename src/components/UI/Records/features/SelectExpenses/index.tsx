@@ -6,9 +6,10 @@ import { Paragraph } from '../../../../../styles';
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
   selectedExpenses: ExpensePaid[];
+  closeDrawer: () => void;
 }
 
-const SelectExpenses = ({ modifySelectedExpenses, selectedExpenses = [] }: SelectExpensesProps) => {
+const SelectExpenses = ({ modifySelectedExpenses, selectedExpenses = [], closeDrawer }: SelectExpensesProps) => {
   const { expenses, noExpensesFound, error } = useAllExpenses();
 
   if (error !== 'No error found') {
@@ -22,6 +23,7 @@ const SelectExpenses = ({ modifySelectedExpenses, selectedExpenses = [] }: Selec
       expenses={expenses}
       modifySelectedExpenses={modifySelectedExpenses}
       selectedExpenses={selectedExpenses}
+      closeDrawer={closeDrawer}
     />
   );
 };

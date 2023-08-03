@@ -109,6 +109,7 @@ export const FlexContainer = styled.div`
 export const PrimaryButton = styled(Button)`
   ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.primary};
+  color: ${AppColors.white};
 
   &:hover {
     background-color: ${AppColors.bgColorDark};

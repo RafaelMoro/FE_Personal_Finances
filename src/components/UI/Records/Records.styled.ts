@@ -188,5 +188,10 @@ export const LoadingCategoriesContainer = styled.div`
 
 export const SelectExpensesContainer = styled.div`
   width: 100%;
+  padding: 1rem;
   margin-bottom: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-content: center;
 `;
