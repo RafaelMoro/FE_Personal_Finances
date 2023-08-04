@@ -201,7 +201,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 </FlexContainer>
               </>
             ) }
-            { (typeOfRecord === 'income') && (
+            { (typeOfRecord === 'income' && isCredit) && (
               <>
                 <ShowExpenses expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">

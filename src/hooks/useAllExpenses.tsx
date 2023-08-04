@@ -15,6 +15,7 @@ const useAllExpenses = () => {
 
   const [noExpensesFound, setNoExpensesFound] = useState<boolean>(false);
   const [error, setError] = useState<string>('No error found');
+  const [loading, setLoading] = useState<boolean>(true);
   const [expenses, setExpenses] = useState<ExpensePaid []>([]);
 
   useEffect(() => {
@@ -36,15 +37,18 @@ const useAllExpenses = () => {
             return shortExpense;
           });
           setExpenses(expensesShorted);
+          setLoading(false);
           return;
         }
 
         // The response returned = No expense found with that account id
         setNoExpensesFound(true);
+        setLoading(false);
       } catch (errorCatched) {
         // catch error
         const newError = errorCatched as AxiosError;
         setError(newError.message);
+        setLoading(false);
       }
     };
     if (!!user && bearerToken) getExpenses();
@@ -54,6 +58,7 @@ const useAllExpenses = () => {
     expenses,
     noExpensesFound,
     error,
+    loading,
   };
 };
 

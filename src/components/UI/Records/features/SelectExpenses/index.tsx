@@ -2,6 +2,8 @@ import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { ExpensePaid } from '../../interface';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
+import { SelectExpensesContainer } from '../Features.styled';
+import { Loader } from '../../../../../animations/Loader';
 
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
@@ -10,13 +12,32 @@ interface SelectExpensesProps {
 }
 
 const SelectExpenses = ({ modifySelectedExpenses, selectedExpenses = [], closeDrawer }: SelectExpensesProps) => {
-  const { expenses, noExpensesFound, error } = useAllExpenses();
+  const {
+    expenses, noExpensesFound, error, loading,
+  } = useAllExpenses();
+
+  if (loading) {
+    return (
+      <SelectExpensesContainer>
+        <Paragraph>Loading expenses...</Paragraph>
+        <Loader />
+      </SelectExpensesContainer>
+    );
+  }
 
   if (error !== 'No error found') {
-    return (<Paragraph>An error was found, try again later.</Paragraph>);
+    return (
+      <SelectExpensesContainer>
+        <Paragraph>An error was found, try again later.</Paragraph>
+      </SelectExpensesContainer>
+    );
   }
   if (noExpensesFound) {
-    return (<Paragraph>No expenses found for this account</Paragraph>);
+    return (
+      <SelectExpensesContainer>
+        <Paragraph>No expenses found for this account</Paragraph>
+      </SelectExpensesContainer>
+    );
   }
   return (
     <SelectExpensesTable
