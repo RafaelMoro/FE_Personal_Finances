@@ -11,9 +11,11 @@ import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
 
 interface ShowExpensesProps {
   expenses: ExpensePaid[];
+  usePagination?: boolean;
+  isGrid?: boolean;
 }
 
-const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
+const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: ShowExpensesProps) => {
   const {
     emptyRows, handleChangePage, handleChangeRowsPerPage, page, rowsPerPage,
   } = usePaginationTable({ arrayOfOptions: expenses, initialRowsPerPage: 5 });
@@ -26,13 +28,15 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
     [expenses, page, rowsPerPage],
   );
 
+  const expensesArray = usePagination ? visibleRows : expenses;
+
   if (expenses.length === 0) {
     return null;
   }
   return (
     <>
-      <TableTitle>Expenses Selected: </TableTitle>
-      <RecordTable>
+      <TableTitle isGrid={isGrid}>Expenses Selected: </TableTitle>
+      <RecordTable isGrid={isGrid}>
         <TableHead>
           <TableRow>
             <TableCell>Name:</TableCell>
@@ -42,7 +46,7 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          { visibleRows.map((expense, index) => (
+          { expensesArray.map((expense, index) => (
             <TableRow key={`${expense._id}-${index + 1}`}>
               <TableCell>{expense.shortName}</TableCell>
               <TableCell>{expense.fullDate}</TableCell>
@@ -50,18 +54,20 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
               <TableCell>{expense.amount}</TableCell>
             </TableRow>
           )) }
-          {emptyRows > 0 && (<EmptyTableRow emptyRows={emptyRows} colSpan={4} />)}
+          {(emptyRows > 0 && usePagination) && (<EmptyTableRow emptyRows={emptyRows} colSpan={4} />)}
         </TableBody>
       </RecordTable>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        rowsPerPage={rowsPerPage}
-        count={expenses.length}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      { (usePagination) && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          rowsPerPage={rowsPerPage}
+          count={expenses.length}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      ) }
     </>
   );
 };

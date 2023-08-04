@@ -204,7 +204,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             ) }
             { (typeOfRecord === 'income' && isCredit) && (
               <>
-                <ShowExpenses expenses={expensesSelected} />
+                <ShowExpenses usePagination expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
                   <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
                 </FlexContainer>

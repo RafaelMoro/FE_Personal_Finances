@@ -1,15 +1,12 @@
-import {
-  TableHead, TableRow, TableBody,
-} from '@mui/material';
-
 import { RecordDrawerProps } from '../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
-  RecordDrawerDescription, RecordTable, DrawerChipContainer,
-  TableTitle, RecordDrawerPriceContainer,
+  RecordDrawerDescription, DrawerChipContainer,
+  RecordDrawerPriceContainer,
 } from '../Records.styled';
-import { TableCell, Chip } from '../../../../styles';
+import { Chip } from '../../../../styles';
 import { ShowIndebtedPeople } from './ShowIndebtedPeople/ShowIndebtedPeople';
+import { ShowExpenses } from './ShowExpenses';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime, expensesPaid,
@@ -41,29 +38,7 @@ const RecordDrawer = ({
     <ShowIndebtedPeople indebtedPeople={indebtedPeople} inRecordDrawer />
     ) }
     { (expensesPaid.length > 0) && (
-    <>
-      <TableTitle isGrid>Expenses Paid:</TableTitle>
-      <RecordTable isGrid>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name:</TableCell>
-            <TableCell>Date:</TableCell>
-            <TableCell>Time:</TableCell>
-            <TableCell>Amount</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { expensesPaid.map((expense, index) => (
-            <TableRow key={`${expense._id}-${index + 1}`}>
-              <TableCell>{expense.shortName}</TableCell>
-              <TableCell>{expense.fullDate}</TableCell>
-              <TableCell>{expense.formattedTime}</TableCell>
-              <TableCell>{expense.amount}</TableCell>
-            </TableRow>
-          )) }
-        </TableBody>
-      </RecordTable>
-    </>
+    <ShowExpenses expenses={expensesPaid} isGrid />
     ) }
   </RecordDrawerContainer>
 );

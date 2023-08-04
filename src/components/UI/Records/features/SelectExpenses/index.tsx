@@ -11,7 +11,9 @@ interface SelectExpensesProps {
   closeDrawer: () => void;
 }
 
-const SelectExpenses = ({ modifySelectedExpenses, selectedExpenses = [], closeDrawer }: SelectExpensesProps) => {
+const SelectExpenses = ({
+  modifySelectedExpenses, selectedExpenses = [], closeDrawer,
+}: SelectExpensesProps) => {
   const {
     expenses, noExpensesFound, error, loading,
   } = useAllExpenses();
