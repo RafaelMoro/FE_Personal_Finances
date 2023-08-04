@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useState, useMemo } from 'react';
 import {
   TableRow, TableBody, Checkbox, TableContainer,
@@ -9,7 +10,9 @@ import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../interface';
 import { orderExpenses } from './utils';
-import { PrimaryButton, TableCell } from '../../../../../styles';
+import {
+  PrimaryButton, TableCell, CancelButton, FlexContainer,
+} from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 
 interface SelectExpensesTableProps {
@@ -45,24 +48,17 @@ function SelectExpensesTable({
   };
 
   const handleSelectExpense = (event: React.MouseEvent<unknown>, expense: ExpensePaid) => {
-    const selectedExpeseIndex = selectedExpenses.indexOf(expense);
-    let newSelectedExpense: ExpensePaid[] = [];
-
-    if (selectedExpeseIndex === -1) {
-      // The item does not exist in the array.
-      newSelectedExpense = newSelectedExpense.concat(selectedExpenses, expense);
-    } else if (selectedExpeseIndex === 0) {
-      newSelectedExpense = newSelectedExpense.concat(selectedExpenses.slice(1));
-    } else if (selectedExpeseIndex === selectedExpenses.length - 1) {
-      newSelectedExpense = newSelectedExpense.concat(selectedExpenses.slice(0, -1));
-    } else if (selectedExpeseIndex > 0) {
-      newSelectedExpense = newSelectedExpense.concat(
-        selectedExpenses.slice(0, selectedExpeseIndex),
-        selectedExpenses.slice(selectedExpeseIndex + 1),
-      );
+    const selectedExpenseFound = selectedExpenses.find((selectedExpense) => selectedExpense._id === expense._id);
+    if (selectedExpenseFound) {
+      // If found the expense, remove it.
+      const filteredExpenses = selectedExpenses.filter((selectedExpense) => selectedExpense._id !== expense._id);
+      modifySelectedExpenses(filteredExpenses);
+      return;
     }
 
-    modifySelectedExpenses(newSelectedExpense);
+    // If not found, the expense is new, add it to the array.
+    const newSelectedExpenses = [...selectedExpenses, expense];
+    modifySelectedExpenses(newSelectedExpenses);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -164,7 +160,10 @@ function SelectExpensesTable({
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <PrimaryButton onClick={closeDrawer}>Select Expenses</PrimaryButton>
+      <FlexContainer justifyContent="space-between">
+        <CancelButton onClick={closeDrawer}>Cancel</CancelButton>
+        <PrimaryButton disabled={selectedExpenses.length < 1} onClick={closeDrawer}>Select Expenses</PrimaryButton>
+      </FlexContainer>
     </SelectExpensesContainer>
   );
 }

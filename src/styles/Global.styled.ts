@@ -111,6 +111,11 @@ export const PrimaryButton = styled(Button)`
   background-color: ${AppColors.primary};
   color: ${AppColors.white};
 
+  :disabled {
+    color: ${AppColors.white};
+    opacity: 0.7;
+  }
+
   &:hover {
     background-color: ${AppColors.bgColorDark};
   }
