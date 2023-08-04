@@ -41,6 +41,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
+  const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const initialValues = useRef<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -205,7 +206,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <>
                 <ShowExpenses expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">Add Expense</SecondaryButton>
+                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
                 </FlexContainer>
               </>
             ) }
