@@ -3,6 +3,7 @@ import { useState } from 'react';
 interface UsePaginationTableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   arrayOfOptions: any[];
+  initialRowsPerPage: number;
 }
 
 /*
@@ -32,10 +33,11 @@ interface UsePaginationTableProps {
     onRowsPerPageChange={handleChangeRowsPerPage}
   />
 */
-const usePaginationTable = ({ arrayOfOptions }: UsePaginationTableProps) => {
+const usePaginationTable = ({ arrayOfOptions, initialRowsPerPage }: UsePaginationTableProps) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(initialRowsPerPage);
 
+  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - arrayOfOptions.length) : 0;
 
   const handleChangePage = (event: unknown, newPage: number) => {

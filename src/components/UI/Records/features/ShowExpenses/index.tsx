@@ -16,7 +16,7 @@ interface ShowExpensesProps {
 const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
   const {
     emptyRows, handleChangePage, handleChangeRowsPerPage, page, rowsPerPage,
-  } = usePaginationTable({ arrayOfOptions: expenses });
+  } = usePaginationTable({ arrayOfOptions: expenses, initialRowsPerPage: 5 });
 
   const visibleRows = useMemo(
     () => expenses.slice(

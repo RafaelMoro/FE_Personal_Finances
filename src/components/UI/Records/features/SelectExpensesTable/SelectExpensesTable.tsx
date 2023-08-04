@@ -14,6 +14,8 @@ import {
   PrimaryButton, TableCell, CancelButton, FlexContainer,
 } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
+import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
+import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 
 interface SelectExpensesTableProps {
   expenses: ExpensePaid[];
@@ -25,10 +27,12 @@ interface SelectExpensesTableProps {
 function SelectExpensesTable({
   expenses = [], modifySelectedExpenses, selectedExpenses, closeDrawer,
 }: SelectExpensesTableProps) {
+  const {
+    emptyRows, handleChangePage, handleChangeRowsPerPage, page, rowsPerPage,
+  } = usePaginationTable({ arrayOfOptions: expenses, initialRowsPerPage: 10 });
+
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -61,19 +65,7 @@ function SelectExpensesTable({
     modifySelectedExpenses(newSelectedExpenses);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const isSelected = (expenseId: string) => selectedExpenses.some((expense) => expense._id === expenseId);
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
 
   const visibleRows: ExpensePaid[] = useMemo(
     () => orderExpenses(expenses, order, orderBy).slice(
@@ -139,15 +131,7 @@ function SelectExpensesTable({
                 </TableRow>
               );
             })}
-            {emptyRows > 0 && (
-            <TableRow
-              style={{
-                height: 53 * emptyRows,
-              }}
-            >
-              <TableCell colSpan={6} />
-            </TableRow>
-            )}
+            {emptyRows > 0 && (<EmptyTableRow emptyRows={emptyRows} colSpan={6} />)}
           </TableBody>
         </Table>
       </TableContainer>
