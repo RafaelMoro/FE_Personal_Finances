@@ -1,30 +1,22 @@
 import {
   TableHead, TableRow, TableBody, TablePagination,
 } from '@mui/material';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { ExpensePaid } from '../../interface';
 import { RecordTable, TableTitle } from '../../Records.styled';
+import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';
+import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
 
 interface ShowExpensesProps {
   expenses: ExpensePaid[];
 }
 
 const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - expenses.length) : 0;
+  const {
+    emptyRows, handleChangePage, handleChangeRowsPerPage, page, rowsPerPage,
+  } = usePaginationTable({ arrayOfOptions: expenses });
 
   const visibleRows = useMemo(
     () => expenses.slice(
@@ -58,15 +50,7 @@ const ShowExpenses = ({ expenses = [] }: ShowExpensesProps) => {
               <TableCell>{expense.amount}</TableCell>
             </TableRow>
           )) }
-          {emptyRows > 0 && (
-            <TableRow
-              style={{
-                height: 53 * emptyRows,
-              }}
-            >
-              <TableCell colSpan={6} />
-            </TableRow>
-          )}
+          {emptyRows > 0 && (<EmptyTableRow emptyRows={emptyRows} colSpan={4} />)}
         </TableBody>
       </RecordTable>
       <TablePagination
