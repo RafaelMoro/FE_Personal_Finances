@@ -16,6 +16,7 @@ const records: AnyRecord[] = [
     },
     subCategory: 'Didi/Uber',
     tag: [],
+    date: new Date(),
     indebtedPeople: [
       {
         name: 'Beto',
@@ -47,6 +48,7 @@ const records: AnyRecord[] = [
     _id: '456-789',
     shortName: 'Solesta gym a casa',
     description: 'Didi para ir a casa',
+    date: new Date(),
     category: {
       _id: '123-456-789',
       __v: 0,

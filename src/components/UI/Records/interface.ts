@@ -9,17 +9,11 @@ export interface RecordTableProps {
   isGrid?: boolean;
 }
 
-export interface AccountRecordUI extends Omit<AccountRecord, 'amount' | 'date'> {
-  fullDate: string;
-  formattedTime: string;
-  amount: string;
-}
-
-export interface ExpenseUI extends AccountRecordUI {
+export interface ExpenseUI extends AccountRecord {
   isPaid: boolean;
 }
 
-export interface IncomeUI extends AccountRecordUI {
+export interface IncomeUI extends AccountRecord {
   expensesPaid: ExpenseUI[];
 }
 
@@ -32,12 +26,12 @@ export interface ExpensePaid {
   date?: Date;
 }
 
-export interface AnyRecord extends AccountRecordUI {
+export interface AnyRecord extends AccountRecord {
   isPaid?: boolean;
   expensesPaid?: ExpensePaid[];
 }
 
-export interface RecordProps extends Omit<AccountRecordUI, 'account'> {
+export interface RecordProps extends Omit<AccountRecord, 'account' | 'date'> {
   isPaid?: boolean;
   expensesPaid?: ExpensePaid[];
 }
@@ -46,7 +40,7 @@ export interface RecordListProps {
   records: AnyRecord [];
 }
 
-export interface RecordDrawerProps extends Omit<AccountRecordUI, 'amount' | 'account' | '_id'> {
+export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'account' | '_id' | 'date'> {
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
 }

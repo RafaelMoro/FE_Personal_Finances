@@ -4,8 +4,14 @@ import { AxiosRequestHeaders, AxiosError } from 'axios';
 
 import { selectedAccountAtom, userAtom } from '../atoms';
 import { ExpensePaid } from '../components/UI/Records/interface';
-import { GetRequest } from '../utils';
+import { GetRequest, MONTHS } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
+import { ExpenseInterface } from '../globalInterface';
+
+interface GetExpensesNotPaidResponse {
+  message: null | string;
+  expenses: ExpenseInterface[];
+}
 
 const useAllExpenses = () => {
   const [user] = useAtom(userAtom);
@@ -18,15 +24,19 @@ const useAllExpenses = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [expenses, setExpenses] = useState<ExpensePaid []>([]);
 
+  const dateOfToday = new Date();
+  const currentMonth = MONTHS[dateOfToday.getMonth()];
+  const currentYear = String(dateOfToday.getFullYear());
+
   useEffect(() => {
     const getExpenses = async () => {
       try {
-        const fullRoute = `${GET_EXPENSES}/${selectedAccountId}`;
-        const expensesFetched = await GetRequest(fullRoute, bearerToken);
+        const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${currentMonth}/${currentYear}`;
+        const response: GetExpensesNotPaidResponse = await GetRequest(fullRoute, bearerToken);
 
-        if (Array.isArray(expensesFetched)) {
+        if (response.message === null) {
           // response returned the array of expenses
-          const expensesShorted = expensesFetched.map((expense) => {
+          const expensesShorted = response.expenses.map((expense) => {
             const {
               // eslint-disable-next-line @typescript-eslint/naming-convention
               _id, shortName, amount, fullDate, formattedTime, date,
@@ -52,7 +62,7 @@ const useAllExpenses = () => {
       }
     };
     if (!!user && bearerToken) getExpenses();
-  }, [bearerToken, selectedAccountId, user]);
+  }, [bearerToken, currentMonth, currentYear, selectedAccountId, user]);
 
   return {
     expenses,

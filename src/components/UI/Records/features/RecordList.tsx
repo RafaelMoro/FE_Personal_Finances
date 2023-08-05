@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
@@ -25,6 +24,7 @@ const NETWORK_CATCH_ERROR = 'Network Error';
 const RecordList = () => {
   const dateOfToday = new Date();
   const currentMonth = MONTHS[dateOfToday.getMonth()];
+  const currentYear = String(dateOfToday.getFullYear());
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
@@ -37,7 +37,7 @@ const RecordList = () => {
     const getRecords = async () => {
       try {
         const accountId = selectedAccount?._id;
-        const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}`;
+        const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}/${currentYear}`;
         const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
 
         if (response?.error) {
@@ -63,13 +63,12 @@ const RecordList = () => {
         setAllRecords(recordFetched);
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
-        console.log(' ~ newError:', newError);
         ERROR_DESCRIPTION = newError.message;
         setError('Other Error');
       }
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
-  }, [bearerToken, currentMonth, selectedAccount, setAllRecords, user]);
+  }, [bearerToken, currentMonth, currentYear, selectedAccount, setAllRecords, user]);
 
   if (error !== 'No error') {
     return (
