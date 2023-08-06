@@ -10,21 +10,20 @@ import { Error } from '../../Error';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../constants';
-import { GetRequest, MONTHS } from '../../../../utils';
+import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
 import { Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
+import { todayDate } from '../../../../utils/TodayDate';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
 const RecordList = () => {
-  const dateOfToday = new Date();
-  const currentMonth = MONTHS[dateOfToday.getMonth()];
-  const currentYear = String(dateOfToday.getFullYear());
+  const { currentMonth, currentYear } = todayDate();
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);

@@ -4,9 +4,10 @@ import { AxiosRequestHeaders, AxiosError } from 'axios';
 
 import { selectedAccountAtom, userAtom } from '../atoms';
 import { ExpensePaid } from '../components/UI/Records/interface';
-import { GetRequest, MONTHS } from '../utils';
+import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
 import { ExpenseInterface } from '../globalInterface';
+import { todayDate } from '../utils/TodayDate';
 
 interface GetExpensesNotPaidResponse {
   message: null | string;
@@ -24,9 +25,7 @@ const useAllExpenses = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [expenses, setExpenses] = useState<ExpensePaid []>([]);
 
-  const dateOfToday = new Date();
-  const currentMonth = MONTHS[dateOfToday.getMonth()];
-  const currentYear = String(dateOfToday.getFullYear());
+  const { currentMonth, currentYear } = todayDate();
 
   useEffect(() => {
     const getExpenses = async () => {
