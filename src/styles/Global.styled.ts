@@ -155,6 +155,10 @@ export const ConfirmButton = styled(Button)`
   }
 `;
 
+export const TransparentButton = styled(Button)`
+  color: inherit;
+`;
+
 // **** Headings
 
 export const Heading1 = styled.h1`

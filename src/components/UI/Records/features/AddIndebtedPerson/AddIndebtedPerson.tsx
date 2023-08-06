@@ -1,12 +1,13 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Button } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { Switch } from 'formik-mui';
+import { Close } from '@mui/icons-material';
 
 import { IndebtedPeopleFormSchema } from '../../../../../validationsSchemas/records.schema';
 import { FormContainer } from '../RecordTemplate/RecordTemplate.styled';
 import {
   ParagraphTitle, PrimaryButton, InputForm, InputAdornment,
-  FormControlLabel,
+  FormControlLabel, TransparentButton, FlexContainer,
 } from '../../../../../styles';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { AddIndebtedPersonProps } from './interface';
@@ -28,7 +29,12 @@ const AddIndebtedPerson = ({ open, onClose, updateData }: AddIndebtedPersonProps
   return (
     <Dialog onClose={onClose} open={open}>
       <Container>
-        <ParagraphTitle>Add Person</ParagraphTitle>
+        <FlexContainer justifyContent="space-between">
+          <ParagraphTitle>Add Person</ParagraphTitle>
+          <TransparentButton onClick={onClose}>
+            <Close sx={{ fontSize: '3.5rem' }} />
+          </TransparentButton>
+        </FlexContainer>
         <Formik
           initialValues={initialValues}
           validationSchema={IndebtedPeopleFormSchema}
