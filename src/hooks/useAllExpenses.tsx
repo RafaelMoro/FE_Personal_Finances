@@ -6,15 +6,19 @@ import { selectedAccountAtom, userAtom } from '../atoms';
 import { ExpensePaid } from '../components/UI/Records/interface';
 import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
-import { todayDate } from '../utils/TodayDate';
 import { Expense } from '../globalInterface';
+
+interface UseAllExpensesProps {
+  month: string;
+  year: string;
+}
 
 interface GetExpensesNotPaidResponse {
   message: null | string;
   expenses: Expense[];
 }
 
-const useAllExpenses = () => {
+const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   const [user] = useAtom(userAtom);
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const selectedAccountId = selectedAccount?._id;
@@ -25,15 +29,15 @@ const useAllExpenses = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [expenses, setExpenses] = useState<ExpensePaid []>([]);
 
-  const { currentMonth, currentYear } = todayDate();
-
   useEffect(() => {
     const getExpenses = async () => {
       try {
-        const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${currentMonth}/${currentYear}`;
+        const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
         const response: GetExpensesNotPaidResponse = await GetRequest(fullRoute, bearerToken);
 
         if (response.message === null) {
+          // set it as false if it was previously true.
+          setNoExpensesFound(false);
           // response returned the array of expenses
           const expensesShorted = response.expenses.map((expense) => {
             const {
@@ -61,7 +65,7 @@ const useAllExpenses = () => {
       }
     };
     if (!!user && bearerToken) getExpenses();
-  }, [bearerToken, currentMonth, currentYear, selectedAccountId, user]);
+  }, [bearerToken, month, selectedAccountId, user, year]);
 
   return {
     expenses,

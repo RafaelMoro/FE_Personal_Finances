@@ -144,6 +144,17 @@ export const CancelButton = styled(Button)`
   }
 `;
 
+export const ConfirmButton = styled(Button)`
+  ${createResponsiveProps({ fontSize: 'P' })}
+  background-color: ${AppColors.positive};
+  color: ${AppColors.white};
+
+  &:hover {
+    background-color: ${AppColors.positiveDarker};
+    color: ${AppColors.white};
+  }
+`;
+
 // **** Headings
 
 export const Heading1 = styled.h1`

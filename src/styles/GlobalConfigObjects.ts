@@ -11,6 +11,7 @@ export const AppColors = {
   white: '#fbfbfb',
   black: '#1D1305',
   positive: '#35E6DB',
+  positiveDarker: '#317c77',
   negative: '#E65A12',
   negativeDarker: '#a13f0d',
   info: '#1ea7fd',

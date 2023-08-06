@@ -11,7 +11,7 @@ import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../interface';
 import { orderExpenses } from './utils';
 import {
-  PrimaryButton, TableCell, CancelButton, FlexContainer,
+  TableCell, CancelButton, FlexContainer, ConfirmButton,
 } from '../../../../../styles';
 import { SelectExpensesContainer } from '../../Records.styled';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
@@ -146,7 +146,7 @@ function SelectExpensesTable({
       />
       <FlexContainer justifyContent="space-between">
         <CancelButton onClick={closeDrawer}>Cancel</CancelButton>
-        <PrimaryButton disabled={selectedExpenses.length < 1} onClick={closeDrawer}>Select Expenses</PrimaryButton>
+        <ConfirmButton disabled={selectedExpenses.length < 1} onClick={closeDrawer}>Done</ConfirmButton>
       </FlexContainer>
     </SelectExpensesContainer>
   );

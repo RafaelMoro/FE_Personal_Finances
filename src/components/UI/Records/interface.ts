@@ -57,3 +57,9 @@ export interface CreateRecordValues {
   isPaid?: boolean;
   date: Date;
 }
+
+// Select Month and year on select expense
+export interface SelectMonthYearValues {
+  month: string;
+  year: string;
+}
