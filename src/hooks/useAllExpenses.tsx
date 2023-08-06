@@ -32,6 +32,8 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   useEffect(() => {
     const getExpenses = async () => {
       try {
+        // set loading to true if it was false.
+        setLoading(true);
         const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
         const response: GetExpensesNotPaidResponse = await GetRequest(fullRoute, bearerToken);
 
