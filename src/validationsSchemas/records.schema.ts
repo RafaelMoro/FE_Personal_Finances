@@ -9,7 +9,7 @@ export const TagOrBudgetSchema = (name: string) => Yup.object({
 
 export const IndebtedPeopleFormSchema = Yup.object({
   name: indebtedName,
-  amount: indebtedAmount,
-  amountPaid: indebtedAmount,
+  amount: indebtedAmount(true),
+  amountPaid: indebtedAmount(),
   isPaid: indebtedIsPaid,
 });
