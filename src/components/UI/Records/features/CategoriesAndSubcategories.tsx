@@ -4,7 +4,7 @@ import { AxiosRequestHeaders } from 'axios';
 
 import { userAtom } from '../../../../atoms';
 import { Loader } from '../../../../animations/Loader';
-import { Paragraph } from '../../../../styles';
+import { ErrorParagraphValidation, Paragraph } from '../../../../styles';
 import { SelectInput } from '../../SelectInput';
 import { Notification } from '../../Notification';
 
@@ -20,7 +20,16 @@ import { LoadingCategoriesContainer, RecordLoaderContainer } from '../Records.st
 const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
 const NOTIFICATION_STATUS = SystemStateEnum.Error;
 
-const CategoriesAndSubcategories = () => {
+interface CategoriesAndSubcategoriesProps {
+  errorCategory?: string;
+  errorSubcategory?: string;
+  touchedCategory?: boolean;
+  touchedSubCategory?: boolean;
+}
+
+const CategoriesAndSubcategories = ({
+  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory,
+}: CategoriesAndSubcategoriesProps) => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
@@ -107,6 +116,9 @@ const CategoriesAndSubcategories = () => {
         colorOptions={[]}
         processSelectDataFn={setNewCategory}
       />
+      { (touchedCategory && errorCategory) && (
+        <ErrorParagraphValidation>{errorCategory}</ErrorParagraphValidation>
+      ) }
       <SelectInput
         labelId="select-record-subcategory"
         labelName="Subcategory"
@@ -115,6 +127,9 @@ const CategoriesAndSubcategories = () => {
         colorOptions={[]}
         disabled={categoryNotSelected}
       />
+      { (touchedSubCategory && errorSubcategory) && (
+        <ErrorParagraphValidation>{errorSubcategory}</ErrorParagraphValidation>
+      ) }
     </>
   );
 };

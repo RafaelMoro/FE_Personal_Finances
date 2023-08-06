@@ -21,6 +21,7 @@ export const AppColors = {
   bgColorGrey: '#dbcaca',
   grey: '#9F9B94',
   subtitleColor: '#B5BFCA',
+  validationError: '#d32f2f',
 };
 
 export const TextColors: ITextColors[] = [

@@ -193,6 +193,10 @@ export const Paragraph = styled.p`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
 
+export const ErrorParagraphValidation = styled(Paragraph)`
+  color: ${AppColors.validationError};
+`;
+
 export const Anchor = styled(Link)`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;

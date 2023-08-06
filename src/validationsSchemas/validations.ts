@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
 
+// General validations
+export const stringRequired = (message: string) => Yup.string().required(message);
+
 export const emailValidation = Yup.string().email('Invalid email').required('Email is required');
 export const firstNameValidation = Yup.string().required('First name is required').min(2);
 export const lastNameValidation = Yup.string().required('Last name is required').min(2);

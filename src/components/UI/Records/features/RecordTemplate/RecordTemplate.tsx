@@ -27,6 +27,7 @@ import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
+import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
@@ -137,10 +138,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <Formik
         initialValues={initialValues.current}
         onSubmit={(values) => handleSubmit(values)}
+        validationSchema={CreateRecordSchema}
         enableReinitialize
         validateOnMount
       >
-        {({ submitForm, values, setFieldValue }) => (
+        {({
+          submitForm, errors, touched, values, setFieldValue,
+        }) => (
           <FormContainer>
             <Field
               component={InputForm}
@@ -175,40 +179,45 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               variant="standard"
               label="Description"
             />
-            <CategoriesAndSubcategories />
+            <CategoriesAndSubcategories
+              errorCategory={errors.category}
+              errorSubcategory={errors.subCategory}
+              touchedCategory={touched.category}
+              touchedSubCategory={touched.subCategory}
+            />
             <ChipsContainer>
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
             </ChipsContainer>
             { (isCredit && typeOfRecord === 'expense') && (
-              <FormControlLabel
-                control={(
-                  <Field
-                    type="checkbox"
-                    checked={values.isPaid}
-                    label="Transaction paid"
-                    name="isPaid"
-                    component={Switch}
-                  />
+            <FormControlLabel
+              control={(
+                <Field
+                  type="checkbox"
+                  checked={values.isPaid}
+                  label="Transaction paid"
+                  name="isPaid"
+                  component={Switch}
+                />
               )}
-                label="Transaction paid"
-              />
+              label="Transaction paid"
+            />
             ) }
             { (typeOfRecord === 'expense') && (
-              <>
-                <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
-                <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
-                </FlexContainer>
-              </>
+            <>
+              <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
+              <FlexContainer justifyContent="center">
+                <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
+              </FlexContainer>
+            </>
             ) }
             { (typeOfRecord === 'income' && isCredit) && (
-              <>
-                <ShowExpenses usePagination expenses={expensesSelected} />
-                <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
-                </FlexContainer>
-              </>
+            <>
+              <ShowExpenses usePagination expenses={expensesSelected} />
+              <FlexContainer justifyContent="center">
+                <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
+              </FlexContainer>
+            </>
             ) }
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
