@@ -195,3 +195,11 @@ export const SelectExpensesContainer = styled.div`
   gap: 2rem;
   align-content: center;
 `;
+
+// Select Expenses
+export const SelectMonthYearBox = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  margin-top: 2rem;
+`;

@@ -1,4 +1,4 @@
-export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+import { ABBREVIATED_MONTHS } from '../../constants';
 
 export const formatDateToString = (date: Date) => {
   const day = date.getDate();
@@ -6,7 +6,7 @@ export const formatDateToString = (date: Date) => {
   const hour = date.getHours();
   const hourString = String(hour).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-  const fullDate = `${MONTHS[month]} ${day}`;
+  const fullDate = `${ABBREVIATED_MONTHS[month]} ${day}`;
   const twelveHourPeriod = hour >= 0 && hour <= 11 ? 'am' : 'pm';
   const formattedTime = `${hourString}:${minutes}${twelveHourPeriod}`;
 
