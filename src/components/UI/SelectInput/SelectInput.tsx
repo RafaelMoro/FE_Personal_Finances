@@ -30,8 +30,8 @@ const SelectInput = ({
         </PersonalizedMenuItem>
       )) }
       { (stringOptions.length > 0) && (
-        stringOptions.map((option) => (
-          <MenuItem key={`${fieldName}-${option}`} value={option}>{option}</MenuItem>
+        stringOptions.map((option, index) => (
+          <MenuItem key={`${fieldName}-${option}-${index + 1}`} value={option}>{option}</MenuItem>
         ))
       ) }
     </Field>

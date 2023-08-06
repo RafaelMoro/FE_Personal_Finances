@@ -1,4 +1,4 @@
-import { Dialog, Button } from '@mui/material';
+import { Dialog } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { Switch } from 'formik-mui';
 import { Close } from '@mui/icons-material';

@@ -28,7 +28,7 @@ export const accountTitleValidation = Yup.string().required('The title of your a
 export const accountAmountValidation = Yup.number().required('The initial amount of your account is required.');
 
 /** Record validations  */
-export const tagOrBudgetValidation = Yup.string().min(3).max(20);
+export const tagOrBudgetValidation = Yup.string().min(3).max(20).required();
 export const indebtedName = Yup.string().min(3).required('Full name field is required');
 export const indebtedIsPaid = Yup.boolean().required();
 export const indebtedAmount = (bePositive = false) => {
