@@ -45,7 +45,7 @@ const CategoriesAndSubcategories = () => {
       const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
 
       if (response.error) {
-        setTimeout(() => setIsLoading(false), 1000);
+        setIsLoading(false);
         showNotification();
         setError(true);
         return;
@@ -53,11 +53,11 @@ const CategoriesAndSubcategories = () => {
 
       if (response.categories.length === 0) {
         // there are no categories created, do not update the state and just set the loading flag as false.
-        setTimeout(() => setIsLoading(false), 1000);
+        setIsLoading(false);
         return;
       }
 
-      setTimeout(() => setIsLoading(false), 1000);
+      setIsLoading(false);
       setCategories([...categories, ...response.categories]);
     };
 
