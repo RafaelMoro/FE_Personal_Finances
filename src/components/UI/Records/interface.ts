@@ -9,14 +9,6 @@ export interface RecordTableProps {
   isGrid?: boolean;
 }
 
-export interface ExpenseUI extends AccountRecord {
-  isPaid: boolean;
-}
-
-export interface IncomeUI extends AccountRecord {
-  expensesPaid: ExpenseUI[];
-}
-
 export interface ExpensePaid {
   _id: string;
   shortName: string;

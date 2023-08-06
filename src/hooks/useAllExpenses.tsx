@@ -6,12 +6,12 @@ import { selectedAccountAtom, userAtom } from '../atoms';
 import { ExpensePaid } from '../components/UI/Records/interface';
 import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
-import { ExpenseInterface } from '../globalInterface';
 import { todayDate } from '../utils/TodayDate';
+import { Expense } from '../globalInterface';
 
 interface GetExpensesNotPaidResponse {
   message: null | string;
-  expenses: ExpenseInterface[];
+  expenses: Expense[];
 }
 
 const useAllExpenses = () => {

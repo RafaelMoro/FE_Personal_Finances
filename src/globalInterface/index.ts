@@ -54,10 +54,10 @@ export interface AccountRecord {
   budgets: string[];
 }
 
-export interface ExpenseInterface extends AccountRecord {
+export interface Expense extends AccountRecord {
   isPaid: boolean;
 }
 
 export interface Income extends AccountRecord {
-  expensesPaid: ExpenseInterface[];
+  expensesPaid: Expense[];
 }
