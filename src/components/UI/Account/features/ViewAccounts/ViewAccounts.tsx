@@ -83,10 +83,23 @@ const ViewAccounts = ({
           return;
         }
 
-        const newAccountsUI = formatAccounts({ accounts: accountsData });
-        setAccountsUI(newAccountsUI);
+        const formattedAccountsUI = formatAccounts({ accounts: accountsData });
 
-        const firstAccount = newAccountsUI[0];
+        // If accounts UI has been fetched before and there is already a selected account, just update the accounts UI
+        if (Array.isArray(accountsUI) && accountsUI.length > 0 && selectedAccount) {
+          const currentAccoundSelected = accountsUI.find((account) => account.selected) ?? accountsUI[0];
+          const newAccountsUI = formattedAccountsUI.map((account) => {
+            if (account._id === currentAccoundSelected._id) return { ...account, selected: true };
+            return { ...account, selected: false };
+          });
+          setAccountsUI(newAccountsUI);
+          return;
+        }
+
+        setAccountsUI(formattedAccountsUI);
+
+        const firstAccount = formattedAccountsUI[0];
+
         setSelectedAccount(firstAccount);
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
@@ -95,7 +108,8 @@ const ViewAccounts = ({
       }
     };
     if (!!user && bearerToken) getAccounts();
-  }, [bearerToken, setAccounts, setAccountsUI, setSelectedAccount, user]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bearerToken, selectedAccount, user]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
@@ -114,6 +128,7 @@ const ViewAccounts = ({
     const newAccountsUI = accountsUI.map((account) => {
       if (account._id === accountId) {
         const newSelectedAccount = { ...account, selected: true };
+        // Here we are selecting the new account.
         setSelectedAccount(newSelectedAccount);
         return newSelectedAccount;
       }

@@ -3,7 +3,9 @@ import { EditOutlined, DeleteOutlined } from '@mui/icons-material';
 
 import { AccountComponentProps } from './interface';
 import { Paragraph } from '../../../styles';
-import { AccountContainerColoroued, AccountTitle, AccountIconsContainer } from './Account.styled';
+import {
+  AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
+} from './Account.styled';
 
 const Account = ({
   account,
@@ -33,6 +35,11 @@ const Account = ({
         </IconButton>
       </AccountIconsContainer>
       <Paragraph>{ accountType }</Paragraph>
+      { (selected) && (
+        <SelectedTextBox>
+          <Paragraph>Selected</Paragraph>
+        </SelectedTextBox>
+      ) }
     </AccountContainerColoroued>
   );
 };

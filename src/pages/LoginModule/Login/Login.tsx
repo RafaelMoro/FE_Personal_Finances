@@ -16,7 +16,7 @@ import logo from '../../../assets/logo.png';
 
 const Login = () => {
   const {
-    handleSubmit, handleShowNotification, notificationInfo, notification,
+    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
   } = useLogin();
 
   return (
@@ -44,7 +44,11 @@ const Login = () => {
             validateOnMount
           >
             {({ submitForm }) => (
-              <Form>
+              <Form
+                onKeyDown={(event) => {
+                  submitOnPressEnter(event, submitForm);
+                }}
+              >
                 <CardContent>
                   <FormTitle>Welcome back</FormTitle>
                   <FormInstructions>Enter your credentials to enter your account.</FormInstructions>

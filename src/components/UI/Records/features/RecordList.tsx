@@ -12,11 +12,12 @@ import {
 } from '../constants';
 import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
-import { Paragraph } from '../../../../styles';
+import { AppColors, Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
 import { todayDate } from '../../../../utils/TodayDate';
+import { MonthRecords } from './MonthRecords';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -81,29 +82,45 @@ const RecordList = () => {
         <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
       ) }
       { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length > 0) && (
-        <Paragraph align="center">There are no records for this account.</Paragraph>
+        <Paragraph align="center">
+          There are no records for the account:
+          {' '}
+          &quot;
+          {selectedAccount?.title}
+          &quot;
+          .
+        </Paragraph>
       ) }
-      { (Array.isArray(allRecords) && allRecords.length > 0) && allRecords.map((record, index) => (
-        <div key={record._id}>
-          { (index === 0) && (<Divider />) }
-          <Record
-            _id={record._id}
-            shortName={record.shortName}
-            description={record.description}
-            category={record.category}
-            subCategory={record.subCategory}
-            tag={record.tag}
-            indebtedPeople={record.indebtedPeople}
-            budgets={record.budgets}
-            fullDate={record.fullDate}
-            formattedTime={record.formattedTime}
-            amount={record.amount}
-            isPaid={record.isPaid}
-            expensesPaid={record.expensesPaid}
-          />
-          <Divider />
-        </div>
-      )) }
+      { (Array.isArray(allRecords) && allRecords.length > 0) && (
+        <MonthRecords
+          backgroundColor={selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey}
+          color={selectedAccount?.color?.color ?? AppColors.black}
+          opened
+          title="August"
+        >
+          { allRecords.map((record, index) => (
+            <div key={record._id}>
+              { (index === 0) && (<Divider />) }
+              <Record
+                _id={record._id}
+                shortName={record.shortName}
+                description={record.description}
+                category={record.category}
+                subCategory={record.subCategory}
+                tag={record.tag}
+                indebtedPeople={record.indebtedPeople}
+                budgets={record.budgets}
+                fullDate={record.fullDate}
+                formattedTime={record.formattedTime}
+                amount={record.amount}
+                isPaid={record.isPaid}
+                expensesPaid={record.expensesPaid}
+              />
+              <Divider />
+            </div>
+          )) }
+        </MonthRecords>
+      ) }
     </List>
   );
 };

@@ -72,7 +72,7 @@ export const AccountSectionTablet = styled.aside`
   grid-column: 1 / 3;
   padding: 3rem 0 0 3rem;
   display: grid;
-  grid-template-rows: 30% 70%;
+  grid-template-rows: 20% 80%;
 `;
 
 export const AccountSlider = styled.div`
@@ -96,7 +96,7 @@ export const AccountSectionDesktop = styled.aside`
   overscroll-behavior-y: contain;
   scroll-snap-type: y proximity;
   display: grid;
-  grid-auto-rows: 17rem;
+  grid-auto-rows: 20rem;
   gap: 2rem;
   padding: 0 1rem;
 `;

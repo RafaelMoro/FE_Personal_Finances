@@ -5,15 +5,18 @@ export const DashboardContainer = styled.div`
   position: relative;
   @media (min-width: 1024px) {
     display: grid;
-    grid-template-columns: 28rem 1fr;
+    grid-template-columns: 30rem 1fr;
   }
 `;
 
 export const RecordsBox = styled.main`
   width: 100%;
-  grid-column: 1 / 3;
+  height: 100%;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
   @media (min-width: 480px) {
-    padding: 14rem 2rem 0 2rem;
+    grid-column: 1 / 3;
+    padding: 2rem 2rem 0 2rem;
   }
   @media (min-width: 1024px) {
     grid-column: 2 / 3;

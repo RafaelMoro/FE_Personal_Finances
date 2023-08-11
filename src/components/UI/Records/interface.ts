@@ -63,3 +63,8 @@ export interface SelectMonthYearValues {
   month: string;
   year: string;
 }
+
+export interface ListExpandableContainerProps {
+  backgroundColor: string;
+  color: string;
+}
