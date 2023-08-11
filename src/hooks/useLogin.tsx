@@ -72,6 +72,16 @@ const useLogin = () => {
     }
   };
 
+  const submitOnPressEnter = (
+    event: React.KeyboardEvent<HTMLFormElement>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onSubmit: (() => Promise<void>) & (() => Promise<any>),
+  ) => {
+    if (event.key === 'Enter') {
+      onSubmit();
+    }
+  };
+
   const signOut = () => {
     setUser(null);
     saveInfoToLocalStorage({});
@@ -84,6 +94,7 @@ const useLogin = () => {
     signOut,
     notificationInfo,
     notification,
+    submitOnPressEnter,
   };
 };
 
