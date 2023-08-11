@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { List as ListMUI, Table } from '@mui/material';
+import { ListItemButton, List as ListMUI, Table } from '@mui/material';
 
-import { DrawerChipContainerProps, RecordTableProps } from './interface';
+import { DrawerChipContainerProps, ListExpandableContainerProps, RecordTableProps } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
@@ -204,4 +204,21 @@ export const SelectMonthYearBox = styled.div`
   justify-content: center;
   gap: 5rem;
   margin-top: 2rem;
+`;
+
+// Month Records
+
+export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'backgroundColor' && props !== 'color' })`
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1rem;
+  border: .1rem solid ${AppColors.white};
+  border-radius: 1rem;
+  background-color: ${({ backgroundColor }: ListExpandableContainerProps) => backgroundColor};
+  color: ${({ color }: ListExpandableContainerProps) => color};
+
+  &:hover {
+    background-color: ${AppColors.bgColorGrey};
+    color: ${AppColors.black};
+  }
 `;

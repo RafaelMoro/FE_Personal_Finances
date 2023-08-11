@@ -12,7 +12,7 @@ import {
 } from '../constants';
 import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
-import { Paragraph } from '../../../../styles';
+import { AppColors, Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
@@ -92,7 +92,12 @@ const RecordList = () => {
         </Paragraph>
       ) }
       { (Array.isArray(allRecords) && allRecords.length > 0) && (
-        <MonthRecords opened title="August">
+        <MonthRecords
+          backgroundColor={selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey}
+          color={selectedAccount?.color?.color ?? AppColors.black}
+          opened
+          title="August"
+        >
           { allRecords.map((record, index) => (
             <div key={record._id}>
               { (index === 0) && (<Divider />) }
