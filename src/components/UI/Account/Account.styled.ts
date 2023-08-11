@@ -62,6 +62,14 @@ export const AccountIconsContainer = styled.div`
   justify-content: center;
 `;
 
+export const SelectedTextBox = styled.div`
+  padding: .5rem;
+  border: .2rem solid ${AppColors.white};
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+`;
+
 export const AccountSkeletonHolder = styled.div`
   width: 100%;
   height: 4rem;

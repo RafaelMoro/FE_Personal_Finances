@@ -5,7 +5,7 @@ export const DashboardContainer = styled.div`
   position: relative;
   @media (min-width: 1024px) {
     display: grid;
-    grid-template-columns: 28rem 1fr;
+    grid-template-columns: 30rem 1fr;
   }
 `;
 
