@@ -11,9 +11,12 @@ export const DashboardContainer = styled.div`
 
 export const RecordsBox = styled.main`
   width: 100%;
-  grid-column: 1 / 3;
+  height: 100%;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
   @media (min-width: 480px) {
-    padding: 14rem 2rem 0 2rem;
+    grid-column: 1 / 3;
+    padding: 2rem 2rem 0 2rem;
   }
   @media (min-width: 1024px) {
     grid-column: 2 / 3;
