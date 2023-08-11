@@ -81,7 +81,14 @@ const RecordList = () => {
         <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
       ) }
       { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length > 0) && (
-        <Paragraph align="center">There are no records for this account.</Paragraph>
+        <Paragraph align="center">
+          There are no records for the account:
+          {' '}
+          &quot;
+          {selectedAccount?.title}
+          &quot;
+          .
+        </Paragraph>
       ) }
       { (Array.isArray(allRecords) && allRecords.length > 0) && allRecords.map((record, index) => (
         <div key={record._id}>
