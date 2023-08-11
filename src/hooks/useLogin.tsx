@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
-import { ICountOnMeLocalStorage } from '../utils/LocalStorage/interface';
+import { ICountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { User } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
@@ -40,15 +41,31 @@ const useLogin = () => {
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
 
+  const signOut = () => {
+    setUser(null);
+    saveInfoToLocalStorage({});
+    navigate(LOGIN_ROUTE);
+  };
+
   useEffect(() => {
     const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
     const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
 
     if (!IsEmptyLocalStorage) {
+      // Check if token has expired
       const { user } = localStorageInfo;
+
+      const jwtDecoded: JWT = jwtDecode(user?.accessToken);
+      // eslint-disable-next-line no-unsafe-optional-chaining
+      if (jwtDecoded && Date.now() >= jwtDecoded?.exp * 1000) {
+        signOut();
+        return;
+      }
+
       setUser(user);
       navigate(DASHBOARD_ROUTE);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, setUser]);
 
   const handleSubmit = async (values: ILoginValues) => {
@@ -80,12 +97,6 @@ const useLogin = () => {
     if (event.key === 'Enter') {
       onSubmit();
     }
-  };
-
-  const signOut = () => {
-    setUser(null);
-    saveInfoToLocalStorage({});
-    navigate(LOGIN_ROUTE);
   };
 
   return {
