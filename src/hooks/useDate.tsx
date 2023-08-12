@@ -7,6 +7,7 @@ const useDate = () => {
   const dateOfToday = new Date();
   const currentMonth = ABBREVIATED_MONTHS[dateOfToday.getMonth()];
   const completeCurrentMonth = MONTHS[dateOfToday.getMonth()];
+  const completeLastMonth = MONTHS[dateOfToday.getMonth() - 1];
   const currentYear = String(dateOfToday.getFullYear());
   const years: string[] = createYearsArray(currentYear);
 
@@ -21,6 +22,7 @@ const useDate = () => {
     year,
     years,
     completeCurrentMonth,
+    completeLastMonth,
     updateYear,
     updateMonth,
   };

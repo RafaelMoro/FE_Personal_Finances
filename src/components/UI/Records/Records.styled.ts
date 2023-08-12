@@ -170,6 +170,8 @@ export const DebtPaid = styled(TableCell)`
 
 export const List = styled(ListMUI)`
   margin-top: 1.5rem;
+  display: grid;
+  gap: 2rem;
 `;
 
 // Categories and subcategories

@@ -1,6 +1,7 @@
 import { Category } from './globalInterface';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'December'];
+export const NETWORK_CATCH_ERROR = 'Network Error';
 
 const FOOD_AND_DRINK_CATEGORY: Category = {
   _id: 'local-category-1',

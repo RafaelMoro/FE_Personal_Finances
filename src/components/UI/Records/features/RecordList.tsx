@@ -18,13 +18,15 @@ import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
 import { MonthRecords } from './MonthRecords';
 import { useDate } from '../../../../hooks/useDate';
+import { NETWORK_CATCH_ERROR } from '../../../../constants';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
-const NETWORK_CATCH_ERROR = 'Network Error';
 
 const RecordList = () => {
-  const { month, completeCurrentMonth, year } = useDate();
+  const {
+    month, completeCurrentMonth, completeLastMonth, year,
+  } = useDate();
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
@@ -32,6 +34,9 @@ const RecordList = () => {
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const [error, setError] = useState<ErrorResponse>('No error');
+
+  const backgroundColor = selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey;
+  const color = selectedAccount?.color?.color ?? AppColors.black;
 
   useEffect(() => {
     const getRecords = async () => {
@@ -92,8 +97,8 @@ const RecordList = () => {
       ) }
       { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length > 0) && (
         <MonthRecords
-          backgroundColor={selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey}
-          color={selectedAccount?.color?.color ?? AppColors.black}
+          backgroundColor={backgroundColor}
+          color={color}
           opened
           title={`Current month: ${completeCurrentMonth}`}
         >
@@ -120,6 +125,13 @@ const RecordList = () => {
           )) }
         </MonthRecords>
       ) }
+      <MonthRecords
+        backgroundColor={backgroundColor}
+        color={color}
+        title={`Last month: ${completeLastMonth}`}
+      >
+        <div>placeholder for records of last month</div>
+      </MonthRecords>
     </List>
   );
 };

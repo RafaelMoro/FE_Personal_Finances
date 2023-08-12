@@ -1,6 +1,6 @@
 import { ReactNode, useState } from 'react';
 import {
-  Collapse, List, ListItemButton,
+  Collapse, List,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { ListExpandableContainer } from '../../Records.styled';
@@ -12,19 +12,24 @@ interface MonthRecordsProps {
   title: string;
   backgroundColor: string;
   color: string;
+  onClickCallback?: () => void;
 }
 
 const MonthRecords = ({
-  opened = false, children, title, backgroundColor, color,
+  opened = false, children, title, backgroundColor, color, onClickCallback = () => {},
 }: MonthRecordsProps) => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(opened);
   const iconSize = { fontSize: '2.5rem' };
 
   const toggleOpenCollapse = () => setOpenCollapse(!openCollapse);
+  const handleClick = () => {
+    toggleOpenCollapse();
+    onClickCallback();
+  };
 
   return (
     <>
-      <ListExpandableContainer backgroundColor={backgroundColor} color={color} onClick={toggleOpenCollapse}>
+      <ListExpandableContainer backgroundColor={backgroundColor} color={color} onClick={handleClick}>
         <Paragraph>{title}</Paragraph>
         {openCollapse ? <ExpandLess sx={iconSize} /> : <ExpandMore sx={iconSize} />}
       </ListExpandableContainer>
