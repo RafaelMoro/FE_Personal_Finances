@@ -14,7 +14,7 @@ import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
 import { DashboardNotificationFunctions } from './interface';
-import { AnyRecord } from '../../components/UI/Records/interface';
+import { AnyRecord } from '../../globalInterface';
 
 const records: AnyRecord[] = [
   {

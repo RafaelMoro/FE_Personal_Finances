@@ -1,4 +1,4 @@
-import { ExpensePaid } from '../../interface';
+import { ExpensePaid } from '../../../../../globalInterface';
 
 export type Order = 'asc' | 'desc';
 

@@ -64,3 +64,22 @@ export interface Expense extends AccountRecord {
 export interface Income extends AccountRecord {
   expensesPaid: Expense[];
 }
+
+export interface ExpensePaid {
+  _id: string;
+  shortName: string;
+  amount: string;
+  fullDate: string;
+  formattedTime: string;
+  date?: Date;
+}
+
+export interface AnyRecord extends AccountRecord {
+  isPaid?: boolean;
+  expensesPaid?: ExpensePaid[];
+}
+
+export interface AllRecords {
+  currentMonth: AnyRecord [];
+  lastMonth: AnyRecord [];
+}

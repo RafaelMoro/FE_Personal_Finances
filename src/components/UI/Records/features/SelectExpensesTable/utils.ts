@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { formatNumberToCurrency } from '../../../../../utils';
-import { ExpensePaid } from '../../interface';
+import { ExpensePaid } from '../../../../../globalInterface';
 import { ExpensePaidTable, Order } from './interface';
 
 export function orderExpenses(expenses: readonly ExpensePaid[], order: Order, orderBy: keyof ExpensePaidTable): ExpensePaid[] {

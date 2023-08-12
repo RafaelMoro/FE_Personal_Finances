@@ -6,7 +6,7 @@ import { createYearsArray } from '../utils/CreateYearsArray';
 const useDate = () => {
   const dateOfToday = new Date();
   const currentMonth = ABBREVIATED_MONTHS[dateOfToday.getMonth()];
-  const completeMonth = MONTHS[dateOfToday.getMonth()];
+  const completeCurrentMonth = MONTHS[dateOfToday.getMonth()];
   const currentYear = String(dateOfToday.getFullYear());
   const years: string[] = createYearsArray(currentYear);
 
@@ -20,7 +20,7 @@ const useDate = () => {
     month,
     year,
     years,
-    completeMonth,
+    completeCurrentMonth,
     updateYear,
     updateMonth,
   };

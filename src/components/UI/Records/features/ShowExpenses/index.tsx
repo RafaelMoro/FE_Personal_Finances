@@ -3,7 +3,7 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 
-import { ExpensePaid } from '../../interface';
+import { ExpensePaid } from '../../../../../globalInterface';
 import { RecordTable, TableTitle } from '../../Records.styled';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';

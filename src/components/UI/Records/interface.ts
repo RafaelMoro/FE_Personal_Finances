@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
-import { AccountRecord, Category } from '../../../globalInterface';
+import {
+  AccountRecord, Category, ExpensePaid, AnyRecord,
+} from '../../../globalInterface';
 
 export interface DrawerChipContainerProps {
   afterContent: string;
@@ -7,20 +9,6 @@ export interface DrawerChipContainerProps {
 
 export interface RecordTableProps {
   isGrid?: boolean;
-}
-
-export interface ExpensePaid {
-  _id: string;
-  shortName: string;
-  amount: string;
-  fullDate: string;
-  formattedTime: string;
-  date?: Date;
-}
-
-export interface AnyRecord extends AccountRecord {
-  isPaid?: boolean;
-  expensesPaid?: ExpensePaid[];
 }
 
 export interface RecordProps extends Omit<AccountRecord, 'account' | 'date'> {

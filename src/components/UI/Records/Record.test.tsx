@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Record } from './Record';
-import { AnyRecord } from './interface';
+import { AnyRecord } from '../../../globalInterface';
 
 const records: AnyRecord[] = [
   {

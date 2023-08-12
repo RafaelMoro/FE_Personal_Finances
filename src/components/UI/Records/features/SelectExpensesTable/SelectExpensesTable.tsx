@@ -8,7 +8,7 @@ import {
 import { EnhancedTableToolbar } from './EnhancedToolbar';
 import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
-import { ExpensePaid } from '../../interface';
+import { ExpensePaid } from '../../../../../globalInterface';
 import { orderExpenses } from './utils';
 import {
   TableCell, CancelButton, FlexContainer, ConfirmButton,

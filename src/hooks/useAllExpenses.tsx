@@ -3,10 +3,9 @@ import { useAtom } from 'jotai';
 import { AxiosRequestHeaders, AxiosError } from 'axios';
 
 import { selectedAccountAtom, userAtom } from '../atoms';
-import { ExpensePaid } from '../components/UI/Records/interface';
 import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
-import { Expense } from '../globalInterface';
+import { Expense, ExpensePaid } from '../globalInterface';
 
 interface UseAllExpensesProps {
   month: string;

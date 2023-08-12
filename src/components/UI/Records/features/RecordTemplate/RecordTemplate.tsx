@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { selectedAccountAtom } from '../../../../../atoms';
 import { RecordTemplateProps, AdditionalData, TypeOfRecord } from './interface';
-import { CreateRecordValues, ExpensePaid } from '../../interface';
+import { CreateRecordValues } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
@@ -24,7 +24,7 @@ import {
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
-import { IndebtedPeople } from '../../../../../globalInterface';
+import { IndebtedPeople, ExpensePaid } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';

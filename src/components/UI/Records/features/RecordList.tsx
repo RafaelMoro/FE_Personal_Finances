@@ -24,7 +24,7 @@ let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact 
 const NETWORK_CATCH_ERROR = 'Network Error';
 
 const RecordList = () => {
-  const { month, year } = useDate();
+  const { month, completeCurrentMonth, year } = useDate();
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
@@ -96,7 +96,7 @@ const RecordList = () => {
           backgroundColor={selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey}
           color={selectedAccount?.color?.color ?? AppColors.black}
           opened
-          title="August"
+          title={`Current month: ${completeCurrentMonth}`}
         >
           { allRecords.map((record, index) => (
             <div key={record._id}>

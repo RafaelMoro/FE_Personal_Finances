@@ -1,6 +1,6 @@
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
-import { ExpensePaid, SelectMonthYearValues } from '../../interface';
-import { ABBREVIATED_MONTHS } from '../../../../../globalInterface';
+import { SelectMonthYearValues } from '../../interface';
+import { ABBREVIATED_MONTHS, ExpensePaid } from '../../../../../globalInterface';
 import { MONTHS } from '../../../../../constants';
 import { Loader } from '../../../../../animations/Loader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
@@ -19,7 +19,7 @@ const SelectExpenses = ({
   modifySelectedExpenses, selectedExpenses = [], closeDrawer,
 }: SelectExpensesProps) => {
   const {
-    month, year, years, completeMonth, updateYear, updateMonth,
+    month, year, years, completeCurrentMonth, updateYear, updateMonth,
   } = useDate();
   const {
     expenses, noExpensesFound, error, loading,
@@ -52,11 +52,11 @@ const SelectExpenses = ({
       <SelectExpensesContainer>
         <SelectMonthYear
           updateMonthYear={updateMonthAndYear}
-          completeMonth={completeMonth}
+          completeMonth={completeCurrentMonth}
           currentYear={year}
           yearsArray={years}
         />
-        <Paragraph>{`No expenses found for this account in ${completeMonth} ${year}`}</Paragraph>
+        <Paragraph>{`No expenses found for this account in ${completeCurrentMonth} ${year}`}</Paragraph>
       </SelectExpensesContainer>
     );
   }
@@ -64,7 +64,7 @@ const SelectExpenses = ({
     <>
       <SelectMonthYear
         updateMonthYear={updateMonthAndYear}
-        completeMonth={completeMonth}
+        completeMonth={completeCurrentMonth}
         currentYear={year}
         yearsArray={years}
       />
