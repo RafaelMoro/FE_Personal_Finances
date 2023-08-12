@@ -1,7 +1,4 @@
-import { todayDate } from '../TodayDate';
-
-export const createYearsArray = (): string[] => {
-  const { currentYear } = todayDate();
+export const createYearsArray = (currentYear: string): string[] => {
   const END_YEAR = Number(currentYear);
   const START_YEAR = 2022;
   const times = END_YEAR - START_YEAR;

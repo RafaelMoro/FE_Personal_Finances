@@ -1,15 +1,13 @@
-import { useState } from 'react';
-
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { ExpensePaid, SelectMonthYearValues } from '../../interface';
-import { ABBREVIATED_MONTHS, MONTHS } from '../../../../../constants';
+import { ABBREVIATED_MONTHS } from '../../../../../globalInterface';
+import { MONTHS } from '../../../../../constants';
 import { Loader } from '../../../../../animations/Loader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
 import { SelectExpensesContainer } from '../Features.styled';
-import { todayDate } from '../../../../../utils/TodayDate';
-import { createYearsArray } from '../../../../../utils/CreateYearsArray';
 import { SelectMonthYear } from './SelectMonthYear';
+import { useDate } from '../../../../../hooks/useDate';
 
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
@@ -20,17 +18,12 @@ interface SelectExpensesProps {
 const SelectExpenses = ({
   modifySelectedExpenses, selectedExpenses = [], closeDrawer,
 }: SelectExpensesProps) => {
-  const { currentYear, currentMonth } = todayDate();
-  const [month, setMonth] = useState(currentMonth);
-  const completeMonth = MONTHS[ABBREVIATED_MONTHS.indexOf(month)];
-  const [year, setYear] = useState(currentYear);
+  const {
+    month, year, years, completeMonth, updateYear, updateMonth,
+  } = useDate();
   const {
     expenses, noExpensesFound, error, loading,
   } = useAllExpenses({ month, year });
-  const YEARS = createYearsArray();
-
-  const updateMonth = (newMonth: string) => setMonth(newMonth);
-  const updateYear = (newYear: string) => setYear(newYear);
 
   const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
     const monthIndex = MONTHS.indexOf(newMonth);
@@ -61,7 +54,7 @@ const SelectExpenses = ({
           updateMonthYear={updateMonthAndYear}
           completeMonth={completeMonth}
           currentYear={year}
-          yearsArray={YEARS}
+          yearsArray={years}
         />
         <Paragraph>{`No expenses found for this account in ${completeMonth} ${year}`}</Paragraph>
       </SelectExpensesContainer>
@@ -73,7 +66,7 @@ const SelectExpenses = ({
         updateMonthYear={updateMonthAndYear}
         completeMonth={completeMonth}
         currentYear={year}
-        yearsArray={YEARS}
+        yearsArray={years}
       />
       <SelectExpensesTable
         expenses={expenses}

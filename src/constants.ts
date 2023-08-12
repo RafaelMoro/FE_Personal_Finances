@@ -1,6 +1,5 @@
 import { Category } from './globalInterface';
 
-export const ABBREVIATED_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'December'];
 
 const FOOD_AND_DRINK_CATEGORY: Category = {

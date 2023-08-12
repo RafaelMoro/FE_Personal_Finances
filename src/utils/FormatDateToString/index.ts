@@ -1,4 +1,4 @@
-import { ABBREVIATED_MONTHS } from '../../constants';
+import { ABBREVIATED_MONTHS } from '../../globalInterface';
 
 export const formatDateToString = (date: Date) => {
   const day = date.getDate();

@@ -9,6 +9,9 @@ export interface User {
 export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
 export type AccountType = typeof TYPE_OF_ACCOUNTS[number];
 
+export const ABBREVIATED_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'] as const;
+export type MonthsType = typeof ABBREVIATED_MONTHS[number];
+
 export interface Account {
   _id: string;
   title: string;

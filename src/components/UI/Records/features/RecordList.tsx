@@ -16,15 +16,15 @@ import { AppColors, Paragraph } from '../../../../styles';
 import { List } from '../Records.styled';
 import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
-import { todayDate } from '../../../../utils/TodayDate';
 import { MonthRecords } from './MonthRecords';
+import { useDate } from '../../../../hooks/useDate';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
 const RecordList = () => {
-  const { currentMonth, currentYear } = todayDate();
+  const { month, year } = useDate();
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
@@ -37,7 +37,7 @@ const RecordList = () => {
     const getRecords = async () => {
       try {
         const accountId = selectedAccount?._id;
-        const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${currentMonth}/${currentYear}`;
+        const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
         const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
 
         if (response?.error) {
@@ -68,7 +68,7 @@ const RecordList = () => {
       }
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
-  }, [bearerToken, currentMonth, currentYear, selectedAccount, setAllRecords, user]);
+  }, [bearerToken, month, year, selectedAccount, setAllRecords, user]);
 
   if (error !== 'No error') {
     return (
