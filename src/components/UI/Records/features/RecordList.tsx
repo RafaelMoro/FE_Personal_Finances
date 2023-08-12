@@ -55,12 +55,11 @@ const RecordList = () => {
 
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
           // Show that there are no records and the user may create one.
-          setAllRecords([]);
           return;
         }
 
         const recordFetched = response?.records;
-        setAllRecords(recordFetched);
+        setAllRecords({ currentMonth: recordFetched, lastMonth: [] });
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
         ERROR_DESCRIPTION = newError.message;
@@ -78,10 +77,10 @@ const RecordList = () => {
 
   return (
     <List>
-      { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length === 0) && (
+      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length === 0 && accountsUI.length === 0) && (
         <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
       ) }
-      { (Array.isArray(allRecords) && allRecords.length === 0 && accountsUI.length > 0) && (
+      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length === 0 && accountsUI.length > 0) && (
         <Paragraph align="center">
           There are no records for the account:
           {' '}
@@ -91,14 +90,14 @@ const RecordList = () => {
           .
         </Paragraph>
       ) }
-      { (Array.isArray(allRecords) && allRecords.length > 0) && (
+      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length > 0) && (
         <MonthRecords
           backgroundColor={selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey}
           color={selectedAccount?.color?.color ?? AppColors.black}
           opened
           title={`Current month: ${completeCurrentMonth}`}
         >
-          { allRecords.map((record, index) => (
+          { allRecords.currentMonth.map((record, index) => (
             <div key={record._id}>
               { (index === 0) && (<Divider />) }
               <Record
