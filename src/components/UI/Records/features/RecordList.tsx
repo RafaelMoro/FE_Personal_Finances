@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unstable-nested-components */
+/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
@@ -19,6 +21,10 @@ import { ErrorResponse } from '../../../../aliasType';
 import { MonthRecords } from './MonthRecords';
 import { useDate } from '../../../../hooks/useDate';
 import { NETWORK_CATCH_ERROR } from '../../../../constants';
+import { NoRecordsFound } from './NoRecordsFound';
+import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
+import { AnyRecord } from '../../../../globalInterface';
+import { ShowRecords } from './ShowRecords';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -33,7 +39,10 @@ const RecordList = () => {
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
+  const accountId = selectedAccount?._id ?? 'Account ID not found';
   const [error, setError] = useState<ErrorResponse>('No error');
+  const [errorLastMonthRecords, setErrorLastMonthRecords] = useState<boolean>(false);
+  const [loadingLastMonthRecords, setLoadingLastMonthRecords] = useState<boolean>(false);
 
   const backgroundColor = selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey;
   const color = selectedAccount?.color?.color ?? AppColors.black;
@@ -41,7 +50,6 @@ const RecordList = () => {
   useEffect(() => {
     const getRecords = async () => {
       try {
-        const accountId = selectedAccount?._id;
         const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
         const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
 
@@ -60,6 +68,7 @@ const RecordList = () => {
 
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
           // Show that there are no records and the user may create one.
+          setAllRecords({ currentMonth: [], lastMonth: [] });
           return;
         }
 
@@ -72,7 +81,29 @@ const RecordList = () => {
       }
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
-  }, [bearerToken, month, year, selectedAccount, setAllRecords, user]);
+  }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId]);
+
+  const handleError = (errorCatched: string) => {
+    setErrorLastMonthRecords(true);
+    console.log(errorCatched);
+  };
+  const toggleLoading = () => setLoadingLastMonthRecords(!loadingLastMonthRecords);
+  const updateLastMonthRecords = (fetchedRecords: AnyRecord[]) => setAllRecords({
+    ...allRecords,
+    lastMonth: fetchedRecords,
+  });
+
+  const handleFetchLastMonthRecords = async () => {
+    await getRecordsByMonthAndYear({
+      accountId,
+      month: '',
+      year,
+      bearerToken,
+      handleErrorCallback: handleError,
+      loadingCallback: toggleLoading,
+      handleFetchRecordsCallback: updateLastMonthRecords,
+    });
+  };
 
   if (error !== 'No error') {
     return (
@@ -86,14 +117,7 @@ const RecordList = () => {
         <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
       ) }
       { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length === 0 && accountsUI.length > 0) && (
-        <Paragraph align="center">
-          There are no records for the account:
-          {' '}
-          &quot;
-          {selectedAccount?.title}
-          &quot;
-          .
-        </Paragraph>
+        <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />
       ) }
       { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length > 0) && (
         <MonthRecords
@@ -101,6 +125,7 @@ const RecordList = () => {
           color={color}
           opened
           title={`Current month: ${completeCurrentMonth}`}
+          onClickCallback={handleFetchLastMonthRecords}
         >
           { allRecords.currentMonth.map((record, index) => (
             <div key={record._id}>
@@ -130,7 +155,37 @@ const RecordList = () => {
         color={color}
         title={`Last month: ${completeLastMonth}`}
       >
-        <div>placeholder for records of last month</div>
+        <ShowRecords
+          records={allRecords.lastMonth}
+          loading={loadingLastMonthRecords}
+          error={errorLastMonthRecords}
+          onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
+          onErrorRecords={() => <Paragraph>An error ocurred. Try again later.</Paragraph>}
+          onLoadingRecords={() => <Paragraph>Loading records...</Paragraph>}
+          renderRecords={
+            (record: AnyRecord, index: number) => (
+              <div key={record._id}>
+                { (index === 0) && (<Divider />) }
+                <Record
+                  _id={record._id}
+                  shortName={record.shortName}
+                  description={record.description}
+                  category={record.category}
+                  subCategory={record.subCategory}
+                  tag={record.tag}
+                  indebtedPeople={record.indebtedPeople}
+                  budgets={record.budgets}
+                  fullDate={record.fullDate}
+                  formattedTime={record.formattedTime}
+                  amount={record.amount}
+                  isPaid={record.isPaid}
+                  expensesPaid={record.expensesPaid}
+                />
+                <Divider />
+              </div>
+            )
+          }
+        />
       </MonthRecords>
     </List>
   );

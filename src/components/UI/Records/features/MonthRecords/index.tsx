@@ -23,8 +23,11 @@ const MonthRecords = ({
 
   const toggleOpenCollapse = () => setOpenCollapse(!openCollapse);
   const handleClick = () => {
+    if (!openCollapse) {
+      toggleOpenCollapse();
+      onClickCallback();
+    }
     toggleOpenCollapse();
-    onClickCallback();
   };
 
   return (
