@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import {
   Collapse, List,
 } from '@mui/material';
@@ -12,23 +12,35 @@ interface MonthRecordsProps {
   title: string;
   backgroundColor: string;
   color: string;
+  accountId: string;
   onClickCallback?: () => void;
 }
 
 const MonthRecords = ({
-  opened = false, children, title, backgroundColor, color, onClickCallback = () => {},
+  opened = false, children, title, backgroundColor, color, onClickCallback = () => {}, accountId,
 }: MonthRecordsProps) => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(opened);
   const iconSize = { fontSize: '2.5rem' };
 
-  const toggleOpenCollapse = () => setOpenCollapse(!openCollapse);
+  const open = () => setOpenCollapse(true);
+  const close = () => setOpenCollapse(false);
+
   const handleClick = () => {
     if (!openCollapse) {
-      toggleOpenCollapse();
+      open();
       onClickCallback();
+      return;
     }
-    toggleOpenCollapse();
+    close();
   };
+
+  useEffect(() => {
+    // Close the collapsable if we change to another account.
+    if (openCollapse && !opened) {
+      close();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accountId]);
 
   return (
     <>

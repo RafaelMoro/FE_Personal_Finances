@@ -31,7 +31,7 @@ let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact 
 
 const RecordList = () => {
   const {
-    month, completeCurrentMonth, completeLastMonth, year,
+    month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
   const [user] = useAtom(userAtom);
   const [accountsUI] = useAtom(accountsUIAtom);
@@ -87,7 +87,8 @@ const RecordList = () => {
     setErrorLastMonthRecords(true);
     console.log(errorCatched);
   };
-  const toggleLoading = () => setLoadingLastMonthRecords(!loadingLastMonthRecords);
+  const isLoading = () => setLoadingLastMonthRecords(true);
+  const isNotLoading = () => setLoadingLastMonthRecords(false);
   const updateLastMonthRecords = (fetchedRecords: AnyRecord[]) => setAllRecords({
     ...allRecords,
     lastMonth: fetchedRecords,
@@ -96,11 +97,12 @@ const RecordList = () => {
   const handleFetchLastMonthRecords = async () => {
     await getRecordsByMonthAndYear({
       accountId,
-      month: '',
+      month: lastMonth,
       year,
       bearerToken,
       handleErrorCallback: handleError,
-      loadingCallback: toggleLoading,
+      isLoadingCallback: isLoading,
+      isNotLoadingCallback: isNotLoading,
       handleFetchRecordsCallback: updateLastMonthRecords,
     });
   };
@@ -125,7 +127,7 @@ const RecordList = () => {
           color={color}
           opened
           title={`Current month: ${completeCurrentMonth}`}
-          onClickCallback={handleFetchLastMonthRecords}
+          accountId={accountId}
         >
           { allRecords.currentMonth.map((record, index) => (
             <div key={record._id}>
@@ -154,6 +156,8 @@ const RecordList = () => {
         backgroundColor={backgroundColor}
         color={color}
         title={`Last month: ${completeLastMonth}`}
+        onClickCallback={handleFetchLastMonthRecords}
+        accountId={accountId}
       >
         <ShowRecords
           records={allRecords.lastMonth}

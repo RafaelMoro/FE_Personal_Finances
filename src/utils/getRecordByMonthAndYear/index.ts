@@ -11,45 +11,47 @@ interface GetRecordByMonthAndYearProps {
   month: string;
   year: string;
   bearerToken: AxiosRequestHeaders;
-  loadingCallback: () => void;
+  isLoadingCallback: () => void;
+  isNotLoadingCallback: () => void;
   handleErrorCallback: (error: string) => void;
   handleFetchRecordsCallback: (records: AnyRecord[]) => void;
 }
 
 export const getRecordsByMonthAndYear = async ({
   accountId, month, year, bearerToken, handleErrorCallback, handleFetchRecordsCallback,
-  loadingCallback,
+  isLoadingCallback, isNotLoadingCallback,
 }: GetRecordByMonthAndYearProps) => {
   try {
-    loadingCallback();
+    isLoadingCallback();
     const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
     const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
-    console.log(response);
 
     if (response?.error) {
       // handle error
       const errorMessage = response?.message as string;
       if (errorMessage === NETWORK_CATCH_ERROR) {
         const error = 'Error #401';
+        isNotLoadingCallback();
         handleErrorCallback(error);
-        loadingCallback();
         return;
       }
       const error = errorMessage;
+      isNotLoadingCallback();
       handleErrorCallback(error);
-      loadingCallback();
       return;
     }
 
     if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
       // Show that there are no records and the user may create one.
-      loadingCallback();
+      isNotLoadingCallback();
+      handleFetchRecordsCallback([]);
       return;
     }
 
     const recordFetched = response?.records;
+
+    isNotLoadingCallback();
     handleFetchRecordsCallback(recordFetched);
-    loadingCallback();
   } catch (errorCatched) {
     const newError = errorCatched as AxiosError;
     const error = newError.message;
