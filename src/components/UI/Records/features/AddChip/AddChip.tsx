@@ -42,6 +42,7 @@ const AddChip = ({
         onSubmit={(values, actions) => {
           handleSubmitChips(values);
           actions.setFieldValue(name, '');
+          actions.setFieldTouched(name, false);
           actions.setSubmitting(false);
         }}
         validationSchema={() => TagOrBudgetSchema(name)}

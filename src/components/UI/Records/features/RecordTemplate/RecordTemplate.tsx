@@ -9,7 +9,9 @@ import { useAtom } from 'jotai';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { selectedAccountAtom } from '../../../../../atoms';
-import { RecordTemplateProps, AdditionalData, TypeOfRecord } from './interface';
+import {
+  RecordTemplateProps, AdditionalData, TypeOfRecord,
+} from './interface';
 import { CreateRecordValues } from '../../interface';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
