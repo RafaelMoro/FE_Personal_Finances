@@ -68,12 +68,12 @@ const RecordList = () => {
 
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
           // Show that there are no records and the user may create one.
-          setAllRecords({ currentMonth: [], lastMonth: [] });
+          setAllRecords({ ...allRecords, currentMonth: [] });
           return;
         }
 
         const recordFetched = response?.records;
-        setAllRecords({ currentMonth: recordFetched, lastMonth: [] });
+        setAllRecords({ ...allRecords, currentMonth: recordFetched });
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
         ERROR_DESCRIPTION = newError.message;
@@ -81,6 +81,7 @@ const RecordList = () => {
       }
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId]);
 
   const handleError = (errorCatched: string) => {

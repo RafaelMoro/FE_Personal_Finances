@@ -82,4 +82,5 @@ export interface AnyRecord extends AccountRecord {
 export interface AllRecords {
   currentMonth: AnyRecord [];
   lastMonth: AnyRecord [];
+  olderRecords: AnyRecord[];
 }

@@ -10,5 +10,5 @@ export const selectedAccountAtom = atom<AccountUI | null>(null);
 export const openAccountModalAtom = atom<boolean>(false);
 export const openChangeAccountModalAtom = atom<boolean>(false);
 export const accountActionAtom = atom<AccountAction>('Create');
-export const allRecordsAtom = atom<AllRecords>({ currentMonth: [], lastMonth: [] });
+export const allRecordsAtom = atom<AllRecords>({ currentMonth: [], lastMonth: [], olderRecords: [] });
 export const windowSizeAtom = atom<WindowSizeValues>('Mobile');
