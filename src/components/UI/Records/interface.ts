@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import {
-  AccountRecord, Category, ExpensePaid, AnyRecord,
+  AccountRecord, Category, ExpensePaid, AnyRecord, IndebtedPeople,
 } from '../../../globalInterface';
 
 export interface DrawerChipContainerProps {
@@ -44,6 +44,17 @@ export interface CreateRecordValues {
   subCategory: string;
   isPaid?: boolean;
   date: Date;
+}
+
+export interface CreateExpenseValues extends CreateRecordValues {
+  tag: string[];
+  budgets: string[];
+  indebtedPeople: IndebtedPeople[];
+  accountId: string;
+}
+
+export interface CreateExpenseResponse extends AnyRecord {
+  message?: string;
 }
 
 // Select Month and year on select expense

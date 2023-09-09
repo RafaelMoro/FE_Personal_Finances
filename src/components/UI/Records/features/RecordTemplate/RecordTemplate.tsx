@@ -30,8 +30,10 @@ import { IndebtedPeople, ExpensePaid } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
+import { useRecords } from '../../../../../hooks/useRecords';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+  const { handleSubmitExpense } = useRecords();
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
@@ -99,21 +101,28 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
-    const { isPaid, ...restValues } = values;
+    const { isPaid, amount, ...restValues } = values;
+    // Adding money sign to the amount.
+    const fullAmount = `$${amount}`;
     const newValues = isExpense ? {
       ...values,
       ...additionalData.current,
+      amount: fullAmount,
       indebtedPeople,
       account: selectedAccount?._id,
     } : {
       ...restValues,
       ...additionalData.current,
+      amount: fullAmount,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: selectedAccount?._id,
     };
-    // Agregar signo de peso al mandar el amount.
-    console.log(newValues);
+
+    if (isExpense) {
+      handleSubmitExpense(newValues);
+      // Put return when the other function of handle Submit income is added.
+    }
   };
 
   return (
