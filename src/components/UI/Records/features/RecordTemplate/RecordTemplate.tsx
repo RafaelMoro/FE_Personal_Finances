@@ -33,7 +33,7 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { useRecords } from '../../../../../hooks/useRecords';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
-  const { handleSubmitExpense } = useRecords();
+  const { handleSubmitExpense, handleSubmitIncome } = useRecords();
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
@@ -121,8 +121,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
     if (isExpense) {
       handleSubmitExpense(newValues);
-      // Put return when the other function of handle Submit income is added.
+      return;
     }
+
+    handleSubmitIncome(newValues);
   };
 
   return (

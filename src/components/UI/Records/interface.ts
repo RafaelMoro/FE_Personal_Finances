@@ -53,7 +53,15 @@ export interface CreateExpenseValues extends CreateRecordValues {
   accountId: string;
 }
 
+export interface CreateIncomeValues extends CreateExpenseValues {
+  expensesPaid: string[];
+}
+
 export interface CreateExpenseResponse extends AnyRecord {
+  message?: string;
+}
+
+export interface CreateIncomeResponse extends AnyRecord {
   message?: string;
 }
 
