@@ -9,26 +9,53 @@ import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import {
   CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse,
 } from '../components/UI/Records/interface';
-import { allRecordsAtom, userAtom } from '../atoms';
+import { accountsAtom, allRecordsAtom, userAtom } from '../atoms';
 import { useDate } from './useDate';
+import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
+import { POST_PUT_ACCOUNT_ROUTE } from '../components/UI/Account/constants';
 
 const useRecords = () => {
   const navigate = useNavigate();
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const [user] = useAtom(userAtom);
+  const [accounts] = useAtom(accountsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const currentMonthRecords = allRecords?.currentMonth;
   const { month: currentMonth, lastMonth } = useDate();
 
+  const updateAmountAccount = async (accountId: string, amount: string, isExpense: boolean) => {
+    const amountToNumber = Number(amount.slice(1, amount.length));
+    const accountFound = accounts?.find((account) => account._id === accountId);
+    const amountToUpdate = accountFound?.amount as number;
+    const payload = isExpense
+      ? { accountId, amount: amountToUpdate - amountToNumber }
+      : { accountId, amount: amountToUpdate + amountToNumber };
+    const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
+
+    if (updateAccountResponse?.error) {
+      return `Error: ${updateAccountResponse?.error}`;
+    }
+
+    return 'Account updated';
+  };
+
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
+    const { account: accountId, amount } = values;
     const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
     if (createExpenseInfo?.message) {
       // Show notification error
-
+      console.error(`There is an error: ${createExpenseInfo?.message}`);
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
+      return;
+    }
+
+    const updateAmount = await updateAmountAccount(accountId, amount, true);
+    if (updateAmount.includes('Error')) {
+      // show notification error
+      console.error(updateAmount);
       return;
     }
 
@@ -63,6 +90,7 @@ const useRecords = () => {
   };
 
   const handleSubmitIncome = async (values: CreateIncomeValues) => {
+    const { account: accountId, amount } = values;
     const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_INCOME_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -71,6 +99,13 @@ const useRecords = () => {
 
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
+      return;
+    }
+
+    const updateAmount = await updateAmountAccount(accountId, amount, false);
+    if (updateAmount.includes('Error')) {
+      // show notification error
+      console.error(updateAmount);
       return;
     }
 

@@ -50,7 +50,7 @@ export interface CreateExpenseValues extends CreateRecordValues {
   tag: string[];
   budgets: string[];
   indebtedPeople: IndebtedPeople[];
-  accountId: string;
+  account: string;
 }
 
 export interface CreateIncomeValues extends CreateExpenseValues {
