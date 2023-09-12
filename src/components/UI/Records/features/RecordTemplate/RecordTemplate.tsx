@@ -249,7 +249,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           </FormContainer>
         )}
       </Formik>
-      <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} />
+      <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} indebtedPeople={indebtedPeople} />
       <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
         <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
       </Drawer>

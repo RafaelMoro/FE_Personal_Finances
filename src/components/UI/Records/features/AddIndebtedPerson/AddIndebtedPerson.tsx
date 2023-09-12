@@ -13,12 +13,22 @@ import { IndebtedPeople } from '../../../../../globalInterface';
 import { AddIndebtedPersonProps } from './interface';
 import { Container } from './AddIndebtedPeople.styled';
 
-const AddIndebtedPerson = ({ open, onClose, updateData }: AddIndebtedPersonProps) => {
+const AddIndebtedPerson = ({
+  open, onClose, updateData, indebtedPeople = [],
+}: AddIndebtedPersonProps) => {
   const initialValues = {
     name: '',
     amount: 0,
     amountPaid: 0,
     isPaid: false,
+  };
+
+  const checkRepeatedValue = (name: string) => {
+    let error;
+    const repeatedName = indebtedPeople.find((person) => person.name.toLowerCase() === name.toLowerCase());
+    if (!repeatedName) return error;
+    error = `${name} cannot be repeated. Try a different one.`;
+    return error;
   };
 
   const handleSubmit = (values: IndebtedPeople) => {
@@ -49,6 +59,7 @@ const AddIndebtedPerson = ({ open, onClose, updateData }: AddIndebtedPersonProps
                 type="text"
                 variant="standard"
                 label="Full Name"
+                validate={checkRepeatedValue}
               />
               <Field
                 component={InputForm}
