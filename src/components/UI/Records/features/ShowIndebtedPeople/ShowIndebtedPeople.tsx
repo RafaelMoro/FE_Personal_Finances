@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import {
-  TableHead, TableRow, TableBody,
+  TableHead, TableRow, TableBody, IconButton,
 } from '@mui/material';
+import { EditOutlined, DeleteOutlined } from '@mui/icons-material';
 
 import { ShowIndebtedPeopleProps } from './interface';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
-import { TableCell } from '../../../../../styles';
+import { TableCell, AppColors } from '../../../../../styles';
 import { DebtPaid, TableTitle, RecordTable } from '../../Records.styled';
 
 const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowIndebtedPeopleProps) => {
@@ -31,6 +32,14 @@ const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowInde
                   <>
                     <DebtPaid>{person.name}</DebtPaid>
                     <DebtPaid>{person.amount}</DebtPaid>
+                    <DebtPaid>
+                      <IconButton onClick={() => {}}>
+                        <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                      </IconButton>
+                      <IconButton onClick={() => {}}>
+                        <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                      </IconButton>
+                    </DebtPaid>
                   </>
                 )
                 : (
@@ -39,6 +48,14 @@ const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowInde
                     <TableCell>{person.amount}</TableCell>
                     <TableCell>{person.amountPaid}</TableCell>
                     <TableCell>{person.restingDebt}</TableCell>
+                    <TableCell>
+                      <IconButton onClick={() => {}}>
+                        <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                      </IconButton>
+                      <IconButton onClick={() => {}}>
+                        <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                      </IconButton>
+                    </TableCell>
                   </>
                 ) }
             </TableRow>
