@@ -13,6 +13,7 @@ const ShowIndebtedPeople = ({
   indebtedPeople,
   inRecordDrawer = false,
   deleteIndebtedPerson = () => {},
+  modifyIndebtedPerson = () => {},
 }: ShowIndebtedPeopleProps) => {
   const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
 
@@ -38,7 +39,7 @@ const ShowIndebtedPeople = ({
                     <DebtPaid>{person.amount}</DebtPaid>
                     { (!inRecordDrawer) && (
                       <DebtPaid>
-                        <IconButton onClick={() => {}}>
+                        <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
                           <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
@@ -56,7 +57,7 @@ const ShowIndebtedPeople = ({
                     <TableCell>{person.restingDebt}</TableCell>
                     { (!inRecordDrawer) && (
                       <TableCell>
-                        <IconButton onClick={() => {}}>
+                        <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
                           <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>

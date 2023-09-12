@@ -14,9 +14,14 @@ import { AddIndebtedPersonProps } from './interface';
 import { Container } from './AddIndebtedPeople.styled';
 
 const AddIndebtedPerson = ({
-  open, onClose, updateData, indebtedPeople = [],
+  open, onClose, addPerson, indebtedPeople = [], indebtedPerson, modifyAction, updatePerson,
 }: AddIndebtedPersonProps) => {
-  const initialValues = {
+  const initialValues = modifyAction ? {
+    name: indebtedPerson?.name as string,
+    amount: indebtedPerson?.amount as number,
+    amountPaid: indebtedPerson?.amountPaid as number,
+    isPaid: indebtedPerson?.isPaid as boolean,
+  } : {
     name: '',
     amount: 0,
     amountPaid: 0,
@@ -25,6 +30,9 @@ const AddIndebtedPerson = ({
 
   const checkRepeatedValue = (name: string) => {
     let error;
+    // Do not check if the name is repeated because the user wants to modify that person.
+    if (modifyAction) return error;
+
     const repeatedName = indebtedPeople.find((person) => person.name.toLowerCase() === name.toLowerCase());
     if (!repeatedName) return error;
     error = `${name} cannot be repeated. Try a different one.`;
@@ -32,7 +40,12 @@ const AddIndebtedPerson = ({
   };
 
   const handleSubmit = (values: IndebtedPeople) => {
-    updateData(values);
+    if (modifyAction) {
+      updatePerson(values);
+      onClose();
+      return;
+    }
+    addPerson(values);
     onClose();
   };
 
@@ -40,7 +53,11 @@ const AddIndebtedPerson = ({
     <Dialog onClose={onClose} open={open}>
       <Container>
         <FlexContainer justifyContent="space-between">
-          <ParagraphTitle>Add Person</ParagraphTitle>
+          <ParagraphTitle>
+            { (modifyAction) ? 'Modify' : 'Add' }
+            {' '}
+            Person
+          </ParagraphTitle>
           <TransparentButton onClick={onClose}>
             <Close sx={{ fontSize: '3.5rem' }} />
           </TransparentButton>
@@ -93,7 +110,11 @@ const AddIndebtedPerson = ({
                 )}
                 label="Transaction paid"
               />
-              <PrimaryButton variant="contained" size="medium" onClick={submitForm}>Add Person</PrimaryButton>
+              <PrimaryButton variant="contained" size="medium" onClick={submitForm}>
+                { (modifyAction) ? 'Modify' : 'Add'}
+                {' '}
+                Person
+              </PrimaryButton>
             </FormContainer>
           )}
         </Formik>

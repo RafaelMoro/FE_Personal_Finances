@@ -26,25 +26,37 @@ import {
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
-import { IndebtedPeople, ExpensePaid } from '../../../../../globalInterface';
+import { ExpensePaid } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { useRecords } from '../../../../../hooks/useRecords';
+import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const { handleSubmitExpense, handleSubmitIncome } = useRecords();
+  const {
+    modal: indebtedPersonModal,
+    openModal,
+    closeModal,
+    indebtedPeople,
+    addIndebtedPerson,
+    deleteIndebtedPerson,
+    updateIndebtedPerson,
+    personToModify,
+    fetchPersonToModify,
+    action: indebtedPersonModalAction,
+  } = useIndebtedPeople();
+
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
-  const [addPersonModal, setAddPersonModal] = useState<boolean>(false);
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const isExpense = typeOfRecord === 'expense';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const startAdornment = isExpense
     ? <InputAdornment position="start">- $</InputAdornment>
     : <InputAdornment position="start">+ $</InputAdornment>;
-  const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const initialValues = useRef<CreateRecordValues>({
@@ -67,9 +79,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const openAddPersonModal = (values: any) => {
     // save initial values
     initialValues.current = values;
-    setAddPersonModal(true);
+    openModal();
   };
-  const closeAddPersonModal = () => setAddPersonModal(false);
 
   const toggleShowExpenses = (values: any) => {
     // save initial values
@@ -90,16 +101,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   const updateBudgets = (newBudgets: string[]):void => {
     additionalData.current = { ...additionalData.current, budgets: newBudgets };
-  };
-
-  const updateIndebtedPeople = (indebtedPerson: IndebtedPeople):void => {
-    const newData = [...indebtedPeople];
-    newData.push(indebtedPerson);
-    setIndebtedPeople(newData);
-  };
-  const deleteIndebtedPerson = (personName: string) => {
-    const filteredPeople = indebtedPeople.filter((person) => person.name !== personName);
-    setIndebtedPeople(filteredPeople);
   };
 
   // Change the handle Submit
@@ -222,7 +223,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             ) }
             { (typeOfRecord === 'expense') && (
             <>
-              <ShowIndebtedPeople indebtedPeople={indebtedPeople} deleteIndebtedPerson={deleteIndebtedPerson} />
+              <ShowIndebtedPeople
+                indebtedPeople={indebtedPeople}
+                deleteIndebtedPerson={deleteIndebtedPerson}
+                modifyIndebtedPerson={fetchPersonToModify}
+              />
               <FlexContainer justifyContent="center">
                 <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
               </FlexContainer>
@@ -249,7 +254,15 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           </FormContainer>
         )}
       </Formik>
-      <AddIndebtedPerson updateData={updateIndebtedPeople} open={addPersonModal} onClose={closeAddPersonModal} indebtedPeople={indebtedPeople} />
+      <AddIndebtedPerson
+        addPerson={addIndebtedPerson}
+        open={indebtedPersonModal}
+        onClose={closeModal}
+        indebtedPeople={indebtedPeople}
+        indebtedPerson={personToModify}
+        updatePerson={updateIndebtedPerson}
+        modifyAction={indebtedPersonModalAction === 'Modify'}
+      />
       <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
         <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
       </Drawer>
