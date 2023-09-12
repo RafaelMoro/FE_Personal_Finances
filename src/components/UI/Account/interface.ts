@@ -1,4 +1,4 @@
-import { AccountAction } from '../../../aliasType';
+import { ModalAction } from '../../../aliasType';
 import { Account } from '../../../globalInterface';
 import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interface';
 import { IBackgroundColors, ITextColors } from '../../../styles/interface';
@@ -31,6 +31,6 @@ export interface AccountDialogProps {
   open: boolean;
   onClose: () => void;
   dashboardNotificationFunctions: DashboardNotificationFunctions;
-  accountAction: AccountAction;
+  accountAction: ModalAction;
   account: Account | null;
 }

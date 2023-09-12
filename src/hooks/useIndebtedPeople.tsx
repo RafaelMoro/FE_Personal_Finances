@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { IndebtedPeople } from '../globalInterface';
-import { AccountAction } from '../aliasType';
+import { ModalAction } from '../aliasType';
 
 const useIndebtedPeople = () => {
   const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople []>([]);
   const [personToModify, setPersonToModify] = useState<IndebtedPeople | null>(null);
-  const [action, setAction] = useState<AccountAction>('Create');
+  const [action, setAction] = useState<ModalAction>('Create');
 
   const addIndebtedPerson = (indebtedPerson: IndebtedPeople):void => {
     setIndebtedPeople([...indebtedPeople, indebtedPerson]);
