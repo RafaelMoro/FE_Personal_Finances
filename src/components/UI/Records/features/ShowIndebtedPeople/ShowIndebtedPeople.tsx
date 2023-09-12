@@ -9,7 +9,11 @@ import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople'
 import { TableCell, AppColors } from '../../../../../styles';
 import { DebtPaid, TableTitle, RecordTable } from '../../Records.styled';
 
-const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowIndebtedPeopleProps) => {
+const ShowIndebtedPeople = ({
+  indebtedPeople,
+  inRecordDrawer = false,
+  deleteIndebtedPerson = () => {},
+}: ShowIndebtedPeopleProps) => {
   const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
 
   return (
@@ -32,14 +36,16 @@ const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowInde
                   <>
                     <DebtPaid>{person.name}</DebtPaid>
                     <DebtPaid>{person.amount}</DebtPaid>
-                    <DebtPaid>
-                      <IconButton onClick={() => {}}>
-                        <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
-                      </IconButton>
-                      <IconButton onClick={() => {}}>
-                        <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
-                      </IconButton>
-                    </DebtPaid>
+                    { (!inRecordDrawer) && (
+                      <DebtPaid>
+                        <IconButton onClick={() => {}}>
+                          <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                        </IconButton>
+                        <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
+                          <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                        </IconButton>
+                      </DebtPaid>
+                    )}
                   </>
                 )
                 : (
@@ -48,14 +54,16 @@ const ShowIndebtedPeople = ({ indebtedPeople, inRecordDrawer = false }: ShowInde
                     <TableCell>{person.amount}</TableCell>
                     <TableCell>{person.amountPaid}</TableCell>
                     <TableCell>{person.restingDebt}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => {}}>
-                        <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
-                      </IconButton>
-                      <IconButton onClick={() => {}}>
-                        <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
-                      </IconButton>
-                    </TableCell>
+                    { (!inRecordDrawer) && (
+                      <TableCell>
+                        <IconButton onClick={() => {}}>
+                          <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                        </IconButton>
+                        <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
+                          <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                        </IconButton>
+                      </TableCell>
+                    ) }
                   </>
                 ) }
             </TableRow>

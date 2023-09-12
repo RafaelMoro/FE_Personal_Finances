@@ -97,6 +97,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     newData.push(indebtedPerson);
     setIndebtedPeople(newData);
   };
+  const deleteIndebtedPerson = (personName: string) => {
+    const filteredPeople = indebtedPeople.filter((person) => person.name !== personName);
+    setIndebtedPeople(filteredPeople);
+  };
 
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -218,7 +222,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             ) }
             { (typeOfRecord === 'expense') && (
             <>
-              <ShowIndebtedPeople indebtedPeople={indebtedPeople} />
+              <ShowIndebtedPeople indebtedPeople={indebtedPeople} deleteIndebtedPerson={deleteIndebtedPerson} />
               <FlexContainer justifyContent="center">
                 <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
               </FlexContainer>
