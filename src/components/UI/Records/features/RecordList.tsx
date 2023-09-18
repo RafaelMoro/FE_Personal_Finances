@@ -15,8 +15,9 @@ import {
 import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
 import { AppColors, Paragraph } from '../../../../styles';
-import { List } from '../Records.styled';
+import { List, LoaderContainer } from '../Records.styled';
 import { Record } from '../Record';
+import { Loader } from '../../../../animations/Loader';
 import { ErrorResponse } from '../../../../aliasType';
 import { MonthRecords } from './MonthRecords';
 import { useDate } from '../../../../hooks/useDate';
@@ -94,7 +95,7 @@ const RecordList = () => {
 
   const handleError = (errorCatched: string) => {
     setErrorLastMonthRecords(true);
-    console.log(errorCatched);
+    console.error(errorCatched);
   };
   const LoadingLastMonthRecords = () => setLoadingLastMonthRecords(true);
   const NotLoadingLastMonthRecords = () => setLoadingLastMonthRecords(false);
@@ -131,7 +132,12 @@ const RecordList = () => {
           error={error !== 'No error'}
           onEmptyRecords={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
-          onLoadingRecords={() => <Paragraph>Loading records...</Paragraph>}
+          onLoadingRecords={() => (
+            <LoaderContainer>
+              <Loader />
+              <Paragraph>Loading records...</Paragraph>
+            </LoaderContainer>
+          )}
           renderRecords={
             (record: AnyRecord, index: number) => (
               <div key={record._id}>
@@ -170,7 +176,12 @@ const RecordList = () => {
           error={errorLastMonthRecords}
           onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Paragraph>An error ocurred. Try again later.</Paragraph>}
-          onLoadingRecords={() => <Paragraph>Loading records...</Paragraph>}
+          onLoadingRecords={() => (
+            <LoaderContainer>
+              <Loader />
+              <Paragraph>Loading records...</Paragraph>
+            </LoaderContainer>
+          )}
           renderRecords={
             (record: AnyRecord, index: number) => (
               <div key={record._id}>

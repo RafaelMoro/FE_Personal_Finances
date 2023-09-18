@@ -168,6 +168,13 @@ export const DebtPaid = styled(TableCell)`
 
 // Record List
 
+export const LoaderContainer = styled.div`
+  width: 100%;
+  display: grid;
+  justify-content: center;
+  gap: 1rem;
+`;
+
 export const List = styled(ListMUI)`
   margin-top: 1.5rem;
   display: grid;
