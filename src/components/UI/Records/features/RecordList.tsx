@@ -6,7 +6,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  allRecordsAtom, selectedAccountAtom, userAtom, accountsUIAtom,
+  allRecordsAtom, selectedAccountAtom, userAtom,
 } from '../../../../atoms';
 import { Error } from '../../Error';
 import {
@@ -34,7 +34,6 @@ const RecordList = () => {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
   const [user] = useAtom(userAtom);
-  const [accountsUI] = useAtom(accountsUIAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
@@ -42,14 +41,19 @@ const RecordList = () => {
   const accountId = selectedAccount?._id ?? 'Account ID not found';
   const [error, setError] = useState<ErrorResponse>('No error');
   const [errorLastMonthRecords, setErrorLastMonthRecords] = useState<boolean>(false);
+  const [loadingCurrentMonthRecords, setloadingCurrentMonthRecords] = useState<boolean>(false);
   const [loadingLastMonthRecords, setLoadingLastMonthRecords] = useState<boolean>(false);
 
   const backgroundColor = selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey;
   const color = selectedAccount?.color?.color ?? AppColors.black;
 
+  const LoadingCurrentMonthRecords = () => setloadingCurrentMonthRecords(true);
+  const NotLoadingCurrentMonthRecords = () => setloadingCurrentMonthRecords(false);
+
   useEffect(() => {
     const getRecords = async () => {
       try {
+        LoadingCurrentMonthRecords();
         const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
         const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
 
@@ -58,21 +62,25 @@ const RecordList = () => {
           const errorMessage = response?.message as string;
           if (errorMessage === NETWORK_CATCH_ERROR) {
             ERROR_TITLE = 'Error #401';
+            NotLoadingCurrentMonthRecords();
             setError('Network Error');
             return;
           }
           ERROR_DESCRIPTION = errorMessage;
           setError('Other Error');
+          NotLoadingCurrentMonthRecords();
           return;
         }
 
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
           // Show that there are no records and the user may create one.
           setAllRecords({ ...allRecords, currentMonth: [] });
+          NotLoadingCurrentMonthRecords();
           return;
         }
 
         const recordFetched = response?.records;
+        NotLoadingCurrentMonthRecords();
         setAllRecords({ ...allRecords, currentMonth: recordFetched });
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
@@ -88,8 +96,8 @@ const RecordList = () => {
     setErrorLastMonthRecords(true);
     console.log(errorCatched);
   };
-  const isLoading = () => setLoadingLastMonthRecords(true);
-  const isNotLoading = () => setLoadingLastMonthRecords(false);
+  const LoadingLastMonthRecords = () => setLoadingLastMonthRecords(true);
+  const NotLoadingLastMonthRecords = () => setLoadingLastMonthRecords(false);
   const updateLastMonthRecords = (fetchedRecords: AnyRecord[]) => setAllRecords({
     ...allRecords,
     lastMonth: fetchedRecords,
@@ -102,57 +110,53 @@ const RecordList = () => {
       year,
       bearerToken,
       handleErrorCallback: handleError,
-      isLoadingCallback: isLoading,
-      isNotLoadingCallback: isNotLoading,
+      isLoadingCallback: LoadingLastMonthRecords,
+      isNotLoadingCallback: NotLoadingLastMonthRecords,
       handleFetchRecordsCallback: updateLastMonthRecords,
     });
   };
 
-  if (error !== 'No error') {
-    return (
-      <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
-    );
-  }
-
   return (
     <List>
-      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length === 0 && accountsUI.length === 0) && (
-        <Paragraph align="center">Create an account to record expenses and incomes.</Paragraph>
-      ) }
-      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length === 0 && accountsUI.length > 0) && (
-        <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />
-      ) }
-      { (Array.isArray(allRecords.currentMonth) && allRecords.currentMonth.length > 0) && (
-        <MonthRecords
-          backgroundColor={backgroundColor}
-          color={color}
-          opened
-          title={`Current month: ${completeCurrentMonth}`}
-          accountId={accountId}
-        >
-          { allRecords.currentMonth.map((record, index) => (
-            <div key={record._id}>
-              { (index === 0) && (<Divider />) }
-              <Record
-                _id={record._id}
-                shortName={record.shortName}
-                description={record.description}
-                category={record.category}
-                subCategory={record.subCategory}
-                tag={record.tag}
-                indebtedPeople={record.indebtedPeople}
-                budgets={record.budgets}
-                fullDate={record.fullDate}
-                formattedTime={record.formattedTime}
-                amount={record.amount}
-                isPaid={record.isPaid}
-                expensesPaid={record.expensesPaid}
-              />
-              <Divider />
-            </div>
-          )) }
-        </MonthRecords>
-      ) }
+      <MonthRecords
+        backgroundColor={backgroundColor}
+        color={color}
+        opened
+        title={`Current month: ${completeCurrentMonth}`}
+        accountId={accountId}
+      >
+        <ShowRecords
+          records={allRecords.currentMonth}
+          loading={loadingCurrentMonthRecords}
+          error={error !== 'No error'}
+          onEmptyRecords={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
+          onErrorRecords={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
+          onLoadingRecords={() => <Paragraph>Loading records...</Paragraph>}
+          renderRecords={
+            (record: AnyRecord, index: number) => (
+              <div key={record._id}>
+                { (index === 0) && (<Divider />) }
+                <Record
+                  _id={record._id}
+                  shortName={record.shortName}
+                  description={record.description}
+                  category={record.category}
+                  subCategory={record.subCategory}
+                  tag={record.tag}
+                  indebtedPeople={record.indebtedPeople}
+                  budgets={record.budgets}
+                  fullDate={record.fullDate}
+                  formattedTime={record.formattedTime}
+                  amount={record.amount}
+                  isPaid={record.isPaid}
+                  expensesPaid={record.expensesPaid}
+                />
+                <Divider />
+              </div>
+            )
+          }
+        />
+      </MonthRecords>
       <MonthRecords
         backgroundColor={backgroundColor}
         color={color}
