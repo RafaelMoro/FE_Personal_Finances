@@ -14,12 +14,11 @@ import {
 } from '../constants';
 import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
-import { AppColors, Paragraph } from '../../../../styles';
-import { List, LoaderContainer } from '../Records.styled';
+import { AppColors } from '../../../../styles';
+import { List } from '../Records.styled';
 import { Record } from '../Record';
-import { Loader } from '../../../../animations/Loader';
 import { ErrorResponse } from '../../../../aliasType';
-import { MonthRecords } from './MonthRecords';
+import { MonthAccordeon } from './MonthAccordeon';
 import { useDate } from '../../../../hooks/useDate';
 import { NETWORK_CATCH_ERROR } from '../../../../constants';
 import { NoRecordsFound } from './NoRecordsFound';
@@ -120,7 +119,7 @@ const RecordList = () => {
 
   return (
     <List>
-      <MonthRecords
+      <MonthAccordeon
         backgroundColor={backgroundColor}
         color={color}
         opened
@@ -164,8 +163,8 @@ const RecordList = () => {
             )
           }
         />
-      </MonthRecords>
-      <MonthRecords
+      </MonthAccordeon>
+      <MonthAccordeon
         backgroundColor={backgroundColor}
         color={color}
         title={`Last month: ${completeLastMonth}`}
@@ -179,10 +178,11 @@ const RecordList = () => {
           onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
           onLoadingRecords={() => (
-            <LoaderContainer>
-              <Loader />
-              <Paragraph>Loading records...</Paragraph>
-            </LoaderContainer>
+            <>
+              <RecordLoading />
+              <RecordLoading />
+              <RecordLoading />
+            </>
           )}
           renderRecords={
             (record: AnyRecord, index: number) => (
@@ -208,7 +208,7 @@ const RecordList = () => {
             )
           }
         />
-      </MonthRecords>
+      </MonthAccordeon>
     </List>
   );
 };

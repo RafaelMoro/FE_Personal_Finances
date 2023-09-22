@@ -6,7 +6,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { ListExpandableContainer } from '../../Records.styled';
 import { Paragraph } from '../../../../../styles';
 
-interface MonthRecordsProps {
+interface MonthAccordeonProps {
   opened?: boolean;
   children: ReactNode;
   title: string;
@@ -16,9 +16,9 @@ interface MonthRecordsProps {
   onClickCallback?: () => void;
 }
 
-const MonthRecords = ({
+const MonthAccordeon = ({
   opened = false, children, title, backgroundColor, color, onClickCallback = () => {}, accountId,
-}: MonthRecordsProps) => {
+}: MonthAccordeonProps) => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(opened);
   const iconSize = { fontSize: '2.5rem' };
 
@@ -57,4 +57,4 @@ const MonthRecords = ({
   );
 };
 
-export { MonthRecords };
+export { MonthAccordeon };
