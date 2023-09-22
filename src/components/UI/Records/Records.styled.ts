@@ -79,10 +79,6 @@ export const RecordTitleMobile = styled(ParagraphTitle)`
   text-align: center;
 `;
 
-export const RecordSkeletonContainer = styled(RecordContainer)`
-  border: 1px solid grey;
-`;
-
 export const ExpensesPayed = styled.section`
   display: flex;
   flex-direction: column;
@@ -110,6 +106,11 @@ export const RecordExpense = styled(Paragraph)`
 
 export const RecordExpenseMobile = styled(RecordExpense)`
   text-align: center;
+`;
+
+export const RecordLoadingBox = styled.div`
+  display: grid;
+  gap: 2rem;
 `;
 
 export const RecordSkeletonHolder = styled.div`

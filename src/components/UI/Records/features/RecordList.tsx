@@ -26,6 +26,7 @@ import { NoRecordsFound } from './NoRecordsFound';
 import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../globalInterface';
 import { ShowRecords } from './ShowRecords';
+import { RecordLoading } from './RecordLoading';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -133,10 +134,11 @@ const RecordList = () => {
           onEmptyRecords={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
           onLoadingRecords={() => (
-            <LoaderContainer>
-              <Loader />
-              <Paragraph>Loading records...</Paragraph>
-            </LoaderContainer>
+            <>
+              <RecordLoading />
+              <RecordLoading />
+              <RecordLoading />
+            </>
           )}
           renderRecords={
             (record: AnyRecord, index: number) => (
@@ -175,7 +177,7 @@ const RecordList = () => {
           loading={loadingLastMonthRecords}
           error={errorLastMonthRecords}
           onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
-          onErrorRecords={() => <Paragraph>An error ocurred. Try again later.</Paragraph>}
+          onErrorRecords={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
           onLoadingRecords={() => (
             <LoaderContainer>
               <Loader />

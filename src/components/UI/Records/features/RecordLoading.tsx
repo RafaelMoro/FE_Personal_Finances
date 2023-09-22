@@ -1,12 +1,17 @@
-import { RecordSkeletonContainer, RecordSkeletonHolder } from '../Records.styled';
+import { Divider } from '@mui/material';
+import { RecordContainer, RecordSkeletonHolder, RecordLoadingBox } from '../Records.styled';
 
 const RecordLoading = () => (
-  <RecordSkeletonContainer>
-    <RecordSkeletonHolder />
-    <RecordSkeletonHolder />
-    <RecordSkeletonHolder />
-    <RecordSkeletonHolder />
-  </RecordSkeletonContainer>
+  <RecordLoadingBox>
+    <Divider />
+    <RecordContainer>
+      <RecordSkeletonHolder />
+      <RecordSkeletonHolder />
+      <RecordSkeletonHolder />
+      <RecordSkeletonHolder />
+    </RecordContainer>
+    <Divider />
+  </RecordLoadingBox>
 );
 
 export { RecordLoading };
