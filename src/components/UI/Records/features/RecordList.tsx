@@ -25,7 +25,7 @@ import { NoRecordsFound } from './NoRecordsFound';
 import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../globalInterface';
 import { ShowRecords } from './ShowRecords';
-import { RecordLoading } from './RecordLoading';
+import { ShowMultipleRecordLoader } from './ShowMultipleRecordLoaders';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -133,11 +133,7 @@ const RecordList = () => {
           onEmptyRecords={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
           onLoadingRecords={() => (
-            <>
-              <RecordLoading />
-              <RecordLoading />
-              <RecordLoading />
-            </>
+            <ShowMultipleRecordLoader numberOfSkeletons={3} />
           )}
           renderRecords={
             (record: AnyRecord, index: number) => (
@@ -178,11 +174,7 @@ const RecordList = () => {
           onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
           onErrorRecords={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
           onLoadingRecords={() => (
-            <>
-              <RecordLoading />
-              <RecordLoading />
-              <RecordLoading />
-            </>
+            <ShowMultipleRecordLoader numberOfSkeletons={3} />
           )}
           renderRecords={
             (record: AnyRecord, index: number) => (
