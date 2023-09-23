@@ -198,6 +198,7 @@ const RecordTemplate = ({ edit = false, notificationFunctions }: RecordTemplateP
               label="Description"
             />
             <CategoriesAndSubcategories
+              notificationFunctions={notificationFunctions}
               errorCategory={errors.category}
               errorSubcategory={errors.subCategory}
               touchedCategory={touched.category}

@@ -6,7 +6,6 @@ import { userAtom } from '../../../../../atoms';
 import { Loader } from '../../../../../animations/Loader';
 import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
-import { Notification } from '../../../Notification';
 
 import { CategoriesResponse } from '../../interface';
 import { Category } from '../../../../../globalInterface';
@@ -14,8 +13,8 @@ import { SystemStateEnum } from '../../../../../enums';
 import { GET_CATEGORIES } from '../../constants';
 import { GetRequest } from '../../../../../utils';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
-import { useNotification } from '../../../../../hooks/useNotification';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
+import { NotificationFunctions } from '../../../../../pages/Dashboard/interface';
 
 const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
 const NOTIFICATION_STATUS = SystemStateEnum.Error;
@@ -25,13 +24,20 @@ interface CategoriesAndSubcategoriesProps {
   errorSubcategory?: string;
   touchedCategory?: boolean;
   touchedSubCategory?: boolean;
+  notificationFunctions: NotificationFunctions;
 }
 
 const CategoriesAndSubcategories = ({
-  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory,
+  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, notificationFunctions,
 }: CategoriesAndSubcategoriesProps) => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const {
+    updateTitle,
+    updateDescription,
+    updateStatus,
+    toggleShowNotification,
+  } = notificationFunctions;
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   // If category has not been selected yet, disabled subcategory select input.
@@ -43,20 +49,19 @@ const CategoriesAndSubcategories = ({
   const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
   const onlyCategories = useMemo(() => categories.map((item) => item.categoryName), [categories]);
 
-  const {
-    notification, showNotification, notificationInfo, hideNotification,
-  } = useNotification({
-    title: 'Error', description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
-  });
-
   useEffect(() => {
     const getCategories = async () => {
       const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
 
       if (response.error) {
         setIsLoading(false);
-        showNotification();
-        setError(true);
+        updateTitle('Error Categories and subcategories');
+        updateDescription(NOTIFICATION_DESCRIPTION);
+        updateStatus(NOTIFICATION_STATUS);
+        toggleShowNotification();
+        setTimeout(() => {
+          setError(true);
+        }, 3000);
         return;
       }
 
@@ -73,7 +78,7 @@ const CategoriesAndSubcategories = ({
     // Fetch while the categories are 12 because are the total of the local categories.
     // If there are more, categories has been fetched already.
     if (!!user && bearerToken && categories.length === 12 && !error) getCategories();
-  }, [bearerToken, categories, error, showNotification, user]);
+  }, [bearerToken, categories, error, user, updateTitle, updateDescription, updateStatus, toggleShowNotification]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
@@ -100,14 +105,6 @@ const CategoriesAndSubcategories = ({
 
   return (
     <>
-      {notification && (
-      <Notification
-        title={notificationInfo.current.title}
-        description={notificationInfo.current.description}
-        status={notificationInfo.current.status}
-        close={hideNotification}
-      />
-      )}
       <SelectInput
         labelId="select-record-category"
         labelName="Category"
