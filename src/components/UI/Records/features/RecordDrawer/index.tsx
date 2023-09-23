@@ -1,12 +1,12 @@
-import { RecordDrawerProps } from '../interface';
+import { RecordDrawerProps } from '../../interface';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
   RecordDrawerDescription, DrawerChipContainer,
   RecordDrawerPriceContainer,
-} from '../Records.styled';
-import { Chip } from '../../../../styles';
-import { ShowIndebtedPeople } from './ShowIndebtedPeople/ShowIndebtedPeople';
-import { ShowExpenses } from './ShowExpenses';
+} from '../../Records.styled';
+import { Chip } from '../../../../../styles';
+import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
+import { ShowExpenses } from '../ShowExpenses';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime, expensesPaid,
