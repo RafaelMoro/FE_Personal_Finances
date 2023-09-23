@@ -1,7 +1,7 @@
-import { DashboardNotificationFunctions } from '../../../../../pages/Dashboard/interface';
+import { NotificationFunctions } from '../../../../../pages/Dashboard/interface';
 
 export interface IViewAccountsProps {
-  dashboardNotificationFunctions: DashboardNotificationFunctions;
+  dashboardNotificationFunctions: NotificationFunctions;
 }
 
 export interface IAddAccountProps {

@@ -13,7 +13,7 @@ import {
 import { useNotification } from '../../hooks/useNotification';
 import { SystemStateEnum } from '../../enums';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
-import { DashboardNotificationFunctions } from './interface';
+import { NotificationFunctions } from './interface';
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
@@ -25,7 +25,7 @@ const Dashboard = () => {
   } = useNotification({
     title: '', description: '', status: SystemStateEnum.Info,
   });
-  const dashboardNotificationFunctions: DashboardNotificationFunctions = {
+  const dashboardNotificationFunctions: NotificationFunctions = {
     updateTitle,
     updateDescription,
     updateStatus,

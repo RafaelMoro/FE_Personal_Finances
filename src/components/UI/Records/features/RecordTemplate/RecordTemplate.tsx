@@ -33,8 +33,8 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { useRecords } from '../../../../../hooks/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 
-const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
-  const { handleSubmitExpense, handleSubmitIncome } = useRecords();
+const RecordTemplate = ({ edit = false, notificationFunctions }: RecordTemplateProps) => {
+  const { handleSubmitExpense, handleSubmitIncome } = useRecords({ notificationFunctions });
   const {
     modal: indebtedPersonModal,
     openModal,

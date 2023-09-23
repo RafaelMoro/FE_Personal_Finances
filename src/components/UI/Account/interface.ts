@@ -1,6 +1,6 @@
 import { ModalAction } from '../../../aliasType';
 import { Account } from '../../../globalInterface';
-import { DashboardNotificationFunctions } from '../../../pages/Dashboard/interface';
+import { NotificationFunctions } from '../../../pages/Dashboard/interface';
 import { IBackgroundColors, ITextColors } from '../../../styles/interface';
 
 export interface AccountUI extends Omit<Account, 'amount' | 'backgroundColor' | 'color'> {
@@ -30,7 +30,7 @@ export interface IAccountDynamicStylesProps {
 export interface AccountDialogProps {
   open: boolean;
   onClose: () => void;
-  dashboardNotificationFunctions: DashboardNotificationFunctions;
+  dashboardNotificationFunctions: NotificationFunctions;
   accountAction: ModalAction;
   account: Account | null;
 }

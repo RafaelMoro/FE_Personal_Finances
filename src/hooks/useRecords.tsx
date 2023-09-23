@@ -13,8 +13,20 @@ import { accountsAtom, allRecordsAtom, userAtom } from '../atoms';
 import { useDate } from './useDate';
 import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../components/UI/Account/constants';
+import { NotificationFunctions } from '../pages/Dashboard/interface';
+import { SystemStateEnum } from '../enums';
 
-const useRecords = () => {
+interface UseRecordsProps {
+  notificationFunctions: NotificationFunctions;
+}
+
+const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
+  const {
+    updateTitle,
+    updateDescription,
+    updateStatus,
+    toggleShowNotification,
+  } = notificationFunctions;
   const navigate = useNavigate();
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const [user] = useAtom(userAtom);
@@ -39,6 +51,18 @@ const useRecords = () => {
     return 'Account updated';
   };
 
+  const showErrorNotification = (errorMessage: string) => {
+    updateTitle('Create Record: Error');
+    updateDescription('Oops! An error ocurred. Try again later.');
+    updateStatus(SystemStateEnum.Error);
+    toggleShowNotification();
+    console.error(`Error while submitting create record: ${errorMessage}`);
+    // Navigate to dashboard
+    setTimeout(() => {
+      navigate(DASHBOARD_ROUTE);
+    }, 3000);
+  };
+
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
     const { account: accountId, amount } = values;
     const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_EXPENSE_ROUTE, bearerToken);
@@ -46,16 +70,14 @@ const useRecords = () => {
     // If an error is catched:
     if (createExpenseInfo?.message) {
       // Show notification error
-      console.error(`There is an error: ${createExpenseInfo?.message}`);
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
+      showErrorNotification(`There is an error: ${createExpenseInfo?.message}`);
       return;
     }
 
     const updateAmount = await updateAmountAccount(accountId, amount, true);
     if (updateAmount.includes('Error')) {
       // show notification error
-      console.error(updateAmount);
+      showErrorNotification(`Updating amount error: ${updateAmount}`);
       return;
     }
 
@@ -96,16 +118,14 @@ const useRecords = () => {
     // If an error is catched:
     if (createIncomeInfo?.message) {
       // Show notification error
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
+      showErrorNotification(`There is an error: ${createIncomeInfo?.message}`);
       return;
     }
 
     const updateAmount = await updateAmountAccount(accountId, amount, false);
     if (updateAmount.includes('Error')) {
       // show notification error
-      console.error(updateAmount);
+      showErrorNotification(`Updating amount error: ${updateAmount}`);
       return;
     }
 

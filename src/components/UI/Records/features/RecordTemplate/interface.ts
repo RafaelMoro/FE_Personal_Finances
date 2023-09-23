@@ -1,5 +1,8 @@
+import { NotificationFunctions } from '../../../../../pages/Dashboard/interface';
+
 export interface RecordTemplateProps {
   edit?: boolean;
+  notificationFunctions: NotificationFunctions;
 }
 
 export interface AdditionalData {
