@@ -13,7 +13,7 @@ interface MonthAccordeonProps {
   backgroundColor: string;
   color: string;
   accountId: string;
-  onClickCallback?: () => void;
+  onClickCallback?: () => Promise<void> | void;
 }
 
 const MonthAccordeon = ({

@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-console */
 import { useEffect, useState } from 'react';
-import { Divider } from '@mui/material';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
@@ -16,16 +15,14 @@ import { GetRequest } from '../../../../utils';
 import { IncomeAndExpensesResponse } from '../interface';
 import { AppColors } from '../../../../styles';
 import { List } from '../Records.styled';
-import { Record } from '../Record';
 import { ErrorResponse } from '../../../../aliasType';
-import { MonthAccordeon } from './MonthAccordeon';
 import { useDate } from '../../../../hooks/useDate';
 import { NETWORK_CATCH_ERROR } from '../../../../constants';
 import { NoRecordsFound } from './NoRecordsFound';
 import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../globalInterface';
-import { ShowRecords } from './ShowRecords';
 import { ShowMultipleRecordLoader } from './ShowMultipleRecordLoaders';
+import { MonthRecords } from './MonthRecords';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -119,88 +116,37 @@ const RecordList = () => {
 
   return (
     <List>
-      <MonthAccordeon
+      <MonthRecords
         backgroundColor={backgroundColor}
         color={color}
-        opened
-        title={`Current month: ${completeCurrentMonth}`}
+        openedAccordeon
+        titleMonthAccordeon={`Current month: ${completeCurrentMonth}`}
         accountId={accountId}
-      >
-        <ShowRecords
-          records={allRecords.currentMonth}
-          loading={loadingCurrentMonthRecords}
-          error={error !== 'No error'}
-          onEmptyRecords={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
-          onErrorRecords={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
-          onLoadingRecords={() => (
-            <ShowMultipleRecordLoader numberOfSkeletons={3} />
-          )}
-          renderRecords={
-            (record: AnyRecord, index: number) => (
-              <div key={record._id}>
-                { (index === 0) && (<Divider />) }
-                <Record
-                  _id={record._id}
-                  shortName={record.shortName}
-                  description={record.description}
-                  category={record.category}
-                  subCategory={record.subCategory}
-                  tag={record.tag}
-                  indebtedPeople={record.indebtedPeople}
-                  budgets={record.budgets}
-                  fullDate={record.fullDate}
-                  formattedTime={record.formattedTime}
-                  amount={record.amount}
-                  isPaid={record.isPaid}
-                  expensesPaid={record.expensesPaid}
-                />
-                <Divider />
-              </div>
-            )
-          }
-        />
-      </MonthAccordeon>
-      <MonthAccordeon
+        records={allRecords.currentMonth}
+        loading={loadingCurrentMonthRecords}
+        error={error !== 'No error'}
+        onEmptyCb={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
+        onLoadingCb={() => (
+          <ShowMultipleRecordLoader numberOfSkeletons={3} />
+        )}
+      />
+      <MonthRecords
         backgroundColor={backgroundColor}
         color={color}
-        title={`Last month: ${completeLastMonth}`}
-        onClickCallback={handleFetchLastMonthRecords}
+        openedAccordeon={false}
+        titleMonthAccordeon={`Last month: ${completeLastMonth}`}
+        onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
-      >
-        <ShowRecords
-          records={allRecords.lastMonth}
-          loading={loadingLastMonthRecords}
-          error={errorLastMonthRecords}
-          onEmptyRecords={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
-          onErrorRecords={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
-          onLoadingRecords={() => (
-            <ShowMultipleRecordLoader numberOfSkeletons={3} />
-          )}
-          renderRecords={
-            (record: AnyRecord, index: number) => (
-              <div key={record._id}>
-                { (index === 0) && (<Divider />) }
-                <Record
-                  _id={record._id}
-                  shortName={record.shortName}
-                  description={record.description}
-                  category={record.category}
-                  subCategory={record.subCategory}
-                  tag={record.tag}
-                  indebtedPeople={record.indebtedPeople}
-                  budgets={record.budgets}
-                  fullDate={record.fullDate}
-                  formattedTime={record.formattedTime}
-                  amount={record.amount}
-                  isPaid={record.isPaid}
-                  expensesPaid={record.expensesPaid}
-                />
-                <Divider />
-              </div>
-            )
-          }
-        />
-      </MonthAccordeon>
+        records={allRecords.lastMonth}
+        loading={loadingLastMonthRecords}
+        error={errorLastMonthRecords}
+        onEmptyCb={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
+        onLoadingCb={() => (
+          <ShowMultipleRecordLoader numberOfSkeletons={3} />
+        )}
+      />
     </List>
   );
 };
