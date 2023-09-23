@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ReactElement } from 'react';
 import { Divider } from '@mui/material';
 import { AnyRecord } from '../../../../../globalInterface';
 import { MonthAccordeon } from '../MonthAccordeon';
@@ -15,9 +15,9 @@ interface MonthRecordsProps {
   records: AnyRecord[];
   loading: boolean;
   error: boolean;
-  onEmptyCb: () => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-  onErrorCb: () => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
-  onLoadingCb: () => React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  onEmptyCb: () => ReactElement;
+  onErrorCb: () => ReactElement;
+  onLoadingCb: () => ReactElement;
 }
 
 const MonthRecords = ({
