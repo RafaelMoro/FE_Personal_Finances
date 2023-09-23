@@ -2,20 +2,20 @@ import { useEffect, useState, useMemo } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
-import { userAtom } from '../../../../atoms';
-import { Loader } from '../../../../animations/Loader';
-import { ErrorParagraphValidation, Paragraph } from '../../../../styles';
-import { SelectInput } from '../../SelectInput';
-import { Notification } from '../../Notification';
+import { userAtom } from '../../../../../atoms';
+import { Loader } from '../../../../../animations/Loader';
+import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
+import { SelectInput } from '../../../SelectInput';
+import { Notification } from '../../../Notification';
 
-import { CategoriesResponse } from '../interface';
-import { Category } from '../../../../globalInterface';
-import { SystemStateEnum } from '../../../../enums';
-import { GET_CATEGORIES } from '../constants';
-import { GetRequest } from '../../../../utils';
-import { CATEGORIES_RECORDS } from '../../../../constants';
-import { useNotification } from '../../../../hooks/useNotification';
-import { LoadingCategoriesContainer, RecordLoaderContainer } from '../Records.styled';
+import { CategoriesResponse } from '../../interface';
+import { Category } from '../../../../../globalInterface';
+import { SystemStateEnum } from '../../../../../enums';
+import { GET_CATEGORIES } from '../../constants';
+import { GetRequest } from '../../../../../utils';
+import { CATEGORIES_RECORDS } from '../../../../../constants';
+import { useNotification } from '../../../../../hooks/useNotification';
+import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 
 const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
 const NOTIFICATION_STATUS = SystemStateEnum.Error;
