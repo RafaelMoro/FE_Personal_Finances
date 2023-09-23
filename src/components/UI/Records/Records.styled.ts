@@ -182,6 +182,14 @@ export const List = styled(ListMUI)`
   gap: 2rem;
 `;
 
+export const MonthRecordBox = styled.div`
+  height: 100%;
+  max-height: 80rem;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y proximity;
+`;
+
 // Categories and subcategories
 
 export const RecordLoaderContainer = styled.div`

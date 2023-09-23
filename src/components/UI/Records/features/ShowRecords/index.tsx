@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { AnyRecord } from '../../../../../globalInterface';
+import { MonthRecordBox } from '../../Records.styled';
 
 interface ShowRecordsProps {
   records: AnyRecord[];
@@ -18,7 +19,11 @@ const ShowRecords = ({
     { (loading) && onLoadingRecords() }
     { (error) && onErrorRecords() }
     { (!loading && !error && records.length === 0) && onEmptyRecords() }
-    { (!loading && !error && records.length > 0) && records.map(renderRecords) }
+    { (!loading && !error && records.length > 0) && (
+      <MonthRecordBox>
+        { records.map(renderRecords) }
+      </MonthRecordBox>
+    ) }
   </>
 );
 
