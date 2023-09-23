@@ -128,7 +128,7 @@ const RecordList = () => {
         onEmptyCb={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
-          <ShowMultipleRecordLoader numberOfSkeletons={3} />
+          <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="current-month" />
         )}
       />
       <MonthRecords
@@ -144,7 +144,7 @@ const RecordList = () => {
         onEmptyCb={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (
-          <ShowMultipleRecordLoader numberOfSkeletons={3} />
+          <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="last-month" />
         )}
       />
     </List>

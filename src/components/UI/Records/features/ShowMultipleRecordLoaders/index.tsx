@@ -2,9 +2,10 @@ import { RecordLoading } from '../RecordLoading';
 
 interface ShowMultipleRecordLoaderProps {
   numberOfSkeletons: number;
+  keyMap: string;
 }
 
-const ShowMultipleRecordLoader = ({ numberOfSkeletons = 1 }: ShowMultipleRecordLoaderProps) => {
+const ShowMultipleRecordLoader = ({ keyMap, numberOfSkeletons = 1 }: ShowMultipleRecordLoaderProps) => {
   const skeletons = [RecordLoading];
 
   if (numberOfSkeletons > 1) {
@@ -15,7 +16,7 @@ const ShowMultipleRecordLoader = ({ numberOfSkeletons = 1 }: ShowMultipleRecordL
 
   return (
     <>
-      { skeletons.map((Skeleton) => <Skeleton key={numberOfSkeletons + 1} />) }
+      { skeletons.map((Skeleton, index) => <Skeleton key={`${keyMap}-${index + 1}`} />) }
     </>
   );
 };
