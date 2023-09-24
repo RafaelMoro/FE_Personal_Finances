@@ -126,9 +126,22 @@ export const RecordSkeletonHolder = styled.div`
 export const RecordDrawerContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 1rem;
+  padding: 2rem;
   justify-content: center;
   gap: 1rem;
+`;
+
+export const DrawerTitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  grid-column: 1 / 3;
+`;
+
+export const DrawerCloseBox = styled.div`
+  cursor: pointer;
+  grid-column: 2 / 3;
+  justify-self: end;
 `;
 
 export const RecordDrawerTitle = styled(ParagraphTitle)`

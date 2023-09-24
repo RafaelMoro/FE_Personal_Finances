@@ -23,7 +23,7 @@ const Record = ({
   formattedTime, fullDate, isPaid, amount, expensesPaid = [],
 }: RecordProps) => {
   const [windowSize] = useAtom(windowSizeAtom);
-  const [shortViewState, setShortViewState] = useState(true);
+  const [openLongView, setOpenLongView] = useState(false);
   const [shortedName, setShortedName] = useState('');
   const [shortedDescription, setShortedDescription] = useState('');
   const firstTwoBudgets = budgets.slice(0, 2);
@@ -53,7 +53,8 @@ const Record = ({
     }
   }, [nameIsLong, shortName]);
 
-  const toggleShortView = () => setShortViewState(!shortViewState);
+  const showLongView = () => setOpenLongView(true);
+  const hideLongView = () => setOpenLongView(false);
 
   const amountShownMobile = isExpense
     ? (
@@ -89,113 +90,49 @@ const Record = ({
 
   if (windowSize !== 'Mobile') {
     return (
-      <ListItem button onClick={toggleShortView}>
-        <RecordContainer>
-          <ParagraphTitle>{ shortName }</ParagraphTitle>
-          <RecordDateTime>{ fullDate }</RecordDateTime>
-          <RecordDateTime>{ formattedTime }</RecordDateTime>
-          { amountShown }
-          <RecordCategory>{ category.categoryName }</RecordCategory>
-          <RecordSubCategory>{ subCategory }</RecordSubCategory>
-          <Paragraph>{ description }</Paragraph>
-          <ChipContainer>
-            { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
-            { budgets.length > 0 && budgets.map((budget) => (
-              <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
-            ))}
-          </ChipContainer>
-          <ChipContainer>
-            { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
-            { tag.length > 0 && tag.map((item) => (
-              <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
-            ))}
-          </ChipContainer>
-          { (indebtedPeople.length > 0 && shortViewState) && (
-          <RecordText>
-            People involved:
-            {' '}
-            {
+      <>
+        <ListItem button onClick={showLongView}>
+          <RecordContainer>
+            <ParagraphTitle>{ shortName }</ParagraphTitle>
+            <RecordDateTime>{ fullDate }</RecordDateTime>
+            <RecordDateTime>{ formattedTime }</RecordDateTime>
+            { amountShown }
+            <RecordCategory>{ category.categoryName }</RecordCategory>
+            <RecordSubCategory>{ subCategory }</RecordSubCategory>
+            <Paragraph>{ description }</Paragraph>
+            <ChipContainer>
+              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+              { budgets.length > 0 && budgets.map((budget) => (
+                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
+              ))}
+            </ChipContainer>
+            <ChipContainer>
+              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+              { tag.length > 0 && tag.map((item) => (
+                <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
+              ))}
+            </ChipContainer>
+            { (indebtedPeople.length > 0 && !openLongView) && (
+            <RecordText>
+              People involved:
+              {' '}
+              {
               indebtedPeopleNames.map((personName) => (personName))
             }
-          </RecordText>
-          ) }
-          { (!isExpense && expensesPaid.length > 0 && shortViewState) && (
+            </RecordText>
+            ) }
+            { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
             <RecordText>
               Records Paid:
               {' '}
               { expensesPaid.length }
             </RecordText>
-          ) }
-          <Drawer anchor="right" open={!shortViewState} onClose={toggleShortView}>
-            <RecordDrawer
-              shortName={shortName}
-              description={description}
-              fullDate={fullDate}
-              formattedTime={formattedTime}
-              category={category}
-              subCategory={subCategory}
-              indebtedPeople={indebtedPeople}
-              tag={tag}
-              budgets={budgets}
-              amountShown={amountShown}
-              expensesPaid={expensesPaid}
-            />
-          </Drawer>
-        </RecordContainer>
-      </ListItem>
-    );
-  }
-
-  return (
-    <ListItem button onClick={toggleShortView}>
-      <RecordContainerMobile>
-        <RecordTitleMobile>{ (nameIsLong) ? shortedName : shortName }</RecordTitleMobile>
-        <FlexContainer justifyContent="center" gap="1">
-          <RecordDateTime>{ fullDate }</RecordDateTime>
-          <RecordDateTime>{ formattedTime }</RecordDateTime>
-          <RecordText>{ category.categoryName }</RecordText>
-          <RecordText>{ subCategory }</RecordText>
-        </FlexContainer>
-        <FlexContainer justifyContent="center" gap="1">
-          <ChipContainerMobile>
-            { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
-            { budgets.length > 0 && firstTwoBudgets.map((budget) => (
-              <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
-            ))}
-            { budgets.length > 2 && (
-            <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" color="primary" />
             ) }
-          </ChipContainerMobile>
-          <ChipContainerMobile>
-            { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
-            { tag.length > 0 && firstTwoTags.map((item) => (
-              <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
-            ))}
-            { tag.length > 2 && (
-            <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" color="primary" />
-            ) }
-          </ChipContainerMobile>
-        </FlexContainer>
-        { amountShownMobile }
-        <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
-        { (indebtedPeople.length > 0 && shortViewState) && (
-          <RecordText>
-            People involved:
-            {' '}
-            {
-              indebtedPeopleNames.map((personName) => (personName))
-            }
-          </RecordText>
-        ) }
-        { (!isExpense && expensesPaid.length > 0 && shortViewState) && (
-        <RecordText>
-          Records Paid:
-          {' '}
-          { expensesPaid.length }
-        </RecordText>
-        ) }
-        <Drawer anchor="bottom" open={!shortViewState} onClose={toggleShortView}>
+          </RecordContainer>
+        </ListItem>
+        <Drawer variant="persistent" anchor="right" open={openLongView}>
           <RecordDrawer
+            onCloseCb={hideLongView}
             shortName={shortName}
             description={description}
             fullDate={fullDate}
@@ -205,12 +142,82 @@ const Record = ({
             indebtedPeople={indebtedPeople}
             tag={tag}
             budgets={budgets}
-            amountShown={amountShownMobile}
+            amountShown={amountShown}
             expensesPaid={expensesPaid}
           />
         </Drawer>
-      </RecordContainerMobile>
-    </ListItem>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <ListItem button onClick={showLongView}>
+        <RecordContainerMobile>
+          <RecordTitleMobile>{ (nameIsLong) ? shortedName : shortName }</RecordTitleMobile>
+          <FlexContainer justifyContent="center" gap="1">
+            <RecordDateTime>{ fullDate }</RecordDateTime>
+            <RecordDateTime>{ formattedTime }</RecordDateTime>
+            <RecordText>{ category.categoryName }</RecordText>
+            <RecordText>{ subCategory }</RecordText>
+          </FlexContainer>
+          <FlexContainer justifyContent="center" gap="1">
+            <ChipContainerMobile>
+              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+              { budgets.length > 0 && firstTwoBudgets.map((budget) => (
+                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
+              ))}
+              { budgets.length > 2 && (
+              <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" color="primary" />
+              ) }
+            </ChipContainerMobile>
+            <ChipContainerMobile>
+              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+              { tag.length > 0 && firstTwoTags.map((item) => (
+                <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
+              ))}
+              { tag.length > 2 && (
+              <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" color="primary" />
+              ) }
+            </ChipContainerMobile>
+          </FlexContainer>
+          { amountShownMobile }
+          <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
+          { (indebtedPeople.length > 0 && !openLongView) && (
+            <RecordText>
+              People involved:
+              {' '}
+              {
+                indebtedPeopleNames.map((personName) => (personName))
+              }
+            </RecordText>
+          ) }
+          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+          <RecordText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordText>
+          ) }
+        </RecordContainerMobile>
+      </ListItem>
+      <Drawer variant="persistent" anchor="bottom" open={openLongView}>
+        <RecordDrawer
+          onCloseCb={hideLongView}
+          shortName={shortName}
+          description={description}
+          fullDate={fullDate}
+          formattedTime={formattedTime}
+          category={category}
+          subCategory={subCategory}
+          indebtedPeople={indebtedPeople}
+          tag={tag}
+          budgets={budgets}
+          amountShown={amountShownMobile}
+          expensesPaid={expensesPaid}
+        />
+      </Drawer>
+    </>
   );
 };
 

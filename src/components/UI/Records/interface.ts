@@ -23,6 +23,7 @@ export interface RecordListProps {
 export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'account' | '_id' | 'date'> {
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
+  onCloseCb?: () => void;
 }
 
 export interface IncomeAndExpensesResponse {

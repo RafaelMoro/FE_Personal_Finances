@@ -18,11 +18,11 @@ import { List } from '../../Records.styled';
 import { ErrorResponse } from '../../../../../aliasType';
 import { useDate } from '../../../../../hooks/useDate';
 import { NETWORK_CATCH_ERROR } from '../../../../../constants';
-import { NoRecordsFound } from '.././NoRecordsFound';
+import { NoRecordsFound } from '../NoRecordsFound';
 import { getRecordsByMonthAndYear } from '../../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../../globalInterface';
-import { ShowMultipleRecordLoader } from '.././ShowMultipleRecordLoaders';
-import { MonthRecords } from '.././MonthRecords';
+import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
+import { MonthRecords } from '../MonthRecords';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
