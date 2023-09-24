@@ -17,7 +17,8 @@ import { ShowExpenses } from '../ShowExpenses';
 
 const RecordDrawer = ({
   shortName, description, fullDate, formattedTime, expensesPaid,
-  category, subCategory, tag, indebtedPeople, budgets, amountShown, onCloseCb = () => {},
+  category, subCategory, tag, indebtedPeople, budgets, amountShown,
+  onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => (
   <RecordDrawerContainer>
     <DrawerCloseBox>
@@ -30,7 +31,7 @@ const RecordDrawer = ({
       <IconButton onClick={() => {}}>
         <EditIcon />
       </IconButton>
-      <IconButton onClick={() => {}}>
+      <IconButton onClick={openDeleteRecordModal}>
         <DeleteIcon />
       </IconButton>
     </DrawerTitleContainer>
@@ -55,10 +56,10 @@ const RecordDrawer = ({
     </DrawerChipContainer>
     <RecordDrawerDescription>{description}</RecordDrawerDescription>
     { (indebtedPeople.length > 0) && (
-    <ShowIndebtedPeople indebtedPeople={indebtedPeople} inRecordDrawer />
+      <ShowIndebtedPeople indebtedPeople={indebtedPeople} inRecordDrawer />
     ) }
     { (expensesPaid.length > 0) && (
-    <ShowExpenses expenses={expensesPaid} isGrid />
+      <ShowExpenses expenses={expensesPaid} isGrid />
     ) }
   </RecordDrawerContainer>
 );

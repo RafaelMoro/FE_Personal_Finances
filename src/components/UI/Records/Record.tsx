@@ -16,6 +16,7 @@ import {
 import {
   Chip, ParagraphTitle, Paragraph, FlexContainer,
 } from '../../../styles';
+import { DeleteRecordModal } from './features/DeleteRecordModal';
 
 const Record = ({
   _id, shortName, description, category, subCategory, tag = [],
@@ -28,6 +29,10 @@ const Record = ({
   const [shortedDescription, setShortedDescription] = useState('');
   const firstTwoBudgets = budgets.slice(0, 2);
   const firstTwoTags = tag.slice(0, 2);
+
+  const [openDeleteRecordModal, setOpenDeleteRecordModal] = useState(false);
+  const showDeleteRecordModal = () => setOpenDeleteRecordModal(true);
+  const hideDeleteRecordModal = () => setOpenDeleteRecordModal(false);
 
   const descriptionIsLong = description.length > 50;
   const nameIsLong = shortName.length > 80;
@@ -144,8 +149,10 @@ const Record = ({
             budgets={budgets}
             amountShown={amountShown}
             expensesPaid={expensesPaid}
+            openDeleteRecordModal={showDeleteRecordModal}
           />
         </Drawer>
+        <DeleteRecordModal open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
       </>
     );
   }

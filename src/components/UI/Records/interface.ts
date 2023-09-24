@@ -24,6 +24,7 @@ export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'accou
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
   onCloseCb?: () => void;
+  openDeleteRecordModal?: () => void;
 }
 
 export interface IncomeAndExpensesResponse {
