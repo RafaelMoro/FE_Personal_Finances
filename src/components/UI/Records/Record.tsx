@@ -152,7 +152,7 @@ const Record = ({
             openDeleteRecordModal={showDeleteRecordModal}
           />
         </Drawer>
-        <DeleteRecordModal open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+        <DeleteRecordModal recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
       </>
     );
   }
