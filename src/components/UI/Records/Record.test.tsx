@@ -85,21 +85,25 @@ const records: AnyRecord[] = [
 describe('<Records />', () => {
   test('Render expense in Mobile', () => {
     const expense = records[0];
-    render(<Record
-      _id={expense._id}
-      shortName={expense.shortName}
-      description={expense.description}
-      category={expense.category}
-      subCategory={expense.subCategory}
-      tag={expense.tag}
-      indebtedPeople={expense.indebtedPeople}
-      budgets={expense.budgets}
-      fullDate={expense.fullDate}
-      formattedTime={expense.formattedTime}
-      amount={expense.amount}
-      isPaid={expense.isPaid}
-      expensesPaid={expense.expensesPaid}
-    />);
+    render(
+      <Record
+        _id={expense._id}
+        shortName={expense.shortName}
+        description={expense.description}
+        category={expense.category}
+        subCategory={expense.subCategory}
+        tag={expense.tag}
+        indebtedPeople={expense.indebtedPeople}
+        budgets={expense.budgets}
+        fullDate={expense.fullDate}
+        formattedTime={expense.formattedTime}
+        amount={expense.amount}
+        isPaid={expense.isPaid}
+        expensesPaid={expense.expensesPaid}
+        date={expense.date}
+        account={expense.account}
+      />,
+    );
 
     expect(screen.getByText(/casa a solesta gym/i)).toBeInTheDocument();
     expect(screen.getByText(/esta es una descripcion muy larga para darme una i.../i)).toBeInTheDocument();
@@ -114,21 +118,25 @@ describe('<Records />', () => {
 
   test('Render income in Mobile', () => {
     const income = records[1];
-    render(<Record
-      _id={income._id}
-      shortName={income.shortName}
-      description={income.description}
-      category={income.category}
-      subCategory={income.subCategory}
-      tag={income.tag}
-      indebtedPeople={income.indebtedPeople}
-      budgets={income.budgets}
-      fullDate={income.fullDate}
-      formattedTime={income.formattedTime}
-      amount={income.amount}
-      isPaid={income.isPaid}
-      expensesPaid={income.expensesPaid}
-    />);
+    render(
+      <Record
+        _id={income._id}
+        shortName={income.shortName}
+        description={income.description}
+        category={income.category}
+        subCategory={income.subCategory}
+        tag={income.tag}
+        indebtedPeople={income.indebtedPeople}
+        budgets={income.budgets}
+        fullDate={income.fullDate}
+        formattedTime={income.formattedTime}
+        amount={income.amount}
+        isPaid={income.isPaid}
+        expensesPaid={income.expensesPaid}
+        date={income.date}
+        account={income.account}
+      />,
+    );
 
     expect(screen.getByText(/solesta gym a casa/i)).toBeInTheDocument();
     expect(screen.getByText(/didi para ir a casa/i)).toBeInTheDocument();

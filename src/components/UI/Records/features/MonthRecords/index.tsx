@@ -58,6 +58,8 @@ const MonthRecords = ({
                 amount={record.amount}
                 isPaid={record.isPaid}
                 expensesPaid={record.expensesPaid}
+                date={record.date}
+                account={record.account}
               />
               <Divider />
             </div>

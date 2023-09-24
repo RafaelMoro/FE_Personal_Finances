@@ -7,20 +7,34 @@ import { formatDateToString, postRequestWithBearer } from '../utils';
 import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import {
-  CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse,
+  CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
 } from '../components/UI/Records/interface';
-import { accountsAtom, allRecordsAtom, userAtom } from '../atoms';
+import {
+  allRecordsAtom, selectedAccountAtom, userAtom,
+} from '../atoms';
 import { useDate } from './useDate';
 import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../components/UI/Account/constants';
 import { NotificationFunctions } from '../pages/Dashboard/interface';
 import { SystemStateEnum } from '../enums';
+import { AnyRecord } from '../globalInterface';
 
 interface UseRecordsProps {
   notificationFunctions: NotificationFunctions;
+  recordToBeDeleted?: AnyRecord;
+  deleteRecordExpense?: boolean;
+  closeDeleteRecordModalCb?: () => void;
 }
 
-const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
+interface UpdateAmountAccountProps {
+  amount: string;
+  isExpense: boolean;
+  deleteRecord?: boolean;
+}
+
+const useRecords = ({
+  notificationFunctions, recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {},
+}: UseRecordsProps) => {
   const {
     updateTitle,
     updateDescription,
@@ -30,18 +44,26 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
   const navigate = useNavigate();
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const [user] = useAtom(userAtom);
-  const [accounts] = useAtom(accountsAtom);
+  const [selectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const currentMonthRecords = allRecords?.currentMonth;
   const { month: currentMonth, lastMonth } = useDate();
 
-  const updateAmountAccount = async (accountId: string, amount: string, isExpense: boolean) => {
+  const updateAmountAccount = async ({
+    amount, isExpense, deleteRecord = false,
+  }: UpdateAmountAccountProps) => {
     const amountToNumber = Number(amount.slice(1, amount.length));
-    const accountFound = accounts?.find((account) => account._id === accountId);
-    const amountToUpdate = accountFound?.amount as number;
-    const payload = isExpense
+    const amountToUpdate = selectedAccount?.amount as number;
+    const accountId = selectedAccount?._id as string;
+
+    const payloadDeleteRecord = (isExpense)
+      ? { accountId, amount: amountToUpdate + amountToNumber }
+      : { accountId, amount: amountToUpdate - amountToNumber };
+    const payloadCreateRecord = isExpense
       ? { accountId, amount: amountToUpdate - amountToNumber }
       : { accountId, amount: amountToUpdate + amountToNumber };
+    const payload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
+
     const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
 
     if (updateAccountResponse?.error) {
@@ -64,7 +86,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
   };
 
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
-    const { account: accountId, amount } = values;
+    const { amount } = values;
     const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -74,7 +96,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
       return;
     }
 
-    const updateAmount = await updateAmountAccount(accountId, amount, true);
+    const updateAmount = await updateAmountAccount({ amount, isExpense: true });
     if (updateAmount.includes('Error')) {
       // show notification error
       showErrorNotification(`Updating amount error: ${updateAmount}`);
@@ -112,7 +134,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
   };
 
   const handleSubmitIncome = async (values: CreateIncomeValues) => {
-    const { account: accountId, amount } = values;
+    const { amount } = values;
     const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -122,7 +144,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
       return;
     }
 
-    const updateAmount = await updateAmountAccount(accountId, amount, false);
+    const updateAmount = await updateAmountAccount({ amount, isExpense: false });
     if (updateAmount.includes('Error')) {
       // show notification error
       showErrorNotification(`Updating amount error: ${updateAmount}`);
@@ -160,9 +182,44 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
     navigate(DASHBOARD_ROUTE);
   };
 
+  const deleteRecord = async () => {
+    const amountOfRecord = recordToBeDeleted?.amount as string;
+    const recordId = recordToBeDeleted?._id as string;
+    const valuesDeleteRecord = { recordId };
+    const route = deleteRecordExpense ? POST_DELETE_EXPENSE_ROUTE : POST_DELETE_INCOME_ROUTE;
+    console.log('selectedAccount', selectedAccount);
+    const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
+      valuesDeleteRecord,
+      route,
+      'delete',
+      bearerToken,
+    );
+
+    if (responseDeleteRecord.error) {
+      // mostrar notification
+      // eslint-disable-next-line no-console
+      console.error(`Error deleting expense: ${responseDeleteRecord.error} ${responseDeleteRecord.message}`);
+      return;
+    }
+
+    // Update Amount of the account.
+    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: false });
+    if (updateAmount.includes('Error')) {
+      // show notification error
+      // showErrorNotification(`Updating amount error: ${updateAmount}`);
+      console.error(`Error updating amount: ${updateAmount}`);
+      return;
+    }
+
+    // Cerrar Drawer
+    // Refetch data
+    closeDeleteRecordModalCb();
+  };
+
   return {
     handleSubmitExpense,
     handleSubmitIncome,
+    deleteRecord,
   };
 };
 

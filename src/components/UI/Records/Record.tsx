@@ -5,7 +5,6 @@ import {
 } from '@mui/material';
 
 import { windowSizeAtom } from '../../../atoms';
-import { RecordProps } from './interface';
 import { RecordDrawer } from './features/RecordDrawer';
 import {
   RecordContainer, RecordDateTime, RecordContainerMobile,
@@ -17,12 +16,15 @@ import {
   Chip, ParagraphTitle, Paragraph, FlexContainer,
 } from '../../../styles';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
+import { AnyRecord } from '../../../globalInterface';
 
-const Record = ({
-  _id, shortName, description, category, subCategory, tag = [],
-  indebtedPeople = [], budgets = [],
-  formattedTime, fullDate, isPaid, amount, expensesPaid = [],
-}: RecordProps) => {
+const Record = (record: AnyRecord) => {
+  const {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    _id, shortName, description, category, subCategory, tag = [],
+    indebtedPeople = [], budgets = [],
+    formattedTime, fullDate, isPaid, amount, expensesPaid = [],
+  } = record;
   const [windowSize] = useAtom(windowSizeAtom);
   const [openLongView, setOpenLongView] = useState(false);
   const [shortedName, setShortedName] = useState('');
@@ -152,7 +154,7 @@ const Record = ({
             openDeleteRecordModal={showDeleteRecordModal}
           />
         </Drawer>
-        <DeleteRecordModal recordId={_id} isExpense={isExpense} recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+        <DeleteRecordModal record={record} isExpense={isExpense} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
       </>
     );
   }
@@ -225,7 +227,7 @@ const Record = ({
           openDeleteRecordModal={showDeleteRecordModal}
         />
       </Drawer>
-      <DeleteRecordModal recordId={_id} isExpense={isExpense} recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+      <DeleteRecordModal record={record} isExpense={isExpense} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
     </>
   );
 };

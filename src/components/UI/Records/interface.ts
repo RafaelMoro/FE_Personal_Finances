@@ -11,11 +11,6 @@ export interface RecordTableProps {
   isGrid?: boolean;
 }
 
-export interface RecordProps extends Omit<AccountRecord, 'account' | 'date'> {
-  isPaid?: boolean;
-  expensesPaid?: ExpensePaid[];
-}
-
 export interface RecordListProps {
   records: AnyRecord [];
 }
@@ -65,6 +60,13 @@ export interface CreateExpenseResponse extends AnyRecord {
 
 export interface CreateIncomeResponse extends AnyRecord {
   message?: string;
+}
+
+// Same response for income and expense
+export interface DeleteRecordResponse {
+  message: string | null;
+  error: null | string;
+  deleteRecordSuccess: boolean;
 }
 
 // Select Month and year on select expense
