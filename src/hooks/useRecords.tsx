@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
 import { formatDateToString, postRequestWithBearer } from '../utils';
-import { POST_EXPENSE_ROUTE, POST_INCOME_ROUTE } from '../components/UI/Records/constants';
+import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import {
   CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse,
@@ -65,7 +65,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
 
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
     const { account: accountId, amount } = values;
-    const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_EXPENSE_ROUTE, bearerToken);
+    const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
     if (createExpenseInfo?.message) {
@@ -113,7 +113,7 @@ const useRecords = ({ notificationFunctions }: UseRecordsProps) => {
 
   const handleSubmitIncome = async (values: CreateIncomeValues) => {
     const { account: accountId, amount } = values;
-    const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_INCOME_ROUTE, bearerToken);
+    const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
 
     // If an error is catched:
     if (createIncomeInfo?.message) {

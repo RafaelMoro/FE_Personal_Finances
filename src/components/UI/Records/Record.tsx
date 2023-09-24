@@ -152,7 +152,7 @@ const Record = ({
             openDeleteRecordModal={showDeleteRecordModal}
           />
         </Drawer>
-        <DeleteRecordModal recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+        <DeleteRecordModal recordId={_id} isExpense={isExpense} recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
       </>
     );
   }
@@ -222,8 +222,10 @@ const Record = ({
           budgets={budgets}
           amountShown={amountShownMobile}
           expensesPaid={expensesPaid}
+          openDeleteRecordModal={showDeleteRecordModal}
         />
       </Drawer>
+      <DeleteRecordModal recordId={_id} isExpense={isExpense} recordName={shortName} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
     </>
   );
 };
