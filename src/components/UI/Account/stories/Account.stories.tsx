@@ -26,7 +26,8 @@ const accountsMock: IAccountsMock = {
   normalAccount: {
     _id: '1234',
     title: 'BBVA',
-    amount: '$25,000.00',
+    amount: 25000,
+    amountFormatted: '$25,000.00',
     accountType: 'Debit',
     backgroundColor: { name: 'blue', color: 'blue' },
     color: { name: 'white', color: 'white' },
@@ -35,7 +36,8 @@ const accountsMock: IAccountsMock = {
   accountWithBigAmount: {
     _id: '1234',
     title: 'Santander premium',
-    amount: '$25,000,000,000.00',
+    amount: 25000000000,
+    amountFormatted: '$25,000,000,000.00',
     accountType: 'Debit',
     backgroundColor: { name: 'blue', color: 'blue' },
     color: { name: 'white', color: 'white' },
@@ -44,7 +46,8 @@ const accountsMock: IAccountsMock = {
   otherAccount: {
     _id: '1234',
     title: 'HSBC 2now',
-    amount: '$38,000.00',
+    amount: 38000,
+    amountFormatted: '$38,000.00',
     accountType: 'Credit',
     backgroundColor: { name: 'grey', color: 'grey' },
     color: { name: 'white', color: 'white' },
@@ -53,7 +56,8 @@ const accountsMock: IAccountsMock = {
   accountWithBigTitle: {
     _id: '1234',
     title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
-    amount: '$38,000.00',
+    amount: 38000,
+    amountFormatted: '$38,000.00',
     accountType: 'Credit',
     backgroundColor: { name: 'purple', color: 'purple' },
     color: { name: 'white', color: 'white' },
@@ -62,7 +66,8 @@ const accountsMock: IAccountsMock = {
   accountWithDecimal: {
     _id: '1234',
     title: 'Sodexo platinum',
-    amount: '$1,350.78',
+    amount: 1350.78,
+    amountFormatted: '$1,350.78',
     accountType: 'Food Voucher',
     backgroundColor: { name: 'black', color: 'black' },
     color: { name: 'white', color: 'white' },
@@ -71,7 +76,8 @@ const accountsMock: IAccountsMock = {
   accountSelected: {
     _id: '1234',
     title: 'Santander',
-    amount: '$1,350.78',
+    amount: 1350.78,
+    amountFormatted: '$1,350.78',
     accountType: 'Debit',
     backgroundColor: { name: 'red', color: 'red' },
     color: { name: 'white', color: 'white' },

@@ -3,8 +3,8 @@ import { Account } from '../../../globalInterface';
 import { NotificationFunctions } from '../../../pages/Dashboard/interface';
 import { IBackgroundColors, ITextColors } from '../../../styles/interface';
 
-export interface AccountUI extends Omit<Account, 'amount' | 'backgroundColor' | 'color'> {
-  amount: string;
+export interface AccountUI extends Omit<Account, 'backgroundColor' | 'color'> {
+  amountFormatted: string;
   backgroundColor: IBackgroundColors;
   color: ITextColors;
   selected: boolean;

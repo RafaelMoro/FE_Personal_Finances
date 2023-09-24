@@ -16,7 +16,7 @@ export const formatAccounts = ({
       if (account._id === selectedAccountId) {
         return {
           ...account,
-          amount: formatNumberToCurrency(account.amount),
+          amountFormatted: formatNumberToCurrency(account.amount),
           selected: true,
           backgroundColor: findColor({
             colorName: account.backgroundColor,
@@ -28,7 +28,7 @@ export const formatAccounts = ({
       }
       return {
         ...account,
-        amount: formatNumberToCurrency(account.amount),
+        amountFormatted: formatNumberToCurrency(account.amount),
         selected: false,
         backgroundColor: findColor({
           colorName: account.backgroundColor,
@@ -44,7 +44,7 @@ export const formatAccounts = ({
     if (index === 0) {
       return {
         ...account,
-        amount: formatNumberToCurrency(account.amount),
+        amountFormatted: formatNumberToCurrency(account.amount),
         selected: true,
         backgroundColor: findColor({
           colorName: account.backgroundColor,
@@ -57,7 +57,7 @@ export const formatAccounts = ({
 
     return {
       ...account,
-      amount: formatNumberToCurrency(account.amount),
+      amountFormatted: formatNumberToCurrency(account.amount),
       selected: false,
       backgroundColor: findColor({
         colorName: account.backgroundColor,

@@ -14,7 +14,7 @@ const Account = ({
   openDeleteAccountModal,
 }: AccountComponentProps) => {
   const {
-    _id: accountId, title, amount, backgroundColor, color, accountType, selected,
+    _id: accountId, title, backgroundColor, color, accountType, selected, amountFormatted,
   } = account;
 
   return (
@@ -25,7 +25,7 @@ const Account = ({
       onClick={selectAccountOnClick}
     >
       <AccountTitle>{ title }</AccountTitle>
-      <Paragraph>{ amount }</Paragraph>
+      <Paragraph>{ amountFormatted }</Paragraph>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
           <EditIcon fillColor={color.color} />
