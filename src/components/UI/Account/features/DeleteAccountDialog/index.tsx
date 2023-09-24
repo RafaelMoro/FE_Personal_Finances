@@ -15,9 +15,10 @@ import { AccountDialogContainer, DialogParagraph } from './DeleteAccountDialog.s
 import {
   DialogTitle, SecondaryButton, CancelButton,
 } from '../../../../../styles';
+import { useNotification } from '../../../../../hooks/useNotification';
 
 const DeleteAccountDialog = ({
-  open, onClose, accountId, accountName, dashboardNotificationFunctions,
+  open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
@@ -25,12 +26,7 @@ const DeleteAccountDialog = ({
   const [, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
-  const {
-    updateTitle,
-    updateDescription,
-    updateStatus,
-    toggleShowNotification,
-  } = dashboardNotificationFunctions;
+  const { updateGlobalNotification } = useNotification();
 
   const handleSubmit = async () => {
     const valuesSubmitted = { accountId };
@@ -43,11 +39,12 @@ const DeleteAccountDialog = ({
 
     if (responseDeleteAccountRequest?.error || !responseDeleteAccountRequest) {
       // Handle error notification
-      updateTitle('Delete Account: Error');
-      updateDescription('Oops! An error ocurred. Try again later.');
-      updateStatus(SystemStateEnum.Error);
+      updateGlobalNotification({
+        newTitle: 'Delete Account: Error',
+        newDescription: 'Oops! An error ocurred. Try again later.',
+        newStatus: SystemStateEnum.Error,
+      });
       onClose();
-      toggleShowNotification();
       return;
     }
 
@@ -68,10 +65,12 @@ const DeleteAccountDialog = ({
     }
 
     // Show success notification
-    updateTitle(`Account ${accountName} deleted`);
-    updateStatus(SystemStateEnum.Success);
+    updateGlobalNotification({
+      newTitle: `Account ${accountName} deleted`,
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
     onClose();
-    toggleShowNotification();
   };
 
   return (

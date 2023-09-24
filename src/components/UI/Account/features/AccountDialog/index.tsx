@@ -19,6 +19,7 @@ import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../.
 import { Account, TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { formatAccounts } from '../../../../../utils';
+import { useNotification } from '../../../../../hooks/useNotification';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -31,7 +32,6 @@ const initialValuesCreateAccount: CreateAccount = {
 const AccountDialog = ({
   open,
   onClose,
-  dashboardNotificationFunctions,
   accountAction,
   account,
 }: AccountDialogProps) => {
@@ -42,12 +42,7 @@ const AccountDialog = ({
   const [, setAccountsUI] = useAtom(accountsUIAtom);
   const [, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-  const {
-    updateTitle,
-    updateDescription,
-    updateStatus,
-    toggleShowNotification,
-  } = dashboardNotificationFunctions;
+  const { updateGlobalNotification } = useNotification();
   const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
   const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
   const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as Account;
@@ -61,11 +56,12 @@ const AccountDialog = ({
     );
 
     if (responseCreateAccountRequest?.error || !responseCreateAccountRequest) {
-      updateTitle('Create Account: Error');
-      updateDescription('Oops! An error ocurred. Try again later.');
-      updateStatus(SystemStateEnum.Error);
+      updateGlobalNotification({
+        newTitle: 'Create Account: Error',
+        newDescription: 'Oops! An error ocurred. Try again later.',
+        newStatus: SystemStateEnum.Error,
+      });
       onClose();
-      toggleShowNotification();
       return;
     }
 
@@ -85,10 +81,12 @@ const AccountDialog = ({
     }
 
     // Show success notification
-    updateTitle(`Account ${values.title} created`);
-    updateStatus(SystemStateEnum.Success);
+    updateGlobalNotification({
+      newTitle: `Account ${values.title} created`,
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
     onClose();
-    toggleShowNotification();
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,11 +104,12 @@ const AccountDialog = ({
     );
 
     if (responsePutAccountRequest?.error || !responsePutAccountRequest) {
-      updateTitle('Update Account: Error');
-      updateDescription('Oops! An error ocurred. Try again later.');
-      updateStatus(SystemStateEnum.Error);
+      updateGlobalNotification({
+        newTitle: 'Update Account: Error',
+        newDescription: 'Oops! An error ocurred. Try again later.',
+        newStatus: SystemStateEnum.Error,
+      });
       onClose();
-      toggleShowNotification();
       return;
     }
 
@@ -131,10 +130,12 @@ const AccountDialog = ({
     }
 
     // Show success notification
-    updateTitle(`Account ${values.title} updated`);
-    updateStatus(SystemStateEnum.Success);
+    updateGlobalNotification({
+      newTitle: `Account ${values.title} updated`,
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
     onClose();
-    toggleShowNotification();
   };
 
   const handleSubmit = accountAction === 'Create' ? createAccount : modifyAccount;

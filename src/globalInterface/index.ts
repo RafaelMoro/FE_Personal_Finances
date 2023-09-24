@@ -1,4 +1,5 @@
 import { AxiosRequestHeaders } from 'axios';
+import { SystemStateEnum } from '../enums';
 
 export interface User {
   accessToken: string;
@@ -83,4 +84,11 @@ export interface AllRecords {
   currentMonth: AnyRecord [];
   lastMonth: AnyRecord [];
   olderRecords: AnyRecord[];
+}
+
+export interface GlobalNotification {
+  title: string;
+  description: string;
+  status: SystemStateEnum;
+  showNotification: boolean;
 }

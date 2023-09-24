@@ -11,26 +11,15 @@ import {
   DashboardContainer, RecordsBox, Header,
 } from './Dashboard.styled';
 import { useNotification } from '../../hooks/useNotification';
-import { SystemStateEnum } from '../../enums';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
-import { NotificationFunctions } from './interface';
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
   const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
   const { signOut } = useLogin();
   const {
-    notification, toggleShowNotification, notificationInfo,
-    updateTitle, updateDescription, updateStatus,
-  } = useNotification({
-    title: '', description: '', status: SystemStateEnum.Info,
-  });
-  const dashboardNotificationFunctions: NotificationFunctions = {
-    updateTitle,
-    updateDescription,
-    updateStatus,
-    toggleShowNotification,
-  };
+    globalNotification, toggleGlobalNotification,
+  } = useNotification();
 
   const { dashboardActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
@@ -56,20 +45,18 @@ const Dashboard = () => {
 
   return (
     <DashboardContainer>
-      {notification && (
+      {globalNotification.showNotification && (
         <Notification
-          title={notificationInfo.current.title}
-          description={notificationInfo.current.description}
-          status={notificationInfo.current.status}
-          close={toggleShowNotification}
+          title={globalNotification.title}
+          description={globalNotification.description}
+          status={globalNotification.status}
+          close={toggleGlobalNotification}
         />
       )}
       <Header>
         <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
       </Header>
-      <ViewAccounts
-        dashboardNotificationFunctions={dashboardNotificationFunctions}
-      />
+      <ViewAccounts />
       <RecordsBox>
         <RecordList />
       </RecordsBox>

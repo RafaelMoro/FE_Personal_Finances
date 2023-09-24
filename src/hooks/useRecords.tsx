@@ -15,15 +15,15 @@ import {
 import { useDate } from './useDate';
 import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../components/UI/Account/constants';
-import { NotificationFunctions } from '../pages/Dashboard/interface';
 import { SystemStateEnum } from '../enums';
 import { AnyRecord } from '../globalInterface';
+import { useNotification } from './useNotification';
 
 interface UseRecordsProps {
-  notificationFunctions: NotificationFunctions;
   recordToBeDeleted?: AnyRecord;
   deleteRecordExpense?: boolean;
   closeDeleteRecordModalCb?: () => void;
+  closeDrawer?: () => void;
 }
 
 interface UpdateAmountAccountProps {
@@ -32,15 +32,16 @@ interface UpdateAmountAccountProps {
   deleteRecord?: boolean;
 }
 
+interface ShowErrorNotificationProps {
+  errorMessage: string;
+  action: string;
+  goToDashboard?: boolean;
+}
+
 const useRecords = ({
-  notificationFunctions, recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {},
+  recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
 }: UseRecordsProps) => {
-  const {
-    updateTitle,
-    updateDescription,
-    updateStatus,
-    toggleShowNotification,
-  } = notificationFunctions;
+  const { updateGlobalNotification } = useNotification({});
   const navigate = useNavigate();
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const [user] = useAtom(userAtom);
@@ -73,16 +74,20 @@ const useRecords = ({
     return 'Account updated';
   };
 
-  const showErrorNotification = (errorMessage: string) => {
-    updateTitle('Create Record: Error');
-    updateDescription('Oops! An error ocurred. Try again later.');
-    updateStatus(SystemStateEnum.Error);
-    toggleShowNotification();
-    console.error(`Error while submitting create record: ${errorMessage}`);
-    // Navigate to dashboard
-    setTimeout(() => {
-      navigate(DASHBOARD_ROUTE);
-    }, 3000);
+  const showErrorNotification = ({ errorMessage, action, goToDashboard = false }: ShowErrorNotificationProps) => {
+    updateGlobalNotification({
+      newTitle: `${action} Record: Error`,
+      newDescription: 'Oops! An error ocurred. Try again later.',
+      newStatus: SystemStateEnum.Error,
+    });
+    console.error(`Error while submitting ${action} record: ${errorMessage}`);
+
+    if (goToDashboard) {
+      // Navigate to dashboard
+      setTimeout(() => {
+        navigate(DASHBOARD_ROUTE);
+      }, 3000);
+    }
   };
 
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
@@ -92,14 +97,22 @@ const useRecords = ({
     // If an error is catched:
     if (createExpenseInfo?.message) {
       // Show notification error
-      showErrorNotification(`There is an error: ${createExpenseInfo?.message}`);
+      showErrorNotification({
+        errorMessage: `There is an error: ${createExpenseInfo?.message}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
       return;
     }
 
     const updateAmount = await updateAmountAccount({ amount, isExpense: true });
     if (updateAmount.includes('Error')) {
       // show notification error
-      showErrorNotification(`Updating amount error: ${updateAmount}`);
+      showErrorNotification({
+        errorMessage: `Updating amount error: ${updateAmount}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
       return;
     }
 
@@ -140,14 +153,22 @@ const useRecords = ({
     // If an error is catched:
     if (createIncomeInfo?.message) {
       // Show notification error
-      showErrorNotification(`There is an error: ${createIncomeInfo?.message}`);
+      showErrorNotification({
+        errorMessage: `There is an error: ${createIncomeInfo?.message}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
       return;
     }
 
     const updateAmount = await updateAmountAccount({ amount, isExpense: false });
     if (updateAmount.includes('Error')) {
       // show notification error
-      showErrorNotification(`Updating amount error: ${updateAmount}`);
+      showErrorNotification({
+        errorMessage: `Updating amount error: ${updateAmount}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
       return;
     }
 
@@ -187,7 +208,6 @@ const useRecords = ({
     const recordId = recordToBeDeleted?._id as string;
     const valuesDeleteRecord = { recordId };
     const route = deleteRecordExpense ? POST_DELETE_EXPENSE_ROUTE : POST_DELETE_INCOME_ROUTE;
-    console.log('selectedAccount', selectedAccount);
     const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
       valuesDeleteRecord,
       route,
@@ -197,23 +217,37 @@ const useRecords = ({
 
     if (responseDeleteRecord.error) {
       // mostrar notification
-      // eslint-disable-next-line no-console
-      console.error(`Error deleting expense: ${responseDeleteRecord.error} ${responseDeleteRecord.message}`);
+      showErrorNotification({
+        errorMessage: `Error while deleting record: ${responseDeleteRecord.error}`,
+        action: 'Delete',
+      });
+      closeDeleteRecordModalCb();
+      closeDrawer();
       return;
     }
 
     // Update Amount of the account.
-    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: false });
+    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: false, deleteRecord: true });
     if (updateAmount.includes('Error')) {
       // show notification error
-      // showErrorNotification(`Updating amount error: ${updateAmount}`);
-      console.error(`Error updating amount: ${updateAmount}`);
+      showErrorNotification({
+        errorMessage: `Error updating amount while deleting record: ${updateAmount}`,
+        action: 'Delete',
+      });
+      closeDeleteRecordModalCb();
+      closeDrawer();
       return;
     }
 
-    // Cerrar Drawer
-    // Refetch data
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record Deleted Succesfully',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
     closeDeleteRecordModalCb();
+    closeDrawer();
+    // Refetch data
   };
 
   return {

@@ -2,7 +2,6 @@ import { Dialog } from '@mui/material';
 import { CancelButton, SecondaryButton } from '../../../../../styles';
 import { DeleteRecordContainer, DeleteRecordTitle, DeleteRecordWarn } from './DeleteRecordModal.styled';
 import { useRecords } from '../../../../../hooks/useRecords';
-import { NotificationFunctions } from '../../../../../pages/Dashboard/interface';
 import { AnyRecord } from '../../../../../globalInterface';
 
 interface DeleteRecordModalProps {
@@ -10,21 +9,15 @@ interface DeleteRecordModalProps {
   onClose: () => void;
   record: AnyRecord;
   isExpense: boolean;
+  closeDrawer: () => void;
 }
 
 const DeleteRecordModal = ({
-  open, onClose, record, isExpense,
+  open, onClose, record, isExpense, closeDrawer,
 }: DeleteRecordModalProps) => {
   const { shortName: recordName } = record;
-  // @TODO Checar como usare lo de las notificaciones.
-  const notificationFunctions: NotificationFunctions = {
-    updateTitle: () => {},
-    updateDescription: () => {},
-    updateStatus: () => {},
-    toggleShowNotification: () => {},
-  };
   const { deleteRecord } = useRecords({
-    notificationFunctions, recordToBeDeleted: record, deleteRecordExpense: isExpense, closeDeleteRecordModalCb: onClose,
+    recordToBeDeleted: record, deleteRecordExpense: isExpense, closeDeleteRecordModalCb: onClose, closeDrawer,
   });
 
   return (

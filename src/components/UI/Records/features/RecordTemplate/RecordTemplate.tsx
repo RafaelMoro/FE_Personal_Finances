@@ -33,8 +33,8 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { useRecords } from '../../../../../hooks/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 
-const RecordTemplate = ({ edit = false, notificationFunctions }: RecordTemplateProps) => {
-  const { handleSubmitExpense, handleSubmitIncome } = useRecords({ notificationFunctions });
+const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+  const { handleSubmitExpense, handleSubmitIncome } = useRecords({});
   const {
     modal: indebtedPersonModal,
     openModal,
@@ -198,7 +198,6 @@ const RecordTemplate = ({ edit = false, notificationFunctions }: RecordTemplateP
               label="Description"
             />
             <CategoriesAndSubcategories
-              notificationFunctions={notificationFunctions}
               errorCategory={errors.category}
               errorSubcategory={errors.subCategory}
               touchedCategory={touched.category}

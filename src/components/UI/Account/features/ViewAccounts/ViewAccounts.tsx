@@ -16,7 +16,6 @@ import {
 import { GetRequest, formatAccounts } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
-import { IViewAccountsProps } from './interface';
 import { ErrorResponse } from '../../../../../aliasType';
 import {
   AccountSection, AccountsTitle, AccountsContainer,
@@ -29,9 +28,7 @@ let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
-const ViewAccounts = ({
-  dashboardNotificationFunctions,
-}: IViewAccountsProps) => {
+const ViewAccounts = () => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
@@ -172,7 +169,6 @@ const ViewAccounts = ({
         <AccountDialog
           open={openAccountModal}
           onClose={handleCloseCreateAccount}
-          dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
           account={modifyAccount}
         />
@@ -181,7 +177,6 @@ const ViewAccounts = ({
           onClose={handleCloseDeleteAccount}
           accountId={accountToBeDeleted.current.accountId}
           accountName={accountToBeDeleted.current.accountName}
-          dashboardNotificationFunctions={dashboardNotificationFunctions}
         />
       </AccountSectionTablet>
     );
@@ -204,7 +199,6 @@ const ViewAccounts = ({
         <AccountDialog
           open={openAccountModal}
           onClose={handleCloseCreateAccount}
-          dashboardNotificationFunctions={dashboardNotificationFunctions}
           accountAction={accountAction}
           account={modifyAccount}
         />
@@ -213,7 +207,6 @@ const ViewAccounts = ({
           onClose={handleCloseDeleteAccount}
           accountId={accountToBeDeleted.current.accountId}
           accountName={accountToBeDeleted.current.accountName}
-          dashboardNotificationFunctions={dashboardNotificationFunctions}
         />
       </AccountSectionDesktop>
     );
@@ -243,7 +236,6 @@ const ViewAccounts = ({
       <AccountDialog
         open={openAccountModal}
         onClose={handleCloseCreateAccount}
-        dashboardNotificationFunctions={dashboardNotificationFunctions}
         accountAction={accountAction}
         account={modifyAccount}
       />
@@ -252,7 +244,6 @@ const ViewAccounts = ({
         onClose={handleCloseDeleteAccount}
         accountId={accountToBeDeleted.current.accountId}
         accountName={accountToBeDeleted.current.accountName}
-        dashboardNotificationFunctions={dashboardNotificationFunctions}
       />
     </AccountSection>
   );

@@ -1,11 +1,19 @@
 import { useRef, useState } from 'react';
 
+import { useAtom } from 'jotai';
 import { SystemStateEnum } from '../enums';
+import { globalNotificationAtom } from '../atoms';
 
 interface UseNotificationProps {
-  title: string;
-  description: string;
-  status: SystemStateEnum;
+  title?: string;
+  description?: string;
+  status?: SystemStateEnum;
+}
+
+interface UpdateGlobalNotificationProps {
+  newTitle: string;
+  newDescription: string;
+  newStatus: SystemStateEnum;
 }
 
 /*
@@ -21,8 +29,9 @@ interface UseNotificationProps {
 *   - updateDescription: Function that updates the notification description.
 *   - updateStatus: Function that updates the notification status.
 */
-const useNotification = ({ title, description, status }: UseNotificationProps) => {
-  const [notification, setShowNotification] = useState<boolean>(false);
+const useNotification = ({ title = '', description = '', status = SystemStateEnum.Info }: UseNotificationProps = {}) => {
+  const [globalNotification, setGlobalNotification] = useAtom(globalNotificationAtom);
+  const [localNotification, setLocalNotification] = useState<boolean>(false);
   const notificationInfo = useRef({
     title,
     description,
@@ -30,11 +39,11 @@ const useNotification = ({ title, description, status }: UseNotificationProps) =
   });
 
   const toggleShowNotification = () => {
-    setShowNotification((prevState) => !prevState);
+    setLocalNotification((prevState) => !prevState);
   };
 
-  const showNotification = () => setShowNotification(true);
-  const hideNotification = () => setShowNotification(false);
+  const showNotification = () => setLocalNotification(true);
+  const hideNotification = () => setLocalNotification(false);
 
   const updateTitle = (newTitle: string):void => {
     notificationInfo.current.title = newTitle;
@@ -48,8 +57,50 @@ const useNotification = ({ title, description, status }: UseNotificationProps) =
     notificationInfo.current.status = newStatus;
   };
 
+  function updateGlobalTitle(newTitle: string):void {
+    setGlobalNotification({ ...globalNotification, title: newTitle });
+  }
+
+  function updateGlobalDescription(newDescription: string):void {
+    setGlobalNotification({ ...globalNotification, description: newDescription });
+  }
+
+  function updateGlobalStatus(newStatus: SystemStateEnum):void {
+    setGlobalNotification({ ...globalNotification, status: newStatus });
+  }
+
+  function updateGlobalNotification({ newTitle, newDescription, newStatus }: UpdateGlobalNotificationProps):void {
+    setGlobalNotification({
+      title: newTitle,
+      description: newDescription,
+      status: newStatus,
+      showNotification: true,
+    });
+  }
+
+  function hideGlobalNotification() {
+    setGlobalNotification({
+      ...globalNotification,
+      showNotification: false,
+    });
+  }
+
+  function showGlobalNotification() {
+    setGlobalNotification({
+      ...globalNotification,
+      showNotification: true,
+    });
+  }
+
+  function toggleGlobalNotification() {
+    setGlobalNotification({
+      ...globalNotification,
+      showNotification: !globalNotification.showNotification,
+    });
+  }
+
   return {
-    notification,
+    notification: localNotification,
     notificationInfo,
     toggleShowNotification,
     showNotification,
@@ -57,6 +108,14 @@ const useNotification = ({ title, description, status }: UseNotificationProps) =
     updateTitle,
     updateDescription,
     updateStatus,
+    globalNotification,
+    updateGlobalTitle,
+    updateGlobalDescription,
+    updateGlobalStatus,
+    updateGlobalNotification,
+    showGlobalNotification,
+    hideGlobalNotification,
+    toggleGlobalNotification,
   };
 };
 

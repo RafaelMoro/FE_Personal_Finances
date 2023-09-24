@@ -154,7 +154,13 @@ const Record = (record: AnyRecord) => {
             openDeleteRecordModal={showDeleteRecordModal}
           />
         </Drawer>
-        <DeleteRecordModal record={record} isExpense={isExpense} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+        <DeleteRecordModal
+          closeDrawer={hideLongView}
+          record={record}
+          isExpense={isExpense}
+          open={openDeleteRecordModal}
+          onClose={hideDeleteRecordModal}
+        />
       </>
     );
   }
@@ -227,7 +233,13 @@ const Record = (record: AnyRecord) => {
           openDeleteRecordModal={showDeleteRecordModal}
         />
       </Drawer>
-      <DeleteRecordModal record={record} isExpense={isExpense} open={openDeleteRecordModal} onClose={hideDeleteRecordModal} />
+      <DeleteRecordModal
+        closeDrawer={hideLongView}
+        record={record}
+        isExpense={isExpense}
+        open={openDeleteRecordModal}
+        onClose={hideDeleteRecordModal}
+      />
     </>
   );
 };

@@ -14,30 +14,24 @@ import { GET_CATEGORIES } from '../../constants';
 import { GetRequest } from '../../../../../utils';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
-import { NotificationFunctions } from '../../../../../pages/Dashboard/interface';
+import { useNotification } from '../../../../../hooks/useNotification';
 
+const NOTIFICATION_TITLE = 'Error Categories and subcategories';
 const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
-const NOTIFICATION_STATUS = SystemStateEnum.Error;
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
   errorSubcategory?: string;
   touchedCategory?: boolean;
   touchedSubCategory?: boolean;
-  notificationFunctions: NotificationFunctions;
 }
 
 const CategoriesAndSubcategories = ({
-  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, notificationFunctions,
+  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory,
 }: CategoriesAndSubcategoriesProps) => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-  const {
-    updateTitle,
-    updateDescription,
-    updateStatus,
-    toggleShowNotification,
-  } = notificationFunctions;
+  const { updateGlobalNotification } = useNotification();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   // If category has not been selected yet, disabled subcategory select input.
@@ -55,10 +49,11 @@ const CategoriesAndSubcategories = ({
 
       if (response.error) {
         setIsLoading(false);
-        updateTitle('Error Categories and subcategories');
-        updateDescription(NOTIFICATION_DESCRIPTION);
-        updateStatus(NOTIFICATION_STATUS);
-        toggleShowNotification();
+        updateGlobalNotification({
+          newTitle: NOTIFICATION_TITLE,
+          newDescription: NOTIFICATION_DESCRIPTION,
+          newStatus: SystemStateEnum.Error,
+        });
         setTimeout(() => {
           setError(true);
         }, 3000);
@@ -78,7 +73,7 @@ const CategoriesAndSubcategories = ({
     // Fetch while the categories are 12 because are the total of the local categories.
     // If there are more, categories has been fetched already.
     if (!!user && bearerToken && categories.length === 12 && !error) getCategories();
-  }, [bearerToken, categories, error, user, updateTitle, updateDescription, updateStatus, toggleShowNotification]);
+  }, [bearerToken, categories, error, user, updateGlobalNotification]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
