@@ -1,9 +1,9 @@
 import {
   IconButton,
 } from '@mui/material';
-import { EditOutlined, DeleteOutlined, Close } from '@mui/icons-material';
 
 import { RecordDrawerProps } from '../../interface';
+import { DeleteIcon, CloseIcon, EditIcon } from '../../../Icons';
 import {
   RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
   RecordDrawerDescription, DrawerChipContainer,
@@ -11,7 +11,7 @@ import {
   DrawerTitleContainer,
   DrawerCloseBox,
 } from '../../Records.styled';
-import { AppColors, Chip } from '../../../../../styles';
+import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
 
@@ -22,16 +22,16 @@ const RecordDrawer = ({
   <RecordDrawerContainer>
     <DrawerCloseBox>
       <IconButton onClick={onCloseCb}>
-        <Close sx={{ fontSize: '3.5rem' }} />
+        <CloseIcon />
       </IconButton>
     </DrawerCloseBox>
     <DrawerTitleContainer>
       <RecordDrawerTitle>{shortName}</RecordDrawerTitle>
       <IconButton onClick={() => {}}>
-        <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+        <EditIcon />
       </IconButton>
       <IconButton onClick={() => {}}>
-        <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+        <DeleteIcon />
       </IconButton>
     </DrawerTitleContainer>
     <RecordDrawerDatetime>{fullDate}</RecordDrawerDatetime>

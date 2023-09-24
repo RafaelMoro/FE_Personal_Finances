@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import {
   TableHead, TableRow, TableBody, IconButton,
 } from '@mui/material';
-import { EditOutlined, DeleteOutlined } from '@mui/icons-material';
 
+import { EditIcon, DeleteIcon } from '../../../Icons';
 import { ShowIndebtedPeopleProps } from './interface';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
-import { TableCell, AppColors } from '../../../../../styles';
+import { TableCell } from '../../../../../styles';
 import { DebtPaid, TableTitle, RecordTable } from '../../Records.styled';
 
 const ShowIndebtedPeople = ({
@@ -40,10 +40,10 @@ const ShowIndebtedPeople = ({
                     { (!inRecordDrawer) && (
                       <DebtPaid>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                          <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                          <EditIcon />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                          <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                          <DeleteIcon />
                         </IconButton>
                       </DebtPaid>
                     )}
@@ -58,10 +58,10 @@ const ShowIndebtedPeople = ({
                     { (!inRecordDrawer) && (
                       <TableCell>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                          <EditOutlined sx={{ fontSize: '2.5rem', fill: AppColors.primary }} />
+                          <EditIcon />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                          <DeleteOutlined sx={{ fontSize: '2.5rem', fill: AppColors.negative }} />
+                          <DeleteIcon />
                         </IconButton>
                       </TableCell>
                     ) }

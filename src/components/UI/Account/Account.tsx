@@ -1,6 +1,6 @@
 import { IconButton } from '@mui/material';
-import { EditOutlined, DeleteOutlined } from '@mui/icons-material';
 
+import { EditIcon, DeleteIcon } from '../Icons';
 import { AccountComponentProps } from './interface';
 import { Paragraph } from '../../../styles';
 import {
@@ -28,10 +28,10 @@ const Account = ({
       <Paragraph>{ amount }</Paragraph>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
-          <EditOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
+          <EditIcon fillColor={color.color} />
         </IconButton>
         <IconButton onClick={() => openDeleteAccountModal(accountId, title)}>
-          <DeleteOutlined sx={{ fontSize: '2.5rem', fill: color.color }} />
+          <DeleteIcon fillColor={color.color} />
         </IconButton>
       </AccountIconsContainer>
       <Paragraph>{ accountType }</Paragraph>
