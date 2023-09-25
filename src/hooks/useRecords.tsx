@@ -10,7 +10,7 @@ import {
   CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
 } from '../components/UI/Records/interface';
 import {
-  allRecordsAtom, selectedAccountAtom, userAtom,
+  allRecordsAtom, refetchAtom, selectedAccountAtom, userAtom,
 } from '../atoms';
 import { useDate } from './useDate';
 import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
@@ -43,9 +43,11 @@ const useRecords = ({
 }: UseRecordsProps) => {
   const { updateGlobalNotification } = useNotification({});
   const navigate = useNavigate();
+
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const [user] = useAtom(userAtom);
-  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
+  const [, setRefetch] = useAtom(refetchAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const currentMonthRecords = allRecords?.currentMonth;
   const { month: currentMonth, lastMonth } = useDate();
@@ -71,6 +73,9 @@ const useRecords = ({
       return `Error: ${updateAccountResponse?.error}`;
     }
 
+    // Update selected account amount.
+    const { amount: newAmount } = payload;
+    if (selectedAccount) setSelectedAccount({ ...selectedAccount, amount: newAmount });
     return 'Account updated';
   };
 
@@ -227,7 +232,7 @@ const useRecords = ({
     }
 
     // Update Amount of the account.
-    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: false, deleteRecord: true });
+    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
     if (updateAmount.includes('Error')) {
       // show notification error
       showErrorNotification({
@@ -248,6 +253,7 @@ const useRecords = ({
     closeDeleteRecordModalCb();
     closeDrawer();
     // Refetch data
+    setRefetch(true);
   };
 
   return {

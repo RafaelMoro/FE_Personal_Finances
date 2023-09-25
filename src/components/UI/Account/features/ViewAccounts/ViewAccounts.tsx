@@ -11,7 +11,7 @@ import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom, windowSizeAtom,
-  openAccountModalAtom, openChangeAccountModalAtom, accountActionAtom,
+  openAccountModalAtom, openChangeAccountModalAtom, accountActionAtom, refetchAtom,
 } from '../../../../../atoms';
 import { GetRequest, formatAccounts } from '../../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from './constants';
@@ -37,6 +37,8 @@ const ViewAccounts = () => {
   const [openAccountModal] = useAtom(openAccountModalAtom);
   const [openChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [windowSize] = useAtom(windowSizeAtom);
+  const [refetch, setRefetch] = useAtom(refetchAtom);
+
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
@@ -59,6 +61,7 @@ const ViewAccounts = () => {
     const getAccounts = async () => {
       try {
         const accountsData = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
+        setRefetch(false);
 
         // catch error
         if (accountsData?.error) {
@@ -105,8 +108,9 @@ const ViewAccounts = () => {
       }
     };
     if (!!user && bearerToken) getAccounts();
+    if (!!user && bearerToken && refetch) getAccounts();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bearerToken, selectedAccount, user]);
+  }, [bearerToken, selectedAccount, user, refetch]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount

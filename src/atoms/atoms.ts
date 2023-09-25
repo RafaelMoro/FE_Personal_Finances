@@ -20,13 +20,14 @@ export const accountActionAtom = atom<ModalAction>('Create');
 /** Records atoms  */
 export const allRecordsAtom = atom<AllRecords>({ currentMonth: [], lastMonth: [], olderRecords: [] });
 
-/** Window size atom  */
-export const windowSizeAtom = atom<WindowSizeValues>('Mobile');
-
-/** Account atoms  */
+/** Notifications atoms  */
 export const globalNotificationAtom = atom<GlobalNotification>({
   title: '',
   description: '',
   status: SystemStateEnum.Info,
   showNotification: false,
 });
+
+/** Other atoms  */
+export const windowSizeAtom = atom<WindowSizeValues>('Mobile');
+export const refetchAtom = atom<boolean>(false);
