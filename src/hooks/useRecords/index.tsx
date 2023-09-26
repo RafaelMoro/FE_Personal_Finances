@@ -38,16 +38,15 @@ const useRecords = ({
   const updateAmountAccount = async ({
     amount, isExpense, deleteRecord = false,
   }: UpdateAmountAccountProps) => {
-    const amountToNumber = Number(amount.slice(1, amount.length));
     const amountToUpdate = selectedAccount?.amount as number;
     const accountId = selectedAccount?._id as string;
 
     const payloadDeleteRecord = (isExpense)
-      ? { accountId, amount: amountToUpdate + amountToNumber }
-      : { accountId, amount: amountToUpdate - amountToNumber };
+      ? { accountId, amount: amountToUpdate + amount }
+      : { accountId, amount: amountToUpdate - amount };
     const payloadCreateRecord = isExpense
-      ? { accountId, amount: amountToUpdate - amountToNumber }
-      : { accountId, amount: amountToUpdate + amountToNumber };
+      ? { accountId, amount: amountToUpdate - amount }
+      : { accountId, amount: amountToUpdate + amount };
     const payload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
 
     const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
@@ -195,7 +194,7 @@ const useRecords = ({
   };
 
   const deleteRecord = async () => {
-    const amountOfRecord = recordToBeDeleted?.amount as string;
+    const amountOfRecord = recordToBeDeleted?.amount as number;
     const dateString = recordToBeDeleted?.date as Date;
     const date = new Date(dateString);
     const recordId = recordToBeDeleted?._id as string;

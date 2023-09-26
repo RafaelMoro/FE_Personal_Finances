@@ -107,18 +107,17 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
     const { isPaid, amount, ...restValues } = values;
-    // Adding money sign to the amount.
-    const fullAmount = `$${amount}`;
+    const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
       ...additionalData.current,
-      amount: fullAmount,
+      amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
     } : {
       ...restValues,
       ...additionalData.current,
-      amount: fullAmount,
+      amount: amountToNumber,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: selectedAccount?._id,

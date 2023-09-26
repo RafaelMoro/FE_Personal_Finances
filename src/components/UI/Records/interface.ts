@@ -15,7 +15,7 @@ export interface RecordListProps {
   records: AnyRecord [];
 }
 
-export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'account' | '_id' | 'date'> {
+export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'amountFormatted' | 'account' | '_id' | 'date'> {
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
   onCloseCb?: () => void;
@@ -43,7 +43,8 @@ export interface CreateRecordValues {
   date: Date;
 }
 
-export interface CreateExpenseValues extends CreateRecordValues {
+export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> {
+  amount: number;
   tag: string[];
   budgets: string[];
   indebtedPeople: IndebtedPeople[];

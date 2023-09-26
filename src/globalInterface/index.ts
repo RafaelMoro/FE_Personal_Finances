@@ -46,7 +46,8 @@ export interface AccountRecord {
   _id: string;
   shortName: string;
   description: string;
-  amount: string;
+  amount: number;
+  amountFormatted: string;
   date: Date;
   fullDate: string;
   formattedTime: string;

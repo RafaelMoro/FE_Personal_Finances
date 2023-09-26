@@ -40,7 +40,8 @@ Expense.args = {
   budgets: ['Transport'],
   formattedTime: '17:16pm',
   fullDate: 'May 14',
-  amount: '$109.95',
+  amount: 109.95,
+  amountFormatted: '$109.95',
   isPaid: false,
 };
 
@@ -71,7 +72,8 @@ ExpenseWithLongDescription.args = {
   budgets: ['Food'],
   formattedTime: '15:31pm',
   fullDate: 'May 19',
-  amount: '$970.44',
+  amount: 970.44,
+  amountFormatted: '$970.44',
   isPaid: false,
 };
 
@@ -102,7 +104,8 @@ ExpenseWithLongShortName.args = {
   budgets: ['Food'],
   formattedTime: '05:21pm',
   fullDate: 'Feb 10',
-  amount: '$67.43',
+  amount: 67.43,
+  amountFormatted: '$67.43',
   isPaid: false,
 };
 
@@ -133,7 +136,8 @@ ExpenseWithoutTagsAndBudgets.args = {
   budgets: [],
   formattedTime: '08:45pm',
   fullDate: 'March 26',
-  amount: '$156.00',
+  amount: 156,
+  amountFormatted: '$156.00',
   isPaid: false,
 };
 
@@ -164,7 +168,8 @@ ExpenseWithManyBudgets.args = {
   budgets: ['Leisure', 'Debt', 'AMEX', 'Transport'],
   formattedTime: '21:11pm',
   fullDate: 'May 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   isPaid: false,
 };
 
@@ -195,7 +200,8 @@ ExpenseWithManyBudgetsAndLongNameBudget.args = {
   budgets: ['A very long name', 'Debt', 'AMEX', 'Transport', 'Other Budget', 'New Budget'],
   formattedTime: '21:11pm',
   fullDate: 'May 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   isPaid: false,
 };
 
@@ -226,7 +232,8 @@ ExpenseWithManyBudgetsAndTags.args = {
   budgets: ['A very long name', 'Debt', 'AMEX', 'Transport', 'Other Budget', 'New Budget'],
   formattedTime: '21:11pm',
   fullDate: 'May 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   isPaid: false,
 };
 
@@ -257,7 +264,8 @@ ExpenseWithNoBudgetsAndManyTags.args = {
   budgets: [],
   formattedTime: '21:11pm',
   fullDate: 'May 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   isPaid: false,
 };
 
@@ -288,7 +296,8 @@ Income.args = {
   budgets: [],
   formattedTime: '21:18pm',
   fullDate: 'June 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   expensesPaid: [],
 };
 
@@ -319,7 +328,8 @@ IncomeWithExpensesPaid.args = {
   budgets: [],
   formattedTime: '21:18pm',
   fullDate: 'June 10',
-  amount: '$2,256.00',
+  amount: 2256,
+  amountFormatted: '$2,256.00',
   expensesPaid: [
     {
       _id: '64600b8f2bb57b9d17843d87',

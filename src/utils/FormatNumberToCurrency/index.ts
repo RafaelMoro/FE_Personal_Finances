@@ -7,11 +7,13 @@ type CurrencyOptions = 'USD' | 'MXN';
 const mexicanPeso = Intl.NumberFormat('es-ES', {
   style: CURRENCY,
   currency: MEXICAN_CURRENCY,
+  minimumFractionDigits: 2,
 });
 
 const usDollar = Intl.NumberFormat('en-US', {
   style: CURRENCY,
   currency: USD_CURRENCY,
+  minimumFractionDigits: 2,
 });
 
 /*

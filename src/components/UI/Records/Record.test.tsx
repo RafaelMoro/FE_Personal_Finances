@@ -40,7 +40,8 @@ const records: AnyRecord[] = [
     budgets: [],
     formattedTime: '12:34pm',
     fullDate: 'May 20',
-    amount: '$150.09',
+    amount: 150.09,
+    amountFormatted: '$150.09',
     account: '123-456-789',
     isPaid: false,
   },
@@ -61,7 +62,8 @@ const records: AnyRecord[] = [
     budgets: [],
     formattedTime: '1:50pm',
     fullDate: 'May 20',
-    amount: '$110.24',
+    amount: 110.24,
+    amountFormatted: '$110.24',
     account: '123-456-789',
     expensesPaid: [
       {
@@ -102,6 +104,7 @@ describe('<Records />', () => {
         expensesPaid={expense.expensesPaid}
         date={expense.date}
         account={expense.account}
+        amountFormatted={expense.amountFormatted}
       />,
     );
 
@@ -135,6 +138,7 @@ describe('<Records />', () => {
         expensesPaid={income.expensesPaid}
         date={income.date}
         account={income.account}
+        amountFormatted={income.amountFormatted}
       />,
     );
 

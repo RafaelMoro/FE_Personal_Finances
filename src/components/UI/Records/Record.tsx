@@ -23,7 +23,7 @@ const Record = (record: AnyRecord) => {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _id, shortName, description, category, subCategory, tag = [],
     indebtedPeople = [], budgets = [],
-    formattedTime, fullDate, isPaid, amount, expensesPaid = [],
+    formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
   const [windowSize] = useAtom(windowSizeAtom);
   const [openLongView, setOpenLongView] = useState(false);
@@ -68,14 +68,14 @@ const Record = (record: AnyRecord) => {
       <RecordExpenseMobile>
         -
         {' '}
-        { amount }
+        { amountFormatted }
       </RecordExpenseMobile>
     )
     : (
       <RecordIncomeMobile>
         +
         {' '}
-        { amount }
+        { amountFormatted }
       </RecordIncomeMobile>
     );
 
@@ -84,14 +84,14 @@ const Record = (record: AnyRecord) => {
       <RecordExpense>
         -
         {' '}
-        { amount }
+        { amountFormatted }
       </RecordExpense>
     )
     : (
       <RecordIncome>
         +
         {' '}
-        { amount }
+        { amountFormatted }
       </RecordIncome>
     );
 

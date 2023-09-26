@@ -8,7 +8,7 @@ export interface UseRecordsProps {
 }
 
 export interface UpdateAmountAccountProps {
-  amount: string;
+  amount: number;
   isExpense: boolean;
   deleteRecord?: boolean;
 }

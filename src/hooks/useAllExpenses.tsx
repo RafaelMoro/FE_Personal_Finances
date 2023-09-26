@@ -43,10 +43,10 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
           const expensesShorted = response.expenses.map((expense) => {
             const {
               // eslint-disable-next-line @typescript-eslint/naming-convention
-              _id, shortName, amount, fullDate, formattedTime, date,
+              _id, shortName, amountFormatted, fullDate, formattedTime, date,
             } = expense;
             const shortExpense: ExpensePaid = {
-              _id, shortName, amount, fullDate, formattedTime, date,
+              _id, shortName, amount: amountFormatted, fullDate, formattedTime, date,
             };
             return shortExpense;
           });
