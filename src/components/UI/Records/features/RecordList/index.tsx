@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  allRecordsAtom, refetchAtom, selectedAccountAtom, userAtom,
+  allRecordsAtom, selectedAccountAtom, userAtom,
 } from '../../../../../atoms';
 import { Error } from '../../../Error';
 import {
@@ -32,7 +32,6 @@ const RecordList = () => {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
   const [user] = useAtom(userAtom);
-  const [refetch, setRefetch] = useAtom(refetchAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
@@ -55,7 +54,6 @@ const RecordList = () => {
         LoadingCurrentMonthRecords();
         const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
         const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
-        setRefetch(false);
 
         if (response?.error) {
           // handle error
@@ -89,9 +87,8 @@ const RecordList = () => {
       }
     };
     if (!!user && selectedAccount && bearerToken) getRecords();
-    if (!!user && selectedAccount && bearerToken && refetch) getRecords();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId, refetch]);
+  }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId]);
 
   const handleError = (errorCatched: string) => {
     setErrorLastMonthRecords(true);

@@ -30,4 +30,3 @@ export const globalNotificationAtom = atom<GlobalNotification>({
 
 /** Other atoms  */
 export const windowSizeAtom = atom<WindowSizeValues>('Mobile');
-export const refetchAtom = atom<boolean>(false);

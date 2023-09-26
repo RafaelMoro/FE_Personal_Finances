@@ -3,40 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
-import { formatDateToString, postRequestWithBearer } from '../utils';
-import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../components/UI/Records/constants';
-import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
+import { formatDateToString, postRequestWithBearer } from '../../utils';
+import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../../components/UI/Records/constants';
+import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
   CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
-} from '../components/UI/Records/interface';
+} from '../../components/UI/Records/interface';
 import {
-  allRecordsAtom, refetchAtom, selectedAccountAtom, userAtom,
-} from '../atoms';
-import { useDate } from './useDate';
-import { HttpRequestWithBearerToken } from '../utils/HttpRequestWithBearerToken';
-import { POST_PUT_ACCOUNT_ROUTE } from '../components/UI/Account/constants';
-import { SystemStateEnum } from '../enums';
-import { AnyRecord } from '../globalInterface';
-import { useNotification } from './useNotification';
-
-interface UseRecordsProps {
-  recordToBeDeleted?: AnyRecord;
-  deleteRecordExpense?: boolean;
-  closeDeleteRecordModalCb?: () => void;
-  closeDrawer?: () => void;
-}
-
-interface UpdateAmountAccountProps {
-  amount: string;
-  isExpense: boolean;
-  deleteRecord?: boolean;
-}
-
-interface ShowErrorNotificationProps {
-  errorMessage: string;
-  action: string;
-  goToDashboard?: boolean;
-}
+  accountsUIAtom,
+  allRecordsAtom, selectedAccountAtom, userAtom,
+} from '../../atoms';
+import { useDate } from '../useDate';
+import {
+  UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsProps,
+} from './interface';
+import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
+import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
+import { SystemStateEnum } from '../../enums';
+import { useNotification } from '../useNotification';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -45,11 +29,10 @@ const useRecords = ({
   const navigate = useNavigate();
 
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
+  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
   const [user] = useAtom(userAtom);
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
-  const [, setRefetch] = useAtom(refetchAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-  const currentMonthRecords = allRecords?.currentMonth;
   const { month: currentMonth, lastMonth } = useDate();
 
   const updateAmountAccount = async ({
@@ -76,6 +59,13 @@ const useRecords = ({
     // Update selected account amount.
     const { amount: newAmount } = payload;
     if (selectedAccount) setSelectedAccount({ ...selectedAccount, amount: newAmount });
+    const accountsModified = accountsUI.map((account) => {
+      if (account._id === accountId && selectedAccount) {
+        return { ...selectedAccount, amount: newAmount };
+      }
+      return account;
+    });
+    setAccountsUI(accountsModified);
     return 'Account updated';
   };
 
@@ -95,8 +85,51 @@ const useRecords = ({
     }
   };
 
+  const updateAllRecords = ({
+    date, newRecord, deleteRecord = false, deletedRecordId = '',
+  }: UpdateRecordsProps) => {
+    const { monthFormatted } = formatDateToString(date);
+    if (lastMonth === monthFormatted) {
+      if (deleteRecord) {
+        const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== deletedRecordId);
+        setAllRecords({ ...allRecords, lastMonth: filteredRecords });
+        return;
+      }
+
+      if (newRecord) {
+        const recordsUpdated = [...allRecords.lastMonth, newRecord];
+        setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
+        return;
+      }
+    }
+
+    if (currentMonth === monthFormatted) {
+      if (deleteRecord) {
+        const filteredRecords = allRecords.currentMonth.filter((record) => record._id !== deletedRecordId);
+        setAllRecords({ ...allRecords, currentMonth: filteredRecords });
+        return;
+      }
+
+      if (newRecord) {
+        const recordsUpdated = [...allRecords.currentMonth, newRecord];
+        setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
+        return;
+      }
+    }
+
+    if (deleteRecord) {
+      const filteredRecords = allRecords.olderRecords.filter((record) => record._id !== deletedRecordId);
+      setAllRecords({ ...allRecords, olderRecords: filteredRecords });
+      return;
+    }
+    if (newRecord) {
+      const recordsUpdated = [...allRecords.olderRecords, newRecord];
+      setAllRecords({ ...allRecords, olderRecords: recordsUpdated });
+    }
+  };
+
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
-    const { amount } = values;
+    const { amount, date } = values;
     const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -122,37 +155,14 @@ const useRecords = ({
     }
 
     // Update expenses
-    const { date } = values;
-    const { monthFormatted } = formatDateToString(date);
-    if (currentMonth === monthFormatted) {
-      // Put the record on current month
-      const recordsUpdated = [...currentMonthRecords, createExpenseInfo];
-      setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
-      return;
-    }
-    if (lastMonth === monthFormatted) {
-      // Put the record on current month
-      const recordsUpdated = [...allRecords.lastMonth, createExpenseInfo];
-      setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
-      return;
-    }
-
-    // Else Put it on older records
-    const olderRecordsUpdated = [...allRecords.olderRecords, createExpenseInfo];
-    setAllRecords({ ...allRecords, olderRecords: olderRecordsUpdated });
+    updateAllRecords({ date, newRecord: createExpenseInfo });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
   };
 
   const handleSubmitIncome = async (values: CreateIncomeValues) => {
-    const { amount } = values;
+    const { amount, date } = values;
     const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -178,31 +188,7 @@ const useRecords = ({
     }
 
     // Update incomes
-    const { date } = values;
-    const { monthFormatted } = formatDateToString(date);
-
-    if (currentMonth === monthFormatted) {
-      // Put the record on current month
-      const recordsUpdated = [...currentMonthRecords, createIncomeInfo];
-      setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
-      return;
-    }
-    if (lastMonth === monthFormatted) {
-      // Put the record on current month
-      const recordsUpdated = [...allRecords.lastMonth, createIncomeInfo];
-      setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
-      return;
-    }
-
-    // Else Put it on older records
-    const olderRecordsUpdated = [...allRecords.olderRecords, createIncomeInfo];
-    setAllRecords({ ...allRecords, olderRecords: olderRecordsUpdated });
+    updateAllRecords({ date, newRecord: createIncomeInfo });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
@@ -210,7 +196,10 @@ const useRecords = ({
 
   const deleteRecord = async () => {
     const amountOfRecord = recordToBeDeleted?.amount as string;
+    const dateString = recordToBeDeleted?.date as Date;
+    const date = new Date(dateString);
     const recordId = recordToBeDeleted?._id as string;
+
     const valuesDeleteRecord = { recordId };
     const route = deleteRecordExpense ? POST_DELETE_EXPENSE_ROUTE : POST_DELETE_INCOME_ROUTE;
     const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
@@ -252,8 +241,8 @@ const useRecords = ({
     });
     closeDeleteRecordModalCb();
     closeDrawer();
-    // Refetch data
-    setRefetch(true);
+    // Update Records
+    updateAllRecords({ date, deletedRecordId: recordId });
   };
 
   return {
