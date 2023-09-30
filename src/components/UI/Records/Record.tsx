@@ -140,15 +140,7 @@ const Record = (record: AnyRecord) => {
         <Drawer variant="persistent" anchor="right" open={openLongView}>
           <RecordDrawer
             onCloseCb={hideLongView}
-            shortName={shortName}
-            description={description}
-            fullDate={fullDate}
-            formattedTime={formattedTime}
-            category={category}
-            subCategory={subCategory}
-            indebtedPeople={indebtedPeople}
-            tag={tag}
-            budgets={budgets}
+            record={record}
             amountShown={amountShown}
             expensesPaid={expensesPaid}
             openDeleteRecordModal={showDeleteRecordModal}
@@ -219,15 +211,7 @@ const Record = (record: AnyRecord) => {
       <Drawer variant="persistent" anchor="bottom" open={openLongView}>
         <RecordDrawer
           onCloseCb={hideLongView}
-          shortName={shortName}
-          description={description}
-          fullDate={fullDate}
-          formattedTime={formattedTime}
-          category={category}
-          subCategory={subCategory}
-          indebtedPeople={indebtedPeople}
-          tag={tag}
-          budgets={budgets}
+          record={record}
           amountShown={amountShownMobile}
           expensesPaid={expensesPaid}
           openDeleteRecordModal={showDeleteRecordModal}

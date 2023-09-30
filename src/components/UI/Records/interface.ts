@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import {
-  AccountRecord, Category, ExpensePaid, AnyRecord, IndebtedPeople,
+  Category, ExpensePaid, AnyRecord, IndebtedPeople,
 } from '../../../globalInterface';
 
 export interface DrawerChipContainerProps {
@@ -15,7 +15,8 @@ export interface RecordListProps {
   records: AnyRecord [];
 }
 
-export interface RecordDrawerProps extends Omit<AccountRecord, 'amount' | 'amountFormatted' | 'account' | '_id' | 'date'> {
+export interface RecordDrawerProps {
+  record: AnyRecord;
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
   onCloseCb?: () => void;

@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import { AccountUI } from '../components/UI/Account/interface';
 import { WindowSizeValues, ModalAction } from '../aliasType';
 import {
-  Account, User, AllRecords, GlobalNotification, RecordsTotal,
+  Account, User, AllRecords, GlobalNotification, RecordsTotal, AnyRecord,
 } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 
@@ -23,6 +23,7 @@ export const allRecordsAtom = atom<AllRecords>({
   lastMonth: [],
   olderRecords: [],
 });
+export const recordToBeModifiedAtom = atom<AnyRecord | null>(null);
 export const totalAtom = atom<RecordsTotal>({
   currentMonth: {
     expenseTotal: '$0.00',

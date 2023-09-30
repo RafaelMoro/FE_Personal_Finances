@@ -1,6 +1,7 @@
 import {
   IconButton,
 } from '@mui/material';
+import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
@@ -16,14 +17,22 @@ import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
+import { recordToBeModifiedAtom } from '../../../../../atoms';
 
 const RecordDrawer = ({
-  shortName, description, fullDate, formattedTime, expensesPaid,
-  category, subCategory, tag, indebtedPeople, budgets, amountShown,
-  onCloseCb = () => {}, openDeleteRecordModal = () => {},
+  record, amountShown, expensesPaid, onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => {
+  const {
+    shortName, description, fullDate, formattedTime,
+    category, subCategory, tag, indebtedPeople, budgets,
+  } = record;
+  const [, setModifyRecord] = useAtom(recordToBeModifiedAtom);
   const navigate = useNavigate();
-  const goToEditRecord = () => navigate(EDIT_RECORD_ROUTE);
+
+  const handleEditRecord = () => {
+    setModifyRecord(record);
+    navigate(EDIT_RECORD_ROUTE);
+  };
 
   return (
     <RecordDrawerContainer>
@@ -34,7 +43,7 @@ const RecordDrawer = ({
       </DrawerCloseBox>
       <DrawerTitleContainer>
         <RecordDrawerTitle>{shortName}</RecordDrawerTitle>
-        <IconButton onClick={goToEditRecord}>
+        <IconButton onClick={handleEditRecord}>
           <EditIcon />
         </IconButton>
         <IconButton onClick={openDeleteRecordModal}>
