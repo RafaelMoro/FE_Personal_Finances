@@ -5,13 +5,13 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  allRecordsAtom, selectedAccountAtom, userAtom,
+  allRecordsAtom, selectedAccountAtom, totalAtom, userAtom,
 } from '../../../../../atoms';
 import { Error } from '../../../Error';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../../constants';
-import { GetRequest } from '../../../../../utils';
+import { GetRequest, formatNumberToCurrency } from '../../../../../utils';
 import { IncomeAndExpensesResponse } from '../../interface';
 import { AppColors } from '../../../../../styles';
 import { List } from '../../Records.styled';
@@ -32,6 +32,7 @@ const RecordList = () => {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
   const [user] = useAtom(userAtom);
+  const [total, setTotal] = useAtom(totalAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
@@ -73,12 +74,36 @@ const RecordList = () => {
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
           // Show that there are no records and the user may create one.
           setAllRecords({ ...allRecords, currentMonth: [] });
+          setTotal({
+            ...total,
+            currentMonth: {
+              expenseTotal: '$0.00',
+              incomeTotal: '$0.00',
+            },
+          });
           NotLoadingCurrentMonthRecords();
           return;
         }
 
         const recordFetched = response?.records;
         NotLoadingCurrentMonthRecords();
+
+        let expenseTotalCounter = 0;
+        let incomeTotalCounter = 0;
+        recordFetched.forEach((record) => {
+          if (record?.isPaid) {
+            expenseTotalCounter += record.amount;
+            return;
+          }
+          incomeTotalCounter += record.amount;
+        });
+        setTotal({
+          ...total,
+          currentMonth: {
+            expenseTotal: formatNumberToCurrency(expenseTotalCounter),
+            incomeTotal: formatNumberToCurrency(incomeTotalCounter),
+          },
+        });
         setAllRecords({ ...allRecords, currentMonth: recordFetched });
       } catch (errorCatched) {
         const newError = errorCatched as AxiosError;
@@ -121,6 +146,8 @@ const RecordList = () => {
         color={color}
         openedAccordeon
         titleMonthAccordeon={`Current month: ${completeCurrentMonth}`}
+        totalExpense={total.currentMonth.expenseTotal}
+        totalIncome={total.currentMonth.incomeTotal}
         accountId={accountId}
         records={allRecords.currentMonth}
         loading={loadingCurrentMonthRecords}
@@ -136,6 +163,8 @@ const RecordList = () => {
         color={color}
         openedAccordeon={false}
         titleMonthAccordeon={`Last month: ${completeLastMonth}`}
+        totalExpense={total.lastMonth.expenseTotal}
+        totalIncome={total.lastMonth.incomeTotal}
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
         records={allRecords.lastMonth}

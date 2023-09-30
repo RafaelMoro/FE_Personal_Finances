@@ -81,9 +81,19 @@ export interface AnyRecord extends AccountRecord {
   expensesPaid?: ExpensePaid[];
 }
 
+export interface MonthTotal {
+  expenseTotal: string;
+  incomeTotal: string;
+}
+
+export interface RecordsTotal {
+  currentMonth: MonthTotal;
+  lastMonth: MonthTotal;
+}
+
 export interface AllRecords {
-  currentMonth: AnyRecord [];
-  lastMonth: AnyRecord [];
+  currentMonth: AnyRecord[];
+  lastMonth: AnyRecord[];
   olderRecords: AnyRecord[];
 }
 

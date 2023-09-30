@@ -9,3 +9,11 @@ export const SelectExpensesContainer = styled.div`
   min-width: 77rem;
   width: 100%;
 `;
+
+/** MonthRecords */
+export const ShowTotalContianer = styled.div`
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+`;

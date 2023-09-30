@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import { AccountUI } from '../components/UI/Account/interface';
 import { WindowSizeValues, ModalAction } from '../aliasType';
 import {
-  Account, User, AllRecords, GlobalNotification,
+  Account, User, AllRecords, GlobalNotification, RecordsTotal,
 } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 
@@ -18,7 +18,21 @@ export const openChangeAccountModalAtom = atom<boolean>(false);
 export const accountActionAtom = atom<ModalAction>('Create');
 
 /** Records atoms  */
-export const allRecordsAtom = atom<AllRecords>({ currentMonth: [], lastMonth: [], olderRecords: [] });
+export const allRecordsAtom = atom<AllRecords>({
+  currentMonth: [],
+  lastMonth: [],
+  olderRecords: [],
+});
+export const totalAtom = atom<RecordsTotal>({
+  currentMonth: {
+    expenseTotal: '$0.00',
+    incomeTotal: '$0.00',
+  },
+  lastMonth: {
+    expenseTotal: '$0.00',
+    incomeTotal: '$0.00',
+  },
+});
 
 /** Notifications atoms  */
 export const globalNotificationAtom = atom<GlobalNotification>({
