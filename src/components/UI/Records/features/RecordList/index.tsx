@@ -125,6 +125,13 @@ const RecordList = () => {
     ...allRecords,
     lastMonth: fetchedRecords,
   });
+  const updateTotalLastMonth = (expenseTotal: string, incomeTotal: string) => setTotal({
+    ...total,
+    lastMonth: {
+      expenseTotal,
+      incomeTotal,
+    },
+  });
 
   const handleFetchLastMonthRecords = async () => {
     await getRecordsByMonthAndYear({
@@ -136,6 +143,7 @@ const RecordList = () => {
       isLoadingCallback: LoadingLastMonthRecords,
       isNotLoadingCallback: NotLoadingLastMonthRecords,
       handleFetchRecordsCallback: updateLastMonthRecords,
+      updateTotalCallback: updateTotalLastMonth,
     });
   };
 

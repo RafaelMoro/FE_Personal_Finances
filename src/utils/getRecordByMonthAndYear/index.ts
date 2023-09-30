@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND } from '../../components/UI/Records/constants';
 import { NETWORK_CATCH_ERROR } from '../../constants';
 import { IncomeAndExpensesResponse } from '../../components/UI/Records/interface';
 import { GetRequest } from '../GetRequest';
 import { AnyRecord } from '../../globalInterface';
+import { formatNumberToCurrency } from '../FormatNumberToCurrency';
 
 interface GetRecordByMonthAndYearProps {
   accountId: string;
@@ -15,11 +15,12 @@ interface GetRecordByMonthAndYearProps {
   isNotLoadingCallback: () => void;
   handleErrorCallback: (error: string) => void;
   handleFetchRecordsCallback: (records: AnyRecord[]) => void;
+  updateTotalCallback: (expenseTotal: string, incomeTotal: string) => void;
 }
 
 export const getRecordsByMonthAndYear = async ({
   accountId, month, year, bearerToken, handleErrorCallback, handleFetchRecordsCallback,
-  isLoadingCallback, isNotLoadingCallback,
+  isLoadingCallback, isNotLoadingCallback, updateTotalCallback,
 }: GetRecordByMonthAndYearProps) => {
   try {
     isLoadingCallback();
@@ -45,10 +46,21 @@ export const getRecordsByMonthAndYear = async ({
       // Show that there are no records and the user may create one.
       isNotLoadingCallback();
       handleFetchRecordsCallback([]);
+      updateTotalCallback('$0.00', '$0.00');
       return;
     }
 
     const recordFetched = response?.records;
+    let expenseTotalCounter = 0;
+    let incomeTotalCounter = 0;
+    recordFetched.forEach((record) => {
+      if (record?.isPaid) {
+        expenseTotalCounter += record.amount;
+        return;
+      }
+      incomeTotalCounter += record.amount;
+    });
+    updateTotalCallback(formatNumberToCurrency(expenseTotalCounter), formatNumberToCurrency(incomeTotalCounter));
 
     isNotLoadingCallback();
     handleFetchRecordsCallback(recordFetched);
