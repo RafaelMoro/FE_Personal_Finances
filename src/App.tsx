@@ -9,6 +9,7 @@ import {
 } from './pages/LoginModule';
 import { CreateRecord } from './pages/Records/CreateRecords/CreateRecord';
 import { GlobalStyles } from './styles/Global.styled';
+import { EditRecord } from './pages/Records/EditRecords/EditRecord';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/create-record" element={<CreateRecord />} />
+          <Route path="/edit-record" element={<EditRecord />} />
         </Route>
       </Routes>
     </LocalizationProvider>
