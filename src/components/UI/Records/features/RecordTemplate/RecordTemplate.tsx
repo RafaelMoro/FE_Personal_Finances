@@ -228,8 +228,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               touchedSubCategory={touched.subCategory}
             />
             <ChipsContainer>
-              <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} />
-              <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} />
+              <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
+              <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
             </ChipsContainer>
             { (isCredit && typeOfRecord === 'expense') && (
             <FormControlLabel

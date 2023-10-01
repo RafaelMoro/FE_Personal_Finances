@@ -1,5 +1,5 @@
 import { Field, Formik } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
@@ -9,9 +9,15 @@ import {
 } from '../../../../../styles';
 
 const AddChip = ({
-  name, label, action, updateData,
+  name, label, action, chipsData = [], updateData,
 }: AddChipProps) => {
-  const [chips, setChips] = useState<string[]>([]);
+  const [chips, setChips] = useState<string[]>(chipsData);
+
+  useEffect(() => {
+    if (chipsData.length > 0) {
+      setChips(chipsData);
+    }
+  }, [chipsData]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmitChips = (values: any) => {
