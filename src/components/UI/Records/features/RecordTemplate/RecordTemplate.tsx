@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
@@ -8,7 +8,7 @@ import { Switch } from 'formik-mui';
 import { useAtom } from 'jotai';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { selectedAccountAtom } from '../../../../../atoms';
+import { recordToBeModifiedAtom, selectedAccountAtom } from '../../../../../atoms';
 import {
   RecordTemplateProps, AdditionalData, TypeOfRecord,
 } from './interface';
@@ -48,6 +48,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     action: indebtedPersonModalAction,
   } = useIndebtedPeople();
 
+  const [recordToBeEdited] = useAtom(recordToBeModifiedAtom);
+
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
@@ -59,7 +61,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
-  const initialValues = useRef<CreateRecordValues>({
+  const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
     description: '',
@@ -69,22 +71,43 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     isPaid: !isCredit,
     date: new Date(),
   });
-
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
-  const additionalData = useRef<AdditionalData>({
+  const [additionalData, setAdditionalData] = useState<AdditionalData>({
     budgets: [],
     tag: [],
   });
 
+  // Update edit data to the initial values
+  useEffect(() => {
+    if (edit && recordToBeEdited) {
+      const newInitialValues: CreateRecordValues = {
+        amount: String(recordToBeEdited.amount),
+        shortName: recordToBeEdited.shortName,
+        description: recordToBeEdited.description,
+        category: '',
+        subCategory: '',
+        isPaid: recordToBeEdited.isPaid ?? !isCredit,
+        date: recordToBeEdited.date,
+      };
+      const newAdditionalData: AdditionalData = {
+        budgets: recordToBeEdited.budgets,
+        tag: recordToBeEdited.tag,
+      };
+
+      setInitialValues(newInitialValues);
+      setAdditionalData(newAdditionalData);
+    }
+  }, [edit, isCredit, recordToBeEdited]);
+
   const openAddPersonModal = (values: any) => {
     // save initial values
-    initialValues.current = values;
+    setInitialValues(values);
     openModal();
   };
 
   const toggleShowExpenses = (values: any) => {
     // save initial values
-    initialValues.current = values;
+    setInitialValues(values);
     setShowExpenses(!showExpenses);
   };
   const closeShowExpenses = () => setShowExpenses(false);
@@ -96,11 +119,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
 
   const updateTags = (newTags: string[]):void => {
-    additionalData.current = { ...additionalData.current, tag: newTags };
+    setAdditionalData({ ...additionalData, tag: newTags });
   };
 
   const updateBudgets = (newBudgets: string[]):void => {
-    additionalData.current = { ...additionalData.current, budgets: newBudgets };
+    setAdditionalData({ ...additionalData, budgets: newBudgets });
   };
 
   // Change the handle Submit
@@ -110,13 +133,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
-      ...additionalData.current,
+      ...additionalData,
       amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
     } : {
       ...restValues,
-      ...additionalData.current,
+      ...additionalData,
       amount: amountToNumber,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
@@ -136,16 +159,18 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <GoBackButton to={DASHBOARD_ROUTE}>
         <Close sx={{ fontSize: '3.5rem' }} />
       </GoBackButton>
-      <ToggleButtonGroup
-        color="primary"
-        exclusive
-        value={typeOfRecord}
-        onChange={changeTypeOfRecord}
-        aria-label="Select type of record"
-      >
-        <ToggleButton value="expense">Expense</ToggleButton>
-        <ToggleButton value="income">Income</ToggleButton>
-      </ToggleButtonGroup>
+      { (!edit) && (
+        <ToggleButtonGroup
+          color="primary"
+          exclusive
+          value={typeOfRecord}
+          onChange={changeTypeOfRecord}
+          aria-label="Select type of record"
+        >
+          <ToggleButton value="expense">Expense</ToggleButton>
+          <ToggleButton value="income">Income</ToggleButton>
+        </ToggleButtonGroup>
+      ) }
       <ParagraphTitle align="center">
         {' '}
         { action }
@@ -153,7 +178,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         { typeOfRecord }
       </ParagraphTitle>
       <Formik
-        initialValues={initialValues.current}
+        initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
         validationSchema={CreateRecordSchema}
         enableReinitialize
