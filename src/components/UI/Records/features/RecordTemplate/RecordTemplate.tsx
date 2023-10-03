@@ -17,7 +17,7 @@ import {
   RecordTemplateProps, AdditionalData, TypeOfRecord,
 } from './interface';
 import { CreateRecordValues } from '../../interface';
-import { EditCategory, ExpensePaid } from '../../../../../globalInterface';
+import { EditCategory, ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 
 /** Components */
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
@@ -50,6 +50,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     closeModal,
     indebtedPeople,
     addIndebtedPerson,
+    addIndebtedPeopleForEdit,
     deleteIndebtedPerson,
     updateIndebtedPerson,
     personToModify,
@@ -89,7 +90,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   // Update edit data to the initial values
   useEffect(() => {
-    if (edit && recordToBeEdited) {
+    if (edit && recordToBeEdited?.shortName) {
       const newInitialValues: CreateRecordValues = {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
@@ -104,10 +105,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         tag: recordToBeEdited.tag,
       };
 
+      const newIndebtedPeople = (recordToBeEdited?.indebtedPeople ?? []) as IndebtedPeople[];
+      if (newIndebtedPeople.length > 0) {
+        addIndebtedPeopleForEdit(newIndebtedPeople);
+      }
+
       setInitialValues(newInitialValues);
       setAdditionalData(newAdditionalData);
     }
-  }, [categoryToBeEdited.categoryName, edit, isCredit, recordToBeEdited]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categoryToBeEdited.categoryName, edit, isCredit]);
 
   const openAddPersonModal = (values: any) => {
     // save initial values

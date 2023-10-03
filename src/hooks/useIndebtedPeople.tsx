@@ -11,6 +11,11 @@ const useIndebtedPeople = () => {
     setIndebtedPeople([...indebtedPeople, indebtedPerson]);
   };
 
+  /** Method used when a record is to be edited, the indebted people has to be filled down. */
+  const addIndebtedPeopleForEdit = (indebtedPeopleReceived: IndebtedPeople[]):void => {
+    setIndebtedPeople(indebtedPeopleReceived);
+  };
+
   const updateIndebtedPerson = (indebtedPerson: IndebtedPeople):void => {
     const personExist = indebtedPeople.find((person) => person.name === indebtedPerson.name);
     if (personExist) {
@@ -45,6 +50,7 @@ const useIndebtedPeople = () => {
     closeModal,
     indebtedPeople,
     addIndebtedPerson,
+    addIndebtedPeopleForEdit,
     deleteIndebtedPerson,
     updateIndebtedPerson,
     personToModify,
