@@ -8,32 +8,39 @@ import { Switch } from 'formik-mui';
 import { useAtom } from 'jotai';
 import dayjs from 'dayjs';
 
+/** Constants, atoms, interfaces, hooks */
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { recordToBeModifiedAtom, selectedAccountAtom } from '../../../../../atoms';
+import { useRecords } from '../../../../../hooks/useRecords';
+import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import {
   RecordTemplateProps, AdditionalData, TypeOfRecord,
 } from './interface';
 import { CreateRecordValues } from '../../interface';
+import { EditCategory, ExpensePaid } from '../../../../../globalInterface';
+
+/** Components */
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
+import { AddChip } from '../AddChip/AddChip';
+import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
+import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
+import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
   CancelButton, AnchorButton, FlexContainer, FormControlLabel,
   SecondaryButton, ToggleButton,
 } from '../../../../../styles';
+
+/** Styles */
 import {
   RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer, ToggleButtonGroup,
 } from './RecordTemplate.styled';
-import { AddChip } from '../AddChip/AddChip';
-import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
-import { EditCategory, ExpensePaid } from '../../../../../globalInterface';
-import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
+
+/** Utils */
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
-import { useRecords } from '../../../../../hooks/useRecords';
-import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
-import { DateTimePickerValue } from '../../../DateTimePickerValue';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const { handleSubmitExpense, handleSubmitIncome } = useRecords({});

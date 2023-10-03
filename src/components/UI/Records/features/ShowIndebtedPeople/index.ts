@@ -1,0 +1,1 @@
+export { ShowIndebtedPeople } from './ShowIndebtedPeople';
