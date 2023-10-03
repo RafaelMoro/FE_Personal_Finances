@@ -26,7 +26,7 @@ import {
 } from './RecordTemplate.styled';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
-import { ExpensePaid } from '../../../../../globalInterface';
+import { EditCategory, ExpensePaid } from '../../../../../globalInterface';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
@@ -49,6 +49,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   } = useIndebtedPeople();
 
   const [recordToBeEdited] = useAtom(recordToBeModifiedAtom);
+  const categoryToBeEdited = (recordToBeEdited?.category ?? '') as EditCategory;
 
   const action: string = edit ? 'Edit' : 'Create';
   const [selectedAccount] = useAtom(selectedAccountAtom);
@@ -84,8 +85,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
         description: recordToBeEdited.description,
-        category: '',
-        subCategory: '',
+        category: categoryToBeEdited.categoryName,
+        subCategory: recordToBeEdited.subCategory,
         isPaid: recordToBeEdited.isPaid ?? !isCredit,
         date: recordToBeEdited.date,
       };
@@ -97,7 +98,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       setInitialValues(newInitialValues);
       setAdditionalData(newAdditionalData);
     }
-  }, [edit, isCredit, recordToBeEdited]);
+  }, [categoryToBeEdited.categoryName, edit, isCredit, recordToBeEdited]);
 
   const openAddPersonModal = (values: any) => {
     // save initial values
@@ -226,6 +227,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               errorSubcategory={errors.subCategory}
               touchedCategory={touched.category}
               touchedSubCategory={touched.subCategory}
+              categoryToBeEdited={categoryToBeEdited}
             />
             <ChipsContainer>
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} chipsData={additionalData.tag} />

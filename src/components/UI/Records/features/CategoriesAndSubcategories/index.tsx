@@ -8,7 +8,7 @@ import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
 import { CategoriesResponse } from '../../interface';
-import { Category } from '../../../../../globalInterface';
+import { Category, EditCategory } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { GET_CATEGORIES } from '../../constants';
 import { GetRequest } from '../../../../../utils';
@@ -24,10 +24,11 @@ interface CategoriesAndSubcategoriesProps {
   errorSubcategory?: string;
   touchedCategory?: boolean;
   touchedSubCategory?: boolean;
+  categoryToBeEdited: EditCategory;
 }
 
 const CategoriesAndSubcategories = ({
-  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory,
+  errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
   const [user] = useAtom(userAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
@@ -68,12 +69,18 @@ const CategoriesAndSubcategories = ({
 
       setIsLoading(false);
       setCategories([...categories, ...response.categories]);
+
+      // Check if the category to be edited exists, if so, set current category
+      if (categoryToBeEdited) {
+        const newCurrentCategory = categories.find((category) => category.categoryName === categoryToBeEdited.categoryName);
+        setCurrentCategory(newCurrentCategory ?? CATEGORIES_RECORDS[0]);
+      }
     };
 
     // Fetch while the categories are 12 because are the total of the local categories.
     // If there are more, categories has been fetched already.
-    if (!!user && bearerToken && categories.length === 12 && !error) getCategories();
-  }, [bearerToken, categories, error, user, updateGlobalNotification]);
+    if (!!user && bearerToken && categories.length === 11 && !error) getCategories();
+  }, [bearerToken, categories, error, user, updateGlobalNotification, categoryToBeEdited]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
