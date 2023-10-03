@@ -33,7 +33,7 @@ import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { useRecords } from '../../../../../hooks/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
-import { DateTimePickerValue } from '../../../DateTimePicker/DateTimePicker';
+import { DateTimePickerValue } from '../../../DateTimePickerValue';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const { handleSubmitExpense, handleSubmitIncome } = useRecords({});
