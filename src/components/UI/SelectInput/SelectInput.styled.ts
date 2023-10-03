@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { ISelectInputDynamicProps } from './interface';
+import { SelectInputDynamicProps } from './interface';
 import { MenuItem } from '../../../styles';
 
-const accountDynamicStyles = ({ backgroundColor }: ISelectInputDynamicProps) => css`
+const accountDynamicStyles = ({ backgroundColor }: SelectInputDynamicProps) => css`
   background-color: ${backgroundColor};
 `;
 

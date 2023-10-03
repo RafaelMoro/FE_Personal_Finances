@@ -1,19 +1,19 @@
 import { ReactNode } from 'react';
 import { ITextColors, IBackgroundColors } from '../../../styles/interface';
 
-interface ISelectFormikField {
+export interface SelectFormikFieldProps {
   name: string;
   value: string;
 }
 
-interface ISelectFormikForm {
+export interface SelectFormikFormProps {
   setFieldValue: (name: string, value: string) => void;
 }
 
-export interface ISelectFormikProps {
+export interface SelectFormikProps {
   children: ReactNode;
-  field: ISelectFormikField;
-  form: ISelectFormikForm;
+  field: SelectFormikFieldProps;
+  form: SelectFormikFormProps;
   // Callback to do any action depending on the name and value of the select input
   processSelectDataFn?: (name: string, value: string | string[]) => void;
   disabled?: boolean;
@@ -31,6 +31,6 @@ export interface SelectInputProps {
   disabled?: boolean;
 }
 
-export interface ISelectInputDynamicProps {
+export interface SelectInputDynamicProps {
   backgroundColor: string;
 }

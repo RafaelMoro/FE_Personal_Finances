@@ -6,6 +6,7 @@ import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 import { useAtom } from 'jotai';
+import dayjs from 'dayjs';
 
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { recordToBeModifiedAtom, selectedAccountAtom } from '../../../../../atoms';
@@ -18,7 +19,7 @@ import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
 import {
   ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton, FlexContainer, FormControlLabel, DateTimePicker,
+  CancelButton, AnchorButton, FlexContainer, FormControlLabel,
   SecondaryButton, ToggleButton,
 } from '../../../../../styles';
 import {
@@ -32,6 +33,7 @@ import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { useRecords } from '../../../../../hooks/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
+import { DateTimePickerValue } from '../../../DateTimePicker/DateTimePicker';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const { handleSubmitExpense, handleSubmitIncome } = useRecords({});
@@ -70,7 +72,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     subCategory: '',
     // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: !isCredit,
-    date: new Date(),
+    date: dayjs(new Date()),
   });
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
   const [additionalData, setAdditionalData] = useState<AdditionalData>({
@@ -88,7 +90,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         category: categoryToBeEdited.categoryName,
         subCategory: recordToBeEdited.subCategory,
         isPaid: recordToBeEdited.isPaid ?? !isCredit,
-        date: recordToBeEdited.date,
+        date: dayjs(recordToBeEdited.date),
       };
       const newAdditionalData: AdditionalData = {
         budgets: recordToBeEdited.budgets,
@@ -130,7 +132,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
-    const { isPaid, amount, ...restValues } = values;
+    const {
+      isPaid, amount, ...restValues
+    } = values;
     const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
@@ -186,7 +190,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         validateOnMount
       >
         {({
-          submitForm, errors, touched, values, setFieldValue,
+          submitForm, errors, touched, values,
         }) => (
           <FormContainer>
             <Field
@@ -201,10 +205,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               }}
             />
             <Field
-              component={DateTimePicker}
+              component={DateTimePickerValue}
               disableFuture
               name="date"
-              onChange={(value: any) => setFieldValue('date', value.$d)}
               label="Date and Time"
             />
             <Field

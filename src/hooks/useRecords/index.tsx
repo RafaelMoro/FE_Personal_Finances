@@ -128,7 +128,8 @@ const useRecords = ({
   };
 
   const handleSubmitExpense = async (values: CreateExpenseValues) => {
-    const { amount, date } = values;
+    const { amount, date: dateValue } = values;
+    const date = dateValue.toDate();
     const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
@@ -161,7 +162,8 @@ const useRecords = ({
   };
 
   const handleSubmitIncome = async (values: CreateIncomeValues) => {
-    const { amount, date } = values;
+    const { amount, date: dateValue } = values;
+    const date = dateValue.toDate();
     const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
 
     // If an error is catched:

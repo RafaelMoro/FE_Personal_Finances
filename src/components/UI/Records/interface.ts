@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Dayjs } from 'dayjs';
 import {
   Category, ExpensePaid, AnyRecord, IndebtedPeople,
 } from '../../../globalInterface';
@@ -41,7 +42,7 @@ export interface CreateRecordValues {
   category: string;
   subCategory: string;
   isPaid?: boolean;
-  date: Date;
+  date: Dayjs;
 }
 
 export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> {
