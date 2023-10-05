@@ -155,6 +155,13 @@ const useRecords = ({
       return;
     }
 
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record created',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
+
     // Update expenses
     updateAllRecords({ date, newRecord: expenseResponse });
 
@@ -197,6 +204,13 @@ const useRecords = ({
       }
     }
 
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record updated',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
+
     // Update expenses
     updateAllRecords({ date, newRecord: expenseResponse });
 
@@ -230,6 +244,13 @@ const useRecords = ({
       });
       return;
     }
+
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record created',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
 
     // Update incomes
     updateAllRecords({ date, newRecord: createIncomeInfo });
@@ -272,6 +293,13 @@ const useRecords = ({
         return;
       }
     }
+
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record Updated',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
 
     // Update expenses
     updateAllRecords({ date, newRecord: expenseResponse });
