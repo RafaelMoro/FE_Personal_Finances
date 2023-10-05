@@ -188,7 +188,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     if (isExpense) {
       if (edit) {
         const recordId = recordToBeEdited?._id ?? '';
-        editExpense(newValues, recordId, amountTouched);
+        const previousAmount = recordToBeEdited?.amount ?? 0;
+        editExpense(newValues, recordId, amountTouched, previousAmount);
         return;
       }
       createExpense(newValues);
@@ -197,7 +198,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
     if (edit) {
       const recordId = recordToBeEdited?._id ?? '';
-      editIncome(newValues, recordId, amountTouched);
+      const previousAmount = recordToBeEdited?.amount ?? 0;
+      editIncome(newValues, recordId, amountTouched, previousAmount);
       return;
     }
     createIncome(newValues);

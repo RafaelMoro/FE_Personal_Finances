@@ -13,6 +13,10 @@ export interface UpdateAmountAccountProps {
   deleteRecord?: boolean;
 }
 
+export interface UpdateAmountAccountOnEditProps extends Omit<UpdateAmountAccountProps, 'deleteRecord'> {
+  previousAmount: number;
+}
+
 export interface ShowErrorNotificationProps {
   errorMessage: string;
   action: string;

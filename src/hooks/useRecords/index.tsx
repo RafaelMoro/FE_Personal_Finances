@@ -16,6 +16,7 @@ import {
 import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsProps,
+  UpdateAmountAccountOnEditProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
@@ -48,6 +49,34 @@ const useRecords = ({
       ? { accountId, amount: amountToUpdate - amount }
       : { accountId, amount: amountToUpdate + amount };
     const payload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
+
+    const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
+
+    if (updateAccountResponse?.error) {
+      return `Error: ${updateAccountResponse?.error}`;
+    }
+
+    // Update selected account amount.
+    const { amount: newAmount } = payload;
+    if (selectedAccount) setSelectedAccount({ ...selectedAccount, amount: newAmount });
+    const accountsModified = accountsUI.map((account) => {
+      if (account._id === accountId && selectedAccount) {
+        return { ...selectedAccount, amount: newAmount };
+      }
+      return account;
+    });
+    setAccountsUI(accountsModified);
+    return 'Account updated';
+  };
+
+  const updateAmountAccountOnEditRecord = async ({ amount, isExpense, previousAmount }: UpdateAmountAccountOnEditProps) => {
+    const amountToUpdate = selectedAccount?.amount as number;
+    const accountId = selectedAccount?._id as string;
+    const amountResultIncome = amountToUpdate - previousAmount + amount;
+    const amountResultExpense = amountToUpdate + previousAmount - amount;
+    const payload = isExpense
+      ? { accountId, amount: amountResultExpense }
+      : { accountId, amount: amountResultIncome };
 
     const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
 
@@ -169,7 +198,7 @@ const useRecords = ({
     navigate(DASHBOARD_ROUTE);
   };
 
-  const editExpense = async (values: CreateExpenseValues, recordId: string, amountTouched: boolean) => {
+  const editExpense = async (values: CreateExpenseValues, recordId: string, amountTouched: boolean, previousAmount: number) => {
     const { amount, date: dateValue } = values;
     const newValues = { ...values, recordId };
     const date = dateValue.toDate();
@@ -192,7 +221,7 @@ const useRecords = ({
     }
 
     if (amountTouched) {
-      const updateAmount = await updateAmountAccount({ amount, isExpense: true });
+      const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
       if (updateAmount.includes('Error')) {
         // show notification error
         showErrorNotification({
@@ -259,7 +288,7 @@ const useRecords = ({
     navigate(DASHBOARD_ROUTE);
   };
 
-  const editIncome = async (values: CreateIncomeValues, recordId: string, amountTouched: boolean) => {
+  const editIncome = async (values: CreateIncomeValues, recordId: string, amountTouched: boolean, previousAmount: number) => {
     const { amount, date: dateValue } = values;
     const newValues = { ...values, recordId };
     const date = dateValue.toDate();
@@ -282,7 +311,7 @@ const useRecords = ({
     }
 
     if (amountTouched) {
-      const updateAmount = await updateAmountAccount({ amount, isExpense: false });
+      const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
       if (updateAmount.includes('Error')) {
         // show notification error
         showErrorNotification({
