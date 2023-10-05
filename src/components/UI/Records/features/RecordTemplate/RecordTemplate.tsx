@@ -91,6 +91,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Update edit data to the initial values
   useEffect(() => {
     if (edit && recordToBeEdited?.shortName) {
+      // Set record type to income if it's an income.
+      if (recordToBeEdited?.expensesPaid) {
+        setTypeOfRecord('income');
+      }
+
       const newInitialValues: CreateRecordValues = {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
@@ -105,9 +110,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         tag: recordToBeEdited.tag,
       };
 
+      // If the expense has indebted people, update it.
       const newIndebtedPeople = (recordToBeEdited?.indebtedPeople ?? []) as IndebtedPeople[];
       if (newIndebtedPeople.length > 0) {
         addIndebtedPeopleForEdit(newIndebtedPeople);
+      }
+
+      // If the income has expenses paid, update it.
+      const expensesPaid = (recordToBeEdited?.expensesPaid ?? []) as ExpensePaid[];
+      if (expensesPaid.length > 0) {
+        setExpensesSelected(expensesPaid);
       }
 
       setInitialValues(newInitialValues);
