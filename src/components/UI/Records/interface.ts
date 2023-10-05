@@ -57,7 +57,7 @@ export interface CreateIncomeValues extends CreateExpenseValues {
   expensesPaid: string[];
 }
 
-export interface CreateExpenseResponse extends AnyRecord {
+export interface CreateEditExpenseResponse extends AnyRecord {
   message?: string;
 }
 

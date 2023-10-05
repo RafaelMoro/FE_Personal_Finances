@@ -43,7 +43,7 @@ import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
-  const { handleSubmitExpense, handleSubmitIncome } = useRecords({});
+  const { createExpense, createIncome, editExpense } = useRecords({});
   const {
     modal: indebtedPersonModal,
     openModal,
@@ -158,6 +158,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
+    // Flag to know if amount has a different value from the initial value. If so, the query to update account amount will be executed.
+    let amountTouched = false;
+    if (recordToBeEdited?.amount !== Number(values?.amount)) {
+      amountTouched = true;
+    }
+
     const {
       isPaid, amount, ...restValues
     } = values;
@@ -178,11 +184,16 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     };
 
     if (isExpense) {
-      handleSubmitExpense(newValues);
+      if (edit) {
+        const recordId = recordToBeEdited?._id ?? '';
+        editExpense(newValues, recordId, amountTouched);
+        return;
+      }
+      createExpense(newValues);
       return;
     }
 
-    handleSubmitIncome(newValues);
+    createIncome(newValues);
   };
 
   return (
@@ -263,38 +274,38 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
             </ChipsContainer>
             { (isCredit && typeOfRecord === 'expense') && (
-            <FormControlLabel
-              control={(
-                <Field
-                  type="checkbox"
-                  checked={values.isPaid}
-                  label="Transaction paid"
-                  name="isPaid"
-                  component={Switch}
-                />
+              <FormControlLabel
+                control={(
+                  <Field
+                    type="checkbox"
+                    checked={values.isPaid}
+                    label="Transaction paid"
+                    name="isPaid"
+                    component={Switch}
+                  />
               )}
-              label="Transaction paid"
-            />
+                label="Transaction paid"
+              />
             ) }
             { (typeOfRecord === 'expense') && (
-            <>
-              <ShowIndebtedPeople
-                indebtedPeople={indebtedPeople}
-                deleteIndebtedPerson={deleteIndebtedPerson}
-                modifyIndebtedPerson={fetchPersonToModify}
-              />
-              <FlexContainer justifyContent="center">
-                <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
-              </FlexContainer>
-            </>
+              <>
+                <ShowIndebtedPeople
+                  indebtedPeople={indebtedPeople}
+                  deleteIndebtedPerson={deleteIndebtedPerson}
+                  modifyIndebtedPerson={fetchPersonToModify}
+                />
+                <FlexContainer justifyContent="center">
+                  <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
+                </FlexContainer>
+              </>
             ) }
             { (typeOfRecord === 'income' && isCredit) && (
-            <>
-              <ShowExpenses usePagination expenses={expensesSelected} />
-              <FlexContainer justifyContent="center">
-                <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
-              </FlexContainer>
-            </>
+              <>
+                <ShowExpenses usePagination expenses={expensesSelected} />
+                <FlexContainer justifyContent="center">
+                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
+                </FlexContainer>
+              </>
             ) }
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>

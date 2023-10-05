@@ -7,7 +7,7 @@ import { formatDateToString, postRequestWithBearer } from '../../utils';
 import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
-  CreateExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
 } from '../../components/UI/Records/interface';
 import {
   accountsUIAtom,
@@ -84,6 +84,7 @@ const useRecords = ({
     }
   };
 
+  // Fn used to update allRecords atom.
   const updateAllRecords = ({
     date, newRecord, deleteRecord = false, deletedRecordId = '',
   }: UpdateRecordsProps) => {
@@ -127,16 +128,16 @@ const useRecords = ({
     }
   };
 
-  const handleSubmitExpense = async (values: CreateExpenseValues) => {
+  const createExpense = async (values: CreateExpenseValues) => {
     const { amount, date: dateValue } = values;
     const date = dateValue.toDate();
-    const createExpenseInfo: CreateExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
+    const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
-    if (createExpenseInfo?.message) {
+    if (expenseResponse?.message) {
       // Show notification error
       showErrorNotification({
-        errorMessage: `There is an error: ${createExpenseInfo?.message}`,
+        errorMessage: `There is an error: ${expenseResponse?.message}`,
         action: 'Create',
         goToDashboard: true,
       });
@@ -155,13 +156,56 @@ const useRecords = ({
     }
 
     // Update expenses
-    updateAllRecords({ date, newRecord: createExpenseInfo });
+    updateAllRecords({ date, newRecord: expenseResponse });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
   };
 
-  const handleSubmitIncome = async (values: CreateIncomeValues) => {
+  const editExpense = async (values: CreateExpenseValues, recordId: string, amountTouched: boolean) => {
+    const { amount, date: dateValue } = values;
+    const newValues = { ...values, recordId };
+    const date = dateValue.toDate();
+    const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
+      newValues,
+      POST_DELETE_EXPENSE_ROUTE,
+      'put',
+      bearerToken,
+    );
+    console.log('edit expense response', expenseResponse);
+
+    // If an error is catched:
+    if (expenseResponse?.message) {
+      // Show notification error
+      showErrorNotification({
+        errorMessage: `There is an error: ${expenseResponse?.message}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
+      return;
+    }
+
+    if (amountTouched) {
+      const updateAmount = await updateAmountAccount({ amount, isExpense: true });
+      if (updateAmount.includes('Error')) {
+        // show notification error
+        showErrorNotification({
+          errorMessage: `Updating amount error: ${updateAmount}`,
+          action: 'Create',
+          goToDashboard: true,
+        });
+        return;
+      }
+    }
+
+    // Update expenses
+    updateAllRecords({ date, newRecord: expenseResponse });
+
+    // Navigate to dashboard
+    navigate(DASHBOARD_ROUTE);
+  };
+
+  const createIncome = async (values: CreateIncomeValues) => {
     const { amount, date: dateValue } = values;
     const date = dateValue.toDate();
     const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
@@ -247,8 +291,9 @@ const useRecords = ({
   };
 
   return {
-    handleSubmitExpense,
-    handleSubmitIncome,
+    createExpense,
+    editExpense,
+    createIncome,
     deleteRecord,
   };
 };
