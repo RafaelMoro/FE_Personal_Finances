@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
 import { formatDateToString, postRequestWithBearer } from '../../utils';
-import { POST_DELETE_EXPENSE_ROUTE, POST_DELETE_INCOME_ROUTE } from '../../components/UI/Records/constants';
+import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
@@ -131,7 +131,7 @@ const useRecords = ({
   const createExpense = async (values: CreateExpenseValues) => {
     const { amount, date: dateValue } = values;
     const date = dateValue.toDate();
-    const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, POST_DELETE_EXPENSE_ROUTE, bearerToken);
+    const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, EXPENSE_ROUTE, bearerToken);
 
     // If an error is catched:
     if (expenseResponse?.message) {
@@ -168,11 +168,10 @@ const useRecords = ({
     const date = dateValue.toDate();
     const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
       newValues,
-      POST_DELETE_EXPENSE_ROUTE,
+      EXPENSE_ROUTE,
       'put',
       bearerToken,
     );
-    console.log('edit expense response', expenseResponse);
 
     // If an error is catched:
     if (expenseResponse?.message) {
@@ -208,7 +207,7 @@ const useRecords = ({
   const createIncome = async (values: CreateIncomeValues) => {
     const { amount, date: dateValue } = values;
     const date = dateValue.toDate();
-    const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, POST_DELETE_INCOME_ROUTE, bearerToken);
+    const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
 
     // If an error is catched:
     if (createIncomeInfo?.message) {
@@ -239,6 +238,48 @@ const useRecords = ({
     navigate(DASHBOARD_ROUTE);
   };
 
+  const editIncome = async (values: CreateIncomeValues, recordId: string, amountTouched: boolean) => {
+    const { amount, date: dateValue } = values;
+    const newValues = { ...values, recordId };
+    const date = dateValue.toDate();
+    const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
+      newValues,
+      INCOME_ROUTE,
+      'put',
+      bearerToken,
+    );
+
+    // If an error is catched:
+    if (expenseResponse?.message) {
+      // Show notification error
+      showErrorNotification({
+        errorMessage: `There is an error: ${expenseResponse?.message}`,
+        action: 'Create',
+        goToDashboard: true,
+      });
+      return;
+    }
+
+    if (amountTouched) {
+      const updateAmount = await updateAmountAccount({ amount, isExpense: false });
+      if (updateAmount.includes('Error')) {
+        // show notification error
+        showErrorNotification({
+          errorMessage: `Updating amount error: ${updateAmount}`,
+          action: 'Create',
+          goToDashboard: true,
+        });
+        return;
+      }
+    }
+
+    // Update expenses
+    updateAllRecords({ date, newRecord: expenseResponse });
+
+    // Navigate to dashboard
+    navigate(DASHBOARD_ROUTE);
+  };
+
   const deleteRecord = async () => {
     const amountOfRecord = recordToBeDeleted?.amount as number;
     const dateString = recordToBeDeleted?.date as Date;
@@ -246,7 +287,7 @@ const useRecords = ({
     const recordId = recordToBeDeleted?._id as string;
 
     const valuesDeleteRecord = { recordId };
-    const route = deleteRecordExpense ? POST_DELETE_EXPENSE_ROUTE : POST_DELETE_INCOME_ROUTE;
+    const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
     const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
       valuesDeleteRecord,
       route,
@@ -294,6 +335,7 @@ const useRecords = ({
     createExpense,
     editExpense,
     createIncome,
+    editIncome,
     deleteRecord,
   };
 };

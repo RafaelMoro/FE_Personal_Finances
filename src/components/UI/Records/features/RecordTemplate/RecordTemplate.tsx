@@ -43,7 +43,9 @@ import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
-  const { createExpense, createIncome, editExpense } = useRecords({});
+  const {
+    createExpense, createIncome, editExpense, editIncome,
+  } = useRecords({});
   const {
     modal: indebtedPersonModal,
     openModal,
@@ -193,6 +195,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       return;
     }
 
+    if (edit) {
+      const recordId = recordToBeEdited?._id ?? '';
+      editIncome(newValues, recordId, amountTouched);
+      return;
+    }
     createIncome(newValues);
   };
 
