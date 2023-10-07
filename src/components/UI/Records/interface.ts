@@ -12,6 +12,10 @@ export interface RecordTableProps {
   isGrid?: boolean;
 }
 
+export interface RecordStatusProps {
+  isPaid?: boolean;
+}
+
 export interface RecordListProps {
   records: AnyRecord [];
 }

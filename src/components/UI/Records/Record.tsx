@@ -4,13 +4,13 @@ import {
   ListItem, Drawer,
 } from '@mui/material';
 
-import { windowSizeAtom } from '../../../atoms';
+import { selectedAccountAtom, windowSizeAtom } from '../../../atoms';
 import { RecordDrawer } from './features/RecordDrawer';
 import {
   RecordContainer, RecordDateTime, RecordContainerMobile,
   RecordTitleMobile, ChipContainerMobile, RecordCategory, RecordText,
   RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
-  RecordIncome, ChipContainer,
+  RecordIncome, ChipContainer, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
 } from './Records.styled';
 import {
   Chip, ParagraphTitle, Paragraph, FlexContainer,
@@ -26,6 +26,8 @@ const Record = (record: AnyRecord) => {
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
   const [windowSize] = useAtom(windowSizeAtom);
+  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const isCredit = selectedAccount?.accountType === 'Credit';
   const [openLongView, setOpenLongView] = useState(false);
   const [shortedName, setShortedName] = useState('');
   const [shortedDescription, setShortedDescription] = useState('');
@@ -39,6 +41,7 @@ const Record = (record: AnyRecord) => {
   const descriptionIsLong = description.length > 50;
   const nameIsLong = shortName.length > 80;
   const isExpense = typeof isPaid !== 'undefined';
+  const status = isPaid ? 'Expense Paid' : 'Expense Not Paid';
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;
@@ -106,7 +109,15 @@ const Record = (record: AnyRecord) => {
             { amountShown }
             <RecordCategory>{ category.categoryName }</RecordCategory>
             <RecordSubCategory>{ subCategory }</RecordSubCategory>
-            <Paragraph>{ description }</Paragraph>
+            { (isExpense && isCredit) && (
+              <RecordStatusContainer>
+                <RecordStatus isPaid={isPaid ?? true}>
+                  <StatusWhiteCircle />
+                  <Paragraph>{status}</Paragraph>
+                </RecordStatus>
+              </RecordStatusContainer>
+            ) }
+            <RecordDescription>{ description }</RecordDescription>
             <ChipContainer>
               { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
               { budgets.length > 0 && budgets.map((budget) => (

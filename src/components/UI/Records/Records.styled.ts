@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { ListItemButton, List as ListMUI, Table } from '@mui/material';
 
-import { DrawerChipContainerProps, ListExpandableContainerProps, RecordTableProps } from './interface';
+import {
+  DrawerChipContainerProps, ListExpandableContainerProps, RecordStatusProps, RecordTableProps,
+} from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
   AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
@@ -25,6 +27,35 @@ export const RecordText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
 `;
 
+export const RecordStatusContainer = styled.div`
+  grid-row: 3 / 4;
+  grid-column: 2 / 4;
+  display: grid;
+  place-items: center;
+`;
+
+export const RecordStatus = styled.div`
+  padding: 1rem;
+  background-color: ${({ isPaid }: RecordStatusProps) => (isPaid ? AppColors.positive : AppColors.negative)};
+  color: white;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+export const StatusWhiteCircle = styled.div`
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: white;
+  padding-right: .5rem;
+`;
+
+export const RecordDescription = styled(Paragraph)`
+  grid-row: 4 / 5;
+`;
+
 export const RecordCategory = styled(RecordText)`
   grid-column: 2 / 3;
 `;
@@ -41,6 +72,7 @@ export const ChipContainerMobile = styled.div`
 `;
 
 export const ChipContainer = styled(ChipContainerMobile)`
+  grid-row: 4  / 5;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   grid-auto-rows: minmax(3.2rem, auto);
 `;
