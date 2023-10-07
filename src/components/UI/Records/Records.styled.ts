@@ -28,15 +28,18 @@ export const RecordText = styled(Paragraph)`
 `;
 
 export const RecordStatusContainer = styled.div`
-  grid-row: 3 / 4;
-  grid-column: 2 / 4;
   display: grid;
   place-items: center;
+
+  @media (min-width: 480px) {
+    grid-row: 3 / 4;
+    grid-column: 2 / 4;
+  }
 `;
 
 export const RecordStatus = styled.div`
   padding: 1rem;
-  background-color: ${({ isPaid }: RecordStatusProps) => (isPaid ? AppColors.positive : AppColors.negative)};
+  background-color: ${({ isPaid }: RecordStatusProps) => (isPaid ? AppColors.positive : AppColors.grey)};
   color: white;
   border-radius: 2rem;
   display: flex;

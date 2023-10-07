@@ -201,6 +201,14 @@ const Record = (record: AnyRecord) => {
           </FlexContainer>
           { amountShownMobile }
           <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
+          { (isExpense && isCredit) && (
+          <RecordStatusContainer>
+            <RecordStatus isPaid={isPaid ?? true}>
+              <StatusWhiteCircle />
+              <Paragraph>{status}</Paragraph>
+            </RecordStatus>
+          </RecordStatusContainer>
+          ) }
           { (indebtedPeople.length > 0 && !openLongView) && (
             <RecordText>
               People involved:
