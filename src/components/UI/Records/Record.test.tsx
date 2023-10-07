@@ -87,24 +87,11 @@ const records: AnyRecord[] = [
 describe('<Records />', () => {
   test('Render expense in Mobile', () => {
     const expense = records[0];
+    const backgroundColor = 'green';
     render(
       <Record
-        _id={expense._id}
-        shortName={expense.shortName}
-        description={expense.description}
-        category={expense.category}
-        subCategory={expense.subCategory}
-        tag={expense.tag}
-        indebtedPeople={expense.indebtedPeople}
-        budgets={expense.budgets}
-        fullDate={expense.fullDate}
-        formattedTime={expense.formattedTime}
-        amount={expense.amount}
-        isPaid={expense.isPaid}
-        expensesPaid={expense.expensesPaid}
-        date={expense.date}
-        account={expense.account}
-        amountFormatted={expense.amountFormatted}
+        record={expense}
+        backgroundColor={backgroundColor}
       />,
     );
 
@@ -121,24 +108,11 @@ describe('<Records />', () => {
 
   test('Render income in Mobile', () => {
     const income = records[1];
+    const backgroundColor = 'green';
     render(
       <Record
-        _id={income._id}
-        shortName={income.shortName}
-        description={income.description}
-        category={income.category}
-        subCategory={income.subCategory}
-        tag={income.tag}
-        indebtedPeople={income.indebtedPeople}
-        budgets={income.budgets}
-        fullDate={income.fullDate}
-        formattedTime={income.formattedTime}
-        amount={income.amount}
-        isPaid={income.isPaid}
-        expensesPaid={income.expensesPaid}
-        date={income.date}
-        account={income.account}
-        amountFormatted={income.amountFormatted}
+        record={income}
+        backgroundColor={backgroundColor}
       />,
     );
 

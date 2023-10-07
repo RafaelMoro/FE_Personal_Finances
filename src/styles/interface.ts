@@ -38,3 +38,7 @@ export interface FlexContainerProps {
   gap?: string;
   flexDirection?: string;
 }
+
+export interface ChipProps {
+  chipColor?: string;
+}

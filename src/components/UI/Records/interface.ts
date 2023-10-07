@@ -4,6 +4,11 @@ import {
   Category, ExpensePaid, AnyRecord, IndebtedPeople,
 } from '../../../globalInterface';
 
+export interface RecordProps {
+  record: AnyRecord;
+  backgroundColor: string;
+}
+
 export interface DrawerChipContainerProps {
   afterContent: string;
 }

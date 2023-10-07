@@ -18,10 +18,10 @@ import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
-import { dynamicPadding } from './DynamicStyles.styled';
+import { FlexContainerProps, ParagraphProps, ChipProps } from './interface';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
-import { FlexContainerProps, ParagraphProps } from './interface';
+import { dynamicPadding } from './DynamicStyles.styled';
 
 /*
 * This file has generic emotion components to use accross the application and
@@ -281,6 +281,8 @@ export const MenuItem = styled(MenuItemMUI)`
 `;
 
 export const Chip = styled(ChipMUI)`
+  color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
+  border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   span {
     ${createResponsiveProps({ fontSize: 'Sub' })}
   }

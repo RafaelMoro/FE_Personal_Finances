@@ -5,20 +5,21 @@ import {
 } from '@mui/material';
 
 import { selectedAccountAtom, windowSizeAtom } from '../../../atoms';
+import { RecordProps } from './interface';
+
 import { RecordDrawer } from './features/RecordDrawer';
+import { DeleteRecordModal } from './features/DeleteRecordModal';
+import {
+  Chip, ParagraphTitle, Paragraph, FlexContainer,
+} from '../../../styles';
 import {
   RecordContainer, RecordDateTime, RecordContainerMobile,
   RecordTitleMobile, ChipContainerMobile, RecordCategory, RecordText,
   RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
   RecordIncome, ChipContainer, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
 } from './Records.styled';
-import {
-  Chip, ParagraphTitle, Paragraph, FlexContainer,
-} from '../../../styles';
-import { DeleteRecordModal } from './features/DeleteRecordModal';
-import { AnyRecord } from '../../../globalInterface';
 
-const Record = (record: AnyRecord) => {
+const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _id, shortName, description, category, subCategory, tag = [],
@@ -119,15 +120,15 @@ const Record = (record: AnyRecord) => {
             ) }
             <RecordDescription>{ description }</RecordDescription>
             <ChipContainer>
-              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
               { budgets.length > 0 && budgets.map((budget) => (
-                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
+                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
               ))}
             </ChipContainer>
             <ChipContainer>
-              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
               { tag.length > 0 && tag.map((item) => (
-                <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
+                <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
               ))}
             </ChipContainer>
             { (indebtedPeople.length > 0 && !openLongView) && (
