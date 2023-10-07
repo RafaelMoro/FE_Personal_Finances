@@ -1,10 +1,10 @@
 import {
-  Dialog, List, ListItemButton, ListItem as ListAccount, Divider,
+  Dialog, List, ListItem as ListAccount, Divider,
 } from '@mui/material';
 import { useAtom } from 'jotai';
 
 import { AccountUI } from '../../interface';
-import { ListAccountSelected } from './SelectAccountDialog.styled';
+import { ListAccountSelected, ListItemButtonContainer } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
 import { AccountDialogProps } from './interface';
 import { accountsUIAtom, selectedAccountAtom } from '../../../../../atoms/atoms';
@@ -40,18 +40,18 @@ const SelectAccountDialog = ({
           <article key={account._id}>
             { (account.selected) && (
               <ListAccountSelected>
-                <ListItemButton onClick={() => handleAccountClick(account._id)}>
+                <ListItemButtonContainer onClick={() => handleAccountClick(account._id)}>
                   <ListItemText primary={account.title} />
-                  <ListItemText primary={account.amount} />
-                </ListItemButton>
+                  <ListItemText primary={account.amountFormatted} />
+                </ListItemButtonContainer>
               </ListAccountSelected>
             ) }
             { (!account.selected) && (
               <ListAccount>
-                <ListItemButton onClick={() => handleAccountClick(account._id)}>
+                <ListItemButtonContainer onClick={() => handleAccountClick(account._id)}>
                   <ListItemText primary={account.title} />
-                  <ListItemText primary={account.amount} />
-                </ListItemButton>
+                  <ListItemText primary={account.amountFormatted} />
+                </ListItemButtonContainer>
               </ListAccount>
             ) }
             <Divider />
