@@ -47,6 +47,7 @@ const CategoriesAndSubcategories = ({
   useEffect(() => {
     const getCategories = async () => {
       const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
+      const categoriesFetched = response.categories;
 
       if (response.error) {
         setIsLoading(false);
@@ -68,7 +69,14 @@ const CategoriesAndSubcategories = ({
       }
 
       setIsLoading(false);
-      setCategories([...categories, ...response.categories]);
+
+      // Filter the categories unique from the categories fetched and the local categories
+      const allCategories = [...categories, ...categoriesFetched];
+      const localCategoriesNames = categories.map((category) => category.categoryName);
+      const notRepeatedFetchedCategories = allCategories.filter((category) => localCategoriesNames.indexOf(category.categoryName) === -1);
+      const uniqueCategories = [...categories, ...notRepeatedFetchedCategories];
+
+      setCategories(uniqueCategories);
 
       // Check if the category to be edited exists, if so, set current category
       if (categoryToBeEdited) {
