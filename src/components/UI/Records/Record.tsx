@@ -183,21 +183,21 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           </FlexContainer>
           <FlexContainer justifyContent="center" gap="1">
             <ChipContainerMobile>
-              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
               { budgets.length > 0 && firstTwoBudgets.map((budget) => (
-                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" color="primary" />
+                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
               ))}
               { budgets.length > 2 && (
-              <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" color="primary" />
+              <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" chipColor={backgroundColor} />
               ) }
             </ChipContainerMobile>
             <ChipContainerMobile>
-              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
               { tag.length > 0 && firstTwoTags.map((item) => (
-                <Chip key={`${_id}-${item}`} label={item} variant="outlined" color="primary" />
+                <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
               ))}
               { tag.length > 2 && (
-              <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" color="primary" />
+              <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" chipColor={backgroundColor} />
               ) }
             </ChipContainerMobile>
           </FlexContainer>

@@ -280,7 +280,7 @@ export const MenuItem = styled(MenuItemMUI)`
   ${createResponsiveProps({ fontSize: 'P' })}
 `;
 
-export const Chip = styled(ChipMUI)`
+export const Chip = styled(ChipMUI, { shouldForwardProp: (props) => props !== 'chipColor' })`
   color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   span {
