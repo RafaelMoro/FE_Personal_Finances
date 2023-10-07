@@ -20,7 +20,7 @@ import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { recordToBeModifiedAtom } from '../../../../../atoms';
 
 const RecordDrawer = ({
-  record, amountShown, expensesPaid, onCloseCb = () => {}, openDeleteRecordModal = () => {},
+  record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => {
   const {
     shortName, description, fullDate, formattedTime,
@@ -58,15 +58,15 @@ const RecordDrawer = ({
         { amountShown }
       </RecordDrawerPriceContainer>
       <DrawerChipContainer afterContent="Budgets">
-        { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" color="secondary" />) }
+        { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={chipColor} />) }
         { budgets.length > 0 && budgets.map((budget, index) => (
-          <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" color="primary" />
+          <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" chipColor={chipColor} />
         ))}
       </DrawerChipContainer>
       <DrawerChipContainer afterContent="Tags">
-        { tag.length === 0 && (<Chip label="No Tags" variant="outlined" color="secondary" />) }
+        { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={chipColor} />) }
         { tag.length > 0 && tag.map((item, index) => (
-          <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" color="primary" />
+          <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" chipColor={chipColor} />
         ))}
       </DrawerChipContainer>
       <RecordDrawerDescription>{description}</RecordDrawerDescription>

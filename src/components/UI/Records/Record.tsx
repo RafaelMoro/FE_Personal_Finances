@@ -151,6 +151,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         </ListItem>
         <Drawer variant="persistent" anchor="right" open={openLongView}>
           <RecordDrawer
+            chipColor={backgroundColor}
             onCloseCb={hideLongView}
             record={record}
             amountShown={amountShown}
@@ -230,6 +231,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
       </ListItem>
       <Drawer variant="persistent" anchor="bottom" open={openLongView}>
         <RecordDrawer
+          chipColor={backgroundColor}
           onCloseCb={hideLongView}
           record={record}
           amountShown={amountShownMobile}

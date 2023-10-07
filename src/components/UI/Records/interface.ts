@@ -27,6 +27,7 @@ export interface RecordListProps {
 
 export interface RecordDrawerProps {
   record: AnyRecord;
+  chipColor: string;
   amountShown: ReactNode;
   expensesPaid: ExpensePaid[];
   onCloseCb?: () => void;
