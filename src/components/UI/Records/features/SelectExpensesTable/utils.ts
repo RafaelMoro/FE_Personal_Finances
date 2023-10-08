@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { formatNumberToCurrency } from '../../../../../utils';
 import { ExpensePaid } from '../../../../../globalInterface';
 import { ExpensePaidTable, Order } from './interface';

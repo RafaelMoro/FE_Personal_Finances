@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { Close } from '@mui/icons-material';
 import { Drawer } from '@mui/material';

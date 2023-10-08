@@ -215,11 +215,6 @@ export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !
   ${(props: RecordTableProps) => (props.isGrid && 'grid-column: 1 / 3;')}
 `;
 
-export const DebtPaid = styled(TableCell)`
-  color: ${AppColors.subtitleColor};
-  text-decoration: line-through;
-`;
-
 // Record List
 
 export const LoaderContainer = styled.div`

@@ -2,14 +2,19 @@ import { useMemo } from 'react';
 import {
   TableHead, TableRow, TableBody, IconButton,
 } from '@mui/material';
+import { useAtom } from 'jotai';
 
-import { EditIcon, DeleteIcon } from '../../../Icons';
 import { ShowIndebtedPeopleProps } from './interface';
+import { windowSizeAtom } from '../../../../../atoms';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
-import { TableCell } from '../../../../../styles';
+import { EditIcon, DeleteIcon } from '../../../Icons';
+import { FlexContainer, TableCell } from '../../../../../styles';
 import {
-  DebtPaid, TableTitle, RecordTable, TableNote,
+  TableTitle, RecordTable, TableNote,
 } from '../../Records.styled';
+import {
+  IconsCell, IndebtedPeopleName, NameCell, NameCellTitle, DebtPaid,
+} from '../Features.styled';
 
 const ShowIndebtedPeople = ({
   indebtedPeople,
@@ -17,6 +22,7 @@ const ShowIndebtedPeople = ({
   deleteIndebtedPerson = () => {},
   modifyIndebtedPerson = () => {},
 }: ShowIndebtedPeopleProps) => {
+  const [windowSize] = useAtom(windowSizeAtom);
   const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
 
   return (
@@ -36,10 +42,12 @@ const ShowIndebtedPeople = ({
         <RecordTable isGrid={inRecordDrawer}>
           <TableHead>
             <TableRow>
-              <TableCell>Name:</TableCell>
+              <NameCellTitle>Name:</NameCellTitle>
               <TableCell>Amount:</TableCell>
               <TableCell>Amount Paid:</TableCell>
               <TableCell>Resting Debt:</TableCell>
+              { /** Show the extra column Actions if we are not in mobile */ }
+              { (windowSize !== 'Mobile' && !inRecordDrawer) && (<TableCell>Actions:</TableCell>) }
             </TableRow>
           </TableHead>
           <TableBody>
@@ -51,32 +59,45 @@ const ShowIndebtedPeople = ({
                       <DebtPaid>{person.name}</DebtPaid>
                       <DebtPaid>{person.amount}</DebtPaid>
                       { (!inRecordDrawer) && (
-                      <DebtPaid>
-                        <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </DebtPaid>
-                      )}
+                        <IconsCell>
+                          <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </IconsCell>
+                      ) }
                     </>
                   )
                   : (
                     <>
-                      <TableCell>{person.name}</TableCell>
+                      { (windowSize !== 'Mobile') && (<TableCell>{person.name}</TableCell>) }
+                      { (windowSize === 'Mobile') && (
+                        <NameCell>
+                          <IndebtedPeopleName>{person.name}</IndebtedPeopleName>
+                          <FlexContainer>
+                            <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
+                              <DeleteIcon />
+                            </IconButton>
+                          </FlexContainer>
+                        </NameCell>
+                      ) }
                       <TableCell>{person.amount}</TableCell>
                       <TableCell>{person.amountPaid}</TableCell>
                       <TableCell>{person.restingDebt}</TableCell>
-                      { (!inRecordDrawer) && (
-                      <TableCell>
+                      { (windowSize !== 'Mobile' && !inRecordDrawer) && (
+                      <IconsCell>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
                           <EditIcon />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
                           <DeleteIcon />
                         </IconButton>
-                      </TableCell>
+                      </IconsCell>
                       ) }
                     </>
                   ) }
