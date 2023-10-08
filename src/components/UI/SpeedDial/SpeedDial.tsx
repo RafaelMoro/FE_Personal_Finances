@@ -9,16 +9,14 @@ import { SpeedDialContainer } from './SpeedDial.styled';
 const SpeedDial = ({ actions, ariaLabelDescription }: SpeedDialProps) => {
   const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const toggleDial = () => setOpen(!open);
 
   return (
     <SpeedDialContainer>
       <SpeedDialComponent
         ariaLabel={ariaLabelDescription}
         icon={<SpeedDialIcon />}
-        onClose={handleClose}
-        onClick={handleOpen}
+        onClick={toggleDial}
         open={open}
       >
         { (actions.length > 0) && actions.map((action) => (
@@ -28,7 +26,7 @@ const SpeedDial = ({ actions, ariaLabelDescription }: SpeedDialProps) => {
             tooltipTitle={action.name}
             tooltipOpen
             onClick={() => {
-              handleClose();
+              toggleDial();
               action.actionCallback();
             }}
           />
