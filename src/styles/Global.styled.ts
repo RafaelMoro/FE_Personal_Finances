@@ -317,6 +317,9 @@ export const FormControlLabel = styled(FormControlLabelMUI)`
 `;
 
 export const SpeedDialComponent = styled(SpeedDialMUI)`
+  button {
+    background-color: ${AppColors.primary};
+  }
   svg {
     font-size: 2.5rem;
   }

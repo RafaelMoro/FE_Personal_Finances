@@ -12,6 +12,7 @@ export const DashboardContainer = styled.div`
 export const RecordsBox = styled.main`
   width: 100%;
   height: 100%;
+  padding: 0 1rem;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
   @media (min-width: 480px) {
