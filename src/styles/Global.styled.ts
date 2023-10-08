@@ -320,6 +320,9 @@ export const SpeedDialComponent = styled(SpeedDialMUI)`
   .MuiSpeedDial-fab {
     background-color: ${AppColors.primary};
   }
+  .MuiSpeedDial-fab:hover {
+    background-color: ${AppColors.bgColorDark};
+  }
   svg {
     font-size: 2.5rem;
   }
