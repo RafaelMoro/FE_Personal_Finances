@@ -35,7 +35,7 @@ import {
 
 /** Styles */
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, ChipsContainer, ToggleButtonGroup,
+  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup, ShowIndebtedPeopleContainer,
 } from './RecordTemplate.styled';
 
 /** Utils */
@@ -278,10 +278,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               touchedSubCategory={touched.subCategory}
               categoryToBeEdited={categoryToBeEdited}
             />
-            <ChipsContainer>
+            <AddChipContainer>
               <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
               <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
-            </ChipsContainer>
+            </AddChipContainer>
             { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
                 control={(
@@ -297,7 +297,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               />
             ) }
             { (typeOfRecord === 'expense') && (
-              <>
+              <ShowIndebtedPeopleContainer>
                 <ShowIndebtedPeople
                   indebtedPeople={indebtedPeople}
                   deleteIndebtedPerson={deleteIndebtedPerson}
@@ -306,7 +306,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 <FlexContainer justifyContent="center">
                   <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
                 </FlexContainer>
-              </>
+              </ShowIndebtedPeopleContainer>
             ) }
             { (typeOfRecord === 'income' && isCredit) && (
               <>

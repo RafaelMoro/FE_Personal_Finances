@@ -7,7 +7,9 @@ import { EditIcon, DeleteIcon } from '../../../Icons';
 import { ShowIndebtedPeopleProps } from './interface';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
 import { TableCell } from '../../../../../styles';
-import { DebtPaid, TableTitle, RecordTable } from '../../Records.styled';
+import {
+  DebtPaid, TableTitle, RecordTable, TableNote,
+} from '../../Records.styled';
 
 const ShowIndebtedPeople = ({
   indebtedPeople,
@@ -19,25 +21,36 @@ const ShowIndebtedPeople = ({
 
   return (
     <>
-      <TableTitle isGrid={inRecordDrawer}>People related to this transaction: </TableTitle>
-      <RecordTable isGrid={inRecordDrawer}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name:</TableCell>
-            <TableCell>Amount:</TableCell>
-            <TableCell>Amount Paid:</TableCell>
-            <TableCell>Resting Debt:</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { indebtedPeople.length > 0 && formattedIndebtedPeople.map((person, index) => (
-            <TableRow key={`${person.name}-${index + 1}`}>
-              { (person.isPaid)
-                ? (
-                  <>
-                    <DebtPaid>{person.name}</DebtPaid>
-                    <DebtPaid>{person.amount}</DebtPaid>
-                    { (!inRecordDrawer) && (
+      { (!inRecordDrawer) && (
+        <TableNote>
+          Note: If you are going to buy something with someone else, you may add how many does this person will owe you on this section.
+          If so, click on &quot; Add Person &quot;
+        </TableNote>
+      ) }
+      <TableTitle isGrid={inRecordDrawer}>
+        People related to this transaction:
+        {' '}
+        {indebtedPeople.length}
+      </TableTitle>
+      { (indebtedPeople.length > 0) && (
+        <RecordTable isGrid={inRecordDrawer}>
+          <TableHead>
+            <TableRow>
+              <TableCell>Name:</TableCell>
+              <TableCell>Amount:</TableCell>
+              <TableCell>Amount Paid:</TableCell>
+              <TableCell>Resting Debt:</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            { indebtedPeople.length > 0 && formattedIndebtedPeople.map((person, index) => (
+              <TableRow key={`${person.name}-${index + 1}`}>
+                { (person.isPaid)
+                  ? (
+                    <>
+                      <DebtPaid>{person.name}</DebtPaid>
+                      <DebtPaid>{person.amount}</DebtPaid>
+                      { (!inRecordDrawer) && (
                       <DebtPaid>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
                           <EditIcon />
@@ -46,16 +59,16 @@ const ShowIndebtedPeople = ({
                           <DeleteIcon />
                         </IconButton>
                       </DebtPaid>
-                    )}
-                  </>
-                )
-                : (
-                  <>
-                    <TableCell>{person.name}</TableCell>
-                    <TableCell>{person.amount}</TableCell>
-                    <TableCell>{person.amountPaid}</TableCell>
-                    <TableCell>{person.restingDebt}</TableCell>
-                    { (!inRecordDrawer) && (
+                      )}
+                    </>
+                  )
+                  : (
+                    <>
+                      <TableCell>{person.name}</TableCell>
+                      <TableCell>{person.amount}</TableCell>
+                      <TableCell>{person.amountPaid}</TableCell>
+                      <TableCell>{person.restingDebt}</TableCell>
+                      { (!inRecordDrawer) && (
                       <TableCell>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
                           <EditIcon />
@@ -64,13 +77,14 @@ const ShowIndebtedPeople = ({
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
-                    ) }
-                  </>
-                ) }
-            </TableRow>
-          )) }
-        </TableBody>
-      </RecordTable>
+                      ) }
+                    </>
+                  ) }
+              </TableRow>
+            )) }
+          </TableBody>
+        </RecordTable>
+      ) }
     </>
   );
 };

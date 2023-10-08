@@ -54,6 +54,11 @@ export const GlobalStyles = css`
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 
+  // Chip delete svg
+  .MuiChip-deleteIcon {
+    color: ${AppColors.primary} !important;
+  }
+
   // DateTimePicker css classes - calendar open.
   .MuiPickersCalendarHeader-label{
     ${createResponsiveProps({ fontSize: 'P' })}
@@ -91,12 +96,13 @@ export const GlobalStyles = css`
 // **** Containers
 
 const flexContainerStyles = ({
-  justifyContent, alignItems, gap, flexDirection,
+  justifyContent, alignItems, gap, flexDirection, margin,
 }: FlexContainerProps) => css`
   justify-content: ${justifyContent ?? 'start'};
   align-items: ${alignItems ?? 'start'};
   gap: ${gap ?? '0'}rem;
   flex-direction: ${flexDirection ?? 'row'};
+  margin: ${margin ?? '0'};
 `;
 
 export const FlexContainer = styled.div`
@@ -283,6 +289,7 @@ export const MenuItem = styled(MenuItemMUI)`
 export const Chip = styled(ChipMUI, { shouldForwardProp: (props) => props !== 'chipColor' })`
   color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
+
   span {
     ${createResponsiveProps({ fontSize: 'Sub' })}
   }

@@ -37,6 +37,7 @@ export interface FlexContainerProps {
   alignItems?: string;
   gap?: string;
   flexDirection?: string;
+  margin?: string;
 }
 
 export interface ChipProps {

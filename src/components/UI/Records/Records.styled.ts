@@ -201,6 +201,11 @@ export const TableTitle = styled(Paragraph, { shouldForwardProp: (props) => prop
   text-align: center;
 `;
 
+export const TableNote = styled(Sub)`
+  color: ${AppColors.subtitleColor};
+  text-align: justify;
+`;
+
 export const RecordDrawerPriceContainer = styled.div`
   text-align: center;
   grid-column: 1 / 3;

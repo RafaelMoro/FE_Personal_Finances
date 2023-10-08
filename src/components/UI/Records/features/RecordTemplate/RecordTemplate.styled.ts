@@ -7,6 +7,8 @@ export const RecordTemplateMain = styled.main`
   display: grid;
   padding: 1rem;
   gap: 1rem;
+  max-width: 90rem;
+  margin: 0 auto;
 `;
 
 export const ToggleButtonGroup = styled(ToggleButtonGroupMUI)`
@@ -30,13 +32,32 @@ export const AddButton = styled(SecondaryButton)`
 
 export const AddChipContainer = styled.div`
   display: grid;
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(min-content, 20%));
-  gap: 1rem;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.5rem;
+`;
+
+export const ShowIndebtedPeopleContainer = styled.div`
+  padding: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+/** ChipForm */
+export const ChipForm = styled.div`
+  display: grid;
+  gap: 3rem;
+  margin: 2rem 0;
 `;
 
 export const ChipsContainer = styled.div`
   display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  gap: 1.5rem;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(min-content, 20%));
+  justify-content: center;
+  gap: 1rem;
+`;
+
+export const AddChipButtonContainer = styled.div`
+  margin: 0 auto;
 `;

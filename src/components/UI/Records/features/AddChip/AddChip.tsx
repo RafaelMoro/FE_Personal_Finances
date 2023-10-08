@@ -3,9 +3,11 @@ import { useEffect, useState } from 'react';
 
 import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
-import { AddButton, AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  InputForm, Chip, FlexContainer,
+  AddButton, ChipsContainer, ChipForm, AddChipButtonContainer,
+} from '../RecordTemplate/RecordTemplate.styled';
+import {
+  InputForm, Chip,
 } from '../../../../../styles';
 
 const AddChip = ({
@@ -42,7 +44,19 @@ const AddChip = ({
   };
 
   return (
-    <FlexContainer gap="3" justifyContent="center">
+    <ChipForm>
+      { (chips.length === 0) && (
+        <ChipsContainer>
+          <Chip label={`No ${name}s added`} variant="outlined" color="primary" />
+        </ChipsContainer>
+      ) }
+      { (chips.length > 0) && (
+        <ChipsContainer>
+          { chips.map((chip) => (
+            <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
+          )) }
+        </ChipsContainer>
+      )}
       <Formik
         initialValues={{ [name]: '' }}
         onSubmit={(values, actions) => {
@@ -56,35 +70,28 @@ const AddChip = ({
       >
         {({ submitForm }) => (
           <>
-            <Field
-              component={InputForm}
-              name={name}
-              type="text"
-              variant="standard"
-              label={label}
-              validate={checkRepeatedValue}
-            />
-            <AddButton variant="contained" onClick={submitForm} size="medium">
-              Add
-              {' '}
-              {action}
-            </AddButton>
+            <div>
+              <Field
+                component={InputForm}
+                fullWidth
+                name={name}
+                type="text"
+                variant="standard"
+                label={label}
+                validate={checkRepeatedValue}
+              />
+            </div>
+            <AddChipButtonContainer>
+              <AddButton variant="contained" onClick={submitForm} size="medium">
+                Add
+                {' '}
+                {action}
+              </AddButton>
+            </AddChipButtonContainer>
           </>
         )}
       </Formik>
-      { (chips.length === 0) && (
-        <AddChipContainer>
-          <Chip label={`No ${name}s added`} variant="outlined" color="primary" />
-        </AddChipContainer>
-      ) }
-      { (chips.length > 0) && (
-        <AddChipContainer>
-          { chips.map((chip) => (
-            <Chip key={chip} label={chip} variant="outlined" color="primary" onDelete={() => handleDeleteChip(chip)} />
-          )) }
-        </AddChipContainer>
-      )}
-    </FlexContainer>
+    </ChipForm>
   );
 };
 
