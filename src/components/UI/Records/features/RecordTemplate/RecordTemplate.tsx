@@ -235,7 +235,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         validateOnMount
       >
         {({
-          submitForm, errors, touched, values,
+          submitForm, errors, touched, values, setFieldValue,
         }) => (
           <FormContainer>
             <Field
@@ -251,6 +251,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
             />
             <Field
               component={DateTimePickerValue}
+              setFieldValueCb={setFieldValue}
               disableFuture
               name="date"
               label="Date and Time"

@@ -385,7 +385,7 @@ const useRecords = ({
     closeDeleteRecordModalCb();
     closeDrawer();
     // Update Records
-    updateAllRecords({ date, deletedRecordId: recordId });
+    updateAllRecords({ date, deletedRecordId: recordId, deleteRecord: true });
   };
 
   return {

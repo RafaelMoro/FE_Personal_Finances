@@ -6,15 +6,19 @@ import { SelectFormikFieldProps } from '../SelectInput/interface';
 
 interface DateTimePickerProps {
   field: SelectFormikFieldProps;
+  // To update the value of the form.
+  setFieldValueCb: (fieldName: string, newDate: unknown) => void;
 }
 
-function DateTimePickerValue({ field }: DateTimePickerProps) {
+function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
   const { value } = field;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateTimePicker
         value={value}
+        // Setting onChangeValue as it was not updating the value form.
+        onChange={(newValue) => setFieldValueCb('date', newValue)}
       />
     </LocalizationProvider>
   );

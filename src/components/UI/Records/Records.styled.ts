@@ -6,7 +6,7 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Paragraph, Sub, ParagraphTitle, TableCell,
+  AppColors, Paragraph, Sub, ParagraphTitle,
 } from '../../../styles';
 
 export const RecordContainer = styled.article`
