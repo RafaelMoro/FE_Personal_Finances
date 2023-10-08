@@ -1,12 +1,12 @@
-import { Toolbar } from '@mui/material';
 import { alpha } from '@mui/material/styles';
 
 import { EnhancedTableToolbarProps } from './interface';
+import { SelectExpensesToolbar, SideNoteSelectExpense } from '../Features.styled';
 import { Paragraph } from '../../../../../styles';
 
 function EnhancedTableToolbar({ numSelected }: EnhancedTableToolbarProps) {
   return (
-    <Toolbar
+    <SelectExpensesToolbar
       sx={{
         ...(numSelected > 0 && {
           bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -20,13 +20,18 @@ function EnhancedTableToolbar({ numSelected }: EnhancedTableToolbarProps) {
           selected
         </Paragraph>
       ) : (
-        <Paragraph
-          id="tableTitle"
-        >
-          Select the expenses:
-        </Paragraph>
+        <>
+          <SideNoteSelectExpense>
+            Note: If you cannot find your expense, it may be under other account or a different month.
+          </SideNoteSelectExpense>
+          <Paragraph
+            id="tableTitle"
+          >
+            Select the expenses:
+          </Paragraph>
+        </>
       )}
-    </Toolbar>
+    </SelectExpensesToolbar>
   );
 }
 

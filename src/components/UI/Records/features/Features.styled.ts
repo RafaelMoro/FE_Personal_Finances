@@ -1,5 +1,9 @@
 import styled from '@emotion/styled';
-import { AppColors, Paragraph, TableCell } from '../../../../styles';
+import { Toolbar } from '@mui/material';
+
+import {
+  AppColors, Paragraph, Sub, TableCell,
+} from '../../../../styles';
 
 /** SelectExpenses */
 export const SelectExpensesContainer = styled.div`
@@ -9,6 +13,16 @@ export const SelectExpensesContainer = styled.div`
   gap: 2rem;
   min-width: 77rem;
   width: 100%;
+`;
+
+export const SideNoteSelectExpense = styled(Sub)`
+  color: ${AppColors.subtitleColor};
+`;
+
+export const SelectExpensesToolbar = styled(Toolbar)`
+  padding: 2rem 0;
+  display: grid;
+  gap: 1rem;
 `;
 
 /** MonthRecords */
