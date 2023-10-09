@@ -1,15 +1,15 @@
 import { Divider } from '@mui/material';
-import { RecordContainer, RecordSkeletonHolder, RecordLoadingBox } from '../../Records.styled';
+import { ListItemRecord, RecordSkeletonHolder, RecordLoadingBox } from '../../Records.styled';
 
 const RecordLoading = () => (
   <RecordLoadingBox>
     <Divider />
-    <RecordContainer>
+    <ListItemRecord>
       <RecordSkeletonHolder />
       <RecordSkeletonHolder />
       <RecordSkeletonHolder />
       <RecordSkeletonHolder />
-    </RecordContainer>
+    </ListItemRecord>
     <Divider />
   </RecordLoadingBox>
 );

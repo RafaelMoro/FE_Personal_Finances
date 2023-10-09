@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { ListItemButton, List as ListMUI, Table } from '@mui/material';
+import {
+  ListItem, ListItemButton, List as ListMUI, Table,
+} from '@mui/material';
 
 import {
   DrawerChipContainerProps, ListExpandableContainerProps, RecordStatusProps, RecordTableProps,
@@ -9,25 +11,41 @@ import {
   AppColors, Paragraph, Sub, ParagraphTitle,
 } from '../../../styles';
 
-export const RecordContainer = styled.article`
+export const ListItemRecord = styled(ListItem)`
   width: 100%;
   min-height: 10rem;
   padding: 1rem;
   display: grid;
-  grid-template-columns: 60% 20% 20%;
-  grid-template-rows: repeat(1, 1fr);
-  row-gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 2rem;
+
+  @media(min-width: 480px) {
+    grid-template-columns: 60% 20% 20%;
+    grid-template-rows: repeat(1, 1fr);
+  }
 `;
 
 export const RecordDateTime = styled(Sub)`
   opacity: 0.7;
+  text-align: center;
+
+  @media(min-width: 480px) {
+    grid-column: 2 / 4;
+    text-align: start;
+  }
 `;
 
-export const RecordText = styled(Paragraph)`
+export const RecordTitle = styled(ParagraphTitle)`
+  grid-column: 1 / 3;
+`;
+
+export const RecordSubtitleText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
+  text-align: center;
 `;
 
 export const RecordStatusContainer = styled.div`
+  grid-column: 1 / 3;
   display: grid;
   place-items: center;
 
@@ -56,15 +74,31 @@ export const StatusWhiteCircle = styled.div`
 `;
 
 export const RecordDescription = styled(Paragraph)`
-  grid-row: 4 / 5;
+  grid-column: 1 / 3;
+
+  @media(min-width: 480px) {
+    grid-row: 4 / 6;
+  }
 `;
 
-export const RecordCategory = styled(RecordText)`
-  grid-column: 2 / 3;
+export const RecordText = styled(Paragraph)`
+  grid-column: 1 / 3;
 `;
 
-export const RecordSubCategory = styled(RecordText)`
-  grid-column: 3 / 4;
+export const RecordCategory = styled(RecordSubtitleText)`
+  grid-column: 2 / 4;
+
+  @media(min-width: 1024px) {
+    grid-column: 2 / 3;
+  }
+`;
+
+export const RecordSubCategory = styled(RecordSubtitleText)`
+  grid-column: 2 / 4;
+
+  @media(min-width: 1024px) {
+    grid-column: 3 / 4;
+  }
 `;
 
 export const ChipContainerMobile = styled.div`
@@ -75,9 +109,24 @@ export const ChipContainerMobile = styled.div`
 `;
 
 export const ChipContainer = styled(ChipContainerMobile)`
-  grid-row: 4  / 5;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   grid-auto-rows: minmax(3.2rem, auto);
+`;
+
+export const BudgetChipContainer = styled(ChipContainer)`
+  grid-row: 5 / 6;
+
+  @media(min-width: 480px) {
+    grid-column: 2 / 4;
+  }
+`;
+export const TagsChipContainer = styled(ChipContainer)`
+  grid-row: 6 / 7;
+
+  @media(min-width: 480px) {
+    grid-column: 2 / 4;
+    grid-row: 5 / 6;
+  }
 `;
 
 export const DrawerChipContainer = styled(ChipContainerMobile)`
@@ -102,18 +151,6 @@ export const DrawerChipContainer = styled(ChipContainerMobile)`
   }
 `;
 
-export const RecordContainerMobile = styled.article`
-  width: 100%;
-  min-height: 10rem;
-  padding: 1rem;
-  display: grid;
-  row-gap: 1rem;
-`;
-
-export const RecordTitleMobile = styled(ParagraphTitle)`
-  text-align: center;
-`;
-
 export const ExpensesPayed = styled.section`
   display: flex;
   flex-direction: column;
@@ -131,6 +168,7 @@ export const RecordIncome = styled(Paragraph)`
 `;
 
 export const RecordIncomeMobile = styled(RecordIncome)`
+  grid-column: 1 / 3;
   text-align: center;
 `;
 
@@ -140,6 +178,7 @@ export const RecordExpense = styled(Paragraph)`
 `;
 
 export const RecordExpenseMobile = styled(RecordExpense)`
+  grid-column: 1 / 3;
   text-align: center;
 `;
 
@@ -188,11 +227,11 @@ export const RecordDrawerDatetime = styled(RecordDateTime)`
   text-align: center;
 `;
 
-export const RecordDrawerText = styled(RecordText)`
+export const RecordDrawerText = styled(RecordSubtitleText)`
   text-align: center;
 `;
 
-export const RecordDrawerDescription = styled(RecordText)`
+export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
 `;
 
@@ -232,10 +271,13 @@ export const List = styled(ListMUI)`
 
 export const MonthRecordBox = styled.div`
   height: 100%;
-  max-height: 80rem;
-  overflow-y: scroll;
-  overscroll-behavior-y: contain;
-  scroll-snap-type: y proximity;
+
+  @media(min-width: 1024px) {
+    max-height: 80rem;
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+    scroll-snap-type: y proximity;
+  }
 `;
 
 // Categories and subcategories

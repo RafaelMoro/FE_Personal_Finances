@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  ListItem, Drawer,
+  Drawer,
 } from '@mui/material';
 
 import { selectedAccountAtom, windowSizeAtom } from '../../../atoms';
@@ -10,13 +10,13 @@ import { RecordProps } from './interface';
 import { RecordDrawer } from './features/RecordDrawer';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
 import {
-  Chip, ParagraphTitle, Paragraph, FlexContainer,
+  Chip, ParagraphTitle, Paragraph,
 } from '../../../styles';
 import {
-  RecordContainer, RecordDateTime, RecordContainerMobile,
-  RecordTitleMobile, ChipContainerMobile, RecordCategory, RecordText,
+  RecordDateTime, ChipContainerMobile, RecordCategory, RecordSubtitleText,
   RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
-  RecordIncome, ChipContainer, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
+  RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -102,53 +102,51 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   if (windowSize !== 'Mobile') {
     return (
       <>
-        <ListItem button onClick={showLongView}>
-          <RecordContainer>
-            <ParagraphTitle>{ shortName }</ParagraphTitle>
-            <RecordDateTime>{ fullDate }</RecordDateTime>
-            <RecordDateTime>{ formattedTime }</RecordDateTime>
-            { amountShown }
-            <RecordCategory>{ category.categoryName }</RecordCategory>
-            <RecordSubCategory>{ subCategory }</RecordSubCategory>
-            { (isExpense && isCredit) && (
-              <RecordStatusContainer>
-                <RecordStatus isPaid={isPaid ?? true}>
-                  <StatusWhiteCircle />
-                  <Paragraph>{status}</Paragraph>
-                </RecordStatus>
-              </RecordStatusContainer>
-            ) }
-            <RecordDescription>{ description }</RecordDescription>
-            <ChipContainer>
-              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
-              { budgets.length > 0 && budgets.map((budget) => (
-                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
-              ))}
-            </ChipContainer>
-            <ChipContainer>
-              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
-              { tag.length > 0 && tag.map((item) => (
-                <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
-              ))}
-            </ChipContainer>
-            { (indebtedPeople.length > 0 && !openLongView) && (
-            <RecordText>
+        <ListItemRecord onClick={showLongView}>
+          <ParagraphTitle>{ shortName }</ParagraphTitle>
+          <RecordDateTime>{ fullDate }</RecordDateTime>
+          <RecordDateTime>{ formattedTime }</RecordDateTime>
+          { amountShown }
+          <RecordCategory>{ category.categoryName }</RecordCategory>
+          <RecordSubCategory>{ subCategory }</RecordSubCategory>
+          { (isExpense && isCredit) && (
+          <RecordStatusContainer>
+            <RecordStatus isPaid={isPaid ?? true}>
+              <StatusWhiteCircle />
+              <Paragraph>{status}</Paragraph>
+            </RecordStatus>
+          </RecordStatusContainer>
+          ) }
+          <RecordDescription>{ description }</RecordDescription>
+          <BudgetChipContainer>
+            { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
+            { budgets.length > 0 && budgets.map((budget) => (
+              <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
+            ))}
+          </BudgetChipContainer>
+          <TagsChipContainer>
+            { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
+            { tag.length > 0 && tag.map((item) => (
+              <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
+            ))}
+          </TagsChipContainer>
+          { (indebtedPeople.length > 0 && !openLongView) && (
+            <RecordSubtitleText>
               People involved:
               {' '}
               {
               indebtedPeopleNames.map((personName) => (personName))
             }
-            </RecordText>
-            ) }
-            { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-            <RecordText>
+            </RecordSubtitleText>
+          ) }
+          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+            <RecordSubtitleText>
               Records Paid:
               {' '}
               { expensesPaid.length }
-            </RecordText>
-            ) }
-          </RecordContainer>
-        </ListItem>
+            </RecordSubtitleText>
+          ) }
+        </ListItemRecord>
         <Drawer variant="persistent" anchor="right" open={openLongView}>
           <RecordDrawer
             chipColor={backgroundColor}
@@ -172,63 +170,57 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   return (
     <>
-      <ListItem button onClick={showLongView}>
-        <RecordContainerMobile>
-          <RecordTitleMobile>{ (nameIsLong) ? shortedName : shortName }</RecordTitleMobile>
-          <FlexContainer justifyContent="center" gap="1">
-            <RecordDateTime>{ fullDate }</RecordDateTime>
-            <RecordDateTime>{ formattedTime }</RecordDateTime>
-            <RecordText>{ category.categoryName }</RecordText>
-            <RecordText>{ subCategory }</RecordText>
-          </FlexContainer>
-          <FlexContainer justifyContent="center" gap="1">
-            <ChipContainerMobile>
-              { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
-              { budgets.length > 0 && firstTwoBudgets.map((budget) => (
-                <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
-              ))}
-              { budgets.length > 2 && (
-              <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" chipColor={backgroundColor} />
-              ) }
-            </ChipContainerMobile>
-            <ChipContainerMobile>
-              { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
-              { tag.length > 0 && firstTwoTags.map((item) => (
-                <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
-              ))}
-              { tag.length > 2 && (
-              <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" chipColor={backgroundColor} />
-              ) }
-            </ChipContainerMobile>
-          </FlexContainer>
-          { amountShownMobile }
-          <Paragraph>{ (descriptionIsLong) ? shortedDescription : description }</Paragraph>
-          { (isExpense && isCredit) && (
+      <ListItemRecord onClick={showLongView}>
+        <RecordTitle align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
+        { amountShownMobile }
+        <RecordDateTime>{ fullDate }</RecordDateTime>
+        <RecordDateTime>{ formattedTime }</RecordDateTime>
+        <RecordSubtitleText>{ category.categoryName }</RecordSubtitleText>
+        <RecordSubtitleText>{ subCategory }</RecordSubtitleText>
+        <ChipContainerMobile>
+          { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
+          { budgets.length > 0 && firstTwoBudgets.map((budget) => (
+            <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
+          ))}
+          { budgets.length > 2 && (
+          <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" chipColor={backgroundColor} />
+          ) }
+        </ChipContainerMobile>
+        <ChipContainerMobile>
+          { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
+          { tag.length > 0 && firstTwoTags.map((item) => (
+            <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
+          ))}
+          { tag.length > 2 && (
+          <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" chipColor={backgroundColor} />
+          ) }
+        </ChipContainerMobile>
+        <RecordDescription>{ (descriptionIsLong) ? shortedDescription : description }</RecordDescription>
+        { (indebtedPeople.length > 0 && !openLongView) && (
+        <RecordText>
+          People involved:
+          {' '}
+          {
+                indebtedPeopleNames.map((personName) => (personName))
+              }
+        </RecordText>
+        ) }
+        { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+          <RecordText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordText>
+        ) }
+        { (isExpense && isCredit) && (
           <RecordStatusContainer>
             <RecordStatus isPaid={isPaid ?? true}>
               <StatusWhiteCircle />
               <Paragraph>{status}</Paragraph>
             </RecordStatus>
           </RecordStatusContainer>
-          ) }
-          { (indebtedPeople.length > 0 && !openLongView) && (
-            <RecordText>
-              People involved:
-              {' '}
-              {
-                indebtedPeopleNames.map((personName) => (personName))
-              }
-            </RecordText>
-          ) }
-          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-          <RecordText>
-            Records Paid:
-            {' '}
-            { expensesPaid.length }
-          </RecordText>
-          ) }
-        </RecordContainerMobile>
-      </ListItem>
+        ) }
+      </ListItemRecord>
       <Drawer variant="persistent" anchor="bottom" open={openLongView}>
         <RecordDrawer
           chipColor={backgroundColor}
