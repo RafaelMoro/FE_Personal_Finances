@@ -16,32 +16,124 @@ export const ListItemRecord = styled(ListItem)`
   min-height: 10rem;
   padding: 1rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   row-gap: 2rem;
+  cursor: pointer;
 
   @media(min-width: 480px) {
+    grid-template-columns: 50% 25% 25%;
+    column-gap: 1rem;
+  }
+
+  @media(min-width: 1024px) {
     grid-template-columns: 60% 20% 20%;
-    grid-template-rows: repeat(1, 1fr);
+    column-gap: 0;
+  }
+`;
+
+export const RecordTitle = styled(ParagraphTitle)`
+  grid-column: 1 / 3;
+
+  @media(min-width: 480px) {
+    grid-column: 1 / 4;
+  }
+
+  @media(min-width: 1024px) {
+    text-align: start;
+    grid-column: 1 / 2;
   }
 `;
 
 export const RecordDateTime = styled(Sub)`
   opacity: 0.7;
   text-align: center;
+`;
+
+export const RecordDate = styled(RecordDateTime)`
+  @media(min-width: 480px) {
+    grid-column: 2 / 3;
+    text-align: start;
+  }
+
+  @media(min-width: 1024px) {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+  }
+`;
+
+export const RecordTime = styled(RecordDateTime)`
+  @media(min-width: 480px) {
+    grid-column: 3 / 4;
+    text-align: start;
+  }
+
+  @media(min-width: 1024px) {
+    grid-row: 1 / 2;
+    grid-column: 3 / 4;
+  }
+`;
+
+export const RecordPrice = styled(Paragraph)`
+  font-weight: 500;
+  text-align: center;
+  grid-column: 1 / 3;
 
   @media(min-width: 480px) {
-    grid-column: 2 / 4;
+    grid-column: 1 / 2;
+  }
+
+  @media(min-width: 1024px) {
     text-align: start;
   }
 `;
 
-export const RecordTitle = styled(ParagraphTitle)`
-  grid-column: 1 / 3;
+export const RecordIncome = styled(RecordPrice)`
+  color: ${AppColors.positive};
+`;
+
+export const RecordExpense = styled(RecordPrice)`
+  color: ${AppColors.negative};
 `;
 
 export const RecordSubtitleText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
   text-align: center;
+
+  @media(min-width: 1024px) {
+    text-align: start;
+  }
+`;
+
+export const RecordCategory = styled(RecordSubtitleText)`
+  grid-column: 2 / 4;
+
+  @media(min-width: 480px) {
+    grid-column: 2 / 3;
+  }
+
+  @media(min-width: 1024px) {
+    grid-row: 2 / 3;
+  }
+`;
+
+export const RecordSubCategory = styled(RecordSubtitleText)`
+  grid-column: 2 / 4;
+
+  @media(min-width: 480px) {
+    grid-column: 3 / 4;
+  }
+
+  @media(min-width: 1024px) {
+    grid-row: 2 / 3;
+  }
+`;
+
+export const RecordDescription = styled(Paragraph)`
+  grid-column: 1 / 3;
+
+  @media(min-width: 480px) {
+    grid-column: 1 / 2;
+  }
 `;
 
 export const RecordStatusContainer = styled.div`
@@ -50,7 +142,12 @@ export const RecordStatusContainer = styled.div`
   place-items: center;
 
   @media (min-width: 480px) {
-    grid-row: 3 / 4;
+    grid-row: 5 / 6;
+    grid-column: 1 / 2;
+  }
+
+  @media (min-width: 1024px) {
+    grid-row: 4 / 5;
     grid-column: 2 / 4;
   }
 `;
@@ -73,44 +170,24 @@ export const StatusWhiteCircle = styled.div`
   padding-right: .5rem;
 `;
 
-export const RecordDescription = styled(Paragraph)`
-  grid-column: 1 / 3;
-
-  @media(min-width: 480px) {
-    grid-row: 4 / 6;
-  }
-`;
-
 export const RecordText = styled(Paragraph)`
   grid-column: 1 / 3;
-`;
-
-export const RecordCategory = styled(RecordSubtitleText)`
-  grid-column: 2 / 4;
 
   @media(min-width: 1024px) {
-    grid-column: 2 / 3;
+    grid-column: 1 / 2;
   }
 `;
 
-export const RecordSubCategory = styled(RecordSubtitleText)`
-  grid-column: 2 / 4;
-
-  @media(min-width: 1024px) {
-    grid-column: 3 / 4;
-  }
-`;
-
-export const ChipContainerMobile = styled.div`
+export const ChipContainer = styled.div`
   justify-self: start;
   width: 100%;
   display: grid;
   gap: 1rem;
-`;
 
-export const ChipContainer = styled(ChipContainerMobile)`
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  grid-auto-rows: minmax(3.2rem, auto);
+  @media(min-width: 480px) {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-auto-rows: minmax(3.2rem, auto);
+  }
 `;
 
 export const BudgetChipContainer = styled(ChipContainer)`
@@ -118,18 +195,29 @@ export const BudgetChipContainer = styled(ChipContainer)`
 
   @media(min-width: 480px) {
     grid-column: 2 / 4;
+    grid-row: 4 / 5;
+  }
+
+  @media(min-width: 1024px) {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
   }
 `;
 export const TagsChipContainer = styled(ChipContainer)`
-  grid-row: 6 / 7;
+  grid-row: 5 / 6;
 
   @media(min-width: 480px) {
     grid-column: 2 / 4;
     grid-row: 5 / 6;
   }
+
+  @media(min-width: 1024px) {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+  }
 `;
 
-export const DrawerChipContainer = styled(ChipContainerMobile)`
+export const DrawerChipContainer = styled(ChipContainer)`
   grid-template-columns: repeat(5, 1fr);
   position: relative;
   border: 0.1rem solid ${AppColors.bgColorGrey};
@@ -160,26 +248,6 @@ export const ExpensesPayed = styled.section`
 export const Expense = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-`;
-
-export const RecordIncome = styled(Paragraph)`
-  font-weight: 500;
-  color: ${AppColors.positive};
-`;
-
-export const RecordIncomeMobile = styled(RecordIncome)`
-  grid-column: 1 / 3;
-  text-align: center;
-`;
-
-export const RecordExpense = styled(Paragraph)`
-  font-weight: 500;
-  color: ${AppColors.negative};
-`;
-
-export const RecordExpenseMobile = styled(RecordExpense)`
-  grid-column: 1 / 3;
-  text-align: center;
 `;
 
 export const RecordLoadingBox = styled.div`

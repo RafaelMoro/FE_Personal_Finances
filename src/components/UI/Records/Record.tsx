@@ -10,13 +10,12 @@ import { RecordProps } from './interface';
 import { RecordDrawer } from './features/RecordDrawer';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
 import {
-  Chip, ParagraphTitle, Paragraph,
+  Chip, Paragraph,
 } from '../../../styles';
 import {
-  RecordDateTime, ChipContainerMobile, RecordCategory, RecordSubtitleText,
-  RecordSubCategory, RecordExpenseMobile, RecordIncomeMobile, RecordExpense,
+  RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -67,22 +66,6 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   const showLongView = () => setOpenLongView(true);
   const hideLongView = () => setOpenLongView(false);
 
-  const amountShownMobile = isExpense
-    ? (
-      <RecordExpenseMobile>
-        -
-        {' '}
-        { amountFormatted }
-      </RecordExpenseMobile>
-    )
-    : (
-      <RecordIncomeMobile>
-        +
-        {' '}
-        { amountFormatted }
-      </RecordIncomeMobile>
-    );
-
   const amountShown = isExpense
     ? (
       <RecordExpense>
@@ -103,10 +86,11 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     return (
       <>
         <ListItemRecord onClick={showLongView}>
-          <ParagraphTitle>{ shortName }</ParagraphTitle>
-          <RecordDateTime>{ fullDate }</RecordDateTime>
-          <RecordDateTime>{ formattedTime }</RecordDateTime>
+          <RecordTitle align="center">{ shortName }</RecordTitle>
           { amountShown }
+          <RecordDate>{ fullDate }</RecordDate>
+          <RecordTime>{ formattedTime }</RecordTime>
+          <RecordDescription>{ description }</RecordDescription>
           <RecordCategory>{ category.categoryName }</RecordCategory>
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           { (isExpense && isCredit) && (
@@ -117,7 +101,6 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             </RecordStatus>
           </RecordStatusContainer>
           ) }
-          <RecordDescription>{ description }</RecordDescription>
           <BudgetChipContainer>
             { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
             { budgets.length > 0 && budgets.map((budget) => (
@@ -172,12 +155,12 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     <>
       <ListItemRecord onClick={showLongView}>
         <RecordTitle align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
-        { amountShownMobile }
-        <RecordDateTime>{ fullDate }</RecordDateTime>
-        <RecordDateTime>{ formattedTime }</RecordDateTime>
+        { amountShown }
+        <RecordDate>{ fullDate }</RecordDate>
+        <RecordTime>{ formattedTime }</RecordTime>
         <RecordSubtitleText>{ category.categoryName }</RecordSubtitleText>
         <RecordSubtitleText>{ subCategory }</RecordSubtitleText>
-        <ChipContainerMobile>
+        <BudgetChipContainer>
           { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (
             <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
@@ -185,8 +168,8 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           { budgets.length > 2 && (
           <Chip label={`Remaining budgets: ${budgets.length - 2}`} variant="outlined" chipColor={backgroundColor} />
           ) }
-        </ChipContainerMobile>
-        <ChipContainerMobile>
+        </BudgetChipContainer>
+        <TagsChipContainer>
           { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
           { tag.length > 0 && firstTwoTags.map((item) => (
             <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
@@ -194,7 +177,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           { tag.length > 2 && (
           <Chip label={`Remaining tags: ${tag.length - 2}`} variant="outlined" chipColor={backgroundColor} />
           ) }
-        </ChipContainerMobile>
+        </TagsChipContainer>
         <RecordDescription>{ (descriptionIsLong) ? shortedDescription : description }</RecordDescription>
         { (indebtedPeople.length > 0 && !openLongView) && (
         <RecordText>
@@ -226,7 +209,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           chipColor={backgroundColor}
           onCloseCb={hideLongView}
           record={record}
-          amountShown={amountShownMobile}
+          amountShown={amountShown}
           expensesPaid={expensesPaid}
           openDeleteRecordModal={showDeleteRecordModal}
         />
