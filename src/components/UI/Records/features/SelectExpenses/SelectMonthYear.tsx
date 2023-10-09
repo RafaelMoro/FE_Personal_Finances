@@ -4,10 +4,11 @@ import { SelectMonthYearBox } from '../../Records.styled';
 import { SelectInput } from '../../../SelectInput';
 import { MONTHS } from '../../../../../constants';
 import { SecondaryButton } from '../../../../../styles';
+import { CompleteMonthsType } from '../../../../../globalInterface';
 
 interface SelectMonthYearProps {
   updateMonthYear: (values: SelectMonthYearValues) => void;
-  completeMonth: string;
+  completeMonth: CompleteMonthsType;
   currentYear: string;
   yearsArray: string[];
 }

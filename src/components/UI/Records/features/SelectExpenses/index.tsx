@@ -1,13 +1,13 @@
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { SelectMonthYearValues } from '../../interface';
-import { ABBREVIATED_MONTHS, ExpensePaid } from '../../../../../globalInterface';
-import { MONTHS } from '../../../../../constants';
+import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalInterface';
 import { Loader } from '../../../../../animations/Loader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
-import { SelectExpensesContainer } from '../Features.styled';
+import { ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer } from '../Features.styled';
 import { SelectMonthYear } from './SelectMonthYear';
 import { useDate } from '../../../../../hooks/useDate';
+import { Error } from '../../../Error';
 
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
@@ -19,7 +19,7 @@ const SelectExpenses = ({
   modifySelectedExpenses, selectedExpenses = [], closeDrawer,
 }: SelectExpensesProps) => {
   const {
-    month, year, years, completeCurrentMonth, updateYear, updateMonth,
+    month, completeMonth, year, years, updateYear, updateMonth, updateCompleteMonth,
   } = useDate();
   const {
     expenses, noExpensesFound, error, loading,
@@ -28,35 +28,14 @@ const SelectExpenses = ({
   const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
     const monthIndex = MONTHS.indexOf(newMonth);
     updateMonth(ABBREVIATED_MONTHS[monthIndex]);
+    updateCompleteMonth(newMonth);
     updateYear(newYear);
   };
-
-  if (loading) {
-    return (
-      <SelectExpensesContainer>
-        <Paragraph>Loading expenses...</Paragraph>
-        <Loader />
-      </SelectExpensesContainer>
-    );
-  }
 
   if (error !== 'No error found') {
     return (
       <SelectExpensesContainer>
-        <Paragraph>An error was found, try again later.</Paragraph>
-      </SelectExpensesContainer>
-    );
-  }
-  if (noExpensesFound && expenses.length === 0) {
-    return (
-      <SelectExpensesContainer>
-        <SelectMonthYear
-          updateMonthYear={updateMonthAndYear}
-          completeMonth={completeCurrentMonth}
-          currentYear={year}
-          yearsArray={years}
-        />
-        <Paragraph>{`No expenses found for this account in ${completeCurrentMonth} ${year}`}</Paragraph>
+        <Error description="An error was found, try again later" />
       </SelectExpensesContainer>
     );
   }
@@ -64,16 +43,29 @@ const SelectExpenses = ({
     <>
       <SelectMonthYear
         updateMonthYear={updateMonthAndYear}
-        completeMonth={completeCurrentMonth}
+        completeMonth={completeMonth}
         currentYear={year}
         yearsArray={years}
       />
-      <SelectExpensesTable
-        expenses={expenses}
-        modifySelectedExpenses={modifySelectedExpenses}
-        selectedExpenses={selectedExpenses}
-        closeDrawer={closeDrawer}
-      />
+      { (loading) && (
+      <LoadingExpensesContainer>
+        <Paragraph>Loading expenses...</Paragraph>
+        <Loader />
+      </LoadingExpensesContainer>
+      ) }
+      { (noExpensesFound && !loading && expenses.length === 0) && (
+        <ExpensesNotFoundContainer>
+          <Paragraph align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Paragraph>
+        </ExpensesNotFoundContainer>
+      ) }
+      { (!noExpensesFound && !loading && expenses.length > 0) && (
+        <SelectExpensesTable
+          expenses={expenses}
+          modifySelectedExpenses={modifySelectedExpenses}
+          selectedExpenses={selectedExpenses}
+          closeDrawer={closeDrawer}
+        />
+      ) }
     </>
   );
 };

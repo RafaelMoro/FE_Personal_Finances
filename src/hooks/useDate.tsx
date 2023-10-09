@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { ABBREVIATED_MONTHS, MonthsType } from '../globalInterface';
-import { MONTHS } from '../constants';
+import {
+  ABBREVIATED_MONTHS, AbbreviatedMonthsType, CompleteMonthsType, MONTHS,
+} from '../globalInterface';
 import { createYearsArray } from '../utils/CreateYearsArray';
 
 const useDate = () => {
@@ -12,14 +13,17 @@ const useDate = () => {
   const currentYear = String(dateOfToday.getFullYear());
   const years: string[] = createYearsArray(currentYear);
 
-  const [month, setMonth] = useState<MonthsType>(currentMonth);
+  const [month, setMonth] = useState<AbbreviatedMonthsType>(currentMonth);
+  const [completeMonth, setCompleteMonth] = useState<CompleteMonthsType>(completeCurrentMonth);
   const [year, setYear] = useState<string>(currentYear);
 
   const updateYear = (newValue: string) => setYear(newValue);
-  const updateMonth = (newMonth: MonthsType) => setMonth(newMonth);
+  const updateMonth = (newMonth: AbbreviatedMonthsType) => setMonth(newMonth);
+  const updateCompleteMonth = (newMonth: CompleteMonthsType) => setCompleteMonth(newMonth);
 
   return {
     month,
+    completeMonth,
     lastMonth,
     year,
     years,
@@ -27,6 +31,7 @@ const useDate = () => {
     completeLastMonth,
     updateYear,
     updateMonth,
+    updateCompleteMonth,
   };
 };
 

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface IErrorProps {
+export interface ErrorProps {
   title?: string;
   description: string;
   children?: ReactNode;

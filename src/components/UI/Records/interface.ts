@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Dayjs } from 'dayjs';
 import {
-  Category, ExpensePaid, AnyRecord, IndebtedPeople,
+  Category, ExpensePaid, AnyRecord, IndebtedPeople, CompleteMonthsType,
 } from '../../../globalInterface';
 
 export interface RecordProps {
@@ -84,7 +84,7 @@ export interface DeleteRecordResponse {
 
 // Select Month and year on select expense
 export interface SelectMonthYearValues {
-  month: string;
+  month: CompleteMonthsType;
   year: string;
 }
 

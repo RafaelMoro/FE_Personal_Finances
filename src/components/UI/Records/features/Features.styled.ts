@@ -15,6 +15,25 @@ export const SelectExpensesContainer = styled.div`
   width: 100%;
 `;
 
+export const LoadingExpensesContainer = styled.div`
+  display: grid;
+  gap: 1rem;
+  place-items: center;
+  padding-top: 3rem;
+
+  @media(min-width: 480px) {
+    min-width: 77rem;
+  }
+`;
+
+export const ExpensesNotFoundContainer = styled.div`
+  padding-top: 3rem;
+
+  @media(min-width: 480px) {
+    min-width: 77rem;
+  }
+`;
+
 export const SideNoteSelectExpense = styled(Sub)`
   color: ${AppColors.subtitleColor};
 `;

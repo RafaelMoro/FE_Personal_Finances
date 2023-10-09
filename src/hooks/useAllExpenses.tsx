@@ -57,6 +57,7 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
 
         // The response returned = No expense found with that account id
         setNoExpensesFound(true);
+        setExpenses([]);
         setLoading(false);
       } catch (errorCatched) {
         // catch error
