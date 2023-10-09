@@ -264,14 +264,6 @@ export const SelectExpensesContainer = styled.div`
   align-content: center;
 `;
 
-// Select Expenses
-export const SelectMonthYearBox = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: 5rem;
-  margin-top: 2rem;
-`;
-
 // Month Records
 
 export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'backgroundColor' && props !== 'color' })`

@@ -1,13 +1,17 @@
+import { IconButton } from '@mui/material';
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { SelectMonthYearValues } from '../../interface';
 import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalInterface';
 import { Loader } from '../../../../../animations/Loader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
-import { ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer } from '../Features.styled';
+import {
+  CloseDrawerContainer, ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer,
+} from '../Features.styled';
 import { SelectMonthYear } from './SelectMonthYear';
 import { useDate } from '../../../../../hooks/useDate';
 import { Error } from '../../../Error';
+import { CloseIcon } from '../../../Icons';
 
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
@@ -41,6 +45,11 @@ const SelectExpenses = ({
   }
   return (
     <>
+      <CloseDrawerContainer>
+        <IconButton onClick={closeDrawer}>
+          <CloseIcon />
+        </IconButton>
+      </CloseDrawerContainer>
       <SelectMonthYear
         updateMonthYear={updateMonthAndYear}
         completeMonth={completeMonth}

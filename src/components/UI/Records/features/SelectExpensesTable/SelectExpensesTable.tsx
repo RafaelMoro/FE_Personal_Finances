@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useState, useMemo } from 'react';
 import {
   TableRow, TableBody, Checkbox, TableContainer,
@@ -13,7 +12,7 @@ import { orderExpenses } from './utils';
 import {
   TableCell, CancelButton, FlexContainer, ConfirmButton,
 } from '../../../../../styles';
-import { SelectExpensesContainer } from '../../Records.styled';
+import { SelectExpensesCell, SelectExpensesContainer } from '../Features.styled';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 
@@ -80,7 +79,6 @@ function SelectExpensesTable({
       <EnhancedTableToolbar numSelected={selectedExpenses.length} />
       <TableContainer>
         <Table
-          sx={{ minWidth: 750 }}
           aria-labelledby="tableTitle"
           size="medium"
         >
@@ -125,9 +123,9 @@ function SelectExpensesTable({
                   >
                     {row.shortName}
                   </TableCell>
-                  <TableCell align="right">{row.amount}</TableCell>
-                  <TableCell align="right">{row.fullDate}</TableCell>
-                  <TableCell align="right">{row.formattedTime}</TableCell>
+                  <SelectExpensesCell align="right">{row.amount}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">{row.formattedTime}</SelectExpensesCell>
                 </TableRow>
               );
             })}

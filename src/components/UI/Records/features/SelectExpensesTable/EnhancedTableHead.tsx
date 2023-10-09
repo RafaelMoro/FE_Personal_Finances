@@ -5,6 +5,7 @@ import { visuallyHidden } from '@mui/utils';
 
 import { EnhancedTableProps, ExpensePaidTable, HeadCell } from './interface';
 import { TableCell } from '../../../../../styles';
+import { SelectExpensesCell } from '../Features.styled';
 
 const headCells: readonly HeadCell[] = [
   {
@@ -54,10 +55,8 @@ function EnhancedTableHead({
           />
         </TableCell>
         {headCells.map((headCell) => (
-          <TableCell
+          <SelectExpensesCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -72,7 +71,7 @@ function EnhancedTableHead({
                 </Box>
               ) : null}
             </TableSortLabel>
-          </TableCell>
+          </SelectExpensesCell>
         ))}
       </TableRow>
     </TableHead>

@@ -15,14 +15,25 @@ export const SelectExpensesContainer = styled.div`
   width: 100%;
 `;
 
+export const CloseDrawerContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+`;
+
 export const LoadingExpensesContainer = styled.div`
+  width: 100%;
   display: grid;
   gap: 1rem;
   place-items: center;
   padding-top: 3rem;
 
   @media(min-width: 480px) {
-    min-width: 77rem;
+    min-width: 48rem;
+  }
+
+  @media(min-width: 1024px) {
+    min-width: 70rem;
   }
 `;
 
@@ -39,9 +50,21 @@ export const SideNoteSelectExpense = styled(Sub)`
 `;
 
 export const SelectExpensesToolbar = styled(Toolbar)`
-  padding: 2rem 0;
+  padding: 2rem 1rem;
   display: grid;
   gap: 1rem;
+`;
+
+/** SelectExpensesTable */
+export const SelectMonthYearBox = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+  margin-top: 2rem;
+`;
+
+export const SelectExpensesCell = styled(TableCell)`
+  padding: 1.6rem .8rem 1.6rem 0;
 `;
 
 /** MonthRecords */

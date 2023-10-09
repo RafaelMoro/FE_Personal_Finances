@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
 import { SelectMonthYearValues } from '../../interface';
-import { SelectMonthYearBox } from '../../Records.styled';
+import { SelectMonthYearBox } from '../Features.styled';
 import { SelectInput } from '../../../SelectInput';
 import { MONTHS } from '../../../../../constants';
 import { SecondaryButton } from '../../../../../styles';
