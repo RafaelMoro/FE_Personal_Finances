@@ -1,4 +1,5 @@
 import { IconButton } from '@mui/material';
+import { useAtom } from 'jotai';
 
 import { useLogin } from '../../../hooks/useLogin';
 import {
@@ -9,9 +10,11 @@ import { HeaderContainer, LogoImageContainer } from './Header.styled';
 import { LogoTitle } from '../../../pages/LoginModule/Login/Login.styled';
 import logoWebp from '../../../assets/logo-webp.webp';
 import logoPng from '../../../assets/logo-png.png';
+import { windowSizeAtom } from '../../../atoms';
 
 const Header = () => {
   const { signOut } = useLogin();
+  const [windowSize] = useAtom(windowSizeAtom);
 
   return (
     <HeaderContainer>
@@ -22,7 +25,7 @@ const Header = () => {
         </LogoImageContainer>
         <LogoTitle>Budget Master</LogoTitle>
       </FlexContainer>
-      <ParagraphTitle>Account management</ParagraphTitle>
+      { (windowSize === 'Desktop') && (<ParagraphTitle>Account management</ParagraphTitle>) }
       <IconButton onClick={signOut}>
         <LogOutIcon />
       </IconButton>
