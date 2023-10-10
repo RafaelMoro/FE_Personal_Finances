@@ -20,6 +20,10 @@ export const ListItemRecord = styled(ListItem)`
   row-gap: 2rem;
   cursor: pointer;
 
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
   @media(min-width: 480px) {
     grid-template-columns: 50% 25% 25%;
     column-gap: 1rem;

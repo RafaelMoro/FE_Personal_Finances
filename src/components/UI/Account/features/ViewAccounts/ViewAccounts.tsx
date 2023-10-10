@@ -186,7 +186,6 @@ const ViewAccounts = () => {
   if (windowSize === 'Desktop') {
     return (
       <AccountSectionDesktop>
-        <AccountsTitle>Account: </AccountsTitle>
         <AddAccount onClick={handleOpenCreateAccount} />
         { (accountsUI.length > 0) && accountsUI.map((account) => (
           <Account

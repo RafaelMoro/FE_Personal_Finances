@@ -23,7 +23,3 @@ export const RecordsBox = styled.main`
     grid-column: 2 / 3;
   }
 `;
-
-export const Header = styled.div`
-  grid-column: 1 / 3;
-`;

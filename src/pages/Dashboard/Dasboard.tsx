@@ -3,20 +3,18 @@ import { useAtom } from 'jotai';
 
 import { windowSizeAtom, accountsUIAtom } from '../../atoms';
 import { handleResizeWindow } from '../../utils';
-import { useLogin } from '../../hooks/useLogin';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList, SpeedDial } from '../../components/UI';
-import { SecondaryButton } from '../../styles';
 import {
-  DashboardContainer, RecordsBox, Header,
+  DashboardContainer, RecordsBox,
 } from './Dashboard.styled';
 import { useNotification } from '../../hooks/useNotification';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
+import { Header } from '../../components/templates/Header';
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
   const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
-  const { signOut } = useLogin();
   const {
     globalNotification, toggleGlobalNotification,
   } = useNotification();
@@ -53,9 +51,7 @@ const Dashboard = () => {
           close={toggleGlobalNotification}
         />
       )}
-      <Header>
-        <SecondaryButton variant="contained" size="medium" onClick={signOut}>Sign out</SecondaryButton>
-      </Header>
+      <Header />
       <ViewAccounts />
       <RecordsBox>
         <RecordList />
