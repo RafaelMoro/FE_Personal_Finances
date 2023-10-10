@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Typography, CardActions } from '@mui/material';
+import { CardActions } from '@mui/material';
 
 import {
-  AppColors, InputForm, Paragraph, Heading1, Anchor,
+  AppColors, InputForm, Paragraph, Anchor, Heading2,
 } from '../../../styles';
 
 export const Main = styled.main`
@@ -22,21 +22,6 @@ export const LogoContainer = styled.div`
   place-items: center;
 `;
 
-export const LogoImageContainer = styled.picture`
-  width: 17rem;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-`;
-
-export const LogoTitle = styled(Typography)`
-  font-family: 'Russo One', sans-serif;
-  font-size: 2.5rem;
-  color: ${AppColors.primary};
-`;
-
 export const LoginCard = styled.div`
   min-width: 27.5rem;
   align-self: start;
@@ -53,7 +38,7 @@ export const LoginCard = styled.div`
   }
 `;
 
-export const FormTitle = styled(Heading1)`
+export const FormTitle = styled(Heading2)`
   text-align: center;
   margin-bottom: 2rem;
 `;

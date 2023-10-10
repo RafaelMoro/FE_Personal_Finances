@@ -7,13 +7,12 @@ import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
+import { BrandLogoName } from '../../../components/templates/BrandLogoName';
 import {
-  Main, LoginCard, LogoContainer, LogoImageContainer, LogoTitle, LoginCardActions,
+  Main, LoginCard, LogoContainer, LoginCardActions,
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
 import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
-import logoWebp from '../../../assets/logo-webp.webp';
-import logoPng from '../../../assets/logo-png.png';
 
 const Login = () => {
   const {
@@ -32,11 +31,7 @@ const Login = () => {
       )}
       <Main>
         <LogoContainer>
-          <LogoImageContainer>
-            <source srcSet={logoWebp} type="image/webp" />
-            <img src={logoPng} alt="Budget Master logo" />
-          </LogoImageContainer>
-          <LogoTitle>Budget Master</LogoTitle>
+          <BrandLogoName isLoginPage />
         </LogoContainer>
         <LoginCard>
           <Formik
