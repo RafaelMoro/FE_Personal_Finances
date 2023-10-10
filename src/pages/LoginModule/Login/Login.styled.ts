@@ -10,11 +10,13 @@ export const Main = styled.main`
   min-height: 100vh;
   padding: 2rem;
   display: grid;
+  gap: 2rem;
   grid-template-rows: 40% 60%;
   place-items: center;
 `;
 
 export const LogoContainer = styled.div`
+  align-self: self-end;
   display: grid;
   gap: 1rem;
   place-items: center;
@@ -22,8 +24,6 @@ export const LogoContainer = styled.div`
 
 export const LogoImageContainer = styled.picture`
   width: 17rem;
-  display: grid;
-  grid-auto-rows: 17rem;
   img {
     width: 100%;
     height: 100%;
@@ -32,7 +32,7 @@ export const LogoImageContainer = styled.picture`
 `;
 
 export const LogoTitle = styled(Typography)`
-  font-family: 'Permanent Marker', cursive;
+  font-family: 'Russo One', sans-serif;
   font-size: 2.5rem;
   color: ${AppColors.primary};
 `;

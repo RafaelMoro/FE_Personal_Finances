@@ -12,7 +12,8 @@ import {
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
 import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
-import logo from '../../../assets/logo.png';
+import logoWebp from '../../../assets/logo-webp.webp';
+import logoPng from '../../../assets/logo-png.png';
 
 const Login = () => {
   const {
@@ -32,9 +33,10 @@ const Login = () => {
       <Main>
         <LogoContainer>
           <LogoImageContainer>
-            <img src={logo} alt="logo" />
+            <source srcSet={logoWebp} type="image/webp" />
+            <img src={logoPng} alt="Count on me logo" />
           </LogoImageContainer>
-          <LogoTitle>Cuenta conmigo</LogoTitle>
+          <LogoTitle>Budget Master</LogoTitle>
         </LogoContainer>
         <LoginCard>
           <Formik
