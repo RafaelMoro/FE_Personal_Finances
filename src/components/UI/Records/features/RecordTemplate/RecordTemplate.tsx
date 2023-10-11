@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Close } from '@mui/icons-material';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
@@ -40,6 +39,7 @@ import {
 /** Utils */
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
+import { CloseIcon } from '../../../Icons';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
@@ -207,7 +207,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   return (
     <RecordTemplateMain>
       <GoBackButton to={DASHBOARD_ROUTE}>
-        <Close sx={{ fontSize: '3.5rem' }} />
+        <CloseIcon />
       </GoBackButton>
       { (!edit) && (
         <ToggleButtonGroup

@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { CloseOutlined } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
 import { SystemStateIcons } from './utils';
@@ -10,6 +9,7 @@ import {
   NotificationDescription, IconCloseContainer, NotificationUIElementContainer,
 } from './Notification.styled';
 import { fadeIn, fadeOut } from '../../../styles/animations/fadeInOut';
+import { CloseIcon } from '../Icons';
 
 const Notification = ({
   title, description, status, close, UIElement = null,
@@ -45,7 +45,7 @@ const Notification = ({
           </NotificationUIElementContainer>
         )}
         <IconCloseContainer onClick={close}>
-          <CloseOutlined sx={{ fontSize: '2.5rem' }} />
+          <CloseIcon />
         </IconCloseContainer>
       </NotificationContainer>
     </NotificationWrapper>

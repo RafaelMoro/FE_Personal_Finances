@@ -23,4 +23,6 @@ export const LogOutIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <LogoutOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.primary }} />
 );
 
-export const CloseIcon = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (<Close sx={{ fontSize: size }} />);
+export const CloseIcon = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
+  <Close sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
+);
