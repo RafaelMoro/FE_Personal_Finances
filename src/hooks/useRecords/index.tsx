@@ -15,8 +15,8 @@ import {
 } from '../../atoms';
 import { useDate } from '../useDate';
 import {
-  UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsProps,
-  UpdateAmountAccountOnEditProps,
+  UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsOnCreateProps,
+  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
@@ -113,48 +113,67 @@ const useRecords = ({
     }
   };
 
-  // Fn used to update allRecords atom.
-  const updateAllRecords = ({
-    date, newRecord, deleteRecord = false, deletedRecordId = '',
-  }: UpdateRecordsProps) => {
+  // Fn used to update allRecords atom when a record is created.
+  const updateAllRecordsOnCreate = ({
+    date, newRecord,
+  }: UpdateRecordsOnCreateProps) => {
     const { monthFormatted } = formatDateToString(date);
     if (lastMonth === monthFormatted) {
-      if (deleteRecord) {
-        const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== deletedRecordId);
-        setAllRecords({ ...allRecords, lastMonth: filteredRecords });
-        return;
-      }
-
-      if (newRecord) {
-        const recordsUpdated = [...allRecords.lastMonth, newRecord];
-        setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
-        return;
-      }
+      const recordsUpdated = [...allRecords.lastMonth, newRecord];
+      setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
+      return;
     }
 
     if (currentMonth === monthFormatted) {
-      if (deleteRecord) {
-        const filteredRecords = allRecords.currentMonth.filter((record) => record._id !== deletedRecordId);
-        setAllRecords({ ...allRecords, currentMonth: filteredRecords });
-        return;
-      }
-
-      if (newRecord) {
-        const recordsUpdated = [...allRecords.currentMonth, newRecord];
-        setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
-        return;
-      }
-    }
-
-    if (deleteRecord) {
-      const filteredRecords = allRecords.olderRecords.filter((record) => record._id !== deletedRecordId);
-      setAllRecords({ ...allRecords, olderRecords: filteredRecords });
+      const recordsUpdated = [...allRecords.currentMonth, newRecord];
+      setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
       return;
     }
-    if (newRecord) {
-      const recordsUpdated = [...allRecords.olderRecords, newRecord];
-      setAllRecords({ ...allRecords, olderRecords: recordsUpdated });
+    const recordsUpdated = [...allRecords.olderRecords, newRecord];
+    setAllRecords({ ...allRecords, olderRecords: recordsUpdated });
+  };
+
+  // Fn used to update allRecords atom when a record is edited.
+  const updateAllRecordsOnEdit = ({ date, recordEdited }: UpdateRecordsOnEditProps) => {
+    const { monthFormatted } = formatDateToString(date);
+    const recordEditedId = recordEdited._id;
+    if (lastMonth === monthFormatted) {
+      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
+      filteredRecords.push(recordEdited);
+      setAllRecords({ ...allRecords, lastMonth: filteredRecords });
+      return;
     }
+
+    if (currentMonth === monthFormatted) {
+      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
+      filteredRecords.push(recordEdited);
+      setAllRecords({ ...allRecords, currentMonth: filteredRecords });
+      return;
+    }
+
+    const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
+    filteredRecords.push(recordEdited);
+    setAllRecords({ ...allRecords, olderRecords: filteredRecords });
+  };
+
+  // Fn used to update allRecords atom when a record is deleted.
+  const updateAllRecordsOnDelete = ({ date, deletedRecordId }: UpdateRecordsOnDeleteProps) => {
+    const { monthFormatted } = formatDateToString(date);
+
+    if (lastMonth === monthFormatted) {
+      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== deletedRecordId);
+      setAllRecords({ ...allRecords, lastMonth: filteredRecords });
+      return;
+    }
+
+    if (currentMonth === monthFormatted) {
+      const filteredRecords = allRecords.currentMonth.filter((record) => record._id !== deletedRecordId);
+      setAllRecords({ ...allRecords, currentMonth: filteredRecords });
+      return;
+    }
+
+    const filteredRecords = allRecords.olderRecords.filter((record) => record._id !== deletedRecordId);
+    setAllRecords({ ...allRecords, olderRecords: filteredRecords });
   };
 
   const createExpense = async (values: CreateExpenseValues) => {
@@ -192,7 +211,7 @@ const useRecords = ({
     });
 
     // Update expenses
-    updateAllRecords({ date, newRecord: expenseResponse });
+    updateAllRecordsOnCreate({ date, newRecord: expenseResponse });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
@@ -241,7 +260,7 @@ const useRecords = ({
     });
 
     // Update expenses
-    updateAllRecords({ date, newRecord: expenseResponse });
+    updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
@@ -282,7 +301,7 @@ const useRecords = ({
     });
 
     // Update incomes
-    updateAllRecords({ date, newRecord: createIncomeInfo });
+    updateAllRecordsOnCreate({ date, newRecord: createIncomeInfo });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
@@ -331,7 +350,7 @@ const useRecords = ({
     });
 
     // Update expenses
-    updateAllRecords({ date, newRecord: expenseResponse });
+    updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
 
     // Navigate to dashboard
     navigate(DASHBOARD_ROUTE);
@@ -385,7 +404,7 @@ const useRecords = ({
     closeDeleteRecordModalCb();
     closeDrawer();
     // Update Records
-    updateAllRecords({ date, deletedRecordId: recordId, deleteRecord: true });
+    updateAllRecordsOnDelete({ date, deletedRecordId: recordId });
   };
 
   return {

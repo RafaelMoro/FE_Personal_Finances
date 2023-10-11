@@ -23,9 +23,17 @@ export interface ShowErrorNotificationProps {
   goToDashboard?: boolean;
 }
 
-export interface UpdateRecordsProps {
+export interface UpdateRecordsOnCreateProps {
   date: Date;
-  newRecord?: AnyRecord;
-  deleteRecord?: boolean;
-  deletedRecordId?: string;
+  newRecord: AnyRecord;
+}
+
+export interface UpdateRecordsOnEditProps {
+  date: Date;
+  recordEdited: AnyRecord;
+}
+
+export interface UpdateRecordsOnDeleteProps {
+  date: Date;
+  deletedRecordId: string;
 }
