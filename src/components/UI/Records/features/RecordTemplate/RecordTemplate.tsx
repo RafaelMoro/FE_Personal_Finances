@@ -114,7 +114,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       // If the expense has indebted people, update it.
       const newIndebtedPeople = (recordToBeEdited?.indebtedPeople ?? []) as IndebtedPeople[];
       if (newIndebtedPeople.length > 0) {
-        addIndebtedPeopleForEdit(newIndebtedPeople);
+        // Database saves these with a mongo id. We have to remove it to be able to edit the record.
+        const indebtedPeopleWithoutId = newIndebtedPeople.map((person) => {
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          const { _id, ...restValuesPerson } = person;
+          return restValuesPerson;
+        });
+        addIndebtedPeopleForEdit(indebtedPeopleWithoutId);
       }
 
       // If the income has expenses paid, update it.
