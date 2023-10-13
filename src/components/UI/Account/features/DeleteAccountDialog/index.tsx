@@ -1,5 +1,5 @@
 import {
-  Dialog,
+  Dialog, IconButton,
 } from '@mui/material';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
@@ -13,9 +13,10 @@ import { DELETE_ACCOUNT_ROUTE } from '../../constants';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { AccountDialogContainer, DialogParagraph } from './DeleteAccountDialog.styled';
 import {
-  DialogTitle, SecondaryButton, CancelButton,
+  DialogTitle, SecondaryButton, CancelButton, FlexContainer,
 } from '../../../../../styles';
 import { useNotification } from '../../../../../hooks/useNotification';
+import { CloseIcon } from '../../../Icons';
 
 const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,
@@ -75,6 +76,11 @@ const DeleteAccountDialog = ({
 
   return (
     <Dialog onClose={onClose} open={open}>
+      <FlexContainer justifyContent="end" padding="1rem">
+        <IconButton onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </FlexContainer>
       <DialogTitle>Delete Account</DialogTitle>
       <AccountDialogContainer>
         <DialogParagraph>THERE IS NO WAY OF RECOVERING YOUR ACCOUNT.</DialogParagraph>

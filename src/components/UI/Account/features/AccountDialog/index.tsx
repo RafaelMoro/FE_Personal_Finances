@@ -1,5 +1,5 @@
 import {
-  Dialog,
+  Dialog, IconButton,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { useAtom } from 'jotai';
@@ -12,7 +12,7 @@ import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWith
 import { POST_PUT_ACCOUNT_ROUTE } from '../../constants';
 import { SelectInput } from '../../../SelectInput';
 import {
-  DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors,
+  DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors, FlexContainer,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
@@ -20,6 +20,7 @@ import { Account, TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { formatAccounts } from '../../../../../utils';
 import { useNotification } from '../../../../../hooks/useNotification';
+import { CloseIcon } from '../../../Icons';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -143,6 +144,11 @@ const AccountDialog = ({
   return (
     <Dialog onClose={onClose} open={open}>
       <>
+        <FlexContainer justifyContent="end" padding="1rem">
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </FlexContainer>
         <DialogTitle>{ titleModal }</DialogTitle>
         <Formik
           initialValues={initialValues}

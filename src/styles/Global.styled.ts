@@ -96,13 +96,14 @@ export const GlobalStyles = css`
 // **** Containers
 
 const flexContainerStyles = ({
-  justifyContent, alignItems, gap, flexDirection, margin,
+  justifyContent, alignItems, gap, flexDirection, margin, padding,
 }: FlexContainerProps) => css`
   justify-content: ${justifyContent ?? 'start'};
   align-items: ${alignItems ?? 'start'};
   gap: ${gap ?? '0'}rem;
   flex-direction: ${flexDirection ?? 'row'};
   margin: ${margin ?? '0'};
+  padding: ${padding ?? '0'};
 `;
 
 export const FlexContainer = styled.div`
