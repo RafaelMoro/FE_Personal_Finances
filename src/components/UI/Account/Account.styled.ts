@@ -53,6 +53,8 @@ export const AddAccountContainer = styled(AccountContainerBasicStyles)`
 export const AccountTitle = styled(Heading4)`
   align-self: start;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
   grid-column: 1 / 3;
 `;
 
