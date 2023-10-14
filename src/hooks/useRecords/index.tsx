@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
 import { formatDateToString, postRequestWithBearer } from '../../utils';
-import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
+import { EXPENSE_ROUTE, INCOME_ROUTE, UPDATE_MULTIPLE_EXPENSES } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
@@ -16,7 +16,7 @@ import {
 import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsOnCreateProps,
-  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps,
+  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
@@ -307,7 +307,9 @@ const useRecords = ({
     navigate(DASHBOARD_ROUTE);
   };
 
-  const editIncome = async (values: CreateIncomeValues, recordId: string, amountTouched: boolean, previousAmount: number) => {
+  const editIncome = async ({
+    values, recordId, amountTouched, previousAmount, previousExpensesRelated,
+  }: EditIncomeProps) => {
     const { amount, date: dateValue } = values;
     const newValues = { ...values, recordId };
     const date = dateValue.toDate();
@@ -322,7 +324,7 @@ const useRecords = ({
     if (expenseResponse?.message) {
       // Show notification error
       showErrorNotification({
-        errorMessage: `There is an error: ${expenseResponse?.message}`,
+        errorMessage: `There is an error editing the income: ${expenseResponse?.message}`,
         action: 'Create',
         goToDashboard: true,
       });
@@ -335,6 +337,29 @@ const useRecords = ({
         // show notification error
         showErrorNotification({
           errorMessage: `Updating amount error: ${updateAmount}`,
+          action: 'Create',
+          goToDashboard: true,
+        });
+        return;
+      }
+    }
+
+    if (previousExpensesRelated.length > 0) {
+      const payload = previousExpensesRelated.map((expense) => ({
+        recordId: expense._id,
+        isPaid: false,
+      }));
+      const expensesUpdated = await HttpRequestWithBearerToken(
+        payload,
+        UPDATE_MULTIPLE_EXPENSES,
+        'put',
+        bearerToken,
+      );
+
+      if (expensesUpdated?.message) {
+        // Show notification error
+        showErrorNotification({
+          errorMessage: `There is an error updating expenses: ${expenseResponse?.message}`,
           action: 'Create',
           goToDashboard: true,
         });

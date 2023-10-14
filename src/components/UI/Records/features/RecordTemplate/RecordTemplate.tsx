@@ -73,6 +73,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
+  console.log(recordToBeEdited?.expensesPaid);
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -204,7 +205,11 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     if (edit) {
       const recordId = recordToBeEdited?._id ?? '';
       const previousAmount = recordToBeEdited?.amount ?? 0;
-      editIncome(newValues, recordId, amountTouched, previousAmount);
+      const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
+      // Do here the symmetric difference.
+      editIncome({
+        values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated,
+      });
       return;
     }
     createIncome(newValues);
