@@ -9,6 +9,7 @@ import dayjs from 'dayjs';
 /** Constants, atoms, interfaces, hooks */
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { recordToBeModifiedAtom, selectedAccountAtom } from '../../../../../atoms';
+import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { useRecords } from '../../../../../hooks/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import {
@@ -73,7 +74,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     : <InputAdornment position="start">+ $</InputAdornment>;
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
-  console.log(recordToBeEdited?.expensesPaid);
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -206,9 +206,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       const recordId = recordToBeEdited?._id ?? '';
       const previousAmount = recordToBeEdited?.amount ?? 0;
       const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
-      // Do here the symmetric difference.
+
+      // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
+      const { oldRecords, newRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+      const valuesToBeEditedIncome = { ...newValues, expensesPaid: newRecords };
       editIncome({
-        values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated,
+        values: valuesToBeEditedIncome, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords,
       });
       return;
     }
