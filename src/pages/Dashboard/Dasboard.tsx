@@ -11,6 +11,7 @@ import {
 import { useNotification } from '../../hooks/useNotification';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
 import { Header } from '../../components/templates/Header';
+import { BackToTopButton } from '../../components/UI/BackToTopButton';
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
@@ -60,6 +61,7 @@ const Dashboard = () => {
         actions={dashboardActions}
         ariaLabelDescription="SpeedDial Accounts and Records actions"
       />
+      <BackToTopButton />
     </DashboardContainer>
   );
 };

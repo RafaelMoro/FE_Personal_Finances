@@ -1,5 +1,5 @@
 import {
-  EditOutlined, DeleteOutlined, Close, LogoutOutlined,
+  EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
 
@@ -25,4 +25,8 @@ export const LogOutIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
 
 export const CloseIcon = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
   <Close sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
+);
+
+export const GoToTopIcon = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
+  <KeyboardArrowUpOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
 );
