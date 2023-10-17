@@ -11,6 +11,7 @@ import {
 import { useNotification } from '../../hooks/useNotification';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
 import { Header } from '../../components/templates/Header';
+import { useBackToTopButton } from '../../hooks/useBackToTopButton';
 import { BackToTopButton } from '../../components/UI/BackToTopButton';
 
 const Dashboard = () => {
@@ -19,6 +20,7 @@ const Dashboard = () => {
   const {
     globalNotification, toggleGlobalNotification,
   } = useNotification();
+  const { visible, scrollToTop } = useBackToTopButton();
 
   const { dashboardActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
@@ -61,7 +63,7 @@ const Dashboard = () => {
         actions={dashboardActions}
         ariaLabelDescription="SpeedDial Accounts and Records actions"
       />
-      <BackToTopButton />
+      { (visible) && (<BackToTopButton scrollToTop={scrollToTop} />) }
     </DashboardContainer>
   );
 };

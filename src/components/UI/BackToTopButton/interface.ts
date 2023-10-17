@@ -1,3 +1,3 @@
-export interface BackToTopContainerProps {
-  visible: boolean;
+export interface BackToTopButtonProps {
+  scrollToTop: () => void;
 }
