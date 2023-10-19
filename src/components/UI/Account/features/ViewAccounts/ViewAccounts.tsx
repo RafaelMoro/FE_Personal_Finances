@@ -18,7 +18,7 @@ import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
 import { ErrorResponse } from '../../../../../aliasType';
 import {
-  AccountSection, AccountsTitle, AccountsContainer,
+  AccountSection, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop,
 } from './ViewAccounts.styled';
@@ -39,7 +39,6 @@ const ViewAccounts = () => {
   const [windowSize] = useAtom(windowSizeAtom);
 
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-  const accountTitle = (accounts && accounts.length === 1) ? 'Account:' : 'Accounts:';
 
   const [error, setError] = useState<ErrorResponse>('No error');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
@@ -154,7 +153,6 @@ const ViewAccounts = () => {
   if (windowSize === 'Tablet') {
     return (
       <AccountSectionTablet>
-        <AccountsTitle>{ accountTitle }</AccountsTitle>
         <AccountSlider>
           <AddAccount onClick={handleOpenCreateAccount} />
           { (accountsUI.length > 0) && accountsUI.map((account) => (

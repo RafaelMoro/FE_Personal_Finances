@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Heading3, PrimaryButton, SecondaryButton } from '../../../../../styles';
+import { PrimaryButton, SecondaryButton } from '../../../../../styles';
 
 export const AccountSection = styled.aside`
   width: 100%;
@@ -35,15 +35,6 @@ export const AccountSectionLoading = styled.article`
   place-items: center;
 `;
 
-export const AccountsTitle = styled(Heading3)`
-  padding-left: 10px;
-  place-self: center;
-
-  @media (min-width: 480px) {
-    align-self: center;
-  }
-`;
-
 export const ChangeAccountButton = styled(SecondaryButton)`
   width: 12rem;
   height: 6rem;
@@ -71,8 +62,6 @@ export const AccountSectionTablet = styled.aside`
   height: 23rem;
   grid-column: 1 / 3;
   padding: 3rem 0 0 3rem;
-  display: grid;
-  grid-template-rows: 20% 80%;
 `;
 
 export const AccountSlider = styled.div`

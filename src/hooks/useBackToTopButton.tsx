@@ -1,5 +1,11 @@
 import { useState, useEffect } from 'react';
 
+/**
+ * To use this hook, use the component: BackToTopButton.
+ * Use conditional rendering on the prop "visible" to show BackToTopButton
+ * Pass down the function scrollToTopto the component.
+*/
+
 const useBackToTopButton = () => {
   const [visible, setVisible] = useState(false);
 
