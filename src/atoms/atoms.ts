@@ -18,13 +18,12 @@ export const openChangeAccountModalAtom = atom<boolean>(false);
 export const accountActionAtom = atom<ModalAction>('Create');
 
 /** Records atoms  */
-export const allRecordsAtom = atom<AllRecords>({
+export const initialStateAllRecords = {
   currentMonth: [],
   lastMonth: [],
   olderRecords: [],
-});
-export const recordToBeModifiedAtom = atom<AnyRecord | null>(null);
-export const totalAtom = atom<RecordsTotal>({
+};
+export const initialTotalAtomState = {
   currentMonth: {
     expenseTotal: '$0.00',
     incomeTotal: '$0.00',
@@ -33,7 +32,10 @@ export const totalAtom = atom<RecordsTotal>({
     expenseTotal: '$0.00',
     incomeTotal: '$0.00',
   },
-});
+};
+export const allRecordsAtom = atom<AllRecords>(initialStateAllRecords);
+export const recordToBeModifiedAtom = atom<AnyRecord | null>(null);
+export const totalAtom = atom<RecordsTotal>(initialTotalAtomState);
 
 /** Notifications atoms  */
 export const globalNotificationAtom = atom<GlobalNotification>({

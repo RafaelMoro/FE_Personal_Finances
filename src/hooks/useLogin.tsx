@@ -10,7 +10,11 @@ import { ILoginValues } from '../pages/LoginModule/Login/interface';
 import { User } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
-import { userAtom } from '../atoms';
+import {
+  accountsAtom, accountsUIAtom, allRecordsAtom, initialStateAllRecords, selectedAccountAtom, userAtom,
+  initialTotalAtomState,
+  totalAtom,
+} from '../atoms';
 import { postRequest } from '../utils/PostRequest.ts';
 import { getLocalStorageInfo, updateLocalStorage, saveInfoToLocalStorage } from '../utils';
 
@@ -34,6 +38,11 @@ const NOTIFICATION_STATUS = SystemStateEnum.Error;
 const useLogin = () => {
   const navigate = useNavigate();
   const [, setUser] = useAtom(userAtom);
+  const [, setAccounts] = useAtom(accountsAtom);
+  const [, setSelectedAccount] = useAtom(selectedAccountAtom);
+  const [, setAccountsUI] = useAtom(accountsUIAtom);
+  const [, setAllRecords] = useAtom(allRecordsAtom);
+  const [, setTotal] = useAtom(totalAtom);
   const {
     toggleShowNotification, notificationInfo,
     updateDescription, notification,
@@ -42,7 +51,13 @@ const useLogin = () => {
   });
 
   const signOut = () => {
+    // Reset atoms after sign out.
     setUser(null);
+    setAccounts(null);
+    setAccountsUI([]);
+    setSelectedAccount(null);
+    setAllRecords(initialStateAllRecords);
+    setTotal(initialTotalAtomState);
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
   };
