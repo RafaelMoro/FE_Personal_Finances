@@ -18,11 +18,12 @@ import { List } from '../../Records.styled';
 import { ErrorResponse } from '../../../../../aliasType';
 import { useDate } from '../../../../../hooks/useDate';
 import { NETWORK_CATCH_ERROR } from '../../../../../constants';
-import { NoRecordsFound } from '../NoRecordsFound';
+import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
 import { getRecordsByMonthAndYear } from '../../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../../globalInterface';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
+import { NoRecordsFound } from '../NoRecordsFound';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -147,6 +148,12 @@ const RecordList = () => {
     });
   };
 
+  if (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0) {
+    return (
+      <NoRecordsFound />
+    );
+  }
+
   return (
     <List>
       <MonthRecords
@@ -160,7 +167,7 @@ const RecordList = () => {
         records={allRecords.currentMonth}
         loading={loadingCurrentMonthRecords}
         error={error !== 'No error'}
-        onEmptyCb={() => <NoRecordsFound month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onEmptyCb={() => <NoRecordsFoundOnMonth month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
           <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="current-month" />
@@ -178,7 +185,7 @@ const RecordList = () => {
         records={allRecords.lastMonth}
         loading={loadingLastMonthRecords}
         error={errorLastMonthRecords}
-        onEmptyCb={() => <NoRecordsFound month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (
           <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="last-month" />

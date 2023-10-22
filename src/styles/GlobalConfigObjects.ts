@@ -6,7 +6,9 @@ import { IGlobalConfiguration, IBackgroundColors, ITextColors } from './interfac
 */
 
 export const AppColors = {
-  primary: '#E6991E',
+  primary: '#FE955E',
+  primaryDark: '#E44323',
+  primaryLight: '#FFE2B4',
   secondary: '#EAB765',
   white: '#fbfbfb',
   black: '#1D1305',
