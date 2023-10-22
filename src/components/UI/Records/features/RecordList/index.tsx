@@ -24,6 +24,7 @@ import { AnyRecord } from '../../../../../globalInterface';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
+import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -147,6 +148,12 @@ const RecordList = () => {
       updateTotalCallback: updateTotalLastMonth,
     });
   };
+
+  if (!selectedAccount) {
+    return (
+      <NoAccountsFound />
+    );
+  }
 
   if (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0) {
     return (
