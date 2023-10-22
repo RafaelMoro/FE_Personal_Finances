@@ -5,8 +5,13 @@ export const NoAccountsFoundPicture = styled.picture`
   justify-content: center;
 
   img {
-    width: 28.9rem;
-    height: 29.6rem;
+    width: 20.9rem;
+    height: 20.6rem;
     object-fit: contain;
+
+    @media(min-width: 480px) {
+      width: 28.9rem;
+      height: 29.6rem;
+    }
   }
 `;
