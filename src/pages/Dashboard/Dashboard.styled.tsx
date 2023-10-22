@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { RecordBoxProps } from './interface';
 
 export const DashboardContainer = styled.div`
   height: 100vh;
@@ -9,7 +10,7 @@ export const DashboardContainer = styled.div`
   }
 `;
 
-export const RecordsBox = styled.main`
+export const RecordsBox = styled('main', { shouldForwardProp: (props) => props !== 'noAccountsCreated' })`
   width: 100%;
   height: 100%;
   padding: 0 1rem;
@@ -19,6 +20,7 @@ export const RecordsBox = styled.main`
   }
   @media (min-width: 1024px) {
     grid-column: 2 / 3;
+    ${({ noAccountsCreated }: RecordBoxProps) => (noAccountsCreated && 'grid-column: 1 / 3;')}
     overflow-y: scroll;
     overscroll-behavior-y: contain;
   }

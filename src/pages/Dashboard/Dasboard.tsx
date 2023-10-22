@@ -29,6 +29,8 @@ const Dashboard = () => {
     hideAddRecord: (accountsUI.length === 0),
   });
 
+  const noAccountsCreated = accountsUI.length === 0;
+
   useEffect(() => {
     if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');
     if (window.innerWidth > 1024) setWindowSize('Desktop');
@@ -55,8 +57,8 @@ const Dashboard = () => {
         />
       )}
       <Header />
-      <ViewAccounts />
-      <RecordsBox>
+      { (accountsUI.length > 0) && (<ViewAccounts />) }
+      <RecordsBox noAccountsCreated={noAccountsCreated}>
         <RecordList />
       </RecordsBox>
       <SpeedDial

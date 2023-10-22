@@ -9,7 +9,7 @@ export const NoAccountsFoundPicture = styled.picture`
     height: 20.6rem;
     object-fit: contain;
 
-    @media(min-width: 480px) {
+    @media(min-width: 1024px) {
       width: 28.9rem;
       height: 29.6rem;
     }

@@ -154,7 +154,7 @@ const ViewAccounts = () => {
     return (
       <AccountSectionTablet>
         <AccountSlider>
-          <AddAccount onClick={handleOpenCreateAccount} />
+          { (accountsUI.length > 0) && (<AddAccount onClick={handleOpenCreateAccount} />)}
           { (accountsUI.length > 0) && accountsUI.map((account) => (
             <Account
               key={account._id}
@@ -221,7 +221,7 @@ const ViewAccounts = () => {
             openDeleteAccountModal={handleOpenDeleteAccount}
           />
         )}
-        { (showAddAccount && !selectedAccount) && (
+        { ((showAddAccount) && (!selectedAccount) && (accountsUI.length > 0)) && (
           <AddAccount onClick={handleOpenCreateAccount} />
         ) }
       </AccountsContainer>
