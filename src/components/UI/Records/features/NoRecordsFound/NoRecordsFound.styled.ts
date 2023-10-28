@@ -5,8 +5,13 @@ export const NotRecordsFoundPicture = styled.picture`
   justify-content: center;
 
   img {
-    width: 45.7rem;
-    height: 30.7rem;
+    width: 30.9rem;
+    height: 30.6rem;
     object-fit: contain;
+
+    @media(min-width: 1024px) {
+      width: 45.7rem;
+      height: 30.7rem;
+    }
   }
 `;

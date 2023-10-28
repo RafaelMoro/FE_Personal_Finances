@@ -17,7 +17,7 @@ export const RecordsBox = styled('main', { shouldForwardProp: (props) => props !
   padding: 0 1rem;
   @media (min-width: 480px) {
     grid-column: 1 / 3;
-    padding: 2rem 2rem 0 2rem;
+    padding: 0 2rem 0 2rem;
   }
   @media (min-width: 1024px) {
     grid-column: 2 / 3;

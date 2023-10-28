@@ -66,7 +66,7 @@ ${({ hide }: ViewAccountsStylesProps) => (hide && 'display: none;')}
   width: 100%;
   height: 23rem;
   grid-column: 1 / 3;
-  padding: 3rem 0 0 3rem;
+  padding: 0 0 0 3rem;
 `;
 
 export const AccountSlider = styled.div`
