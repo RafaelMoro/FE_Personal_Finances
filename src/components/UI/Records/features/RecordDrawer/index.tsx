@@ -12,7 +12,7 @@ import {
   RecordDrawerPriceContainer,
   DrawerTitleContainer,
   DrawerCloseBox,
-} from '../../Records.styled';
+} from './RecordDrawer.styled';
 import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';

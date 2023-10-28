@@ -4,7 +4,7 @@ import {
 import { useMemo } from 'react';
 
 import { ExpensePaid } from '../../../../../globalInterface';
-import { RecordTable, TableTitle } from '../../Records.styled';
+import { RecordTable, TableTitle } from '../RecordDrawer/RecordDrawer.styled';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';

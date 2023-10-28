@@ -11,7 +11,7 @@ import { EditIcon, DeleteIcon } from '../../../Icons';
 import { FlexContainer, TableCell } from '../../../../../styles';
 import {
   TableTitle, RecordTable, TableNote,
-} from '../../Records.styled';
+} from '../RecordDrawer/RecordDrawer.styled';
 import {
   IconsCell, IndebtedPeopleName, NameCell, NameCellTitle, DebtPaid,
 } from '../Features.styled';
