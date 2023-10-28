@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import { PrimaryButton, SecondaryButton } from '../../../../../styles';
+import { ViewAccountsStylesProps } from './interface';
 
-export const AccountSection = styled.aside`
+export const AccountSectionBasicStyles = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
   width: 100%;
   height: 23rem;
   grid-column: 1 / 3;
   margin-top: 2rem;
-  display: grid;
   grid-template-rows: 30% 70%;
   grid-template-columns: repeat(2, 1fr);
   justify-content: center;
@@ -20,7 +20,11 @@ export const AccountSection = styled.aside`
   }
 `;
 
-export const AccountSectionError = styled(AccountSection)`
+export const AccountSection = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
+  display: ${({ hide }: ViewAccountsStylesProps) => (hide ? 'none' : 'grid')};
+`;
+
+export const AccountSectionError = styled(AccountSectionBasicStyles)`
   padding: 0 2rem;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
@@ -57,7 +61,8 @@ export const AccountsContainer = styled.div`
 
 // **************************** Tablet
 
-export const AccountSectionTablet = styled.aside`
+export const AccountSectionTablet = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
+${({ hide }: ViewAccountsStylesProps) => (hide && 'display: none;')}
   width: 100%;
   height: 23rem;
   grid-column: 1 / 3;
@@ -78,13 +83,13 @@ export const AccountSlider = styled.div`
 
 // **************************** Desktop
 
-export const AccountSectionDesktop = styled.aside`
+export const AccountSectionDesktop = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
   scroll-snap-type: y proximity;
-  display: grid;
+  display: ${({ hide }: ViewAccountsStylesProps) => (hide ? 'none' : 'grid')};
   grid-auto-rows: 20rem;
   gap: 2rem;
   padding: 0 1rem;

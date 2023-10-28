@@ -113,3 +113,13 @@ export const IndebtedPersonName = styled(Paragraph)`
   grid-column: 1 / 3;
   text-align: center;
 `;
+
+/** No records found */
+
+export const NoRecordsFoundContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rem;
+  padding-top: 4rem;
+`;

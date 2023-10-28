@@ -57,7 +57,7 @@ const Dashboard = () => {
         />
       )}
       <Header />
-      { (accountsUI.length > 0) && (<ViewAccounts />) }
+      <ViewAccounts hide={noAccountsCreated} />
       <RecordsBox noAccountsCreated={noAccountsCreated}>
         <RecordList />
       </RecordsBox>

@@ -23,12 +23,13 @@ import {
   AccountSectionDesktop,
 } from './ViewAccounts.styled';
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
+import { ViewAccountsProps } from './interface';
 
 let ERROR_TITLE = 'Error.';
 let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 const NETWORK_CATCH_ERROR = 'Network Error';
 
-const ViewAccounts = () => {
+const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
@@ -152,7 +153,7 @@ const ViewAccounts = () => {
 
   if (windowSize === 'Tablet') {
     return (
-      <AccountSectionTablet>
+      <AccountSectionTablet hide={hide}>
         <AccountSlider>
           { (accountsUI.length > 0) && (<AddAccount onClick={handleOpenCreateAccount} />)}
           { (accountsUI.length > 0) && accountsUI.map((account) => (
@@ -183,7 +184,7 @@ const ViewAccounts = () => {
 
   if (windowSize === 'Desktop') {
     return (
-      <AccountSectionDesktop>
+      <AccountSectionDesktop hide={hide}>
         <AddAccount onClick={handleOpenCreateAccount} />
         { (accountsUI.length > 0) && accountsUI.map((account) => (
           <Account
@@ -211,7 +212,7 @@ const ViewAccounts = () => {
   }
 
   return (
-    <AccountSection>
+    <AccountSection hide={hide}>
       <AccountsContainer>
         { selectedAccount && (
           <Account
