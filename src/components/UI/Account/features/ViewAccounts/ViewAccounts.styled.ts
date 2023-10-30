@@ -34,9 +34,25 @@ export const AccountSectionError = styled(AccountSectionBasicStyles)`
 export const AccountSectionLoading = styled.article`
   width: 100%;
   height: 23rem;
-  margin-top: 2rem;
+  padding: 2rem;
   display: grid;
   place-items: center;
+
+  @media(min-width: 480px) {
+    overflow-x: scroll;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    gap: 2rem;
+    grid-auto-flow: column;
+    grid-template-rows: 1fr;
+    grid-auto-columns: 25rem;
+  }
+
+  @media(min-width: 1024px) {
+    grid-row: 2 / 3;
+    overflow-x: unset;
+    grid-auto-flow: row;
+  }
 `;
 
 export const ChangeAccountButton = styled(SecondaryButton)`
@@ -85,7 +101,7 @@ export const AccountSlider = styled.div`
 
 export const AccountSectionDesktop = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow-y: scroll;
   overscroll-behavior-y: contain;
   scroll-snap-type: y proximity;

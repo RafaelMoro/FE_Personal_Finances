@@ -1,5 +1,5 @@
-import { FlexContainer, Paragraph, PrimaryButton } from '../../../../../styles';
-import { NoAccountsFoundPicture } from './NoAccountsFound.styled';
+import { Paragraph, PrimaryButton } from '../../../../../styles';
+import { NoAccountsFoundContainer, NoAccountsFoundPicture } from './NoAccountsFound.styled';
 import noAccountsFoundPng from '../../../../../assets/no_accounts_found_png.png';
 import noAccountsFoundWebp from '../../../../../assets/no_accounts_found_webp.webp';
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
@@ -10,7 +10,7 @@ const NoAccountsFound = () => {
   } = useAccountsActions();
 
   return (
-    <FlexContainer gap="4" flexDirection="column" alignItems="center">
+    <NoAccountsFoundContainer>
       <NoAccountsFoundPicture>
         <source srcSet={noAccountsFoundWebp} type="image/webp" />
         <img src={noAccountsFoundPng} alt="No Accounts Found" />
@@ -19,7 +19,7 @@ const NoAccountsFound = () => {
         You have not created accounts yet. Start now!
       </Paragraph>
       <PrimaryButton onClick={handleOpenCreateAccount}>Create account</PrimaryButton>
-    </FlexContainer>
+    </NoAccountsFoundContainer>
   );
 };
 

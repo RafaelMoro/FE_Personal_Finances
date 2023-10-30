@@ -1,5 +1,14 @@
 import styled from '@emotion/styled';
 
+export const NoAccountsFoundContainer = styled.div`
+  grid-column: 2 / 3;
+  grid-row: 2 / 3;
+  display: flex;
+  gap: 4rem;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const NoAccountsFoundPicture = styled.picture`
   display: flex;
   justify-content: center;

@@ -39,7 +39,7 @@ export const AccountContainerColoroued = styled(AccountContainerBasicStyles)`
 `;
 
 export const AccountContainerLoading = styled(AccountContainerBasicStyles)`
-  min-width: 20rem;
+  width: 23rem;
   min-height: 18rem;
   background-color: ${AppColors.white};
 `;

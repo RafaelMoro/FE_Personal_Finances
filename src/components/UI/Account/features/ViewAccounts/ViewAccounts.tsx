@@ -139,6 +139,12 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     return (
       <AccountSectionLoading>
         <AccountLoading />
+        { (windowSize !== 'Mobile') && (
+          <>
+            <AccountLoading />
+            <AccountLoading />
+          </>
+        ) }
       </AccountSectionLoading>
     );
   }

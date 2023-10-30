@@ -5,6 +5,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
+  accountsAtom,
   allRecordsAtom, selectedAccountAtom, totalAtom, userAtom,
 } from '../../../../../atoms';
 import { Error } from '../../../Error';
@@ -13,7 +14,7 @@ import {
 } from '../../constants';
 import { GetRequest, formatNumberToCurrency } from '../../../../../utils';
 import { IncomeAndExpensesResponse } from '../../interface';
-import { AppColors } from '../../../../../styles';
+import { AppColors, FlexContainer } from '../../../../../styles';
 import { List } from '../../Records.styled';
 import { ErrorResponse } from '../../../../../aliasType';
 import { useDate } from '../../../../../hooks/useDate';
@@ -40,10 +41,11 @@ const RecordList = () => {
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [selectedAccount] = useAtom(selectedAccountAtom);
+  const [accounts] = useAtom(accountsAtom);
   const accountId = selectedAccount?._id ?? 'Account ID not found';
   const [error, setError] = useState<ErrorResponse>('No error');
   const [errorLastMonthRecords, setErrorLastMonthRecords] = useState<boolean>(false);
-  const [loadingCurrentMonthRecords, setloadingCurrentMonthRecords] = useState<boolean>(false);
+  const [loadingCurrentMonthRecords, setloadingCurrentMonthRecords] = useState<boolean>(true);
   const [loadingLastMonthRecords, setLoadingLastMonthRecords] = useState<boolean>(false);
 
   const backgroundColor = selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey;
@@ -118,6 +120,12 @@ const RecordList = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId]);
 
+  useEffect(() => {
+    if (Array.isArray(accounts) && !selectedAccount) {
+      NotLoadingCurrentMonthRecords();
+    }
+  }, [accounts, selectedAccount]);
+
   const handleError = (errorCatched: string) => {
     setErrorLastMonthRecords(true);
     console.error(errorCatched);
@@ -150,19 +158,21 @@ const RecordList = () => {
     });
   };
 
-  if (loadingCurrentMonthRecords) {
+  if (loadingCurrentMonthRecords && (!accounts || accounts.length === 0)) {
     return (
-      <Loader />
+      <FlexContainer justifyContent="center" alignItems="center">
+        <Loader />
+      </FlexContainer>
     );
   }
 
-  if (!selectedAccount) {
+  if (!selectedAccount && !loadingCurrentMonthRecords && Array.isArray(accounts)) {
     return (
       <NoAccountsFound />
     );
   }
 
-  if (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0) {
+  if (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0 && selectedAccount && !loadingCurrentMonthRecords) {
     return (
       <NoRecordsFound />
     );

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
-import { windowSizeAtom, accountsUIAtom } from '../../atoms';
+import { windowSizeAtom, accountsUIAtom, accountsAtom } from '../../atoms';
 import { handleResizeWindow } from '../../utils';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList, SpeedDial } from '../../components/UI';
@@ -16,6 +16,7 @@ import { BackToTopButton } from '../../components/UI/BackToTopButton';
 
 const Dashboard = () => {
   const [accountsUI] = useAtom(accountsUIAtom);
+  const [accounts] = useAtom(accountsAtom);
   const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
   const {
     globalNotification, toggleGlobalNotification,
@@ -29,7 +30,7 @@ const Dashboard = () => {
     hideAddRecord: (accountsUI.length === 0),
   });
 
-  const noAccountsCreated = accountsUI.length === 0;
+  const noAccountsCreated = Array.isArray(accounts) && accounts.length === 0;
 
   useEffect(() => {
     if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');

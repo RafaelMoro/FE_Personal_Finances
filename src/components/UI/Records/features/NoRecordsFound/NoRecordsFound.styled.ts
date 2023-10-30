@@ -6,7 +6,7 @@ export const NotRecordsFoundPicture = styled.picture`
 
   img {
     width: 30.9rem;
-    height: 30.6rem;
+    height: 20.6rem;
     object-fit: contain;
 
     @media(min-width: 1024px) {
