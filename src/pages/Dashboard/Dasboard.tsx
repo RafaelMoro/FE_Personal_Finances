@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
-import { windowSizeAtom, accountsUIAtom, accountsAtom } from '../../atoms';
+import {
+  windowSizeAtom, accountsUIAtom, accountsAtom,
+} from '../../atoms';
 import { handleResizeWindow } from '../../utils';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList, SpeedDial } from '../../components/UI';

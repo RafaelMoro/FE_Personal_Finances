@@ -1,8 +1,8 @@
 import { Paragraph, PrimaryButton } from '../../../../../styles';
 import { NoAccountsFoundContainer, NoAccountsFoundPicture } from './NoAccountsFound.styled';
+import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 import noAccountsFoundPng from '../../../../../assets/no_accounts_found_png.png';
 import noAccountsFoundWebp from '../../../../../assets/no_accounts_found_webp.webp';
-import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 
 const NoAccountsFound = () => {
   const {
