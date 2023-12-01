@@ -6,10 +6,14 @@ import { createYearsArray } from '../utils/CreateYearsArray';
 
 const useDate = () => {
   const dateOfToday = new Date();
-  const currentMonth = ABBREVIATED_MONTHS[dateOfToday.getMonth()];
-  const completeCurrentMonth = MONTHS[dateOfToday.getMonth()];
-  const lastMonth = ABBREVIATED_MONTHS[dateOfToday.getMonth() - 1];
-  const completeLastMonth = MONTHS[dateOfToday.getMonth() - 1];
+  const currentMonthNumber = dateOfToday.getMonth();
+  const currentMonth = ABBREVIATED_MONTHS[currentMonthNumber];
+  const completeCurrentMonth = MONTHS[currentMonthNumber];
+
+  // If we're on january, set last month as december
+  const lastMonth = currentMonthNumber === 0 ? ABBREVIATED_MONTHS[11] : ABBREVIATED_MONTHS[currentMonthNumber - 1];
+  // If we're on january, set last month as december
+  const completeLastMonth = currentMonthNumber === 0 ? MONTHS[11] : MONTHS[currentMonthNumber - 1];
   const currentYear = String(dateOfToday.getFullYear());
   const years: string[] = createYearsArray(currentYear);
 
