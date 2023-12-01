@@ -1,4 +1,4 @@
-import { CreateIncomeValues } from '../../components/UI/Records/interface';
+import { CreateExpenseValues, CreateIncomeValues } from '../../components/UI/Records/interface';
 import { AnyRecord, ExpensePaid } from '../../globalInterface';
 
 export interface UseRecordsProps {
@@ -37,6 +37,14 @@ export interface UpdateRecordsOnEditProps {
 export interface UpdateRecordsOnDeleteProps {
   date: Date;
   deletedRecordId: string;
+}
+
+export interface EditExpenseProps {
+  values: CreateExpenseValues;
+  recordId: string;
+  amountTouched: boolean;
+  previousAmount: number;
+  userId: string;
 }
 
 export interface EditIncomeProps {

@@ -16,7 +16,7 @@ import {
 import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsOnCreateProps,
-  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps,
+  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
@@ -217,9 +217,11 @@ const useRecords = ({
     navigate(DASHBOARD_ROUTE);
   };
 
-  const editExpense = async (values: CreateExpenseValues, recordId: string, amountTouched: boolean, previousAmount: number) => {
+  const editExpense = async ({
+    values, recordId, amountTouched, previousAmount, userId,
+  }: EditExpenseProps) => {
     const { amount, date: dateValue } = values;
-    const newValues = { ...values, recordId };
+    const newValues = { ...values, recordId, userId };
     const date = dateValue.toDate();
     const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
       newValues,

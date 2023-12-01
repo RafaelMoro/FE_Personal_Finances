@@ -195,7 +195,10 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       if (edit) {
         const recordId = recordToBeEdited?._id ?? '';
         const previousAmount = recordToBeEdited?.amount ?? 0;
-        editExpense(newValues, recordId, amountTouched, previousAmount);
+        const userIdRecord = recordToBeEdited?.userId ?? '';
+        editExpense({
+          values: newValues, recordId, amountTouched, previousAmount, userId: userIdRecord,
+        });
         return;
       }
       createExpense(newValues);

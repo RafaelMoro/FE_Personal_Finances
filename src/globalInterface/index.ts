@@ -53,6 +53,7 @@ export interface EditCategory {
 
 export interface AccountRecord {
   _id: string;
+  userId: string;
   shortName: string;
   description: string;
   amount: number;

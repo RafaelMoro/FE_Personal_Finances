@@ -4,6 +4,7 @@ export const backgroundColorDefault = 'green';
 
 export const expenseSample: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Uber home to gym.',
   description: 'Paying Uber to go to smartfit on Solesta',
   category: {
@@ -27,6 +28,7 @@ export const expenseSample: AnyRecord = {
 
 export const expenseSampleWithLongShortName: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   // eslint-disable-next-line max-len
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
@@ -51,6 +53,7 @@ export const expenseSampleWithLongShortName: AnyRecord = {
 
 export const expenseSampleWithLongDescription: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   date: new Date(),
   account: 'account1',
   shortName: 'Groceries for the week.',
@@ -75,6 +78,7 @@ export const expenseSampleWithLongDescription: AnyRecord = {
 
 export const ExpenseSampleWithoutTagsAndBudgets: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: '2 Mcdonalds ',
   description: "Mine and Eric's",
   category: {
@@ -98,6 +102,7 @@ export const ExpenseSampleWithoutTagsAndBudgets: AnyRecord = {
 
 export const ExpenseSampleWithManyBudgets: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Imagine Dragons concert ',
   description: 'CDMX Concert',
   category: {
@@ -121,6 +126,7 @@ export const ExpenseSampleWithManyBudgets: AnyRecord = {
 
 export const ExpenseSampleWithManyBudgetsAndLongNameBudget: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Imagine Dragons concert ',
   description: 'CDMX Concert',
   category: {
@@ -144,6 +150,7 @@ export const ExpenseSampleWithManyBudgetsAndLongNameBudget: AnyRecord = {
 
 export const ExpenseSampleWithManyBudgetsAndTags: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Imagine Dragons concert ',
   description: 'CDMX Concert',
   category: {
@@ -167,6 +174,7 @@ export const ExpenseSampleWithManyBudgetsAndTags: AnyRecord = {
 
 export const ExpenseSampleWithNoBudgetsAndManyTags: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Imagine Dragons concert ',
   description: 'CDMX Concert',
   category: {
@@ -190,6 +198,7 @@ export const ExpenseSampleWithNoBudgetsAndManyTags: AnyRecord = {
 
 export const IncomeSample: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Payment to credit card',
   description: 'From May 12th to May 19th',
   category: {
@@ -213,6 +222,7 @@ export const IncomeSample: AnyRecord = {
 
 export const IncomeSampleWithExpensesPaid: AnyRecord = {
   _id: '456-789',
+  userId: '987-654',
   shortName: 'Payment to credit card',
   description: 'From May 12th to May 19th',
   category: {
