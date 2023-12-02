@@ -15,7 +15,7 @@ import {
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, RecordSub,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -102,13 +102,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           </RecordStatusContainer>
           ) }
           <BudgetChipContainer>
-            { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
+            { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
             ))}
           </BudgetChipContainer>
           <TagsChipContainer>
-            { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
+            { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
             { tag.length > 0 && tag.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
             ))}
@@ -161,10 +161,10 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         { amountShown }
         <RecordDate>{ fullDate }</RecordDate>
         <RecordTime>{ formattedTime }</RecordTime>
-        <RecordSubtitleText>{ category.categoryName }</RecordSubtitleText>
-        <RecordSubtitleText>{ subCategory }</RecordSubtitleText>
+        <RecordSub>{ category.categoryName }</RecordSub>
+        <RecordSub>{ subCategory }</RecordSub>
         <BudgetChipContainer>
-          { budgets.length === 0 && (<Chip label="No Budget" variant="outlined" chipColor={backgroundColor} />) }
+          { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (
             <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
           ))}
@@ -173,7 +173,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           ) }
         </BudgetChipContainer>
         <TagsChipContainer>
-          { tag.length === 0 && (<Chip label="No Tags" variant="outlined" chipColor={backgroundColor} />) }
+          { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
           { tag.length > 0 && firstTwoTags.map((item) => (
             <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
           ))}

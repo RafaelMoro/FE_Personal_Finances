@@ -48,6 +48,15 @@ export const RecordTitle = styled(ParagraphTitle)`
   }
 `;
 
+export const RecordSub = styled(Sub)`
+  opacity: 0.7;
+  text-align: center;
+
+  @media(min-width: 480px) {
+    text-align: start;
+  }
+`;
+
 export const RecordDateTime = styled(Sub)`
   opacity: 0.7;
   text-align: center;
@@ -103,12 +112,13 @@ export const RecordSubtitleText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
   text-align: center;
 
-  @media(min-width: 1024px) {
+  @media(min-width: 480px) {
     text-align: start;
   }
 `;
 
-export const RecordCategory = styled(RecordSubtitleText)`
+export const RecordCategory = styled(Sub)`
+  opacity: 0.7;
   grid-column: 2 / 4;
 
   @media(min-width: 480px) {
@@ -120,7 +130,8 @@ export const RecordCategory = styled(RecordSubtitleText)`
   }
 `;
 
-export const RecordSubCategory = styled(RecordSubtitleText)`
+export const RecordSubCategory = styled(Sub)`
+  opacity: 0.7;
   grid-column: 2 / 4;
 
   @media(min-width: 480px) {
@@ -198,7 +209,7 @@ export const BudgetChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
   @media(min-width: 480px) {
-    grid-column: 2 / 4;
+    grid-column: 2 / 3;
     grid-row: 4 / 5;
   }
 
@@ -211,8 +222,8 @@ export const TagsChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
   @media(min-width: 480px) {
-    grid-column: 2 / 4;
-    grid-row: 5 / 6;
+    grid-column: 3 / 4;
+    grid-row: 4 / 5;
   }
 
   @media(min-width: 1024px) {

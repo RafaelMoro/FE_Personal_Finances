@@ -39,11 +39,11 @@ export const RecordDrawerTitle = styled(ParagraphTitle)`
 `;
 
 export const RecordDrawerDatetime = styled(RecordDateTime)`
-  text-align: center;
+  text-align: start;
 `;
 
-export const RecordDrawerText = styled(RecordSubtitleText)`
-  text-align: center;
+export const RecordDrawerText = styled(Sub)`
+  opacity: 0.7;
 `;
 
 export const RecordDrawerDescription = styled(RecordSubtitleText)`
