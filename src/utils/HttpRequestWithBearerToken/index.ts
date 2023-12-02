@@ -23,6 +23,6 @@ export async function HttpRequestWithBearerToken(
     return data;
   } catch (errorCatched) {
     const error = errorCatched as AxiosError;
-    return error.response?.data;
+    return error;
   }
 }

@@ -398,10 +398,10 @@ const useRecords = ({
       bearerToken,
     );
 
-    if (responseDeleteRecord.error) {
-      // mostrar notification
+    if (responseDeleteRecord.message) {
+      // Show error notification
       showErrorNotification({
-        errorMessage: `Error while deleting record: ${responseDeleteRecord.error}`,
+        errorMessage: `Error while deleting record: ${responseDeleteRecord}`,
         action: 'Delete',
       });
       closeDeleteRecordModalCb();
