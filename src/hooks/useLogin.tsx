@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode';
 import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
 import { ICountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
-import { ILoginValues } from '../pages/LoginModule/Login/interface';
+import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { User } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
@@ -83,7 +83,7 @@ const useLogin = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, setUser]);
 
-  const handleSubmit = async (values: ILoginValues) => {
+  const handleSubmit = async (values: LoginValues) => {
     const loginInfo = await postRequest(values, LOGIN_POST_ROUTE);
 
     if (loginInfo?.error) {
