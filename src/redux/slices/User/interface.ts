@@ -5,6 +5,7 @@ export interface UserInitialState {
   loading: boolean;
   error: boolean;
   errorMessage: string | unknown;
+  navigateToDashboard: boolean;
 }
 
 export interface UserResponseLogin {

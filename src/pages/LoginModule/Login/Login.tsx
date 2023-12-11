@@ -13,17 +13,11 @@ import {
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
 import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
-import { LoginValues } from './interface';
-import { loginUser } from '../../../redux/slices/User/user.slice';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 
 const Login = () => {
   const {
-    handleShowNotification, notificationInfo, notification, submitOnPressEnter,
+    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
   } = useLogin();
-  const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.userInfo);
-  const handleSubmit = async (values: LoginValues) => dispatch(loginUser(values));
 
   return (
     <>

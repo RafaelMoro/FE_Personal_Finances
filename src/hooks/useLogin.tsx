@@ -3,11 +3,9 @@ import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
-import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
 import { ICountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
-import { User } from '../globalInterface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import {
@@ -15,8 +13,9 @@ import {
   initialTotalAtomState,
   totalAtom,
 } from '../atoms';
-import { postRequest } from '../utils/PostRequest.ts';
-import { getLocalStorageInfo, updateLocalStorage, saveInfoToLocalStorage } from '../utils';
+import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { loginUser, toggleNavigateDashboardFlag } from '../redux/slices/User/user.slice';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -37,6 +36,8 @@ const NOTIFICATION_STATUS = SystemStateEnum.Error;
 
 const useLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userReduxState = useAppSelector((state) => state.user);
   const [, setUser] = useAtom(userAtom);
   const [, setAccounts] = useAtom(accountsAtom);
   const [, setSelectedAccount] = useAtom(selectedAccountAtom);
@@ -83,26 +84,16 @@ const useLogin = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate, setUser]);
 
-  const handleSubmit = async (values: LoginValues) => {
-    const loginInfo = await postRequest(values, LOGIN_POST_ROUTE);
-
-    if (loginInfo?.error) {
-      const errorMessage = loginInfo?.message as string;
-      updateDescription(errorMessage);
-      toggleShowNotification();
-    } else {
-      const { accessToken, user: { email } } = loginInfo;
-      const bearerToken = { Authorization: `Bearer ${accessToken}` };
-      const user: User = { accessToken, email, bearerToken };
-      updateLocalStorage(
-        {
-          user,
-        },
-      );
-      setUser(user);
+  // After having a success login, the flag of navigate to dashboard will be enabled.
+  useEffect(() => {
+    if (userReduxState.navigateToDashboard) {
+      // After navigating to the dashboard, disable the flag to avoid re-render.
       navigate(DASHBOARD_ROUTE);
+      dispatch(toggleNavigateDashboardFlag());
     }
-  };
+  }, [dispatch, navigate, userReduxState.navigateToDashboard]);
+
+  const handleSubmit = async (values: LoginValues) => dispatch(loginUser(values));
 
   const submitOnPressEnter = (
     event: React.KeyboardEvent<HTMLFormElement>,

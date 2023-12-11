@@ -12,6 +12,7 @@ const userInitialState: UserInitialState = {
   loading: false,
   error: false,
   errorMessage: '',
+  navigateToDashboard: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -26,7 +27,11 @@ export const loginUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState: userInitialState,
-  reducers: {},
+  reducers: {
+    toggleNavigateDashboardFlag: (state) => {
+      state.navigateToDashboard = !state.navigateToDashboard;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
       state.loading = true;
@@ -48,6 +53,7 @@ export const userSlice = createSlice({
         },
       );
       state.userInfo = user;
+      state.navigateToDashboard = true;
     });
 
     builder.addCase(loginUser.rejected, (state, action) => {
@@ -57,5 +63,7 @@ export const userSlice = createSlice({
     });
   },
 });
+
+export const { toggleNavigateDashboardFlag } = userSlice.actions;
 
 export default userSlice.reducer;
