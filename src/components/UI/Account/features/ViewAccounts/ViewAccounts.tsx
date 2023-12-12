@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { AxiosRequestHeaders } from 'axios';
 
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
@@ -10,13 +10,10 @@ import { AccountDialog } from '../AccountDialog';
 import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
-  userAtom, accountsAtom, selectedAccountAtom, accountsUIAtom, windowSizeAtom,
+  selectedAccountAtom, windowSizeAtom,
   openAccountModalAtom, openChangeAccountModalAtom, accountActionAtom,
 } from '../../../../../atoms';
-import { GetRequest, formatAccounts } from '../../../../../utils';
-import { GET_ACCOUNTS_ROUTE } from './constants';
 import { AccountUI } from '../../interface';
-import { ErrorResponse } from '../../../../../aliasType';
 import {
   AccountSection, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
@@ -24,24 +21,25 @@ import {
 } from './ViewAccounts.styled';
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 import { ViewAccountsProps } from './interface';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { fetchAccounts, selectNewAccount as selectNewAccountRedux } from '../../../../../redux/slices/Accounts/accounts.slice';
 
-let ERROR_TITLE = 'Error.';
-let ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
-const NETWORK_CATCH_ERROR = 'Network Error';
+const ERROR_TITLE = 'Error.';
+const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 
 const ViewAccounts = ({ hide }: ViewAccountsProps) => {
-  const [user] = useAtom(userAtom);
-  const [accounts, setAccounts] = useAtom(accountsAtom);
-  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
+  const dispatch = useAppDispatch();
+  const userReduxState = useAppSelector((state) => state.user);
+  const accountsReduxState = useAppSelector((state) => state.accounts);
+  const accountsUI = accountsReduxState?.accounts;
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+
   const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
   const [accountAction] = useAtom(accountActionAtom);
   const [openAccountModal] = useAtom(openAccountModalAtom);
   const [openChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [windowSize] = useAtom(windowSizeAtom);
 
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
-
-  const [error, setError] = useState<ErrorResponse>('No error');
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
 
   const {
@@ -57,73 +55,26 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   } = useAccountsActions();
 
   useEffect(() => {
-    const getAccounts = async () => {
-      try {
-        const accountsData = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
-
-        // catch error
-        if (accountsData?.error) {
-          const errorMessage = accountsData?.message as string;
-          if (errorMessage === NETWORK_CATCH_ERROR) {
-            ERROR_TITLE = 'Error #401';
-            setError('Network Error');
-            return;
-          }
-          ERROR_DESCRIPTION = errorMessage;
-          setError('Other Error');
-          return;
-        }
-        setAccounts(accountsData);
-
-        // accounts array is empty, show add account component
-        if (accountsData.length === 0) {
-          setShowAddAccount(true);
-          return;
-        }
-
-        const formattedAccountsUI = formatAccounts({ accounts: accountsData });
-
-        // If accounts UI has been fetched before and there is already a selected account, just update the accounts UI
-        if (Array.isArray(accountsUI) && accountsUI.length > 0 && selectedAccount) {
-          const currentAccoundSelected = accountsUI.find((account) => account.selected) ?? accountsUI[0];
-          const newAccountsUI = formattedAccountsUI.map((account) => {
-            if (account._id === currentAccoundSelected._id) return { ...account, selected: true };
-            return { ...account, selected: false };
-          });
-          setAccountsUI(newAccountsUI);
-          return;
-        }
-
-        setAccountsUI(formattedAccountsUI);
-
-        const firstAccount = formattedAccountsUI[0];
-
-        setSelectedAccount(firstAccount);
-      } catch (errorCatched) {
-        const newError = errorCatched as AxiosError;
-        ERROR_DESCRIPTION = newError.message;
-        setError('Other Error');
-      }
-    };
-    if (!!user && bearerToken) getAccounts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bearerToken, selectedAccount, user]);
+    if (userReduxState.userInfo) {
+      dispatch(fetchAccounts({ bearerToken }));
+    }
+  }, [bearerToken, dispatch, userReduxState.userInfo]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
-    if (accountsUI.length < 1) {
+    if (accountsUI && accountsUI.length < 1) {
       setShowAddAccount(true);
     } else {
       // If an account is created, don't show AddAccount
       setShowAddAccount(false);
     }
-  }, [accountsUI.length]);
+  }, [accountsUI, accountsUI?.length]);
 
   const selectNewAccount = (accountSelected: AccountUI) => {
     if (selectedAccount?._id === accountSelected?._id) return;
     const accountId = accountSelected._id;
 
-    const newAccountsUI = accountsUI.map((account) => {
+    const newAccountsUI = (accountsUI || []).map((account) => {
       if (account._id === accountId) {
         const newSelectedAccount = { ...account, selected: true };
         // Here we are selecting the new account.
@@ -132,10 +83,10 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
       }
       return { ...account, selected: false };
     });
-    setAccountsUI(newAccountsUI);
+    dispatch(selectNewAccountRedux(newAccountsUI));
   };
 
-  if (accounts === null && error === 'No error') {
+  if (accountsReduxState.loading) {
     return (
       <AccountSectionLoading>
         <AccountLoading />
@@ -149,7 +100,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     );
   }
 
-  if (error !== 'No error') {
+  if (accountsReduxState.error) {
     return (
       <AccountSectionError>
         <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
@@ -161,8 +112,8 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     return (
       <AccountSectionTablet hide={hide}>
         <AccountSlider>
-          { (accountsUI.length > 0) && (<AddAccount onClick={handleOpenCreateAccount} />)}
-          { (accountsUI.length > 0) && accountsUI.map((account) => (
+          { (accountsUI && accountsUI.length > 0) && (<AddAccount onClick={handleOpenCreateAccount} />)}
+          { (accountsUI && accountsUI.length > 0) && accountsUI.map((account) => (
             <Account
               key={account._id}
               account={account}
@@ -192,7 +143,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     return (
       <AccountSectionDesktop hide={hide}>
         <AddAccount onClick={handleOpenCreateAccount} />
-        { (accountsUI.length > 0) && accountsUI.map((account) => (
+        { (accountsUI && accountsUI.length > 0) && accountsUI.map((account) => (
           <Account
             key={account._id}
             account={account}
@@ -228,11 +179,11 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
             openDeleteAccountModal={handleOpenDeleteAccount}
           />
         )}
-        { ((showAddAccount) && (!selectedAccount) && (accountsUI.length > 0)) && (
+        { ((showAddAccount) && (!selectedAccount) && (accountsUI && accountsUI.length > 0)) && (
           <AddAccount onClick={handleOpenCreateAccount} />
         ) }
       </AccountsContainer>
-      { (selectedAccount && accounts) && (
+      { (selectedAccount && accountsUI) && (
         <SelectAccountDialog
           open={openChangeAccountModal}
           onClose={handleCloseChangeAccount}

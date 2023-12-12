@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { toggleLoading } from '../userInterface.slice';
 import { postRequest, updateLocalStorage } from '../../../utils';
 import { LoginValues } from '../../../pages/LoginModule/Login/interface';
 import { User } from '../../../globalInterface';
@@ -17,8 +16,7 @@ const userInitialState: UserInitialState = {
 
 export const loginUser = createAsyncThunk(
   'user/login',
-  async (values: LoginValues, { dispatch }) => {
-    dispatch(toggleLoading());
+  async (values: LoginValues) => {
     const loginInfo: LoginInfoResponse = await postRequest(values, LOGIN_POST_ROUTE);
     return loginInfo;
   },
