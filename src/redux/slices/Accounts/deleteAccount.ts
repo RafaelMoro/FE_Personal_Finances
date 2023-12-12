@@ -21,17 +21,17 @@ export const deleteAccount = createAsyncThunk(
 export const deleteAccountPending = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(deleteAccount.pending, (state) => {
-  state.loading = true;
+  state.loadingOnAction = true;
 
   // Reset previous error status if it occurred
-  state.error = false;
-  state.errorMessage = '';
+  state.errorOnAction = false;
+  state.errorMessageOnAction = '';
 });
 
 export const deleteAccountFullfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(deleteAccount.fulfilled, (state, action) => {
-  state.loading = false;
+  state.loadingOnAction = false;
 
   const accountsFiltered = (state.accounts || []).filter((account) => account._id !== action.payload?._id);
   const [firstAccount] = accountsFiltered;
@@ -43,7 +43,7 @@ export const deleteAccountFullfilled = (
 export const deleteAccountRejected = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(deleteAccount.rejected, (state, action) => {
-  state.loading = false;
-  state.error = true;
-  state.errorMessage = action.error.message;
+  state.loadingOnAction = false;
+  state.errorOnAction = true;
+  state.errorMessageOnAction = action.error.message;
 });

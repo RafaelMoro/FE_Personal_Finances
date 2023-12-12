@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   Dialog, IconButton,
 } from '@mui/material';
@@ -39,14 +40,16 @@ const DeleteAccountDialog = ({
       onClose();
     } catch (err) {
       const errorCatched = err as AxiosError;
-      // eslint-disable-next-line no-console
+      console.group();
+      console.error('Error on deleting account');
       console.error(errorCatched);
+      console.groupEnd();
       updateGlobalNotification({
         newTitle: `Error deleting ${accountName}`,
         newDescription: ERROR_MESSAGE_GENERAL,
         newStatus: SystemStateEnum.Error,
       });
-      // catch error
+      onClose();
     }
   };
 

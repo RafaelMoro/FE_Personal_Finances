@@ -7,6 +7,9 @@ export interface AccountsInitialState {
   loading: boolean;
   error: boolean;
   errorMessage: string | unknown;
+  loadingOnAction: boolean;
+  errorOnAction: boolean;
+  errorMessageOnAction: string | unknown;
 }
 
 export interface FetchAccountsValues {
