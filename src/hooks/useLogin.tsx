@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
+import { AxiosError } from 'axios';
 
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
 import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
@@ -18,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   loginUser, toggleNavigateDashboardFlag, signOff, signOn,
 } from '../redux/slices/User/user.slice';
+import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -66,6 +68,7 @@ const useLogin = () => {
     navigate(LOGIN_ROUTE);
   };
 
+  // Sync local storage with user Info redux state.
   useEffect(() => {
     const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
     const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
@@ -98,7 +101,21 @@ const useLogin = () => {
     }
   }, [dispatch, navigate, userReduxState.navigateToDashboard]);
 
-  const handleSubmit = async (values: LoginValues) => dispatch(loginUser(values));
+  const handleSubmit = async (values: LoginValues) => {
+    try {
+      await dispatch(loginUser(values)).unwrap();
+    } catch (err) {
+      // Catches if the action returns an axios error that could be error 401 unauthorized
+      const errorCatched = err as AxiosError;
+      if (errorCatched?.message === UNAUTHORIZED_ERROR) {
+        updateDescription(ERROR_MESSAGE_UNAUTHORIZED);
+        toggleShowNotification();
+        return;
+      }
+      updateDescription(ERROR_MESSAGE_GENERAL);
+      toggleShowNotification();
+    }
+  };
 
   const submitOnPressEnter = (
     event: React.KeyboardEvent<HTMLFormElement>,
