@@ -1,8 +1,13 @@
 import { useRef, useState } from 'react';
 
-import { useAtom } from 'jotai';
 import { SystemStateEnum } from '../enums';
-import { globalNotificationAtom } from '../atoms';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import {
+  updateTitle as updateTitleSlice,
+  updateDescription as updateDescriptionSlice,
+  updateStatus as updateStatusSlice,
+  toggleNotification as toggleNotificationSlice,
+} from '../redux/slices/globalNotification.slice';
 
 interface UseNotificationProps {
   title?: string;
@@ -30,7 +35,8 @@ interface UpdateGlobalNotificationProps {
 *   - updateStatus: Function that updates the notification status.
 */
 const useNotification = ({ title = '', description = '', status = SystemStateEnum.Info }: UseNotificationProps = {}) => {
-  const [globalNotification, setGlobalNotification] = useAtom(globalNotificationAtom);
+  const dispatch = useAppDispatch();
+  const globalNotification = useAppSelector((state) => state.globalNotification);
   const [localNotification, setLocalNotification] = useState<boolean>(false);
   const notificationInfo = useRef({
     title,
@@ -58,45 +64,26 @@ const useNotification = ({ title = '', description = '', status = SystemStateEnu
   };
 
   function updateGlobalTitle(newTitle: string):void {
-    setGlobalNotification({ ...globalNotification, title: newTitle });
+    dispatch(updateTitleSlice(newTitle));
   }
 
   function updateGlobalDescription(newDescription: string):void {
-    setGlobalNotification({ ...globalNotification, description: newDescription });
+    dispatch(updateDescriptionSlice(newDescription));
   }
 
   function updateGlobalStatus(newStatus: SystemStateEnum):void {
-    setGlobalNotification({ ...globalNotification, status: newStatus });
+    dispatch(updateStatusSlice(newStatus));
   }
 
   function updateGlobalNotification({ newTitle, newDescription, newStatus }: UpdateGlobalNotificationProps):void {
-    setGlobalNotification({
-      title: newTitle,
-      description: newDescription,
-      status: newStatus,
-      showNotification: true,
-    });
-  }
-
-  function hideGlobalNotification() {
-    setGlobalNotification({
-      ...globalNotification,
-      showNotification: false,
-    });
-  }
-
-  function showGlobalNotification() {
-    setGlobalNotification({
-      ...globalNotification,
-      showNotification: true,
-    });
+    dispatch(updateTitleSlice(newTitle));
+    dispatch(updateDescriptionSlice(newDescription));
+    dispatch(updateStatusSlice(newStatus));
+    dispatch(toggleNotificationSlice());
   }
 
   function toggleGlobalNotification() {
-    setGlobalNotification({
-      ...globalNotification,
-      showNotification: !globalNotification.showNotification,
-    });
+    dispatch(toggleNotificationSlice());
   }
 
   return {
@@ -113,8 +100,6 @@ const useNotification = ({ title = '', description = '', status = SystemStateEnu
     updateGlobalDescription,
     updateGlobalStatus,
     updateGlobalNotification,
-    showGlobalNotification,
-    hideGlobalNotification,
     toggleGlobalNotification,
   };
 };
