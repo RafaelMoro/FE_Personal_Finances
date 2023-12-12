@@ -4,7 +4,7 @@ export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', '
 export const NETWORK_CATCH_ERROR = 'Network Error';
 export const UNAUTHORIZED_ERROR = 'Request failed with status code 401';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
-export const ERROR_MESSAGE_GENERAL = 'Something went wrong. Try again later.';
+export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
 
 const FOOD_AND_DRINK_CATEGORY: Category = {
   _id: 'local-category-1',

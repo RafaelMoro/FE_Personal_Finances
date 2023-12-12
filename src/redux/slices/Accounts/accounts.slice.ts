@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { GetRequest, formatAccounts } from '../../../utils';
-import { GET_ACCOUNTS_ROUTE } from '../../../components/UI/Account/features/ViewAccounts/constants';
-import { AccountsInitialState, FetchAccountsValues } from './interface';
+import { createSlice } from '@reduxjs/toolkit';
+import { AccountsInitialState } from './interface';
+import { fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected } from './fetchAccounts';
+import { deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected } from './deleteAccount';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
@@ -11,14 +11,6 @@ const accountsInitialState: AccountsInitialState = {
   error: false,
   errorMessage: '',
 };
-
-export const fetchAccounts = createAsyncThunk(
-  'accounts/fetchAccounts',
-  async ({ bearerToken }: FetchAccountsValues) => {
-    const response = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
-    return response;
-  },
-);
 
 export const accountsSlice = createSlice({
   name: 'accounts',
@@ -32,27 +24,13 @@ export const accountsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchAccounts.pending, (state) => {
-      state.loading = true;
+    fetchAccountsPending(builder);
+    fetchAccountsFullfilled(builder);
+    fetchAccountsRejected(builder);
 
-      // Reset previous error status if it occurred
-      state.error = false;
-      state.errorMessage = '';
-    });
-
-    builder.addCase(fetchAccounts.fulfilled, (state, action) => {
-      state.loading = false;
-      const formattedAccounts = formatAccounts({ accounts: action.payload?.data });
-      const [firstAccount] = formattedAccounts;
-      state.accountSelected = firstAccount;
-      state.accounts = formattedAccounts;
-    });
-
-    builder.addCase(fetchAccounts.rejected, (state, action) => {
-      state.loading = false;
-      state.error = true;
-      state.errorMessage = action.error.message;
-    });
+    deleteAccountPending(builder);
+    deleteAccountFullfilled(builder);
+    deleteAccountRejected(builder);
   },
 });
 

@@ -22,7 +22,8 @@ import {
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 import { ViewAccountsProps } from './interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { fetchAccounts, updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { fetchAccounts } from '../../../../../redux/slices/Accounts/fetchAccounts';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';

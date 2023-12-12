@@ -12,3 +12,12 @@ export interface AccountsInitialState {
 export interface FetchAccountsValues {
   bearerToken: AxiosRequestHeaders;
 }
+
+export interface DeleteAccountValues {
+  accountId: string;
+}
+
+export interface DeleteAccountProps {
+  values: DeleteAccountValues;
+  bearerToken: AxiosRequestHeaders;
+}
