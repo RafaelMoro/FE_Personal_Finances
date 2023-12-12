@@ -10,7 +10,7 @@ import { AccountDialog } from '../AccountDialog';
 import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
-  selectedAccountAtom, windowSizeAtom,
+  windowSizeAtom,
   openAccountModalAtom, openChangeAccountModalAtom, accountActionAtom,
 } from '../../../../../atoms';
 import { AccountUI } from '../../interface';
@@ -22,7 +22,7 @@ import {
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 import { ViewAccountsProps } from './interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { fetchAccounts, selectNewAccount as selectNewAccountRedux } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { fetchAccounts, updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -32,9 +32,9 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const userReduxState = useAppSelector((state) => state.user);
   const accountsReduxState = useAppSelector((state) => state.accounts);
   const accountsUI = accountsReduxState?.accounts;
+  const selectedAccount = accountsReduxState?.accountSelected;
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
 
-  const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
   const [accountAction] = useAtom(accountActionAtom);
   const [openAccountModal] = useAtom(openAccountModalAtom);
   const [openChangeAccountModal] = useAtom(openChangeAccountModalAtom);
@@ -78,12 +78,12 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
       if (account._id === accountId) {
         const newSelectedAccount = { ...account, selected: true };
         // Here we are selecting the new account.
-        setSelectedAccount(newSelectedAccount);
+        dispatch(updateSelectedAccount(newSelectedAccount));
         return newSelectedAccount;
       }
       return { ...account, selected: false };
     });
-    dispatch(selectNewAccountRedux(newAccountsUI));
+    dispatch(updateAccountsWithNewSelectedAccount(newAccountsUI));
   };
 
   if (accountsReduxState.loading) {

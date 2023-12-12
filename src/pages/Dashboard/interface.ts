@@ -1,3 +1,3 @@
 export interface RecordBoxProps {
-  noAccountsCreated: boolean;
+  noAccountsCreated: boolean | null;
 }

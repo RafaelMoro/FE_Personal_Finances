@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useAtom } from 'jotai';
 
 import {
-  windowSizeAtom, accountsUIAtom, accountsAtom,
+  windowSizeAtom,
 } from '../../atoms';
 import { handleResizeWindow } from '../../utils';
 import { ViewAccounts } from '../../components/UI/Account';
@@ -15,10 +15,11 @@ import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardA
 import { Header } from '../../components/templates/Header';
 import { useBackToTopButton } from '../../hooks/useBackToTopButton';
 import { BackToTopButton } from '../../components/UI/BackToTopButton';
+import { useAppSelector } from '../../redux/hooks';
 
 const Dashboard = () => {
-  const [accountsUI] = useAtom(accountsUIAtom);
-  const [accounts] = useAtom(accountsAtom);
+  const accountsReduxState = useAppSelector((state) => state.accounts);
+  const accountsUI = accountsReduxState?.accounts;
   const [windowSize, setWindowSize] = useAtom(windowSizeAtom);
   const {
     globalNotification, toggleGlobalNotification,
@@ -27,12 +28,12 @@ const Dashboard = () => {
 
   const { dashboardActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
-    hideChangeAccount: (accountsUI.length < 2 || windowSize !== 'Mobile'),
+    hideChangeAccount: ((accountsUI && accountsUI.length < 2) || windowSize !== 'Mobile'),
     // Set it as true if accountsUI array is empty
-    hideAddRecord: (accountsUI.length === 0),
+    hideAddRecord: (accountsUI && accountsUI.length === 0),
   });
 
-  const noAccountsCreated = Array.isArray(accounts) && accounts.length === 0;
+  const noAccountsCreated = accountsUI && accountsUI.length === 0;
 
   useEffect(() => {
     if (window.innerWidth > 480 && window.innerWidth < 1024) setWindowSize('Tablet');

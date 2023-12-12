@@ -1,23 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AxiosRequestHeaders } from 'axios';
 import { GetRequest, formatAccounts } from '../../../utils';
 import { GET_ACCOUNTS_ROUTE } from '../../../components/UI/Account/features/ViewAccounts/constants';
-import { AccountUI } from '../../../components/UI/Account/interface';
-
-interface AccountsInitialState {
-  accounts: AccountUI[] | null;
-  loading: boolean;
-  error: boolean;
-  errorMessage: string | unknown;
-}
-
-interface FetchAccountsValues {
-  bearerToken: AxiosRequestHeaders;
-}
+import { AccountsInitialState, FetchAccountsValues } from './interface';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
+  accountSelected: null,
   loading: false,
   error: false,
   errorMessage: '',
@@ -35,8 +24,11 @@ export const accountsSlice = createSlice({
   name: 'accounts',
   initialState: accountsInitialState,
   reducers: {
-    selectNewAccount: (state, action) => {
+    updateAccountsWithNewSelectedAccount: (state, action) => {
       state.accounts = action.payload;
+    },
+    updateSelectedAccount: (state, action) => {
+      state.accountSelected = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -51,6 +43,8 @@ export const accountsSlice = createSlice({
     builder.addCase(fetchAccounts.fulfilled, (state, action) => {
       state.loading = false;
       const formattedAccounts = formatAccounts({ accounts: action.payload?.data });
+      const [firstAccount] = formattedAccounts;
+      state.accountSelected = firstAccount;
       state.accounts = formattedAccounts;
     });
 
@@ -62,6 +56,6 @@ export const accountsSlice = createSlice({
   },
 });
 
-export const { selectNewAccount } = accountsSlice.actions;
+export const { updateAccountsWithNewSelectedAccount, updateSelectedAccount } = accountsSlice.actions;
 
 export default accountsSlice.reducer;

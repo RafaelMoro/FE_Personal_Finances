@@ -13,5 +13,5 @@ export interface SpeedDialProps {
 
 export interface CurrentDashboardActionsProps {
   hideChangeAccount?: boolean;
-  hideAddRecord?: boolean;
+  hideAddRecord?: boolean | null;
 }

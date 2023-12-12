@@ -3,9 +3,9 @@ export interface AddAccountProps {
 }
 
 export interface ViewAccountsProps {
-  hide: boolean;
+  hide: boolean | null;
 }
 
 export interface ViewAccountsStylesProps {
-  hide: boolean;
+  hide: boolean | null;
 }

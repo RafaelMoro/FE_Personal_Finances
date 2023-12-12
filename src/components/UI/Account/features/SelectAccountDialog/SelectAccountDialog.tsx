@@ -1,25 +1,26 @@
 import {
   Dialog, List, ListItem as ListAccount, Divider,
 } from '@mui/material';
-import { useAtom } from 'jotai';
 
 import { AccountUI } from '../../interface';
 import { ListAccountSelected, ListItemButtonContainer } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
 import { AccountDialogProps } from './interface';
-import { accountsUIAtom, selectedAccountAtom } from '../../../../../atoms/atoms';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { updateSelectedAccount, updateAccountsWithNewSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 
 const SelectAccountDialog = ({
   open, onClose,
 }: AccountDialogProps) => {
-  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
-  const [, setSelectedAccount] = useAtom(selectedAccountAtom);
+  const dispatch = useAppDispatch();
+  const accountsReduxState = useAppSelector((state) => state.accounts);
+  const accountsUI = accountsReduxState?.accounts;
 
   const handleAccountClick = (accountId: string) => {
-    const newAccounts: AccountUI[] = accountsUI.map((account) => {
+    const newAccounts: AccountUI[] = (accountsUI || []).map((account) => {
       if (account._id === accountId) {
         const newSelectedAccount = { ...account, selected: true };
-        setSelectedAccount(newSelectedAccount);
+        dispatch(updateSelectedAccount(newSelectedAccount));
         return newSelectedAccount;
       }
 
@@ -28,7 +29,7 @@ const SelectAccountDialog = ({
         selected: false,
       };
     });
-    setAccountsUI(newAccounts);
+    dispatch(updateAccountsWithNewSelectedAccount(newAccounts));
     onClose();
   };
 
@@ -36,7 +37,7 @@ const SelectAccountDialog = ({
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>Choose other account</DialogTitle>
       <List sx={{ pt: 0 }}>
-        { accountsUI.map((account) => (
+        { (accountsUI) && accountsUI.map((account) => (
           <article key={account._id}>
             { (account.selected) && (
               <ListAccountSelected>
