@@ -1,6 +1,6 @@
 import { User } from '../../globalInterface';
 
-export interface ICountOnMeLocalStorage {
+export interface CountOnMeLocalStorage {
   user: User;
 }
 

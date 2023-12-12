@@ -31,6 +31,12 @@ export const userSlice = createSlice({
     toggleNavigateDashboardFlag: (state) => {
       state.navigateToDashboard = !state.navigateToDashboard;
     },
+    signOff: (state) => {
+      state.userInfo = null;
+    },
+    signOn: (state, action) => {
+      state.userInfo = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
@@ -64,6 +70,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { toggleNavigateDashboardFlag } = userSlice.actions;
+export const { toggleNavigateDashboardFlag, signOff, signOn } = userSlice.actions;
 
 export default userSlice.reducer;

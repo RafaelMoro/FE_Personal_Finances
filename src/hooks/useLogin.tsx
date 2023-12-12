@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
-import { ICountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
+import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
@@ -15,7 +15,9 @@ import {
 } from '../atoms';
 import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { loginUser, toggleNavigateDashboardFlag } from '../redux/slices/User/user.slice';
+import {
+  loginUser, toggleNavigateDashboardFlag, signOff, signOn,
+} from '../redux/slices/User/user.slice';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -52,6 +54,7 @@ const useLogin = () => {
   });
 
   const signOut = () => {
+    dispatch(signOff());
     // Reset atoms after sign out.
     setUser(null);
     setAccounts(null);
@@ -64,7 +67,7 @@ const useLogin = () => {
   };
 
   useEffect(() => {
-    const localStorageInfo: ICountOnMeLocalStorage = getLocalStorageInfo();
+    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
     const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
 
     if (!IsEmptyLocalStorage) {
@@ -78,6 +81,8 @@ const useLogin = () => {
         return;
       }
 
+      if (!userReduxState.userInfo) dispatch(signOn(user));
+      // @Delete setUser
       setUser(user);
       navigate(DASHBOARD_ROUTE);
     }
