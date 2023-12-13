@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AccountsInitialState } from './interface';
 import { fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected } from './fetchAccounts';
 import { deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected } from './deleteAccount';
+import { createAccountFulfilled, createAccountPending, createAccountRejected } from './createAccount';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
@@ -35,6 +36,10 @@ export const accountsSlice = createSlice({
     deleteAccountPending(builder);
     deleteAccountFullfilled(builder);
     deleteAccountRejected(builder);
+
+    createAccountPending(builder);
+    createAccountFulfilled(builder);
+    createAccountRejected(builder);
   },
 });
 

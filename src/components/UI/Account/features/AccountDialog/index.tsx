@@ -1,11 +1,11 @@
+/* eslint-disable no-console */
 import {
   Dialog, IconButton,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { useAtom } from 'jotai';
-import { AxiosRequestHeaders } from 'axios';
+import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { userAtom } from '../../../../../atoms';
 import { CreateAccount, AccountDialogProps } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
@@ -21,6 +21,10 @@ import { SystemStateEnum } from '../../../../../enums';
 import { formatAccounts } from '../../../../../utils';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CloseIcon } from '../../../Icons';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { CreateAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
+import { createAccount as createAccountThunkFn } from '../../../../../redux/slices/Accounts/createAccount';
+import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -36,58 +40,46 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
+  const dispatch = useAppDispatch();
+  const userReduxState = useAppSelector((state) => state.user);
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+
   // Copying constant because it is readyonly
   const typeAccounts = [...TYPE_OF_ACCOUNTS];
-  const [user] = useAtom(userAtom);
   const [accounts, setAccounts] = useAtom(accountsAtom);
   const [, setAccountsUI] = useAtom(accountsUIAtom);
   const [, setSelectedAccount] = useAtom(selectedAccountAtom);
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const { updateGlobalNotification } = useNotification();
   const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
   const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
   const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as Account;
 
   const createAccount = async (values: CreateAccount) => {
-    const responseCreateAccountRequest = await HttpRequestWithBearerToken(
-      values,
-      POST_PUT_ACCOUNT_ROUTE,
-      'post',
-      bearerToken,
-    );
+    try {
+      const createAccountThunkProps: CreateAccountThunkProps = { values, bearerToken };
+      await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
 
-    if (responseCreateAccountRequest?.error || !responseCreateAccountRequest) {
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: `Account ${values.title} created`,
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+      onClose();
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      console.group();
+      console.error('Error on creating account');
+      console.error(errorCatched);
+      console.groupEnd();
+
       updateGlobalNotification({
         newTitle: 'Create Account: Error',
-        newDescription: 'Oops! An error ocurred. Try again later.',
+        newDescription: ERROR_MESSAGE_GENERAL,
         newStatus: SystemStateEnum.Error,
       });
       onClose();
-      return;
     }
-
-    // Update account state
-    if (Array.isArray(accounts) && responseCreateAccountRequest?._id) {
-      // Update Account atom
-      const newAccounts: Account[] = [...accounts];
-      newAccounts.push(responseCreateAccountRequest as Account);
-      setAccounts(newAccounts);
-
-      // Update AccountUI atom
-      const newAccountsUI = formatAccounts({ accounts: newAccounts });
-      setAccountsUI(newAccountsUI);
-
-      // Update SelectedAccount atom
-      setSelectedAccount(newAccountsUI[0]);
-    }
-
-    // Show success notification
-    updateGlobalNotification({
-      newTitle: `Account ${values.title} created`,
-      newDescription: '',
-      newStatus: SystemStateEnum.Success,
-    });
-    onClose();
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
