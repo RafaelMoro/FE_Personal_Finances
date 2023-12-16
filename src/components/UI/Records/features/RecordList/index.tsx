@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-console */
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AxiosRequestHeaders } from 'axios';
 
 import { Error } from '../../../Error';
@@ -19,6 +19,7 @@ import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import { Loader } from '../../../../../animations/Loader';
 import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchRecords';
+import { fetchLastMonthRecords } from '../../../../../redux/slices/Records/actions/fetchLastMonthRecords';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -36,8 +37,6 @@ const RecordList = () => {
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const accountId = selectedAccount?._id ?? 'Account ID not found';
-  const [errorLastMonthRecords, setErrorLastMonthRecords] = useState<boolean>(false);
-  const [loadingLastMonthRecords, setLoadingLastMonthRecords] = useState<boolean>(false);
 
   const backgroundColor = selectedAccount?.backgroundColorUI?.color ?? AppColors.bgColorGrey;
   const color = selectedAccount?.colorUI?.color ?? AppColors.black;
@@ -48,15 +47,6 @@ const RecordList = () => {
       dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
     }
   }, [accountId, accounts, bearerToken, dispatch, month, selectedAccount, user, year]);
-
-  const handleError = (errorCatched: string) => {
-    setErrorLastMonthRecords(true);
-    console.error(errorCatched);
-  };
-
-  // @Delete: Delete this state
-  const LoadingLastMonthRecords = () => setLoadingLastMonthRecords(true);
-  const NotLoadingLastMonthRecords = () => setLoadingLastMonthRecords(false);
 
   // @Update: Update when we do fetching old records.
   const updateLastMonthRecords = (fetchedRecords: AnyRecord[]) => {
@@ -80,17 +70,12 @@ const RecordList = () => {
   };
 
   const handleFetchLastMonthRecords = async () => {
-    // await getRecordsByMonthAndYear({
-    //   accountId,
-    //   month: lastMonth,
-    //   year,
-    //   bearerToken,
-    //   handleErrorCallback: handleError,
-    //   isLoadingCallback: LoadingLastMonthRecords,
-    //   isNotLoadingCallback: NotLoadingLastMonthRecords,
-    //   handleFetchRecordsCallback: updateLastMonthRecords,
-    //   updateTotalCallback: updateTotalLastMonth,
-    // });
+    try {
+      const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
+      await dispatch(fetchLastMonthRecords({ expensesFullRoute, bearerToken })).unwrap();
+    } catch (err) {
+      console.error(`Error ocurred while fetching last month records: ${err}`);
+    }
   };
 
   if (recordsState.loading) {
@@ -142,8 +127,8 @@ const RecordList = () => {
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
         records={allRecords.lastMonth}
-        loading={loadingLastMonthRecords}
-        error={errorLastMonthRecords}
+        loading={recordsState.loadingOnAction}
+        error={recordsState.errorOnAction}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (

@@ -18,10 +18,10 @@ const ShowRecords = ({
   <>
     { (loading) && onLoadingRecords() }
     { (error) && onErrorRecords() }
-    { (!loading && !error && records.length === 0) && onEmptyRecords() }
-    { (!loading && !error && records.length > 0) && (
+    { (!loading && !error && records?.length === 0) && onEmptyRecords() }
+    { (!loading && !error && records?.length > 0) && (
       <MonthRecordBox>
-        { records.map(renderRecords) }
+        { records?.map(renderRecords) }
       </MonthRecordBox>
     ) }
   </>

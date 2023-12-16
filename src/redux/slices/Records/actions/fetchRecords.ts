@@ -7,7 +7,7 @@ import { ZERO_CURRENCY } from '../../../../constants';
 import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
 
 export const fetchCurrentMonthRecords = createAsyncThunk(
-  'records/fetchRecords',
+  'records/fetchCurrentMonthRecords',
   getRecordsByMonthAndYear,
 );
 
