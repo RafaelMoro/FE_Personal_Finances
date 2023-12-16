@@ -13,7 +13,7 @@ import {
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CloseIcon } from '../../../Icons';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { DeleteAccountProps } from '../../../../../redux/slices/Accounts/interface';
+import { DeleteAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
 import { deleteAccount } from '../../../../../redux/slices/Accounts/deleteAccount';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 
@@ -28,7 +28,7 @@ const DeleteAccountDialog = ({
 
   const handleSubmit = async () => {
     try {
-      const deleteAccountThunkProps: DeleteAccountProps = { values: { accountId }, bearerToken };
+      const deleteAccountThunkProps: DeleteAccountThunkProps = { values: { accountId }, bearerToken };
       await dispatch(deleteAccount(deleteAccountThunkProps)).unwrap();
 
       // Show success notification

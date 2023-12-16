@@ -1,11 +1,11 @@
 import { ModalAction } from '../../../aliasType';
 import { Account } from '../../../globalInterface';
-import { IBackgroundColors, ITextColors } from '../../../styles/interface';
+import { BackgroundColors, TextColors } from '../../../styles/interface';
 
-export interface AccountUI extends Omit<Account, 'backgroundColor' | 'color'> {
+export interface AccountUI extends Account {
   amountFormatted: string;
-  backgroundColor: IBackgroundColors;
-  color: ITextColors;
+  backgroundColorUI: BackgroundColors;
+  colorUI: TextColors;
   selected: boolean;
 }
 
@@ -30,5 +30,5 @@ export interface AccountDialogProps {
   open: boolean;
   onClose: () => void;
   accountAction: ModalAction;
-  account: Account | null;
+  account: AccountUI | null;
 }

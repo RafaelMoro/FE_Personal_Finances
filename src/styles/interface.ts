@@ -18,12 +18,12 @@ export interface IGlobalConfiguration {
   }
 }
 
-export interface ITextColors {
+export interface TextColors {
   name: string;
   color: string;
 }
 
-export interface IBackgroundColors {
+export interface BackgroundColors {
   name: string;
   color: string;
 }

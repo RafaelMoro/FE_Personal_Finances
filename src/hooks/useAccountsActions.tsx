@@ -1,17 +1,18 @@
 import { useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import {
-  accountsAtom, accountActionAtom, openAccountModalAtom, openChangeAccountModalAtom,
+  accountActionAtom, openAccountModalAtom, openChangeAccountModalAtom,
 } from '../atoms';
-import { Account as AccountInterface } from '../globalInterface';
+import { useAppSelector } from '../redux/hooks';
+import { AccountUI } from '../components/UI/Account/interface';
 
 const useAccountsActions = () => {
-  const [accounts] = useAtom(accountsAtom);
+  const accountsReduxState = useAppSelector((state) => state.accounts);
   const [, setAccountAction] = useAtom(accountActionAtom);
   const [, setOpenAccountModal] = useAtom(openAccountModalAtom);
   const [, setOpenChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
-  const [modifyAccount, setModifyAccount] = useState<AccountInterface | null>(null);
+  const [modifyAccount, setModifyAccount] = useState<AccountUI | null>(null);
 
   const accountToBeDeleted = useRef({ accountId: '', accountName: '' });
 
@@ -33,7 +34,7 @@ const useAccountsActions = () => {
   const handleCloseDeleteAccount = () => setOpenDeleteAccountModal(false);
 
   const handleOpenModifyAccount = (accountId: string) => {
-    const accountFound = accounts?.find((account) => account._id === accountId);
+    const accountFound = accountsReduxState.accounts?.find((account) => account._id === accountId);
     if (accountFound) {
       setModifyAccount(accountFound);
     }

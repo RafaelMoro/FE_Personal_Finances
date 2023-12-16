@@ -1,4 +1,4 @@
-import { IGlobalConfiguration, IBackgroundColors, ITextColors } from './interface';
+import { IGlobalConfiguration, BackgroundColors, TextColors } from './interface';
 
 /*
 * This file saves colors, breakpoints for responsive web design, font sizes
@@ -26,12 +26,12 @@ export const AppColors = {
   validationError: '#d32f2f',
 };
 
-export const TextColors: ITextColors[] = [
+export const AllTextColors: TextColors[] = [
   { name: 'Black', color: '#1D1305' },
   { name: 'White', color: '#fbfbfb' },
 ];
 
-export const BackgroundColors: IBackgroundColors [] = [
+export const AllBackgroundColors: BackgroundColors [] = [
   { name: 'Crimson', color: '#DC143C' },
   { name: 'Red', color: '#FF0000' },
   { name: 'Fire Brick', color: '#B22222' },

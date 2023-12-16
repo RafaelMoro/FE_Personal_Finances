@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ITextColors, IBackgroundColors } from '../../../styles/interface';
+import { TextColors, BackgroundColors } from '../../../styles/interface';
 
 export interface SelectFormikFieldProps {
   name: string;
@@ -24,7 +24,7 @@ export interface SelectInputProps {
   labelName: string;
   fieldName: string;
   stringOptions: string[];
-  colorOptions: | ITextColors[] | IBackgroundColors[];
+  colorOptions: | TextColors[] | BackgroundColors[];
   selectInputColors?: boolean;
   // Callback to do any action depending on the name and value of the select input
   processSelectDataFn?: (name: string, value: string | string[]) => void;

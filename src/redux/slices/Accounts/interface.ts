@@ -20,7 +20,7 @@ export interface DeleteAccountValues {
   accountId: string;
 }
 
-export interface DeleteAccountProps {
+export interface DeleteAccountThunkProps {
   values: DeleteAccountValues;
   bearerToken: AxiosRequestHeaders;
 }

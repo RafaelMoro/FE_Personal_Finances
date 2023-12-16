@@ -6,17 +6,17 @@ import { Field, Formik } from 'formik';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { CreateAccount, AccountDialogProps } from '../../interface';
+import { CreateAccount, AccountDialogProps, AccountUI } from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../constants';
 import { SelectInput } from '../../../SelectInput';
 import {
-  DialogTitle, InputForm, PrimaryButton, BackgroundColors, TextColors, FlexContainer,
+  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { accountsAtom, selectedAccountAtom, accountsUIAtom } from '../../../../../atoms/atoms';
-import { Account, TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
+import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { formatAccounts } from '../../../../../utils';
 import { useNotification } from '../../../../../hooks/useNotification';
@@ -52,7 +52,7 @@ const AccountDialog = ({
   const { updateGlobalNotification } = useNotification();
   const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
   const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
-  const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as Account;
+  const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as AccountUI;
 
   const createAccount = async (values: CreateAccount) => {
     try {
@@ -176,7 +176,7 @@ const AccountDialog = ({
                 labelName="Background Color:"
                 fieldName="backgroundColor"
                 stringOptions={[]}
-                colorOptions={BackgroundColors}
+                colorOptions={AllBackgroundColors}
                 selectInputColors
               />
               <SelectInput
@@ -185,7 +185,7 @@ const AccountDialog = ({
                 labelName="Text Color:"
                 fieldName="color"
                 stringOptions={[]}
-                colorOptions={TextColors}
+                colorOptions={AllTextColors}
               />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">{ buttonModalText }</PrimaryButton>
             </AccountDialogFormContainer>

@@ -18,10 +18,10 @@ export const formatAccounts = ({
           ...account,
           amountFormatted: formatNumberToCurrency(account.amount),
           selected: true,
-          backgroundColor: findColor({
+          backgroundColorUI: findColor({
             colorName: account.backgroundColor,
           }),
-          color: findColor({
+          colorUI: findColor({
             colorName: account.color, findTextColor: true,
           }),
         };
@@ -30,10 +30,10 @@ export const formatAccounts = ({
         ...account,
         amountFormatted: formatNumberToCurrency(account.amount),
         selected: false,
-        backgroundColor: findColor({
+        backgroundColorUI: findColor({
           colorName: account.backgroundColor,
         }),
-        color: findColor({
+        colorUI: findColor({
           colorName: account.color, findTextColor: true,
         }),
       };
@@ -46,10 +46,10 @@ export const formatAccounts = ({
         ...account,
         amountFormatted: formatNumberToCurrency(account.amount),
         selected: true,
-        backgroundColor: findColor({
+        backgroundColorUI: findColor({
           colorName: account.backgroundColor,
         }),
-        color: findColor({
+        colorUI: findColor({
           colorName: account.color, findTextColor: true,
         }),
       };
@@ -59,10 +59,10 @@ export const formatAccounts = ({
       ...account,
       amountFormatted: formatNumberToCurrency(account.amount),
       selected: false,
-      backgroundColor: findColor({
+      backgroundColorUI: findColor({
         colorName: account.backgroundColor,
       }),
-      color: findColor({
+      colorUI: findColor({
         colorName: account.color, findTextColor: true,
       }),
     };

@@ -1,21 +1,24 @@
-import { ITextColors, IBackgroundColors } from '../../styles/interface';
-import { BackgroundColors, TextColors } from '../../styles';
+import { TextColors, BackgroundColors } from '../../styles/interface';
+import { AllBackgroundColors, AllTextColors } from '../../styles';
 
-interface IFindColor {
+interface FindColorProps {
   colorName: string;
   findTextColor?: boolean;
 }
 
 export const findColor = ({
   findTextColor = false, colorName,
-}: IFindColor): ITextColors | IBackgroundColors => {
+}: FindColorProps): TextColors | BackgroundColors => {
   if (findTextColor) {
-    const textColor = TextColors.find((color) => color.name === colorName);
+    const textColor = AllTextColors.find((color) => color.name.toLowerCase() === colorName.toLowerCase());
+
     // Return a fallback color in case textColor is undefined
     if (!textColor) return { name: 'black', color: '#1D1305' };
     return textColor;
   }
-  const bgColor = BackgroundColors.find((color) => color.name === colorName);
+
+  const bgColor = AllBackgroundColors.find((color) => color.name.toLowerCase() === colorName.toLowerCase());
+
   // Return a fallback color in case bgColor is undefined
   if (!bgColor) return { name: 'white', color: '#fbfbfb' };
   return bgColor;

@@ -48,8 +48,8 @@ const RecordList = () => {
   const [loadingCurrentMonthRecords, setloadingCurrentMonthRecords] = useState<boolean>(true);
   const [loadingLastMonthRecords, setLoadingLastMonthRecords] = useState<boolean>(false);
 
-  const backgroundColor = selectedAccount?.backgroundColor?.color ?? AppColors.bgColorGrey;
-  const color = selectedAccount?.color?.color ?? AppColors.black;
+  const backgroundColor = selectedAccount?.backgroundColorUI?.color ?? AppColors.bgColorGrey;
+  const color = selectedAccount?.colorUI?.color ?? AppColors.black;
 
   const LoadingCurrentMonthRecords = () => setloadingCurrentMonthRecords(true);
   const NotLoadingCurrentMonthRecords = () => setloadingCurrentMonthRecords(false);
