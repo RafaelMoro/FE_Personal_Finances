@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
 import { AxiosRequestHeaders, AxiosError } from 'axios';
 
-import { userAtom } from '../atoms';
 import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
 import { Expense, ExpensePaid } from '../globalInterface';
@@ -19,10 +17,10 @@ interface GetExpensesNotPaidResponse {
 }
 
 const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
-  const [user] = useAtom(userAtom);
+  const userReduxState = useAppSelector((state) => state.user);
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const selectedAccountId = selectedAccount?._id;
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const [noExpensesFound, setNoExpensesFound] = useState<boolean>(false);
   const [error, setError] = useState<string>('No error found');
@@ -67,8 +65,8 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
         setLoading(false);
       }
     };
-    if (!!user && bearerToken) getExpenses();
-  }, [bearerToken, month, selectedAccountId, user, year]);
+    if (!!userReduxState && bearerToken) getExpenses();
+  }, [bearerToken, month, selectedAccountId, userReduxState, year]);
 
   return {
     expenses,

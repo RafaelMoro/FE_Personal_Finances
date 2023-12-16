@@ -10,7 +10,7 @@ import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
 } from '../../components/UI/Records/interface';
 import {
-  allRecordsAtom, userAtom,
+  allRecordsAtom,
 } from '../../atoms';
 import { useDate } from '../useDate';
 import {
@@ -32,8 +32,8 @@ const useRecords = ({
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const accountsUI = useAppSelector((state) => state.accounts.accounts);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
-  const [user] = useAtom(userAtom);
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const userReduxState = useAppSelector((state) => state.user);
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const { month: currentMonth, lastMonth } = useDate();
 
   const updateAmountAccount = async ({

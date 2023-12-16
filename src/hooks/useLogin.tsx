@@ -10,7 +10,7 @@ import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import {
-  allRecordsAtom, initialStateAllRecords, userAtom,
+  allRecordsAtom, initialStateAllRecords,
   initialTotalAtomState,
   totalAtom,
 } from '../atoms';
@@ -43,7 +43,6 @@ const useLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
-  const [, setUser] = useAtom(userAtom);
   const [, setAllRecords] = useAtom(allRecordsAtom);
   const [, setTotal] = useAtom(totalAtom);
   const {
@@ -81,12 +80,10 @@ const useLogin = () => {
       }
 
       if (!userReduxState.userInfo) dispatch(signOn(user));
-      // @Delete setUser
-      setUser(user);
       navigate(DASHBOARD_ROUTE);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate, setUser]);
+  }, [navigate]);
 
   // After having a success login, the flag of navigate to dashboard will be enabled.
   useEffect(() => {

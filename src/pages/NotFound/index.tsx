@@ -1,7 +1,4 @@
-import { useAtom } from 'jotai';
-
 import { Header } from '../../components/templates';
-import { userAtom } from '../../atoms';
 import {
   Heading1, PrimaryButton,
 } from '../../styles';
@@ -10,14 +7,15 @@ import {
 } from './NotFound.styled';
 import notFoundImagePng from '../../assets/logo-404-png.png';
 import notFoundImageWebp from '../../assets/logo-404-webp.webp';
+import { useAppSelector } from '../../redux/hooks';
 
 const NotFound = () => {
-  const [user] = useAtom(userAtom);
-  const route = user ? '/dashboard' : '/';
+  const userReduxState = useAppSelector((state) => state.user);
+  const route = userReduxState ? '/dashboard' : '/';
 
   return (
     <>
-      { (user) && (<Header />) }
+      { (userReduxState) && (<Header />) }
       <NotFoundContainer>
         <Container404>
           <Number404>4</Number404>

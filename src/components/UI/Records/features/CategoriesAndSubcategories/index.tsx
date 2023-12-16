@@ -1,8 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
-import { userAtom } from '../../../../../atoms';
 import { Loader } from '../../../../../animations/Loader';
 import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
@@ -15,6 +13,7 @@ import { GetRequest } from '../../../../../utils';
 import { CATEGORIES_RECORDS } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 import { useNotification } from '../../../../../hooks/useNotification';
+import { useAppSelector } from '../../../../../redux/hooks';
 
 const NOTIFICATION_TITLE = 'Error Categories and subcategories';
 const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
@@ -30,8 +29,8 @@ interface CategoriesAndSubcategoriesProps {
 const CategoriesAndSubcategories = ({
   errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
-  const [user] = useAtom(userAtom);
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  const userReduxState = useAppSelector((state) => state.user);
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const { updateGlobalNotification } = useNotification();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -87,8 +86,8 @@ const CategoriesAndSubcategories = ({
 
     // Fetch while the categories are 12 because are the total of the local categories.
     // If there are more, categories has been fetched already.
-    if (!!user && bearerToken && categories.length === 11 && !error) getCategories();
-  }, [bearerToken, categories, error, user, updateGlobalNotification, categoryToBeEdited]);
+    if (!!userReduxState && bearerToken && categories.length === 11 && !error) getCategories();
+  }, [bearerToken, categories, error, updateGlobalNotification, categoryToBeEdited, userReduxState]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {

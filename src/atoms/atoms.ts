@@ -1,10 +1,7 @@
 import { atom } from 'jotai';
 import {
-  User, AllRecords, RecordsTotal, AnyRecord,
+  AllRecords, RecordsTotal, AnyRecord,
 } from '../globalInterface';
-
-/** User atoms  */
-export const userAtom = atom<User | null>(null);
 
 /** Records atoms  */
 export const initialStateAllRecords = {

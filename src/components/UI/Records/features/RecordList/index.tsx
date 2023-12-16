@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  allRecordsAtom, totalAtom, userAtom,
+  allRecordsAtom, totalAtom,
 } from '../../../../../atoms';
 import { Error } from '../../../Error';
 import {
@@ -35,10 +35,10 @@ const RecordList = () => {
   const {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
-  const [user] = useAtom(userAtom);
+  const userReduxState = useAppSelector((state) => state.user);
+  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const [total, setTotal] = useAtom(totalAtom);
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
@@ -116,9 +116,9 @@ const RecordList = () => {
         setError('Other Error');
       }
     };
-    if (!!user && selectedAccount && bearerToken) getRecords();
+    if (!!userReduxState && selectedAccount && bearerToken) getRecords();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [bearerToken, month, year, selectedAccount, setAllRecords, user, accountId]);
+  }, [bearerToken, month, year, selectedAccount, setAllRecords, userReduxState, accountId]);
 
   useEffect(() => {
     if (Array.isArray(accounts) && !selectedAccount) {

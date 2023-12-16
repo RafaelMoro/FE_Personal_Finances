@@ -1,13 +1,12 @@
-import { useAtom } from 'jotai';
 import { Outlet, Navigate } from 'react-router-dom';
 
-import { userAtom } from '../../atoms';
 import { IProtectedRouteProps } from './interface';
+import { useAppSelector } from '../../redux/hooks';
 
 const ProtectedRoute = ({ redirectPath = '/' }: IProtectedRouteProps) => {
-  const [user] = useAtom(userAtom);
+  const userReduxState = useAppSelector((state) => state.user);
 
-  if (!user) return <Navigate to={redirectPath} replace />;
+  if (!userReduxState) return <Navigate to={redirectPath} replace />;
   return <Outlet />;
 };
 
