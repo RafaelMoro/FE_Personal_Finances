@@ -1,26 +1,46 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { SystemStateEnum } from '../../enums';
+import { GlobalNotification } from '../../globalInterface';
+import { WindowSizeValues } from '../../aliasType';
 
-const userInterfaceInitialState = {
-  loading: false,
-  error: null,
+interface UserInterfaceInitialState {
+  notification: GlobalNotification;
+  windowSize: WindowSizeValues;
+}
+
+const userInterfaceInitialState: UserInterfaceInitialState = {
+  notification: {
+    title: '',
+    description: '',
+    status: SystemStateEnum.Info,
+    showNotification: false,
+  },
+  windowSize: 'Mobile',
 };
 
 export const userInterfaceSlice = createSlice({
   name: 'userInterface',
   initialState: userInterfaceInitialState,
   reducers: {
-    setError: (state, action) => {
-      state.error = action.payload.message;
+    updateNotificationTitle: (state, action) => {
+      state.notification.title = action.payload;
     },
-    clearError: (state) => {
-      state.error = null;
+    updateNotificationDescription: (state, action) => {
+      state.notification.description = action.payload;
     },
-    toggleLoading: (state) => {
-      state.loading = !state.loading;
+    updateNotificationStatus: (state, action) => {
+      state.notification.status = action.payload;
+    },
+    toggleNotification: (state) => {
+      state.notification.showNotification = !state.notification.showNotification;
     },
   },
 });
 
-export const { toggleLoading, setError, clearError } = userInterfaceSlice.actions;
+export const {
+  updateNotificationTitle, updateNotificationDescription, updateNotificationStatus,
+  toggleNotification,
+} = userInterfaceSlice.actions;
+
 export default userInterfaceSlice.reducer;

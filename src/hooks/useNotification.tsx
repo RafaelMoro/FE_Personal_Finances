@@ -3,11 +3,11 @@ import { useRef, useState } from 'react';
 import { SystemStateEnum } from '../enums';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
-  updateTitle as updateTitleSlice,
-  updateDescription as updateDescriptionSlice,
-  updateStatus as updateStatusSlice,
+  updateNotificationTitle as updateTitleSlice,
+  updateNotificationDescription as updateDescriptionSlice,
+  updateNotificationStatus as updateStatusSlice,
   toggleNotification as toggleNotificationSlice,
-} from '../redux/slices/globalNotification.slice';
+} from '../redux/slices/userInterface.slice';
 
 interface UseNotificationProps {
   title?: string;
@@ -36,7 +36,7 @@ interface UpdateGlobalNotificationProps {
 */
 const useNotification = ({ title = '', description = '', status = SystemStateEnum.Info }: UseNotificationProps = {}) => {
   const dispatch = useAppDispatch();
-  const globalNotification = useAppSelector((state) => state.globalNotification);
+  const globalNotification = useAppSelector((state) => state.userInterface.notification);
   const [localNotification, setLocalNotification] = useState<boolean>(false);
   const notificationInfo = useRef({
     title,
