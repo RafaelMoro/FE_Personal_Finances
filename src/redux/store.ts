@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/User/user.slice';
 import accountsReducer from './slices/Accounts/accounts.slice';
 import userInterfaceReducer from './slices/userInterface.slice';
+import recordsReducer from './slices/Records/records.slice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     accounts: accountsReducer,
+    records: recordsReducer,
     userInterface: userInterfaceReducer,
   },
 });
