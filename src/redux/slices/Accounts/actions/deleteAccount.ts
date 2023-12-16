@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { AccountsInitialState, DeleteAccountThunkProps } from './interface';
-import { HttpRequestWithBearerToken } from '../../../utils/HttpRequestWithBearerToken';
-import { DELETE_ACCOUNT_ROUTE } from '../../../components/UI/Account/constants';
-import { DELETE_HTTP_REQUEST } from '../../../utils/HttpRequestWithBearerToken/constants';
+import { AccountsInitialState, DeleteAccountThunkProps } from '../interface';
+import { HttpRequestWithBearerToken } from '../../../../utils/HttpRequestWithBearerToken';
+import { DELETE_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
+import { DELETE_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToken/constants';
 
 export const deleteAccount = createAsyncThunk(
   'accounts/deleteAccount',

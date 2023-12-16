@@ -5,24 +5,23 @@ import {
 import { Field, Formik } from 'formik';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
+import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
+import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
+import { SystemStateEnum } from '../../../../../enums';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { CreateAccountThunkProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
+import { createAccountThunkFn, modifyAccountThunkFn } from '../../../../../redux/slices/Accounts/actions';
+import { useNotification } from '../../../../../hooks/useNotification';
+import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues,
 } from '../../interface';
-import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { SelectInput } from '../../../SelectInput';
+import { CloseIcon } from '../../../Icons';
 import {
   DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
-import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
-import { SystemStateEnum } from '../../../../../enums';
-import { useNotification } from '../../../../../hooks/useNotification';
-import { CloseIcon } from '../../../Icons';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { CreateAccountThunkProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
-import { createAccountThunkFn } from '../../../../../redux/slices/Accounts/createAccount';
-import { modifyAccountThunkFn } from '../../../../../redux/slices/Accounts/modifyAccount';
-import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',

@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { AccountsInitialState } from './interface';
-import { fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected } from './fetchAccounts';
-import { deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected } from './deleteAccount';
-import { createAccountFulfilled, createAccountPending, createAccountRejected } from './createAccount';
-import { modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected } from './modifyAccount';
+import {
+  fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected,
+  createAccountFulfilled, createAccountPending, createAccountRejected,
+  deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected,
+  modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected,
+} from './actions';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,

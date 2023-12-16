@@ -4,18 +4,18 @@ import {
 } from '@mui/material';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
+import { useNotification } from '../../../../../hooks/useNotification';
+import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { SystemStateEnum } from '../../../../../enums';
 import { DeleteAccountDialogProps } from './interface';
+import { CloseIcon } from '../../../Icons';
+import { DeleteAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { deleteAccount } from '../../../../../redux/slices/Accounts/actions';
 import { AccountDialogContainer, DialogParagraph } from './DeleteAccountDialog.styled';
 import {
   DialogTitle, SecondaryButton, CancelButton, FlexContainer,
 } from '../../../../../styles';
-import { useNotification } from '../../../../../hooks/useNotification';
-import { CloseIcon } from '../../../Icons';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { DeleteAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
-import { deleteAccount } from '../../../../../redux/slices/Accounts/deleteAccount';
-import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 
 const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,

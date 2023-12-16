@@ -2,6 +2,12 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
+import { ViewAccountsProps } from './interface';
+import { AccountUI } from '../../interface';
+import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { fetchAccounts } from '../../../../../redux/slices/Accounts/actions';
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
@@ -12,17 +18,11 @@ import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   windowSizeAtom,
 } from '../../../../../atoms';
-import { AccountUI } from '../../interface';
 import {
   AccountSection, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop,
 } from './ViewAccounts.styled';
-import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
-import { ViewAccountsProps } from './interface';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
-import { fetchAccounts } from '../../../../../redux/slices/Accounts/fetchAccounts';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';

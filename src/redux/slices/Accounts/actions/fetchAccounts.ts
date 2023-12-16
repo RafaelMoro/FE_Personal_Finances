@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { AccountsInitialState, FetchAccountsValues } from './interface';
-import { GetRequest, formatAccounts } from '../../../utils';
-import { GET_ACCOUNTS_ROUTE } from '../../../components/UI/Account/features/ViewAccounts/constants';
+import { AccountsInitialState, FetchAccountsValues } from '../interface';
+import { GetRequest, formatAccounts } from '../../../../utils';
+import { GET_ACCOUNTS_ROUTE } from '../../../../components/UI/Account/features/ViewAccounts/constants';
 
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetchAccounts',
