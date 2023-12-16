@@ -6,7 +6,9 @@ import { Field, Formik } from 'formik';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { CreateAccount, AccountDialogProps, AccountUI } from '../../interface';
+import {
+  CreateAccount, AccountDialogProps, AccountUI,
+} from '../../interface';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../constants';
@@ -83,10 +85,10 @@ const AccountDialog = ({
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const modifyAccount = async (values: any) => {
+  const modifyAccount = async (accountModified: any) => {
     const {
-      sub, __v: version, _id: accountId, ...rest
-    } = values;
+      __v: version, selected, backgroundColorUI, colorUI, _id: accountId, ...rest
+    } = accountModified;
     const valuesToSubmit = { ...rest, accountId };
 
     const responsePutAccountRequest = await HttpRequestWithBearerToken(
@@ -110,7 +112,7 @@ const AccountDialog = ({
     if (Array.isArray(accounts) && responsePutAccountRequest?._id) {
       const filteredAccounts = accounts
         .filter((filteredAccount) => filteredAccount._id !== accountId);
-      filteredAccounts.push(values);
+      filteredAccounts.push(accountModified);
       setAccounts(filteredAccounts);
 
       const newAccountsUI = formatAccounts({
@@ -124,7 +126,7 @@ const AccountDialog = ({
 
     // Show success notification
     updateGlobalNotification({
-      newTitle: `Account ${values.title} updated`,
+      newTitle: `Account ${accountModified.title} updated`,
       newDescription: '',
       newStatus: SystemStateEnum.Success,
     });

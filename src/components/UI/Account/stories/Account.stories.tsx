@@ -25,6 +25,7 @@ interface IAccountsMock {
 const accountsMock: IAccountsMock = {
   normalAccount: {
     _id: '1234',
+    __v: 0,
     title: 'BBVA',
     amount: 25000,
     amountFormatted: '$25,000.00',
@@ -37,6 +38,7 @@ const accountsMock: IAccountsMock = {
   },
   accountWithBigAmount: {
     _id: '1234',
+    __v: 0,
     title: 'Santander premium',
     amount: 25000000000,
     amountFormatted: '$25,000,000,000.00',
@@ -49,6 +51,7 @@ const accountsMock: IAccountsMock = {
   },
   otherAccount: {
     _id: '1234',
+    __v: 0,
     title: 'HSBC 2now',
     amount: 38000,
     amountFormatted: '$38,000.00',
@@ -61,6 +64,7 @@ const accountsMock: IAccountsMock = {
   },
   accountWithBigTitle: {
     _id: '1234',
+    __v: 0,
     title: 'Citibanamex Costco Credit Card And More Words to See How Many Handles',
     amount: 38000,
     amountFormatted: '$38,000.00',
@@ -73,6 +77,7 @@ const accountsMock: IAccountsMock = {
   },
   accountWithDecimal: {
     _id: '1234',
+    __v: 0,
     title: 'Sodexo platinum',
     amount: 1350.78,
     amountFormatted: '$1,350.78',
@@ -85,6 +90,7 @@ const accountsMock: IAccountsMock = {
   },
   accountSelected: {
     _id: '1234',
+    __v: 0,
     title: 'Santander',
     amount: 1350.78,
     amountFormatted: '$1,350.78',

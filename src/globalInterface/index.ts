@@ -31,6 +31,7 @@ export type CompleteMonthsType = typeof MONTHS[number];
 
 export interface Account {
   _id: string;
+  __v: number;
   title: string;
   amount: number;
   accountType: AccountType;

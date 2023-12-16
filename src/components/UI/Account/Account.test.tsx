@@ -5,6 +5,7 @@ import { Account } from './Account';
 
 const account: AccountUI = {
   _id: '1',
+  __v: 0,
   title: 'BBVA',
   amount: 20000,
   amountFormatted: '$20,000.00',

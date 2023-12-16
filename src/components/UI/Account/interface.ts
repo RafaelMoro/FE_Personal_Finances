@@ -16,7 +16,7 @@ export interface AccountComponentProps {
   selectAccountOnClick: () => void;
 }
 
-export type CreateAccount = Omit<Account, '_id'>;
+export type CreateAccount = Omit<Account, '_id' | '__v'>;
 
 // backgroundColor and color are string because in the Account component, the
 // background color and color are transformed using the global config object.
