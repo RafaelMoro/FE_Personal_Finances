@@ -12,7 +12,6 @@ export const userAtom = atom<User | null>(null);
 export const accountsAtom = atom<Account[] | null>(null);
 export const accountsUIAtom = atom<AccountUI[]>([]);
 export const selectedAccountAtom = atom<AccountUI | null>(null);
-export const openChangeAccountModalAtom = atom<boolean>(false);
 
 /** Records atoms  */
 export const initialStateAllRecords = {

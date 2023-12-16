@@ -11,7 +11,6 @@ import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
   windowSizeAtom,
-  openChangeAccountModalAtom,
 } from '../../../../../atoms';
 import { AccountUI } from '../../interface';
 import {
@@ -36,7 +35,6 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const selectedAccount = accountsReduxState?.accountSelected;
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
 
-  const [openChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [windowSize] = useAtom(windowSizeAtom);
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
@@ -44,6 +42,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const {
     accountAction,
     openAccountModal,
+    openChangeAccountModal,
     modifyAccount,
     openDeleteAccountModal,
     accountToBeDeleted,
