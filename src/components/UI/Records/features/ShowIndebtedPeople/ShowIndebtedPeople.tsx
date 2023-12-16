@@ -2,10 +2,9 @@ import { useMemo } from 'react';
 import {
   TableHead, TableRow, TableBody, IconButton,
 } from '@mui/material';
-import { useAtom } from 'jotai';
 
 import { ShowIndebtedPeopleProps } from './interface';
-import { windowSizeAtom } from '../../../../../atoms';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
 import { EditIcon, DeleteIcon } from '../../../Icons';
 import { FlexContainer, TableCell } from '../../../../../styles';
@@ -22,7 +21,7 @@ const ShowIndebtedPeople = ({
   deleteIndebtedPerson = () => {},
   modifyIndebtedPerson = () => {},
 }: ShowIndebtedPeopleProps) => {
-  const [windowSize] = useAtom(windowSizeAtom);
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const formattedIndebtedPeople = useMemo(() => formatIndebtedPeople(indebtedPeople), [indebtedPeople]);
 
   return (

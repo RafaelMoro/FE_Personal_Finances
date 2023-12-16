@@ -35,12 +35,15 @@ export const userInterfaceSlice = createSlice({
     toggleNotification: (state) => {
       state.notification.showNotification = !state.notification.showNotification;
     },
+    updateWindowSize: (state, action) => {
+      state.windowSize = action.payload;
+    },
   },
 });
 
 export const {
   updateNotificationTitle, updateNotificationDescription, updateNotificationStatus,
-  toggleNotification,
+  toggleNotification, updateWindowSize,
 } = userInterfaceSlice.actions;
 
 export default userInterfaceSlice.reducer;

@@ -4,7 +4,7 @@ import {
   Drawer,
 } from '@mui/material';
 
-import { selectedAccountAtom, windowSizeAtom } from '../../../atoms';
+import { selectedAccountAtom } from '../../../atoms';
 import { RecordProps } from './interface';
 
 import { RecordDrawer } from './features/RecordDrawer';
@@ -17,6 +17,7 @@ import {
   RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
   ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, RecordSub,
 } from './Records.styled';
+import { useAppSelector } from '../../../redux/hooks';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
@@ -25,7 +26,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     indebtedPeople = [], budgets = [],
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
-  const [windowSize] = useAtom(windowSizeAtom);
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const [selectedAccount] = useAtom(selectedAccountAtom);
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [openLongView, setOpenLongView] = useState(false);

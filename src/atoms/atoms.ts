@@ -1,6 +1,5 @@
 import { atom } from 'jotai';
 import { AccountUI } from '../components/UI/Account/interface';
-import { WindowSizeValues } from '../aliasType';
 import {
   Account, User, AllRecords, RecordsTotal, AnyRecord,
 } from '../globalInterface';
@@ -32,6 +31,3 @@ export const initialTotalAtomState = {
 export const allRecordsAtom = atom<AllRecords>(initialStateAllRecords);
 export const recordToBeModifiedAtom = atom<AnyRecord | null>(null);
 export const totalAtom = atom<RecordsTotal>(initialTotalAtomState);
-
-/** Other atoms  */
-export const windowSizeAtom = atom<WindowSizeValues>('Mobile');

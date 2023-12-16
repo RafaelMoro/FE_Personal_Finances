@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
 import { AxiosRequestHeaders } from 'axios';
 
 import { ViewAccountsProps } from './interface';
@@ -16,9 +15,6 @@ import { AccountDialog } from '../AccountDialog';
 import { DeleteAccountDialog } from '../DeleteAccountDialog';
 import { SelectAccountDialog } from '../SelectAccountDialog';
 import {
-  windowSizeAtom,
-} from '../../../../../atoms';
-import {
   AccountSection, AccountsContainer,
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop,
@@ -29,13 +25,12 @@ const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contac
 
 const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const dispatch = useAppDispatch();
-  const userReduxState = useAppSelector((state) => state.user);
-  const accountsReduxState = useAppSelector((state) => state.accounts);
-  const accountsUI = accountsReduxState?.accounts;
-  const selectedAccount = accountsReduxState?.accountSelected;
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
-
-  const [windowSize] = useAtom(windowSizeAtom);
+  const accounts = useAppSelector((state) => state.accounts);
+  const user = useAppSelector((state) => state.user);
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const accountsUI = accounts?.accounts;
+  const selectedAccount = accounts?.accountSelected;
+  const bearerToken = user.userInfo?.bearerToken as AxiosRequestHeaders;
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
 
@@ -55,10 +50,10 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   } = useAccountsActions();
 
   useEffect(() => {
-    if (userReduxState.userInfo) {
+    if (user.userInfo) {
       dispatch(fetchAccounts({ bearerToken }));
     }
-  }, [bearerToken, dispatch, userReduxState.userInfo]);
+  }, [bearerToken, dispatch, user.userInfo]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
@@ -86,7 +81,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     dispatch(updateAccountsWithNewSelectedAccount(newAccountsUI));
   };
 
-  if (accountsReduxState.loading) {
+  if (accounts.loading) {
     return (
       <AccountSectionLoading>
         <AccountLoading />
@@ -100,7 +95,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
     );
   }
 
-  if (accountsReduxState.error) {
+  if (accounts.error) {
     return (
       <AccountSectionError>
         <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />

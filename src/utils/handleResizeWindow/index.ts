@@ -9,7 +9,7 @@ export function handleResizeWindow(event: UIEvent) {
     return windowSize;
   }
 
-  if (target.innerWidth > 480 && target.innerWidth < 1024) {
+  if (target.innerWidth > 480 && target.innerWidth <= 1024) {
     windowSize = 'Tablet';
     return windowSize;
   }

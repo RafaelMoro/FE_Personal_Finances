@@ -1,18 +1,17 @@
 import { IconButton } from '@mui/material';
-import { useAtom } from 'jotai';
 
 import { useLogin } from '../../../hooks/useLogin';
+import { useAppSelector } from '../../../redux/hooks';
 import {
   FlexContainer, ParagraphTitle,
 } from '../../../styles';
 import { LogOutIcon } from '../../UI/Icons';
 import { HeaderContainer } from './Header.styled';
-import { windowSizeAtom } from '../../../atoms';
 import { BrandLogoName } from '../BrandLogoName';
 
 const Header = () => {
   const { signOut } = useLogin();
-  const [windowSize] = useAtom(windowSizeAtom);
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
 
   return (
     <HeaderContainer>
