@@ -12,7 +12,6 @@ import { AppColors, FlexContainer } from '../../../../../styles';
 import { List } from '../../Records.styled';
 import { useDate } from '../../../../../hooks/useDate';
 import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
-import { AnyRecord } from '../../../../../globalInterface';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
@@ -47,27 +46,6 @@ const RecordList = () => {
       dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
     }
   }, [accountId, accounts, bearerToken, dispatch, month, selectedAccount, user, year]);
-
-  // @Update: Update when we do fetching old records.
-  const updateLastMonthRecords = (fetchedRecords: AnyRecord[]) => {
-    const something = '';
-    // return setAllRecords({
-    //   ...allRecords,
-    //   lastMonth: fetchedRecords,
-    // })
-  };
-
-  // @Update: Update when we do fetching old records.
-  const updateTotalLastMonth = (expenseTotal: string, incomeTotal: string) => {
-    const something = '';
-    // return setTotal({
-    //   ...total,
-    //   lastMonth: {
-    //     expenseTotal,
-    //     incomeTotal,
-    //   },
-    // })
-  };
 
   const handleFetchLastMonthRecords = async () => {
     try {
