@@ -10,7 +10,7 @@ import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import {
-  accountsAtom, accountsUIAtom, allRecordsAtom, initialStateAllRecords, selectedAccountAtom, userAtom,
+  allRecordsAtom, initialStateAllRecords, userAtom,
   initialTotalAtomState,
   totalAtom,
 } from '../atoms';
@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   loginUser, toggleNavigateDashboardFlag, signOff, signOn,
 } from '../redux/slices/User/user.slice';
+import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
 
 const NOTIFICATION_TITLE = 'Error';
@@ -43,9 +44,6 @@ const useLogin = () => {
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
   const [, setUser] = useAtom(userAtom);
-  const [, setAccounts] = useAtom(accountsAtom);
-  const [, setSelectedAccount] = useAtom(selectedAccountAtom);
-  const [, setAccountsUI] = useAtom(accountsUIAtom);
   const [, setAllRecords] = useAtom(allRecordsAtom);
   const [, setTotal] = useAtom(totalAtom);
   const {
@@ -57,11 +55,9 @@ const useLogin = () => {
 
   const signOut = () => {
     dispatch(signOff());
+    dispatch(resetAccounts());
+    dispatch(resetSelectedAccount());
     // Reset atoms after sign out.
-    setUser(null);
-    setAccounts(null);
-    setAccountsUI([]);
-    setSelectedAccount(null);
     setAllRecords(initialStateAllRecords);
     setTotal(initialTotalAtomState);
     saveInfoToLocalStorage({});

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { AxiosRequestHeaders, AxiosError } from 'axios';
 
-import { selectedAccountAtom, userAtom } from '../atoms';
+import { userAtom } from '../atoms';
 import { GetRequest } from '../utils';
 import { GET_EXPENSES } from '../components/UI/Records/constants';
 import { Expense, ExpensePaid } from '../globalInterface';
+import { useAppSelector } from '../redux/hooks';
 
 interface UseAllExpensesProps {
   month: string;
@@ -19,7 +20,7 @@ interface GetExpensesNotPaidResponse {
 
 const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   const [user] = useAtom(userAtom);
-  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const selectedAccountId = selectedAccount?._id;
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 

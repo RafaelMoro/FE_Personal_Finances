@@ -5,8 +5,7 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import {
-  accountsAtom,
-  allRecordsAtom, selectedAccountAtom, totalAtom, userAtom,
+  allRecordsAtom, totalAtom, userAtom,
 } from '../../../../../atoms';
 import { Error } from '../../../Error';
 import {
@@ -14,6 +13,7 @@ import {
 } from '../../constants';
 import { GetRequest, formatNumberToCurrency } from '../../../../../utils';
 import { IncomeAndExpensesResponse } from '../../interface';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { AppColors, FlexContainer } from '../../../../../styles';
 import { List } from '../../Records.styled';
 import { ErrorResponse } from '../../../../../aliasType';
@@ -40,8 +40,8 @@ const RecordList = () => {
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
 
-  const [selectedAccount] = useAtom(selectedAccountAtom);
-  const [accounts] = useAtom(accountsAtom);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
   const accountId = selectedAccount?._id ?? 'Account ID not found';
   const [error, setError] = useState<ErrorResponse>('No error');
   const [errorLastMonthRecords, setErrorLastMonthRecords] = useState<boolean>(false);

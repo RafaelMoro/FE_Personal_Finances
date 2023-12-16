@@ -85,7 +85,6 @@ const AccountDialog = ({
       } = values;
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId };
       const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };
-      console.log('modifyAccountThunkProps', modifyAccountThunkProps);
       await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
 
       // Show success notification

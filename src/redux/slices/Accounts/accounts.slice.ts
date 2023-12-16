@@ -30,6 +30,12 @@ export const accountsSlice = createSlice({
     updateSelectedAccount: (state, action) => {
       state.accountSelected = action.payload;
     },
+    resetAccounts: (state) => {
+      state.accounts = null;
+    },
+    resetSelectedAccount: (state) => {
+      state.accountSelected = null;
+    },
   },
   extraReducers: (builder) => {
     fetchAccountsPending(builder);
@@ -50,6 +56,8 @@ export const accountsSlice = createSlice({
   },
 });
 
-export const { updateAccountsWithNewSelectedAccount, updateSelectedAccount } = accountsSlice.actions;
+export const {
+  updateAccountsWithNewSelectedAccount, updateSelectedAccount, resetAccounts, resetSelectedAccount,
+} = accountsSlice.actions;
 
 export default accountsSlice.reducer;

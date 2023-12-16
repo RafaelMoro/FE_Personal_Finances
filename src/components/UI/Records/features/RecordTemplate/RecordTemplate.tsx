@@ -7,16 +7,16 @@ import { useAtom } from 'jotai';
 import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
-import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { recordToBeModifiedAtom, selectedAccountAtom } from '../../../../../atoms';
-import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
-import { useRecords } from '../../../../../hooks/useRecords';
-import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import {
   RecordTemplateProps, AdditionalData, TypeOfRecord,
 } from './interface';
 import { CreateRecordValues } from '../../interface';
 import { EditCategory, ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
+import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
+import { recordToBeModifiedAtom } from '../../../../../atoms';
+import { useRecords } from '../../../../../hooks/useRecords';
+import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
+import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
@@ -31,6 +31,7 @@ import {
   CancelButton, AnchorButton, FlexContainer, FormControlLabel,
   SecondaryButton, ToggleButton,
 } from '../../../../../styles';
+import { CloseIcon } from '../../../Icons';
 
 /** Styles */
 import {
@@ -40,7 +41,7 @@ import {
 /** Utils */
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
-import { CloseIcon } from '../../../Icons';
+import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
@@ -64,7 +65,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const categoryToBeEdited = (recordToBeEdited?.category ?? '') as EditCategory;
 
   const action: string = edit ? 'Edit' : 'Create';
-  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const isExpense = typeOfRecord === 'expense';

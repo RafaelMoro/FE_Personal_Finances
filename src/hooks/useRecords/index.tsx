@@ -10,8 +10,7 @@ import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
 } from '../../components/UI/Records/interface';
 import {
-  accountsUIAtom,
-  allRecordsAtom, selectedAccountAtom, userAtom,
+  allRecordsAtom, userAtom,
 } from '../../atoms';
 import { useDate } from '../useDate';
 import {
@@ -22,6 +21,7 @@ import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerTok
 import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
 import { SystemStateEnum } from '../../enums';
 import { useNotification } from '../useNotification';
+import { useAppSelector } from '../../redux/hooks';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -30,9 +30,9 @@ const useRecords = ({
   const navigate = useNavigate();
 
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
-  const [accountsUI, setAccountsUI] = useAtom(accountsUIAtom);
+  const accountsUI = useAppSelector((state) => state.accounts.accounts);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [user] = useAtom(userAtom);
-  const [selectedAccount, setSelectedAccount] = useAtom(selectedAccountAtom);
   const bearerToken = user?.bearerToken as AxiosRequestHeaders;
   const { month: currentMonth, lastMonth } = useDate();
 
@@ -58,14 +58,18 @@ const useRecords = ({
 
     // Update selected account amount.
     const { amount: newAmount } = payload;
-    if (selectedAccount) setSelectedAccount({ ...selectedAccount, amount: newAmount });
-    const accountsModified = accountsUI.map((account) => {
+    if (selectedAccount) {
+      // @Todo: Check if this is still needed
+      // setSelectedAccount({ ...selectedAccount, amount: newAmount })
+    }
+    const accountsModified = (accountsUI || []).map((account) => {
       if (account._id === accountId && selectedAccount) {
         return { ...selectedAccount, amount: newAmount };
       }
       return account;
     });
-    setAccountsUI(accountsModified);
+    // @Todo: Check if this is still needed
+    // setAccountsUI(accountsModified);
     return 'Account updated';
   };
 
@@ -86,14 +90,18 @@ const useRecords = ({
 
     // Update selected account amount.
     const { amount: newAmount } = payload;
-    if (selectedAccount) setSelectedAccount({ ...selectedAccount, amount: newAmount });
-    const accountsModified = accountsUI.map((account) => {
+    if (selectedAccount) {
+      // @Todo: Check if this is still needed
+      // setSelectedAccount({ ...selectedAccount, amount: newAmount });
+    }
+    const accountsModified = (accountsUI || []).map((account) => {
       if (account._id === accountId && selectedAccount) {
         return { ...selectedAccount, amount: newAmount };
       }
       return account;
     });
-    setAccountsUI(accountsModified);
+    // @Todo: Check if this is still needed
+    // setAccountsUI(accountsModified);
     return 'Account updated';
   };
 

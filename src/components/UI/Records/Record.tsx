@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
 import {
   Drawer,
 } from '@mui/material';
 
-import { selectedAccountAtom } from '../../../atoms';
 import { RecordProps } from './interface';
-
+import { useAppSelector } from '../../../redux/hooks';
 import { RecordDrawer } from './features/RecordDrawer';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
 import {
@@ -17,7 +15,6 @@ import {
   RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
   ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, RecordSub,
 } from './Records.styled';
-import { useAppSelector } from '../../../redux/hooks';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
@@ -27,7 +24,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
-  const [selectedAccount] = useAtom(selectedAccountAtom);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [openLongView, setOpenLongView] = useState(false);
   const [shortedName, setShortedName] = useState('');
