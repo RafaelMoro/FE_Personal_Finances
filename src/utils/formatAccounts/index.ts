@@ -41,9 +41,11 @@ export const formatAccounts = ({
   }
 
   return accounts.map((account, index) => {
+    // ommitting sub as when we create an account, the backend returns sub
+    const { sub, ...rest } = account;
     if (index === 0) {
       return {
-        ...account,
+        ...rest,
         amountFormatted: formatNumberToCurrency(account.amount),
         selected: true,
         backgroundColorUI: findColor({
@@ -56,7 +58,7 @@ export const formatAccounts = ({
     }
 
     return {
-      ...account,
+      ...rest,
       amountFormatted: formatNumberToCurrency(account.amount),
       selected: false,
       backgroundColorUI: findColor({

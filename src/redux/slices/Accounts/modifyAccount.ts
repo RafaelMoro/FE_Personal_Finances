@@ -6,7 +6,7 @@ import { POST_PUT_ACCOUNT_ROUTE } from '../../../components/UI/Account/constants
 import { PUT_HTTP_REQUEST } from '../../../utils/HttpRequestWithBearerToken/constants';
 import { formatAccounts } from '../../../utils';
 
-export const modifyAccount = createAsyncThunk(
+export const modifyAccountThunkFn = createAsyncThunk(
   'accounts/modifyAccount',
   async ({ values, bearerToken }: ModifyAccountThunkProps) => {
     const responsePutAccountRequest = await HttpRequestWithBearerToken(
@@ -21,7 +21,7 @@ export const modifyAccount = createAsyncThunk(
 
 export const modifyAccountPending = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(modifyAccount.pending, (state) => {
+) => builder.addCase(modifyAccountThunkFn.pending, (state) => {
   state.loadingOnAction = true;
 
   // Reset previous error status if it occurred
@@ -31,7 +31,7 @@ export const modifyAccountPending = (
 
 export const modifyAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(modifyAccount.fulfilled, (state, action) => {
+) => builder.addCase(modifyAccountThunkFn.fulfilled, (state, action) => {
   if (state.accounts) {
     // Get old selected account and set selected as false
     const oldSelectedAccountIndex = state.accounts.map((account) => account.selected).indexOf(true);
@@ -52,7 +52,7 @@ export const modifyAccountFulfilled = (
 
 export const modifyAccountRejected = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(modifyAccount.rejected, (state, action) => {
+) => builder.addCase(modifyAccountThunkFn.rejected, (state, action) => {
   state.loadingOnAction = false;
   state.errorOnAction = true;
   state.errorMessageOnAction = action.error.message;

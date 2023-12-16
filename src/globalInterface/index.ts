@@ -37,6 +37,7 @@ export interface Account {
   accountType: AccountType;
   backgroundColor: string;
   color: string;
+  sub?: string;
 }
 
 export interface IndebtedPeople {

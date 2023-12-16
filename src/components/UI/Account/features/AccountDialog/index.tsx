@@ -20,8 +20,8 @@ import { useNotification } from '../../../../../hooks/useNotification';
 import { CloseIcon } from '../../../Icons';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { CreateAccountThunkProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
-import { createAccount as createAccountThunkFn } from '../../../../../redux/slices/Accounts/createAccount';
-import { modifyAccount as modifyAccountThunkFn } from '../../../../../redux/slices/Accounts/modifyAccount';
+import { createAccountThunkFn } from '../../../../../redux/slices/Accounts/createAccount';
+import { modifyAccountThunkFn } from '../../../../../redux/slices/Accounts/modifyAccount';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 
 const initialValuesCreateAccount: CreateAccount = {
@@ -82,7 +82,7 @@ const AccountDialog = ({
     try {
       // Excluding version, accountUI props and changing _id for accountId
       const {
-        __v: version, selected, backgroundColorUI, colorUI, amountFormatted, _id: accountId, ...rest
+        __v: version, sub, selected, backgroundColorUI, colorUI, amountFormatted, _id: accountId, ...rest
       } = values;
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId };
       const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };

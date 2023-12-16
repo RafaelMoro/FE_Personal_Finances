@@ -7,7 +7,7 @@ import { POST_HTTP_REQUEST } from '../../../utils/HttpRequestWithBearerToken/con
 import { AccountUI } from '../../../components/UI/Account/interface';
 import { formatAccounts } from '../../../utils';
 
-export const createAccount = createAsyncThunk(
+export const createAccountThunkFn = createAsyncThunk(
   'accounts/createAccount',
   async ({ values, bearerToken }: CreateAccountThunkProps) => {
     const responseCreateAccountRequest = await HttpRequestWithBearerToken(
@@ -22,7 +22,7 @@ export const createAccount = createAsyncThunk(
 
 export const createAccountPending = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(createAccount.pending, (state) => {
+) => builder.addCase(createAccountThunkFn.pending, (state) => {
   state.loadingOnAction = true;
 
   // Reset previous error status if it occurred
@@ -32,7 +32,7 @@ export const createAccountPending = (
 
 export const createAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(createAccount.fulfilled, (state, action) => {
+) => builder.addCase(createAccountThunkFn.fulfilled, (state, action) => {
   const newAccountFormatted: AccountUI[] = formatAccounts({ accounts: [action.payload] });
   const [newAccount] = newAccountFormatted;
   state.accounts?.push(newAccount);
@@ -48,7 +48,7 @@ export const createAccountFulfilled = (
 
 export const createAccountRejected = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
-) => builder.addCase(createAccount.rejected, (state, action) => {
+) => builder.addCase(createAccountThunkFn.rejected, (state, action) => {
   state.loadingOnAction = false;
   state.errorOnAction = true;
   state.errorMessageOnAction = action.error.message;
