@@ -1,22 +1,19 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { FetchRecordsValues, RecordsInitialState } from '../interface';
-import { GetRequest, formatNumberToCurrency } from '../../../../utils';
-import { IncomeAndExpensesResponse } from '../../../../components/UI/Records/interface';
+import { RecordsInitialState } from '../interface';
+import { formatNumberToCurrency } from '../../../../utils';
 import { NO_EXPENSES_OR_INCOMES_FOUND } from '../../../../components/UI/Records/constants';
 import { ZERO_CURRENCY } from '../../../../constants';
+import { getRecordsByMonthAndYear } from '../../../../utils/getRecordByMonthAndYear';
 
-export const fetchRecords = createAsyncThunk(
+export const fetchCurrentMonthRecords = createAsyncThunk(
   'records/fetchRecords',
-  async ({ expensesFullRoute, bearerToken }: FetchRecordsValues) => {
-    const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
-    return response;
-  },
+  getRecordsByMonthAndYear,
 );
 
-export const fetchRecordsFullfilled = (
+export const fetchCurrentMonthRecordsFullfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(fetchRecords.fulfilled, (state, action) => {
+) => builder.addCase(fetchCurrentMonthRecords.fulfilled, (state, action) => {
   state.loading = false;
 
   // No records. No need to update the state.
@@ -40,15 +37,16 @@ export const fetchRecordsFullfilled = (
     }
     incomeTotalCounter += record.amount;
   });
+
   state.totalRecords.currentMonth.expenseTotal = formatNumberToCurrency(expenseTotalCounter);
   state.totalRecords.currentMonth.incomeTotal = formatNumberToCurrency(incomeTotalCounter);
 
   state.allRecords.currentMonth = recordsFetched;
 });
 
-export const fetchRecordsPending = (
+export const fetchCurrentMonthRecordsPending = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(fetchRecords.pending, (state) => {
+) => builder.addCase(fetchCurrentMonthRecords.pending, (state) => {
   state.loading = true;
 
   // Reset previous error status if it occurred
@@ -56,9 +54,9 @@ export const fetchRecordsPending = (
   state.errorMessage = '';
 });
 
-export const fetchRecordsRejected = (
+export const fetchCurrentMonthRecordsRejected = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(fetchRecords.rejected, (state, action) => {
+) => builder.addCase(fetchCurrentMonthRecords.rejected, (state, action) => {
   state.loading = false;
   state.error = true;
   state.errorMessage = action.error.message;

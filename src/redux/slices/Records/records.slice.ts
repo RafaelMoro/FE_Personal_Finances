@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ZERO_CURRENCY } from '../../../constants';
 import { RecordsInitialState } from './interface';
-import { fetchRecordsFullfilled, fetchRecordsPending, fetchRecordsRejected } from './actions/fetchRecords';
+import { fetchCurrentMonthRecordsFullfilled, fetchCurrentMonthRecordsPending, fetchCurrentMonthRecordsRejected } from './actions/fetchRecords';
 
 const recordsInitialState: RecordsInitialState = {
   loading: false,
@@ -29,9 +29,9 @@ export const recordsSlice = createSlice({
   initialState: recordsInitialState,
   reducers: {},
   extraReducers: (builder) => {
-    fetchRecordsPending(builder);
-    fetchRecordsRejected(builder);
-    fetchRecordsFullfilled(builder);
+    fetchCurrentMonthRecordsPending(builder);
+    fetchCurrentMonthRecordsRejected(builder);
+    fetchCurrentMonthRecordsFullfilled(builder);
   },
 });
 

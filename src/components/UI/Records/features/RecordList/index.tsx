@@ -12,14 +12,13 @@ import { AppColors, FlexContainer } from '../../../../../styles';
 import { List } from '../../Records.styled';
 import { useDate } from '../../../../../hooks/useDate';
 import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
-import { getRecordsByMonthAndYear } from '../../../../../utils/getRecordByMonthAndYear';
 import { AnyRecord } from '../../../../../globalInterface';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import { Loader } from '../../../../../animations/Loader';
-import { fetchRecords } from '../../../../../redux/slices/Records/actions/fetchRecords';
+import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchRecords';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -46,7 +45,7 @@ const RecordList = () => {
   useEffect(() => {
     if (user && accounts) {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-      dispatch(fetchRecords({ expensesFullRoute, bearerToken }));
+      dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
     }
   }, [accountId, accounts, bearerToken, dispatch, month, selectedAccount, user, year]);
 
@@ -81,17 +80,17 @@ const RecordList = () => {
   };
 
   const handleFetchLastMonthRecords = async () => {
-    await getRecordsByMonthAndYear({
-      accountId,
-      month: lastMonth,
-      year,
-      bearerToken,
-      handleErrorCallback: handleError,
-      isLoadingCallback: LoadingLastMonthRecords,
-      isNotLoadingCallback: NotLoadingLastMonthRecords,
-      handleFetchRecordsCallback: updateLastMonthRecords,
-      updateTotalCallback: updateTotalLastMonth,
-    });
+    // await getRecordsByMonthAndYear({
+    //   accountId,
+    //   month: lastMonth,
+    //   year,
+    //   bearerToken,
+    //   handleErrorCallback: handleError,
+    //   isLoadingCallback: LoadingLastMonthRecords,
+    //   isNotLoadingCallback: NotLoadingLastMonthRecords,
+    //   handleFetchRecordsCallback: updateLastMonthRecords,
+    //   updateTotalCallback: updateTotalLastMonth,
+    // });
   };
 
   if (recordsState.loading) {
