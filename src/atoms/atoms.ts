@@ -1,6 +1,6 @@
 import { atom } from 'jotai';
 import { AccountUI } from '../components/UI/Account/interface';
-import { WindowSizeValues, ModalAction } from '../aliasType';
+import { WindowSizeValues } from '../aliasType';
 import {
   Account, User, AllRecords, RecordsTotal, AnyRecord,
 } from '../globalInterface';
@@ -14,7 +14,6 @@ export const accountsUIAtom = atom<AccountUI[]>([]);
 export const selectedAccountAtom = atom<AccountUI | null>(null);
 export const openAccountModalAtom = atom<boolean>(false);
 export const openChangeAccountModalAtom = atom<boolean>(false);
-export const accountActionAtom = atom<ModalAction>('Create');
 
 /** Records atoms  */
 export const initialStateAllRecords = {

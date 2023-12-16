@@ -1,14 +1,16 @@
 import { useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import {
-  accountActionAtom, openAccountModalAtom, openChangeAccountModalAtom,
+  openAccountModalAtom, openChangeAccountModalAtom,
 } from '../atoms';
 import { useAppSelector } from '../redux/hooks';
 import { AccountUI } from '../components/UI/Account/interface';
+import { ModalAction } from '../aliasType';
 
 const useAccountsActions = () => {
   const accountsReduxState = useAppSelector((state) => state.accounts);
-  const [, setAccountAction] = useAtom(accountActionAtom);
+  const [accountAction, setAccountAction] = useState<ModalAction>('Create');
+
   const [, setOpenAccountModal] = useAtom(openAccountModalAtom);
   const [, setOpenChangeAccountModal] = useAtom(openChangeAccountModalAtom);
   const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
@@ -43,6 +45,7 @@ const useAccountsActions = () => {
   };
 
   return {
+    accountAction,
     modifyAccount,
     openDeleteAccountModal,
     accountToBeDeleted,
