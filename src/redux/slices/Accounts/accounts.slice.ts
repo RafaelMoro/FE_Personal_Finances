@@ -4,6 +4,7 @@ import { AccountsInitialState } from './interface';
 import { fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected } from './fetchAccounts';
 import { deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected } from './deleteAccount';
 import { createAccountFulfilled, createAccountPending, createAccountRejected } from './createAccount';
+import { modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected } from './modifyAccount';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
@@ -40,6 +41,10 @@ export const accountsSlice = createSlice({
     createAccountPending(builder);
     createAccountFulfilled(builder);
     createAccountRejected(builder);
+
+    modifyAccountPending(builder);
+    modifyAccountFulfilled(builder);
+    modifyAccountRejected(builder);
   },
 });
 

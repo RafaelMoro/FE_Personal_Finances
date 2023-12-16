@@ -1,5 +1,5 @@
 import { AxiosRequestHeaders } from 'axios';
-import { AccountUI, CreateAccount } from '../../../components/UI/Account/interface';
+import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
 
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
@@ -27,5 +27,10 @@ export interface DeleteAccountThunkProps {
 
 export interface CreateAccountThunkProps {
   values: CreateAccount;
+  bearerToken: AxiosRequestHeaders;
+}
+
+export interface ModifyAccountThunkProps {
+  values: ModifyAccountValues;
   bearerToken: AxiosRequestHeaders;
 }
