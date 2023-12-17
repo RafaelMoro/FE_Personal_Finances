@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import { CancelButton, SecondaryButton } from '../../../../../styles';
 import { DeleteRecordContainer, DeleteRecordTitle, DeleteRecordWarn } from './DeleteRecordModal.styled';
-import { useRecords } from '../../../../../hooks/useRecords';
+import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { AnyRecord } from '../../../../../globalInterface';
 
 interface DeleteRecordModalProps {

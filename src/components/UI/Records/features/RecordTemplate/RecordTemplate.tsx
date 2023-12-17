@@ -14,7 +14,7 @@ import { CreateRecordValues } from '../../interface';
 import { EditCategory, ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { recordToBeModifiedAtom } from '../../../../../atoms';
-import { useRecords } from '../../../../../hooks/useRecords';
+import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
