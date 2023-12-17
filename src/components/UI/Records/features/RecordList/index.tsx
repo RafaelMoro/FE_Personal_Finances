@@ -17,7 +17,7 @@ import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import { Loader } from '../../../../../animations/Loader';
-import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchRecords';
+import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchCurrentMonthRecords';
 import { fetchLastMonthRecords } from '../../../../../redux/slices/Records/actions/fetchLastMonthRecords';
 
 const ERROR_TITLE = 'Error.';
