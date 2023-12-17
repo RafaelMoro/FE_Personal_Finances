@@ -27,6 +27,8 @@ import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
 import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
+import { EditExpenseValues } from '../../redux/slices/Records/interface';
+import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -198,38 +200,22 @@ const useRecords = ({
   }: EditExpenseProps) => {
     try {
       const { amount, date: dateValue } = values;
-      const newValues = { ...values, recordId, userId };
       const date = dateValue.toDate();
+      const newValues: EditExpenseValues = { ...values, recordId, userId };
 
-      const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
-        newValues,
-        EXPENSE_ROUTE,
-        'put',
-        bearerToken,
-      );
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
 
-      // If an error is catched:
-      if (expenseResponse?.message) {
-      // Show notification error
-        showErrorNotification({
-          errorMessage: `There is an error: ${expenseResponse?.message}`,
-          action: 'Create',
-          goToDashboard: true,
-        });
-        return;
-      }
+      await dispatch(editExpenseThunkFn({
+        values: newValues, bearerToken, isLastMonth, isCurrentMonth,
+      })).unwrap();
 
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
-        if (updateAmount.includes('Error')) {
-        // show notification error
-          showErrorNotification({
-            errorMessage: `Updating amount error: ${updateAmount}`,
-            action: 'Create',
-            goToDashboard: true,
-          });
-          return;
-        }
+        // If there's an error while updating the account, return
+        if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
 
       // Show success notification
@@ -239,9 +225,6 @@ const useRecords = ({
         newStatus: SystemStateEnum.Success,
       });
 
-      // Update expenses
-      updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
-
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
@@ -249,7 +232,7 @@ const useRecords = ({
       // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
-        action: 'Create',
+        action: 'Edit',
         goToDashboard: true,
       });
       console.error('Error while creating expense', errorCatched.message);

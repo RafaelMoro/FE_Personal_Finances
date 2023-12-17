@@ -1,39 +1,60 @@
 /* eslint-disable no-param-reassign */
-import { AxiosRequestHeaders } from 'axios';
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { CreateEditExpenseResponse, CreateExpenseValues } from '../../../../../components/UI/Records/interface';
+import { CreateEditExpenseResponse } from '../../../../../components/UI/Records/interface';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { EXPENSE_ROUTE } from '../../../../../components/UI/Records/constants';
 import { PUT_HTTP_REQUEST } from '../../../../../utils/HttpRequestWithBearerToken/constants';
-import { RecordsInitialState } from '../../interface';
-
-interface EditExpenseValues extends CreateExpenseValues {
-  recordId: string;
-  userId: string;
-}
-
-interface EditExpenseThunkProps {
-  values: EditExpenseValues;
-  bearerToken: AxiosRequestHeaders;
-}
+import { RecordsInitialState, EditExpenseThunkProps, EditExpenseThunkResponse } from '../../interface';
 
 export const editExpenseThunkFn = createAsyncThunk(
   'records/expenses/editExpense',
-  async ({ values, bearerToken }: EditExpenseThunkProps) => {
+  async ({
+    values, bearerToken, isLastMonth = false, isCurrentMonth = false,
+  }: EditExpenseThunkProps, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
     const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
       values,
       EXPENSE_ROUTE,
       PUT_HTTP_REQUEST,
       bearerToken,
     );
-    return expenseResponse;
+
+    // If the response has a message, it's because it's an error. Then, reject.
+    if (expenseResponse?.message) return rejectWithValue(expenseResponse);
+
+    const response: EditExpenseThunkResponse = {
+      response: expenseResponse,
+      isLastMonth,
+      isCurrentMonth,
+    };
+    return response;
   },
 );
 
 export const editExpenseFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(editExpenseThunkFn.fulfilled, (state, action) => {
-  // todo
+  const {
+    response: { _id: recordId }, isLastMonth, isCurrentMonth,
+  } = action.payload;
+  const accountModified = action.payload.response;
+
+  if (isCurrentMonth) {
+    // Get the index of the record that has been modified.
+    const oldRecordIndex = state.allRecords.currentMonth.map((record) => record._id).indexOf(recordId);
+    // Remove the old one and replace it with the modified record.
+    state.allRecords.currentMonth.splice(oldRecordIndex, 1, accountModified);
+    return;
+  }
+
+  if (isLastMonth) {
+    const oldRecordIndex = state.allRecords.lastMonth.map((record) => record._id).indexOf(recordId);
+    state.allRecords.lastMonth.splice(oldRecordIndex, 1, accountModified);
+    return;
+  }
+
+  const oldRecordIndex = state.allRecords.olderRecords.map((record) => record._id).indexOf(recordId);
+  state.allRecords.olderRecords.splice(oldRecordIndex, 1, accountModified);
 });
 
 export const editExpensePending = (

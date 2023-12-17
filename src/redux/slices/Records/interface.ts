@@ -34,3 +34,16 @@ export interface CreateIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'v
 export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
   response: CreateIncomeResponse;
 }
+
+export interface EditExpenseValues extends CreateExpenseValues {
+  recordId: string;
+  userId: string;
+}
+
+export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+  values: EditExpenseValues;
+}
+
+export interface EditExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
+  response: CreateEditExpenseResponse;
+}
