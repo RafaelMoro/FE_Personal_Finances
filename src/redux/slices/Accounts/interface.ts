@@ -34,3 +34,13 @@ export interface ModifyAccountThunkProps {
   values: ModifyAccountValues;
   bearerToken: AxiosRequestHeaders;
 }
+
+export interface UpdateAmountPayload {
+  accountId: string;
+  amount: number;
+}
+
+export interface UpdateAmountAccountThunkProps {
+  payload: UpdateAmountPayload
+  bearerToken: AxiosRequestHeaders;
+}

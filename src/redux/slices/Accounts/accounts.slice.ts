@@ -7,6 +7,7 @@ import {
   deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected,
   modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected,
 } from './actions';
+import { updateAmountAccountFulfilled, updateAmountAccountPending, updateAmountAccountRejected } from './actions/updateAmountAccount';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
@@ -53,6 +54,10 @@ export const accountsSlice = createSlice({
     modifyAccountPending(builder);
     modifyAccountFulfilled(builder);
     modifyAccountRejected(builder);
+
+    updateAmountAccountFulfilled(builder);
+    updateAmountAccountPending(builder);
+    updateAmountAccountRejected(builder);
   },
 });
 
