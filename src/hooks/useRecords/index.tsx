@@ -3,18 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { formatDateToString, postRequestWithBearer } from '../../utils';
+import { formatDateToString } from '../../utils';
 import { EXPENSE_ROUTE, INCOME_ROUTE, UPDATE_MULTIPLE_EXPENSES } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, CreateIncomeResponse, DeleteRecordResponse,
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../components/UI/Records/interface';
 import {
   allRecordsAtom,
 } from '../../atoms';
 import { useDate } from '../useDate';
 import {
-  UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps, UpdateRecordsOnCreateProps,
+  UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
@@ -120,26 +120,6 @@ const useRecords = ({
     return 'Account updated';
   };
 
-  // Fn used to update allRecords atom when a record is created.
-  const updateAllRecordsOnCreate = ({
-    date, newRecord,
-  }: UpdateRecordsOnCreateProps) => {
-    const { monthFormatted } = formatDateToString(date);
-    if (lastMonth === monthFormatted) {
-      const recordsUpdated = [...allRecords.lastMonth, newRecord];
-      setAllRecords({ ...allRecords, lastMonth: recordsUpdated });
-      return;
-    }
-
-    if (currentMonth === monthFormatted) {
-      const recordsUpdated = [...allRecords.currentMonth, newRecord];
-      setAllRecords({ ...allRecords, currentMonth: recordsUpdated });
-      return;
-    }
-    const recordsUpdated = [...allRecords.olderRecords, newRecord];
-    setAllRecords({ ...allRecords, olderRecords: recordsUpdated });
-  };
-
   // Fn used to update allRecords atom when a record is edited.
   const updateAllRecordsOnEdit = ({ date, recordEdited }: UpdateRecordsOnEditProps) => {
     const { monthFormatted } = formatDateToString(date);
@@ -229,6 +209,7 @@ const useRecords = ({
     const { amount, date: dateValue } = values;
     const newValues = { ...values, recordId, userId };
     const date = dateValue.toDate();
+
     const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
       newValues,
       EXPENSE_ROUTE,

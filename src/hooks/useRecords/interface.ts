@@ -24,11 +24,6 @@ export interface ShowErrorNotificationProps {
   goToDashboard?: boolean;
 }
 
-export interface UpdateRecordsOnCreateProps {
-  date: Date;
-  newRecord: AnyRecord;
-}
-
 export interface UpdateRecordsOnEditProps {
   date: Date;
   recordEdited: AnyRecord;
