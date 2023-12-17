@@ -1,5 +1,7 @@
 import { AxiosRequestHeaders } from 'axios';
-import { CreateEditExpenseResponse, CreateExpenseValues } from '../../../components/UI/Records/interface';
+import {
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues,
+} from '../../../components/UI/Records/interface';
 import { AllRecords, RecordsTotal } from '../../../globalInterface';
 
 export interface RecordsInitialState {
@@ -18,11 +20,17 @@ export interface CreateExpenseThunkProps {
   bearerToken: AxiosRequestHeaders;
   isLastMonth?: boolean;
   isCurrentMonth?: boolean;
-
 }
 
 export interface CreateExpenseThunkResponse {
   response: CreateEditExpenseResponse;
   isLastMonth?: boolean;
   isCurrentMonth?: boolean;
+}
+
+export interface CreateIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+  values: CreateIncomeValues;
+}
+export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
+  response: CreateIncomeResponse;
 }

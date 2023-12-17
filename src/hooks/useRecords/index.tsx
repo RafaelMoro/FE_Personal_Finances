@@ -27,6 +27,7 @@ import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
+import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -274,44 +275,43 @@ const useRecords = ({
   };
 
   const createIncome = async (values: CreateIncomeValues) => {
-    const { amount, date: dateValue } = values;
-    const date = dateValue.toDate();
-    const createIncomeInfo: CreateIncomeResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
+    try {
+      const { amount, date: dateValue } = values;
+      const date = dateValue.toDate();
 
-    // If an error is catched:
-    if (createIncomeInfo?.message) {
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
+
+      await dispatch(createIncomeThunkFn({
+        values, bearerToken, isLastMonth, isCurrentMonth,
+      })).unwrap();
+
+      // Update the amount of the account.
+      const updateAmount = await updateAmountAccount({ amount, isExpense: false });
+      // If there's an error while updating the account, return
+      if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record created',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    } catch (err) {
+      const errorCatched = err as AxiosError;
       // Show notification error
       showErrorNotification({
-        errorMessage: `There is an error: ${createIncomeInfo?.message}`,
+        errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Create',
         goToDashboard: true,
       });
-      return;
+      console.error('Error while creating expense', errorCatched.message);
     }
-
-    const updateAmount = await updateAmountAccount({ amount, isExpense: false });
-    if (updateAmount.includes('Error')) {
-      // show notification error
-      showErrorNotification({
-        errorMessage: `Updating amount error: ${updateAmount}`,
-        action: 'Create',
-        goToDashboard: true,
-      });
-      return;
-    }
-
-    // Show success notification
-    updateGlobalNotification({
-      newTitle: 'Record created',
-      newDescription: '',
-      newStatus: SystemStateEnum.Success,
-    });
-
-    // Update incomes
-    updateAllRecordsOnCreate({ date, newRecord: createIncomeInfo });
-
-    // Navigate to dashboard
-    navigate(DASHBOARD_ROUTE);
   };
 
   const editIncome = async ({

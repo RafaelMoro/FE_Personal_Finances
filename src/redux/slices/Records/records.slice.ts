@@ -6,6 +6,7 @@ import {
 } from './actions/fetchCurrentMonthRecords';
 import { fetchLastMonthRecordsFullfilled, fetchLastMonthRecordsPending, fetchLastMonthRecordsRejected } from './actions/fetchLastMonthRecords';
 import { createExpenseFulfilled, createExpensePending, createExpenseRejected } from './actions/Expenses/createExpense';
+import { createIncomeFulfilled, createIncomePending, createIncomeRejected } from './actions/Incomes/createIncome';
 
 const recordsInitialState: RecordsInitialState = {
   loading: false,
@@ -47,6 +48,10 @@ export const recordsSlice = createSlice({
     createExpenseFulfilled(builder);
     createExpensePending(builder);
     createExpenseRejected(builder);
+
+    createIncomeFulfilled(builder);
+    createIncomePending(builder);
+    createIncomeRejected(builder);
   },
 });
 

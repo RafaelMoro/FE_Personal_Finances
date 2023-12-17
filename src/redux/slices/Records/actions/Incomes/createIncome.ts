@@ -1,22 +1,22 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { CreateEditExpenseResponse } from '../../../../../components/UI/Records/interface';
+import { INCOME_ROUTE } from '../../../../../components/UI/Records/constants';
 import { postRequestWithBearer } from '../../../../../utils';
-import { EXPENSE_ROUTE } from '../../../../../components/UI/Records/constants';
-import { RecordsInitialState, CreateExpenseThunkProps, CreateExpenseThunkResponse } from '../../interface';
+import { CreateIncomeResponse } from '../../../../../components/UI/Records/interface';
+import { CreateExpenseThunkProps, CreateIncomeThunkResponse, RecordsInitialState } from '../../interface';
 
-export const createExpenseThunkFn = createAsyncThunk(
-  'records/expenses/createExpense',
+export const createIncomeThunkFn = createAsyncThunk(
+  'records/incomes/createIncome',
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
   }: CreateExpenseThunkProps, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
-    const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, EXPENSE_ROUTE, bearerToken);
+    const incomeResponse: CreateIncomeResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
     // If the response has a message, it's because it's an error. Then, reject.
-    if (expenseResponse?.message) return rejectWithValue(expenseResponse);
+    if (incomeResponse?.message) return rejectWithValue(incomeResponse);
 
-    const response: CreateExpenseThunkResponse = {
-      response: expenseResponse,
+    const response: CreateIncomeThunkResponse = {
+      response: incomeResponse,
       isLastMonth,
       isCurrentMonth,
     };
@@ -24,9 +24,9 @@ export const createExpenseThunkFn = createAsyncThunk(
   },
 );
 
-export const createExpenseFulfilled = (
+export const createIncomeFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpenseThunkFn.fulfilled, (state, action) => {
+) => builder.addCase(createIncomeThunkFn.fulfilled, (state, action) => {
   const {
     response, isLastMonth, isCurrentMonth,
   } = action.payload;
@@ -47,9 +47,9 @@ export const createExpenseFulfilled = (
   state.allRecords.olderRecords = recordsUpdated;
 });
 
-export const createExpensePending = (
+export const createIncomePending = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpenseThunkFn.pending, (state) => {
+) => builder.addCase(createIncomeThunkFn.pending, (state) => {
   state.loadingOnAction = true;
 
   // Reset previous error status if it occurred
@@ -57,9 +57,9 @@ export const createExpensePending = (
   state.errorMessageOnAction = '';
 });
 
-export const createExpenseRejected = (
+export const createIncomeRejected = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpenseThunkFn.rejected, (state, action) => {
+) => builder.addCase(createIncomeThunkFn.rejected, (state, action) => {
   state.loadingOnAction = false;
   state.errorOnAction = true;
   state.errorMessageOnAction = action.error.message;
