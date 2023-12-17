@@ -18,7 +18,6 @@ import {
   UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
-import { POST_PUT_ACCOUNT_ROUTE } from '../../components/UI/Account/constants';
 import { SystemStateEnum } from '../../enums';
 import { useNotification } from '../useNotification';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
@@ -37,7 +36,6 @@ const useRecords = ({
   const dispatch = useAppDispatch();
 
   const [allRecords, setAllRecords] = useAtom(allRecordsAtom);
-  const accountsUI = useAppSelector((state) => state.accounts.accounts);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
@@ -89,35 +87,27 @@ const useRecords = ({
   }
 
   const updateAmountAccountOnEditRecord = async ({ amount, isExpense, previousAmount }: UpdateAmountAccountOnEditProps) => {
-    const amountToUpdate = selectedAccount?.amount as number;
-    const accountId = selectedAccount?._id as string;
-    const amountResultIncome = amountToUpdate - previousAmount + amount;
-    const amountResultExpense = amountToUpdate + previousAmount - amount;
-    const payload = isExpense
-      ? { accountId, amount: amountResultExpense }
-      : { accountId, amount: amountResultIncome };
+    try {
+      const amountToUpdate = selectedAccount?.amount as number;
+      const accountId = selectedAccount?._id as string;
+      const amountResultIncome = amountToUpdate - previousAmount + amount;
+      const amountResultExpense = amountToUpdate + previousAmount - amount;
+      const payload: UpdateAmountPayload = isExpense
+        ? { accountId, amount: amountResultExpense }
+        : { accountId, amount: amountResultIncome };
 
-    const updateAccountResponse = await HttpRequestWithBearerToken(payload, POST_PUT_ACCOUNT_ROUTE, 'put', bearerToken);
-
-    if (updateAccountResponse?.error) {
-      return `Error: ${updateAccountResponse?.error}`;
+      await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
+      return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      showErrorNotification({
+        errorMessage: 'Error while updating the amount fo the account',
+        action: 'Create',
+        goToDashboard: true,
+      });
+      console.error(`Error while updating the account: ${errorCatched?.message}`);
+      return errorCatched?.message;
     }
-
-    // Update selected account amount.
-    const { amount: newAmount } = payload;
-    if (selectedAccount) {
-      // @Todo: Check if this is still needed
-      // setSelectedAccount({ ...selectedAccount, amount: newAmount });
-    }
-    const accountsModified = (accountsUI || []).map((account) => {
-      if (account._id === accountId && selectedAccount) {
-        return { ...selectedAccount, amount: newAmount };
-      }
-      return account;
-    });
-    // @Todo: Check if this is still needed
-    // setAccountsUI(accountsModified);
-    return 'Account updated';
   };
 
   // Fn used to update allRecords atom when a record is edited.
@@ -206,53 +196,64 @@ const useRecords = ({
   const editExpense = async ({
     values, recordId, amountTouched, previousAmount, userId,
   }: EditExpenseProps) => {
-    const { amount, date: dateValue } = values;
-    const newValues = { ...values, recordId, userId };
-    const date = dateValue.toDate();
+    try {
+      const { amount, date: dateValue } = values;
+      const newValues = { ...values, recordId, userId };
+      const date = dateValue.toDate();
 
-    const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
-      newValues,
-      EXPENSE_ROUTE,
-      'put',
-      bearerToken,
-    );
+      const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
+        newValues,
+        EXPENSE_ROUTE,
+        'put',
+        bearerToken,
+      );
 
-    // If an error is catched:
-    if (expenseResponse?.message) {
+      // If an error is catched:
+      if (expenseResponse?.message) {
       // Show notification error
-      showErrorNotification({
-        errorMessage: `There is an error: ${expenseResponse?.message}`,
-        action: 'Create',
-        goToDashboard: true,
-      });
-      return;
-    }
-
-    if (amountTouched) {
-      const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
-      if (updateAmount.includes('Error')) {
-        // show notification error
         showErrorNotification({
-          errorMessage: `Updating amount error: ${updateAmount}`,
+          errorMessage: `There is an error: ${expenseResponse?.message}`,
           action: 'Create',
           goToDashboard: true,
         });
         return;
       }
+
+      if (amountTouched) {
+        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
+        if (updateAmount.includes('Error')) {
+        // show notification error
+          showErrorNotification({
+            errorMessage: `Updating amount error: ${updateAmount}`,
+            action: 'Create',
+            goToDashboard: true,
+          });
+          return;
+        }
+      }
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record updated',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Update expenses
+      updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      // Show notification error
+      showErrorNotification({
+        errorMessage: ERROR_MESSAGE_GENERAL,
+        action: 'Create',
+        goToDashboard: true,
+      });
+      console.error('Error while creating expense', errorCatched.message);
     }
-
-    // Show success notification
-    updateGlobalNotification({
-      newTitle: 'Record updated',
-      newDescription: '',
-      newStatus: SystemStateEnum.Success,
-    });
-
-    // Update expenses
-    updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
-
-    // Navigate to dashboard
-    navigate(DASHBOARD_ROUTE);
   };
 
   const createIncome = async (values: CreateIncomeValues) => {
