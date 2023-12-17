@@ -1,34 +1,54 @@
 /* eslint-disable no-param-reassign */
-import { AxiosRequestHeaders } from 'axios';
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { CreateEditExpenseResponse, CreateExpenseValues } from '../../../../../components/UI/Records/interface';
+import { CreateEditExpenseResponse } from '../../../../../components/UI/Records/interface';
 import { postRequestWithBearer } from '../../../../../utils';
 import { EXPENSE_ROUTE } from '../../../../../components/UI/Records/constants';
-import { RecordsInitialState } from '../../interface';
+import { RecordsInitialState, CreateExpenseThunkProps, CreateExpenseThunkResponse } from '../../interface';
 
-interface CreateExpenseThunkProps {
-  values: CreateExpenseValues;
-  bearerToken: AxiosRequestHeaders;
-
-}
-
-export const createExpense = createAsyncThunk(
+export const createExpenseThunkFn = createAsyncThunk(
   'records/expenses/createExpense',
-  async ({ values, bearerToken }: CreateExpenseThunkProps) => {
+  async ({
+    values, bearerToken, isLastMonth = false, isCurrentMonth = false,
+  }: CreateExpenseThunkProps, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
     const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, EXPENSE_ROUTE, bearerToken);
-    return expenseResponse;
+    // If the response has a message, it's because it's an error. Then, reject.
+    if (expenseResponse?.message) return rejectWithValue(expenseResponse);
+    const response: CreateExpenseThunkResponse = {
+      response: expenseResponse,
+      isLastMonth,
+      isCurrentMonth,
+    };
+    return response;
   },
 );
 
 export const createExpenseFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpense.fulfilled, (state, action) => {
-  // ToDo
+) => builder.addCase(createExpenseThunkFn.fulfilled, (state, action) => {
+  const {
+    response, isLastMonth, isCurrentMonth,
+  } = action.payload;
+
+  if (isCurrentMonth) {
+    const recordsUpdated = [...state.allRecords.currentMonth, response];
+    state.allRecords.currentMonth = recordsUpdated;
+    return;
+  }
+
+  if (isLastMonth) {
+    const recordsUpdated = [...state.allRecords.lastMonth, response];
+    state.allRecords.lastMonth = recordsUpdated;
+    return;
+  }
+
+  const recordsUpdated = [...state.allRecords.olderRecords, response];
+  state.allRecords.olderRecords = recordsUpdated;
 });
 
 export const createExpensePending = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpense.pending, (state) => {
+) => builder.addCase(createExpenseThunkFn.pending, (state) => {
   state.loadingOnAction = true;
 
   // Reset previous error status if it occurred
@@ -38,7 +58,7 @@ export const createExpensePending = (
 
 export const createExpenseRejected = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
-) => builder.addCase(createExpense.rejected, (state, action) => {
+) => builder.addCase(createExpenseThunkFn.rejected, (state, action) => {
   state.loadingOnAction = false;
   state.errorOnAction = true;
   state.errorMessageOnAction = action.error.message;

@@ -25,6 +25,8 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateAmountAccountThunkFn } from '../../redux/slices/Accounts/actions/updateAmountAccount';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
+import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
+import { ERROR_MESSAGE_GENERAL } from '../../constants';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -184,19 +186,17 @@ const useRecords = ({
     try {
       const { amount, date: dateValue } = values;
       const date = dateValue.toDate();
-      const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, EXPENSE_ROUTE, bearerToken);
 
-      // If an error is catched:
-      if (expenseResponse?.message) {
-        // Show notification error
-        showErrorNotification({
-          errorMessage: `There is an error: ${expenseResponse?.message}`,
-          action: 'Create',
-          goToDashboard: true,
-        });
-        return;
-      }
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
 
+      await dispatch(createExpenseThunkFn({
+        values, bearerToken, isLastMonth, isCurrentMonth,
+      })).unwrap();
+
+      // Update the amount of the account.
       const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true });
       // If there's an error while updating the account, return
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
@@ -208,13 +208,16 @@ const useRecords = ({
         newStatus: SystemStateEnum.Success,
       });
 
-      // Update expenses
-      updateAllRecordsOnCreate({ date, newRecord: expenseResponse });
-
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
       const errorCatched = err as AxiosError;
+      // Show notification error
+      showErrorNotification({
+        errorMessage: ERROR_MESSAGE_GENERAL,
+        action: 'Create',
+        goToDashboard: true,
+      });
       console.error('Error while creating expense', errorCatched.message);
     }
   };
