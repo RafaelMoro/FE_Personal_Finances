@@ -40,10 +40,28 @@ export interface EditExpenseValues extends CreateExpenseValues {
   userId: string;
 }
 
+export interface EditIncomeValues extends CreateIncomeValues {
+  recordId: string;
+  userId: string;
+}
+
 export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
   values: EditExpenseValues;
 }
 
 export interface EditExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
   response: CreateEditExpenseResponse;
+}
+
+export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+  values: EditIncomeValues;
+}
+
+export interface EditIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
+  response: CreateEditExpenseResponse;
+}
+
+export interface UpdateRelatedExpensesValues {
+  recordId: string;
+  isPaid: boolean;
 }

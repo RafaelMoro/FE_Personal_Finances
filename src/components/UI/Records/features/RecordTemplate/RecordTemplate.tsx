@@ -210,12 +210,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       const recordId = recordToBeEdited?._id ?? '';
       const previousAmount = recordToBeEdited?.amount ?? 0;
       const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
+      const userIdRecord = recordToBeEdited?.userId ?? '';
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords, newRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
       const valuesToBeEditedIncome = { ...newValues, expensesPaid: newRecords };
       editIncome({
-        values: valuesToBeEditedIncome, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords,
+        values: valuesToBeEditedIncome, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
       });
       return;
     }

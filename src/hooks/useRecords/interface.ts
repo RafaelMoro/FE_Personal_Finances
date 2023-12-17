@@ -45,6 +45,7 @@ export interface EditExpenseProps {
 export interface EditIncomeProps {
   values: CreateIncomeValues;
   recordId: string;
+  userId: string;
   amountTouched: boolean;
   previousAmount: number;
   previousExpensesRelated: ExpensePaid[];

@@ -4,10 +4,10 @@ import { useAtom } from 'jotai';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import { formatDateToString } from '../../utils';
-import { EXPENSE_ROUTE, INCOME_ROUTE, UPDATE_MULTIPLE_EXPENSES } from '../../components/UI/Records/constants';
+import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
+  CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../components/UI/Records/interface';
 import {
   allRecordsAtom,
@@ -15,7 +15,7 @@ import {
 import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
-  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
+  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, EditIncomeProps, EditExpenseProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { SystemStateEnum } from '../../enums';
@@ -27,8 +27,10 @@ import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
 import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
-import { EditExpenseValues } from '../../redux/slices/Records/interface';
+import { EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues } from '../../redux/slices/Records/interface';
 import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
+import { editIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/editIncome';
+import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expenses/updateRelatedExpenses';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -110,29 +112,6 @@ const useRecords = ({
       console.error(`Error while updating the account: ${errorCatched?.message}`);
       return errorCatched?.message;
     }
-  };
-
-  // Fn used to update allRecords atom when a record is edited.
-  const updateAllRecordsOnEdit = ({ date, recordEdited }: UpdateRecordsOnEditProps) => {
-    const { monthFormatted } = formatDateToString(date);
-    const recordEditedId = recordEdited._id;
-    if (lastMonth === monthFormatted) {
-      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
-      filteredRecords.push(recordEdited);
-      setAllRecords({ ...allRecords, lastMonth: filteredRecords });
-      return;
-    }
-
-    if (currentMonth === monthFormatted) {
-      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
-      filteredRecords.push(recordEdited);
-      setAllRecords({ ...allRecords, currentMonth: filteredRecords });
-      return;
-    }
-
-    const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
-    filteredRecords.push(recordEdited);
-    setAllRecords({ ...allRecords, olderRecords: filteredRecords });
   };
 
   // Fn used to update allRecords atom when a record is deleted.
@@ -280,77 +259,57 @@ const useRecords = ({
   };
 
   const editIncome = async ({
-    values, recordId, amountTouched, previousAmount, previousExpensesRelated,
+    values, recordId, amountTouched, previousAmount, previousExpensesRelated, userId,
   }: EditIncomeProps) => {
-    const { amount, date: dateValue } = values;
-    const newValues = { ...values, recordId };
-    const date = dateValue.toDate();
-    const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
-      newValues,
-      INCOME_ROUTE,
-      'put',
-      bearerToken,
-    );
+    try {
+      const { amount, date: dateValue } = values;
+      const date = dateValue.toDate();
+      const newValues: EditIncomeValues = { ...values, recordId, userId };
 
-    // If an error is catched:
-    if (expenseResponse?.message) {
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
+
+      await dispatch(editIncomeThunkFn({
+        values: newValues, bearerToken, isLastMonth, isCurrentMonth,
+      })).unwrap();
+
+      if (amountTouched) {
+        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
+        // If there's an error while updating the account, return
+        if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+      }
+
+      if (previousExpensesRelated.length > 0) {
+        const payload: UpdateRelatedExpensesValues[] = previousExpensesRelated.map((expense) => ({
+          recordId: expense._id,
+          isPaid: false,
+        }));
+        console.log('payload', payload);
+
+        await dispatch(updateRelatedExpenses({ payload, bearerToken }));
+      }
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record Updated',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    } catch (err) {
+      const errorCatched = err as AxiosError;
       // Show notification error
       showErrorNotification({
-        errorMessage: `There is an error editing the income: ${expenseResponse?.message}`,
-        action: 'Create',
+        errorMessage: ERROR_MESSAGE_GENERAL,
+        action: 'Edit',
         goToDashboard: true,
       });
-      return;
+      console.error('Error while creating income', errorCatched.message);
     }
-
-    if (amountTouched) {
-      const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
-      if (updateAmount.includes('Error')) {
-        // show notification error
-        showErrorNotification({
-          errorMessage: `Updating amount error: ${updateAmount}`,
-          action: 'Create',
-          goToDashboard: true,
-        });
-        return;
-      }
-    }
-
-    if (previousExpensesRelated.length > 0) {
-      const payload = previousExpensesRelated.map((expense) => ({
-        recordId: expense._id,
-        isPaid: false,
-      }));
-      const expensesUpdated = await HttpRequestWithBearerToken(
-        payload,
-        UPDATE_MULTIPLE_EXPENSES,
-        'put',
-        bearerToken,
-      );
-
-      if (expensesUpdated?.message) {
-        // Show notification error
-        showErrorNotification({
-          errorMessage: `There is an error updating expenses: ${expenseResponse?.message}`,
-          action: 'Create',
-          goToDashboard: true,
-        });
-        return;
-      }
-    }
-
-    // Show success notification
-    updateGlobalNotification({
-      newTitle: 'Record Updated',
-      newDescription: '',
-      newStatus: SystemStateEnum.Success,
-    });
-
-    // Update expenses
-    updateAllRecordsOnEdit({ date, recordEdited: expenseResponse });
-
-    // Navigate to dashboard
-    navigate(DASHBOARD_ROUTE);
   };
 
   const deleteRecord = async () => {
