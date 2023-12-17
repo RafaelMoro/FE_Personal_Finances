@@ -5,10 +5,12 @@ import {
   fetchCurrentMonthRecordsFullfilled, fetchCurrentMonthRecordsPending, fetchCurrentMonthRecordsRejected,
 } from './actions/fetchCurrentMonthRecords';
 import { fetchLastMonthRecordsFullfilled, fetchLastMonthRecordsPending, fetchLastMonthRecordsRejected } from './actions/fetchLastMonthRecords';
-import { createExpenseFulfilled, createExpensePending, createExpenseRejected } from './actions/Expenses/createExpense';
-import { createIncomeFulfilled, createIncomePending, createIncomeRejected } from './actions/Incomes/createIncome';
-import { editExpenseFulfilled, editExpensePending, editExpenseRejected } from './actions/Expenses/editExpense';
-import { editIncomeFulfilled, editIncomePending, editIncomeRejected } from './actions/Incomes/editIncome';
+import {
+  createExpenseFulfilled, createExpensePending, createExpenseRejected,
+  createIncomeFulfilled, createIncomePending, createIncomeRejected,
+  editExpenseFulfilled, editExpensePending, editExpenseRejected,
+  editIncomeFulfilled, editIncomePending, editIncomeRejected,
+} from './actions';
 
 const recordsInitialState: RecordsInitialState = {
   loading: false,
