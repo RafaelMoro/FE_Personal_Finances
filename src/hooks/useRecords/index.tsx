@@ -374,6 +374,8 @@ const useRecords = ({
     // updateAllRecordsOnDelete({ date, deletedRecordId: recordId });
     } catch (err) {
       const errorCatched = err as AxiosError;
+      closeDeleteRecordModalCb();
+      closeDrawer();
       // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
