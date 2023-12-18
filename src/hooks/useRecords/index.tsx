@@ -7,7 +7,7 @@ import { formatDateToString } from '../../utils';
 import { EXPENSE_ROUTE, INCOME_ROUTE, UPDATE_MULTIPLE_EXPENSES } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
 import {
   allRecordsAtom,
@@ -15,7 +15,7 @@ import {
 import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
-  UpdateAmountAccountOnEditProps, UpdateRecordsOnDeleteProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
+  UpdateAmountAccountOnEditProps, UpdateRecordsOnEditProps, EditIncomeProps, EditExpenseProps,
 } from './interface';
 import { HttpRequestWithBearerToken } from '../../utils/HttpRequestWithBearerToken';
 import { SystemStateEnum } from '../../enums';
@@ -27,8 +27,9 @@ import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
 import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
-import { EditExpenseValues } from '../../redux/slices/Records/interface';
+import { DeleteRecordProps, EditExpenseValues } from '../../redux/slices/Records/interface';
 import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
+import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -132,26 +133,6 @@ const useRecords = ({
 
     const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== recordEditedId);
     filteredRecords.push(recordEdited);
-    setAllRecords({ ...allRecords, olderRecords: filteredRecords });
-  };
-
-  // Fn used to update allRecords atom when a record is deleted.
-  const updateAllRecordsOnDelete = ({ date, deletedRecordId }: UpdateRecordsOnDeleteProps) => {
-    const { monthFormatted } = formatDateToString(date);
-
-    if (lastMonth === monthFormatted) {
-      const filteredRecords = allRecords.lastMonth.filter((record) => record._id !== deletedRecordId);
-      setAllRecords({ ...allRecords, lastMonth: filteredRecords });
-      return;
-    }
-
-    if (currentMonth === monthFormatted) {
-      const filteredRecords = allRecords.currentMonth.filter((record) => record._id !== deletedRecordId);
-      setAllRecords({ ...allRecords, currentMonth: filteredRecords });
-      return;
-    }
-
-    const filteredRecords = allRecords.olderRecords.filter((record) => record._id !== deletedRecordId);
     setAllRecords({ ...allRecords, olderRecords: filteredRecords });
   };
 
@@ -354,54 +335,53 @@ const useRecords = ({
   };
 
   const deleteRecord = async () => {
-    const amountOfRecord = recordToBeDeleted?.amount as number;
-    const dateString = recordToBeDeleted?.date as Date;
-    const date = new Date(dateString);
-    const recordId = recordToBeDeleted?._id as string;
+    try {
+      const amountOfRecord = recordToBeDeleted?.amount as number;
+      const dateString = recordToBeDeleted?.date as Date;
+      const date = new Date(dateString);
 
-    const valuesDeleteRecord = { recordId };
-    const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
-    const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
-      valuesDeleteRecord,
-      route,
-      'delete',
-      bearerToken,
-    );
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
+      const recordId = recordToBeDeleted?._id as string;
 
-    if (responseDeleteRecord.message) {
-      // Show error notification
-      showErrorNotification({
-        errorMessage: `Error while deleting record: ${responseDeleteRecord}`,
-        action: 'Delete',
+      const valuesDeleteRecord: DeleteRecordProps = { recordId };
+      const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
+
+      await dispatch(deleteRecordsThunkFn({
+        values: valuesDeleteRecord, route, bearerToken, isCurrentMonth, isLastMonth,
+      })).unwrap();
+
+      // Update Amount of the account.
+      const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
+      // If there's an error while updating the account, return
+      if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
+        closeDeleteRecordModalCb();
+        closeDrawer();
+        return;
+      }
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record Deleted Succesfully',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
       });
       closeDeleteRecordModalCb();
       closeDrawer();
-      return;
-    }
-
-    // Update Amount of the account.
-    const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
-    if (updateAmount.includes('Error')) {
-      // show notification error
-      showErrorNotification({
-        errorMessage: `Error updating amount while deleting record: ${updateAmount}`,
-        action: 'Delete',
-      });
-      closeDeleteRecordModalCb();
-      closeDrawer();
-      return;
-    }
-
-    // Show success notification
-    updateGlobalNotification({
-      newTitle: 'Record Deleted Succesfully',
-      newDescription: '',
-      newStatus: SystemStateEnum.Success,
-    });
-    closeDeleteRecordModalCb();
-    closeDrawer();
     // Update Records
-    updateAllRecordsOnDelete({ date, deletedRecordId: recordId });
+    // updateAllRecordsOnDelete({ date, deletedRecordId: recordId });
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      // Show notification error
+      showErrorNotification({
+        errorMessage: ERROR_MESSAGE_GENERAL,
+        action: 'Delete',
+        goToDashboard: true,
+      });
+      console.error('Error while deleting expense', errorCatched.message);
+    }
   };
 
   return {

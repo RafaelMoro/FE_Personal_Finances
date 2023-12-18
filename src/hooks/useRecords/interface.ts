@@ -29,11 +29,6 @@ export interface UpdateRecordsOnEditProps {
   recordEdited: AnyRecord;
 }
 
-export interface UpdateRecordsOnDeleteProps {
-  date: Date;
-  deletedRecordId: string;
-}
-
 export interface EditExpenseProps {
   values: CreateExpenseValues;
   recordId: string;
