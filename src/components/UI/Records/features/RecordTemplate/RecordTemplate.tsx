@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
-import { useAtom } from 'jotai';
 import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
@@ -13,7 +12,6 @@ import {
 import { CreateRecordValues } from '../../interface';
 import { EditCategory, ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { recordToBeModifiedAtom } from '../../../../../atoms';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -61,7 +59,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     action: indebtedPersonModalAction,
   } = useIndebtedPeople();
 
-  const [recordToBeEdited] = useAtom(recordToBeModifiedAtom);
+  const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const categoryToBeEdited = (recordToBeEdited?.category ?? '') as EditCategory;
 
   const action: string = edit ? 'Edit' : 'Create';
@@ -164,7 +162,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     setAdditionalData({ ...additionalData, budgets: newBudgets });
   };
 
-  // Change the handle Submit
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
     // Flag to know if amount has a different value from the initial value. If so, the query to update account amount will be executed.

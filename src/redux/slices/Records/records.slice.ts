@@ -24,6 +24,7 @@ const recordsInitialState: RecordsInitialState = {
   loadingOnAction: false,
   errorOnAction: false,
   errorMessageOnAction: '',
+  recordToBeModified: null,
   allRecords: {
     currentMonth: [],
     lastMonth: [],
@@ -45,6 +46,9 @@ export const recordsSlice = createSlice({
   name: 'records',
   initialState: recordsInitialState,
   reducers: {
+    setRecordToBeModified: (state, action) => {
+      state.recordToBeModified = action.payload;
+    },
     resetRecordsAndTotal: (state) => {
       state.allRecords.currentMonth = [];
       state.allRecords.lastMonth = [];
@@ -91,6 +95,6 @@ export const recordsSlice = createSlice({
   },
 });
 
-export const { resetRecordsAndTotal } = recordsSlice.actions;
+export const { resetRecordsAndTotal, setRecordToBeModified } = recordsSlice.actions;
 
 export default recordsSlice.reducer;

@@ -2,11 +2,14 @@ import { AxiosRequestHeaders } from 'axios';
 import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
-import { AllRecords, Expense, RecordsTotal } from '../../../globalInterface';
+import {
+  AllRecords, AnyRecord, Expense, RecordsTotal,
+} from '../../../globalInterface';
 
 export interface RecordsInitialState {
   allRecords: AllRecords;
   totalRecords: RecordsTotal;
+  recordToBeModified: AnyRecord | null;
   loading: boolean;
   loadingOnAction: boolean;
   errorOnAction: boolean;

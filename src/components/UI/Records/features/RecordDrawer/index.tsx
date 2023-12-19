@@ -1,7 +1,6 @@
 import {
   IconButton,
 } from '@mui/material';
-import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
@@ -17,8 +16,9 @@ import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { recordToBeModifiedAtom } from '../../../../../atoms';
 import { RecordSubtitleText } from '../../Records.styled';
+import { useAppDispatch } from '../../../../../redux/hooks';
+import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
@@ -27,11 +27,11 @@ const RecordDrawer = ({
     shortName, description, fullDate, formattedTime,
     category, subCategory, tag, indebtedPeople, budgets,
   } = record;
-  const [, setModifyRecord] = useAtom(recordToBeModifiedAtom);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleEditRecord = () => {
-    setModifyRecord(record);
+    dispatch(setRecordToBeModified(record));
     navigate(EDIT_RECORD_ROUTE);
   };
 
