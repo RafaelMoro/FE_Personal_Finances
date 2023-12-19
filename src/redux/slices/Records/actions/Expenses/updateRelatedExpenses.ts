@@ -1,37 +1,68 @@
 /* eslint-disable no-param-reassign */
-import { AxiosRequestHeaders } from 'axios';
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
 import { UPDATE_MULTIPLE_EXPENSES } from '../../../../../components/UI/Records/constants';
 import { PUT_HTTP_REQUEST } from '../../../../../utils/HttpRequestWithBearerToken/constants';
-import { RecordsInitialState, UpdateRelatedExpensesValues } from '../../interface';
+import { RecordsInitialState, UpdateRelatedExpenses, UpdatedRelatedExpensesResponse } from '../../interface';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
-
-interface UpdateRelatedExpenses {
-  payload: UpdateRelatedExpensesValues[];
-  bearerToken: AxiosRequestHeaders;
-}
+import { Expense, UpdateMultipleExpensesError } from '../../../../../globalInterface';
 
 export const updateRelatedExpenses = createAsyncThunk(
   'records/expenses/updateRelatedExpenses',
-  async ({ payload, bearerToken }: UpdateRelatedExpenses, thunkAPI) => {
+  async ({
+    payload, bearerToken, isLastMonth, isCurrentMonth,
+  }: UpdateRelatedExpenses, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
-    const expensesUpdated = await HttpRequestWithBearerToken(
+    const expensesUpdated: Expense[] | UpdateMultipleExpensesError = await HttpRequestWithBearerToken(
       payload,
       UPDATE_MULTIPLE_EXPENSES,
       PUT_HTTP_REQUEST,
       bearerToken,
     );
 
-    if (expensesUpdated?.message) return rejectWithValue(expensesUpdated);
+    if ((expensesUpdated as UpdateMultipleExpensesError).message) return rejectWithValue(expensesUpdated);
 
-    return expensesUpdated;
+    const response: UpdatedRelatedExpensesResponse = {
+      response: expensesUpdated as Expense[],
+      isLastMonth,
+      isCurrentMonth,
+    };
+    return response;
   },
 );
 
 export const updateRelatedExpensesFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(updateRelatedExpenses.fulfilled, (state, action) => {
-  console.log('action', action);
+  const {
+    response, isLastMonth, isCurrentMonth,
+  } = action.payload;
+
+  if (isCurrentMonth) {
+    const updatedRecords = state.allRecords.currentMonth.map((record) => {
+      const recordFound = response.find((newRecord) => newRecord._id === record._id);
+      if (recordFound) return { ...record, isPaid: recordFound.isPaid };
+      return record;
+    });
+    state.allRecords.currentMonth = updatedRecords;
+    return;
+  }
+
+  if (isLastMonth) {
+    const updatedRecords = state.allRecords.lastMonth.map((record) => {
+      const recordFound = response.find((newRecord) => newRecord._id === record._id);
+      if (recordFound) return { ...record, isPaid: recordFound.isPaid };
+      return record;
+    });
+    state.allRecords.lastMonth = updatedRecords;
+    return;
+  }
+
+  const updatedRecords = state.allRecords.olderRecords.map((record) => {
+    const recordFound = response.find((newRecord) => newRecord._id === record._id);
+    if (recordFound) return { ...record, isPaid: recordFound.isPaid };
+    return record;
+  });
+  state.allRecords.olderRecords = updatedRecords;
 });
 
 export const updateRelatedExpensesPending = (

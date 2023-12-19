@@ -2,7 +2,7 @@ import { AxiosRequestHeaders } from 'axios';
 import {
   CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues,
 } from '../../../components/UI/Records/interface';
-import { AllRecords, RecordsTotal } from '../../../globalInterface';
+import { AllRecords, Expense, RecordsTotal } from '../../../globalInterface';
 
 export interface RecordsInitialState {
   allRecords: AllRecords;
@@ -57,6 +57,10 @@ export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'val
   values: EditIncomeValues;
 }
 
+export interface UpdateRelatedExpenses extends Omit<CreateExpenseThunkProps, 'values'> {
+  payload: UpdateRelatedExpensesValues[];
+}
+
 export interface EditIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
   response: CreateEditExpenseResponse;
 }
@@ -64,4 +68,10 @@ export interface EditIncomeThunkResponse extends Omit<CreateExpenseThunkResponse
 export interface UpdateRelatedExpensesValues {
   recordId: string;
   isPaid: boolean;
+}
+
+export interface UpdatedRelatedExpensesResponse {
+  response: Expense[];
+  isLastMonth?: boolean;
+  isCurrentMonth?: boolean;
 }

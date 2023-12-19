@@ -88,6 +88,13 @@ export interface Expense extends AccountRecord {
   isPaid: boolean;
 }
 
+export interface UpdateMultipleExpensesError {
+  statusCode: number;
+  message: string;
+  error: string;
+
+}
+
 export interface Income extends AccountRecord {
   expensesPaid: Expense[];
 }

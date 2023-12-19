@@ -10,6 +10,9 @@ import {
   createIncomeFulfilled, createIncomePending, createIncomeRejected,
   editExpenseFulfilled, editExpensePending, editExpenseRejected,
   editIncomeFulfilled, editIncomePending, editIncomeRejected,
+  updateRelatedExpensesFulfilled,
+  updateRelatedExpensesPending,
+  updateRelatedExpensesRejected,
 } from './actions';
 
 const recordsInitialState: RecordsInitialState = {
@@ -64,6 +67,10 @@ export const recordsSlice = createSlice({
     editIncomeFulfilled(builder);
     editIncomePending(builder);
     editIncomeRejected(builder);
+
+    updateRelatedExpensesFulfilled(builder);
+    updateRelatedExpensesPending(builder);
+    updateRelatedExpensesRejected(builder);
   },
 });
 

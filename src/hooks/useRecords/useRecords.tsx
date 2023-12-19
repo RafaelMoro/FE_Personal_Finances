@@ -281,14 +281,16 @@ const useRecords = ({
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
 
+      // Set expenses as not paid to those that are removed from expenses related
       if (previousExpensesRelated.length > 0) {
         const payload: UpdateRelatedExpensesValues[] = previousExpensesRelated.map((expense) => ({
           recordId: expense._id,
           isPaid: false,
         }));
-        console.log('payload', payload);
 
-        await dispatch(updateRelatedExpenses({ payload, bearerToken }));
+        await dispatch(updateRelatedExpenses({
+          payload, bearerToken, isLastMonth, isCurrentMonth,
+        })).unwrap();
       }
 
       // Show success notification
