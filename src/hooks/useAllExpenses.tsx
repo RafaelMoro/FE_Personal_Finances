@@ -27,6 +27,7 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [expenses, setExpenses] = useState<ExpensePaid []>([]);
 
+  // Not using redux as I need the expenses in react state rather than redux state (not globally).
   useEffect(() => {
     const getExpenses = async () => {
       try {
