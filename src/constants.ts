@@ -5,6 +5,7 @@ export const NETWORK_CATCH_ERROR = 'Network Error';
 export const UNAUTHORIZED_ERROR = 'Request failed with status code 401';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
+export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'December'];
 export const ZERO_CURRENCY = '$0.00';

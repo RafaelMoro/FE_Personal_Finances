@@ -1,22 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
-import { AxiosRequestHeaders } from 'axios';
+import { AxiosError, AxiosRequestHeaders } from 'axios';
 
 import { Loader } from '../../../../../animations/Loader';
 import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
-import { CategoriesResponse } from '../../interface';
-import { Category, EditCategory } from '../../../../../globalInterface';
+import { EditCategory } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { GET_CATEGORIES } from '../../constants';
-import { GetRequest } from '../../../../../utils';
-import { CATEGORIES_RECORDS } from '../../../../../constants';
+import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 import { useNotification } from '../../../../../hooks/useNotification';
-import { useAppSelector } from '../../../../../redux/hooks';
-
-const NOTIFICATION_TITLE = 'Error Categories and subcategories';
-const NOTIFICATION_DESCRIPTION = 'We could not get your categories. Please try again later';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { fetchCategories } from '../../../../../redux/slices/Categories/actions/fetchCategories';
+import { toggleCategoryNotSelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -29,75 +25,92 @@ interface CategoriesAndSubcategoriesProps {
 const CategoriesAndSubcategories = ({
   errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
+  const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
+  const categoriesState = useAppSelector((state) => state.categories);
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const { updateGlobalNotification } = useNotification();
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  // If category has not been selected yet, disabled subcategory select input.
-  const [categoryNotSelected, setCategoryNotSelected] = useState<boolean>(true);
   // Error flag to set to true if the response come with error and don't keep fetching.
   const [error, setError] = useState<boolean>(false);
 
-  const [categories, setCategories] = useState<Category[]>(CATEGORIES_RECORDS);
-  const [currentCategory, setCurrentCategory] = useState<Category>(CATEGORIES_RECORDS[0]);
-  const onlyCategories = useMemo(() => categories.map((item) => item.categoryName), [categories]);
+  const onlyCategories = useMemo(() => categoriesState.categories.map((item) => item.categoryName), [categoriesState.categories]);
 
   useEffect(() => {
-    const getCategories = async () => {
-      const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
-      const categoriesFetched = response.categories;
-
-      if (response.error) {
-        setIsLoading(false);
+    /* Fetch while the categories are 12 because are the total of the local categories.
+     If there are more, categories has been fetched already. */
+    if (!!userReduxState && bearerToken && categoriesState.categories.length === 11) {
+      try {
+        dispatch(fetchCategories({ bearerToken })).unwrap();
+      } catch (err) {
+        const errorCatched = err as AxiosError;
         updateGlobalNotification({
-          newTitle: NOTIFICATION_TITLE,
-          newDescription: NOTIFICATION_DESCRIPTION,
+          newTitle: 'Error',
+          newDescription: ERROR_MESSAGE_FETCH_CATEGORIES,
           newStatus: SystemStateEnum.Error,
         });
-        setTimeout(() => {
-          setError(true);
-        }, 3000);
-        return;
+        // eslint-disable-next-line no-console
+        console.error('Error while fetching categories', errorCatched.message);
       }
+    }
+  }, [bearerToken, categoriesState.categories.length, dispatch, updateGlobalNotification, userReduxState]);
 
-      if (response.categories.length === 0) {
-        // there are no categories created, do not update the state and just set the loading flag as false.
-        setIsLoading(false);
-        return;
-      }
+  // useEffect(() => {
+  //   const getCategories = async () => {
+  //     const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
+  //     const categoriesFetched = response.categories;
 
-      setIsLoading(false);
+  //     if (response.error) {
+  //       setIsLoading(false);
+  //       updateGlobalNotification({
+  //         newTitle: NOTIFICATION_TITLE,
+  //         newDescription: NOTIFICATION_DESCRIPTION,
+  //         newStatus: SystemStateEnum.Error,
+  //       });
+  //       setTimeout(() => {
+  //         setError(true);
+  //       }, 3000);
+  //       return;
+  //     }
 
-      // Filter the categories unique from the categories fetched and the local categories
-      const allCategories = [...categories, ...categoriesFetched];
-      const localCategoriesNames = categories.map((category) => category.categoryName);
-      const notRepeatedFetchedCategories = allCategories.filter((category) => localCategoriesNames.indexOf(category.categoryName) === -1);
-      const uniqueCategories = [...categories, ...notRepeatedFetchedCategories];
+  //     if (response.categories.length === 0) {
+  //       // there are no categories created, do not update the state and just set the loading flag as false.
+  //       setIsLoading(false);
+  //       return;
+  //     }
 
-      setCategories(uniqueCategories);
+  //     setIsLoading(false);
 
-      // Check if the category to be edited exists, if so, set current category
-      if (categoryToBeEdited) {
-        const newCurrentCategory = categories.find((category) => category.categoryName === categoryToBeEdited.categoryName);
-        setCurrentCategory(newCurrentCategory ?? CATEGORIES_RECORDS[0]);
-      }
-    };
+  //     // Filter the categories unique from the categories fetched and the local categories
+  //     const allCategories = [...categories, ...categoriesFetched];
+  //     const localCategoriesNames = categories.map((category) => category.categoryName);
+  //     const notRepeatedFetchedCategories = allCategories.filter((category) => localCategoriesNames.indexOf(category.categoryName) === -1);
+  //     const uniqueCategories = [...categories, ...notRepeatedFetchedCategories];
 
-    // Fetch while the categories are 12 because are the total of the local categories.
-    // If there are more, categories has been fetched already.
-    if (!!userReduxState && bearerToken && categories.length === 11 && !error) getCategories();
-  }, [bearerToken, categories, error, updateGlobalNotification, categoryToBeEdited, userReduxState]);
+  //     setCategories(uniqueCategories);
+
+  //     // Check if the category to be edited exists, if so, set current category
+  //     if (categoryToBeEdited) {
+  //       const newCurrentCategory = categories.find((category) => category.categoryName === categoryToBeEdited.categoryName);
+  //       setCurrentCategory(newCurrentCategory ?? CATEGORIES_RECORDS[0]);
+  //     }
+  //   };
+
+  //   // Fetch while the categories are 12 because are the total of the local categories.
+  //   // If there are more, categories has been fetched already.
+  //   if (!!userReduxState && bearerToken && categories.length === 11 && !error) getCategories();
+  // }, [bearerToken, categories, error, updateGlobalNotification, categoryToBeEdited, userReduxState]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
-      const selectedCategory = categories.find((item) => item.categoryName === value) ?? CATEGORIES_RECORDS[0];
-      setCurrentCategory(selectedCategory);
-      setCategoryNotSelected(false);
+      console.log('here no');
+      const selectedCategory = categoriesState.categories.find((item) => item.categoryName === value) ?? CATEGORIES_RECORDS[0];
+      // dispatch(updateCurrentCategory(selectedCategory));
+      // dispatch(toggleCategoryNotSelected());
     }
   };
 
-  if (isLoading) {
+  if (categoriesState.loading) {
     return (
       <LoadingCategoriesContainer>
         <RecordLoaderContainer>
@@ -129,9 +142,9 @@ const CategoriesAndSubcategories = ({
         labelId="select-record-subcategory"
         labelName="Subcategory"
         fieldName="subCategory"
-        stringOptions={currentCategory.subCategories}
+        stringOptions={categoriesState.currentCategory.subCategories}
         colorOptions={[]}
-        disabled={categoryNotSelected}
+        disabled={categoriesState.categoryNotSelected}
       />
       { (touchedSubCategory && errorSubcategory) && (
         <ErrorParagraphValidation>{errorSubcategory}</ErrorParagraphValidation>
