@@ -1,4 +1,3 @@
-import { withJotai } from 'storybook-addon-jotai';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import { Record } from '../Record';
@@ -13,7 +12,6 @@ import {
 export default {
   title: 'UI/Record/Desktop',
   component: Record,
-  decorators: [withJotai]
 } as ComponentMeta<typeof Record>;
 
 const Template: ComponentStory<typeof Record> = (args) => (
