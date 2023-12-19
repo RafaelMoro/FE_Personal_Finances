@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { ZERO_CURRENCY } from '../../../constants';
 import { RecordsInitialState } from './interface';
@@ -43,7 +44,18 @@ const recordsInitialState: RecordsInitialState = {
 export const recordsSlice = createSlice({
   name: 'records',
   initialState: recordsInitialState,
-  reducers: {},
+  reducers: {
+    resetRecordsAndTotal: (state) => {
+      state.allRecords.currentMonth = [];
+      state.allRecords.lastMonth = [];
+      state.allRecords.olderRecords = [];
+
+      state.totalRecords.currentMonth.expenseTotal = ZERO_CURRENCY;
+      state.totalRecords.currentMonth.incomeTotal = ZERO_CURRENCY;
+      state.totalRecords.lastMonth.expenseTotal = ZERO_CURRENCY;
+      state.totalRecords.lastMonth.incomeTotal = ZERO_CURRENCY;
+    },
+  },
   extraReducers: (builder) => {
     fetchCurrentMonthRecordsPending(builder);
     fetchCurrentMonthRecordsRejected(builder);
@@ -78,5 +90,7 @@ export const recordsSlice = createSlice({
     deletRecordFulfilled(builder);
   },
 });
+
+export const { resetRecordsAndTotal } = recordsSlice.actions;
 
 export default recordsSlice.reducer;

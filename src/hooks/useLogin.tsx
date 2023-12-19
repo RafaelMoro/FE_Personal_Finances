@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 import jwtDecode from 'jwt-decode';
 import { AxiosError } from 'axios';
@@ -9,11 +8,6 @@ import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
-import {
-  allRecordsAtom, initialStateAllRecords,
-  initialTotalAtomState,
-  totalAtom,
-} from '../atoms';
 import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
@@ -21,6 +15,7 @@ import {
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
+import { resetRecordsAndTotal } from '../redux/slices/Records/records.slice';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -43,8 +38,6 @@ const useLogin = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
-  const [, setAllRecords] = useAtom(allRecordsAtom);
-  const [, setTotal] = useAtom(totalAtom);
   const {
     toggleShowNotification, notificationInfo,
     updateDescription, notification,
@@ -53,12 +46,11 @@ const useLogin = () => {
   });
 
   const signOut = () => {
+    // Reset redux state and local storage after sign out.
     dispatch(signOff());
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
-    // Reset atoms after sign out.
-    setAllRecords(initialStateAllRecords);
-    setTotal(initialTotalAtomState);
+    dispatch(resetRecordsAndTotal());
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
   };
