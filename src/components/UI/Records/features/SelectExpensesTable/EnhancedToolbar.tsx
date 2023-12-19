@@ -13,24 +13,23 @@ function EnhancedTableToolbar({ numSelected }: EnhancedTableToolbarProps) {
         }),
       }}
     >
-      {numSelected > 0 ? (
+      <>
+        <SideNoteSelectExpense>
+          Note: If you cannot find your expense, it may be under other account or a different month.
+        </SideNoteSelectExpense>
+        <Paragraph
+          id="tableTitle"
+        >
+          Select the expenses:
+        </Paragraph>
+        { (numSelected > 0) && (
         <Paragraph>
           {numSelected}
           {' '}
           selected
         </Paragraph>
-      ) : (
-        <>
-          <SideNoteSelectExpense>
-            Note: If you cannot find your expense, it may be under other account or a different month.
-          </SideNoteSelectExpense>
-          <Paragraph
-            id="tableTitle"
-          >
-            Select the expenses:
-          </Paragraph>
-        </>
-      )}
+        ) }
+      </>
     </SelectExpensesToolbar>
   );
 }

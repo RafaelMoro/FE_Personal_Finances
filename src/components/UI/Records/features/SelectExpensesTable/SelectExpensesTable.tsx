@@ -144,7 +144,7 @@ function SelectExpensesTable({
       />
       <FlexContainer justifyContent="space-between">
         <CancelButton onClick={closeDrawer}>Cancel</CancelButton>
-        <ConfirmButton disabled={selectedExpenses.length < 1} onClick={closeDrawer}>Done</ConfirmButton>
+        <ConfirmButton onClick={closeDrawer}>Done</ConfirmButton>
       </FlexContainer>
     </SelectExpensesContainer>
   );
