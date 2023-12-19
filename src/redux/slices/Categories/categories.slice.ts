@@ -7,7 +7,7 @@ import { fetchCategoriesFulfilled, fetchCategoriesPending, fetchCategoriesReject
 const categoriesInitialState: CategoriesInitialState = {
   categories: CATEGORIES_RECORDS,
   currentCategory: CATEGORIES_RECORDS[0],
-  categoryNotSelected: false,
+  categoryNotSelected: true,
   loading: false,
   error: false,
   errorMessage: '',
@@ -20,8 +20,8 @@ export const categoriesSlice = createSlice({
     updateCurrentCategory: (state, action) => {
       state.currentCategory = action.payload;
     },
-    toggleCategoryNotSelected: (state) => {
-      state.categoryNotSelected = !state.categoryNotSelected;
+    isCategorySelected: (state) => {
+      state.categoryNotSelected = false;
     },
   },
   extraReducers: (builder) => {
@@ -31,6 +31,6 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export const { updateCurrentCategory, toggleCategoryNotSelected } = categoriesSlice.actions;
+export const { updateCurrentCategory, isCategorySelected } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

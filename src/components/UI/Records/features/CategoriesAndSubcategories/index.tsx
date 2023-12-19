@@ -9,12 +9,12 @@ import { SelectInput } from '../../../SelectInput';
 
 import { EditCategory, User } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
+import { ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { fetchCategories } from '../../../../../redux/slices/Categories/actions/fetchCategories';
-import { toggleCategoryNotSelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
+import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -100,10 +100,11 @@ const CategoriesAndSubcategories = ({
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
-      console.log('here no');
-      const selectedCategory = categoriesState.categories.find((item) => item.categoryName === value) ?? CATEGORIES_RECORDS[0];
-      // dispatch(updateCurrentCategory(selectedCategory));
-      // dispatch(toggleCategoryNotSelected());
+      const selectedCategory = categoriesState.categories.find((item) => item.categoryName === value);
+      if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
+        dispatch(updateCurrentCategory(selectedCategory));
+        if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
+      }
     }
   };
 
