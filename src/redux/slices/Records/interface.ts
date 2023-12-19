@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues,
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import { AllRecords, Expense, RecordsTotal } from '../../../globalInterface';
 
@@ -31,8 +31,22 @@ export interface CreateExpenseThunkResponse {
 export interface CreateIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
   values: CreateIncomeValues;
 }
+
+export interface DeleteRecordProps {
+  recordId: string;
+}
+
+export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+  values: DeleteRecordProps;
+  route: string;
+}
 export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
   response: CreateIncomeResponse;
+}
+
+export interface DeleteExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
+  response: DeleteRecordResponse;
+  values: DeleteRecordProps;
 }
 
 export interface EditExpenseValues extends CreateExpenseValues {

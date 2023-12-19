@@ -14,6 +14,7 @@ import {
   updateRelatedExpensesPending,
   updateRelatedExpensesRejected,
 } from './actions';
+import { deletRecordFulfilled, deleteRecordPending, deleteRecordRejected } from './actions/deleteRecords';
 
 const recordsInitialState: RecordsInitialState = {
   loading: false,
@@ -71,6 +72,10 @@ export const recordsSlice = createSlice({
     updateRelatedExpensesFulfilled(builder);
     updateRelatedExpensesPending(builder);
     updateRelatedExpensesRejected(builder);
+
+    deleteRecordPending(builder);
+    deleteRecordRejected(builder);
+    deletRecordFulfilled(builder);
   },
 });
 
