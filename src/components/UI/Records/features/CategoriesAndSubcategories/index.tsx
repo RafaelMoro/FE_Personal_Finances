@@ -1,11 +1,13 @@
-import { useEffect, useState, useMemo } from 'react';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import {
+  useEffect, useMemo,
+} from 'react';
+import { AxiosError } from 'axios';
 
 import { Loader } from '../../../../../animations/Loader';
 import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
-import { EditCategory } from '../../../../../globalInterface';
+import { EditCategory, User } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
@@ -26,20 +28,14 @@ const CategoriesAndSubcategories = ({
   errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
   const dispatch = useAppDispatch();
-  const userReduxState = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user.userInfo);
+  const { bearerToken } = user as User;
   const categoriesState = useAppSelector((state) => state.categories);
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const { updateGlobalNotification } = useNotification();
-
-  // Error flag to set to true if the response come with error and don't keep fetching.
-  const [error, setError] = useState<boolean>(false);
-
   const onlyCategories = useMemo(() => categoriesState.categories.map((item) => item.categoryName), [categoriesState.categories]);
 
   useEffect(() => {
-    /* Fetch while the categories are 12 because are the total of the local categories.
-     If there are more, categories has been fetched already. */
-    if (!!userReduxState && bearerToken && categoriesState.categories.length === 11) {
+    if (user?.email) {
       try {
         dispatch(fetchCategories({ bearerToken })).unwrap();
       } catch (err) {
@@ -53,7 +49,8 @@ const CategoriesAndSubcategories = ({
         console.error('Error while fetching categories', errorCatched.message);
       }
     }
-  }, [bearerToken, categoriesState.categories.length, dispatch, updateGlobalNotification, userReduxState]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.email, bearerToken]);
 
   // useEffect(() => {
   //   const getCategories = async () => {
