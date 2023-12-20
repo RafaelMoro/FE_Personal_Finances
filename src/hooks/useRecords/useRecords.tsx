@@ -120,13 +120,21 @@ const useRecords = ({
     currentTotal: string;
     newAmount: number;
     recordAgeCategory: RecordAgeCategory;
+    editRecord?: boolean;
+    previousAmount?: number;
   }
 
   const updateTotalCurrency = ({
-    currentTotal, newAmount, recordAgeCategory,
+    currentTotal, newAmount, recordAgeCategory, editRecord, previousAmount,
   }: UpdateTotalCurrencyProps): UpdateTotalExpenseIncomePayload => {
     const currentTotalNumber = formatCurrencyToNumber(currentTotal);
-    const totalUpdated = currentTotalNumber + newAmount;
+    let totalUpdated = 0;
+    if (editRecord && previousAmount) {
+      // Subtract previous amount and sum new amount.
+      totalUpdated = currentTotalNumber - previousAmount + newAmount;
+    } else {
+      totalUpdated = currentTotalNumber + newAmount;
+    }
     const newTotalCurrency = formatNumberToCurrency(totalUpdated);
     const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
     return payload;
@@ -212,6 +220,28 @@ const useRecords = ({
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
         // If there's an error while updating the account, return
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+      }
+
+      if (!!allRecords.currentMonth && isCurrentMonth) {
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Current Month',
+        });
+        dispatch(updateTotalExpense(payload));
+      }
+
+      if (!!allRecords.lastMonth && isLastMonth) {
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Last month',
+        });
+        dispatch(updateTotalExpense(payload));
       }
 
       // Show success notification
