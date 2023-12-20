@@ -31,7 +31,7 @@ export const fetchCurrentMonthRecordsFullfilled = (
   let expenseTotalCounter = 0;
   let incomeTotalCounter = 0;
   recordsFetched.forEach((record) => {
-    if (record?.isPaid) {
+    if (record.isPaid !== undefined) {
       expenseTotalCounter += record.amount;
       return;
     }

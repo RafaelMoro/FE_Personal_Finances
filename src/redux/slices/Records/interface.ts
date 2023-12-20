@@ -5,6 +5,7 @@ import {
 import {
   AllRecords, AnyRecord, Expense, RecordsTotal,
 } from '../../../globalInterface';
+import { RecordAgeCategory } from '../../../aliasType';
 
 export interface RecordsInitialState {
   allRecords: AllRecords;
@@ -16,6 +17,16 @@ export interface RecordsInitialState {
   error: boolean;
   errorMessage: string | unknown;
   errorMessageOnAction: string | unknown;
+}
+
+export interface UpdateTotalExpenseIncomePayload {
+  newAmount: string;
+  recordAgeCategory: RecordAgeCategory;
+}
+
+export interface UpdateTotalExpenseIncomeAction {
+  payload: UpdateTotalExpenseIncomePayload;
+  type: string;
 }
 
 export interface CreateExpenseThunkProps {

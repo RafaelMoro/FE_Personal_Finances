@@ -2,7 +2,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
-import { formatDateToString } from '../../utils';
+import { formatDateToString, formatNumberToCurrency } from '../../utils';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 import {
@@ -23,12 +23,15 @@ import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expense
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
 import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
 import {
-  DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues,
+  DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues, UpdateTotalExpenseIncomePayload,
 } from '../../redux/slices/Records/interface';
 import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
 import { editIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/editIncome';
 import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expenses/updateRelatedExpenses';
 import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
+import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
+import { getTotalRecords } from '../../utils/getTotalRecords';
+import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -38,6 +41,8 @@ const useRecords = ({
   const dispatch = useAppDispatch();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const allRecords = useAppSelector((state) => state.records.allRecords);
+  const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
   const { month: currentMonth, lastMonth } = useDate();
@@ -130,6 +135,22 @@ const useRecords = ({
       // If there's an error while updating the account, return
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
+      // Update amount of total records
+      if (!!allRecords.currentMonth && isCurrentMonth) {
+        const expenseTotal = formatCurrencyToNumber(totalRecords.currentMonth.expenseTotal);
+        const expenseTotalUpdated = expenseTotal + amount;
+        const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
+        const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Current Month' };
+        dispatch(updateTotalExpense(payload));
+      }
+      if (!!allRecords.lastMonth && isLastMonth) {
+        const expenseTotal = formatCurrencyToNumber(totalRecords.lastMonth.expenseTotal);
+        const expenseTotalUpdated = expenseTotal + amount;
+        const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
+        const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Last month' };
+        dispatch(updateTotalExpense(payload));
+      }
+
       // Show success notification
       updateGlobalNotification({
         newTitle: 'Record created',
@@ -213,6 +234,22 @@ const useRecords = ({
       const updateAmount = await updateAmountAccount({ amount, isExpense: false });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+
+      // Update amount of total records
+      if (allRecords.currentMonth && isCurrentMonth) {
+        const incomeTotal = formatCurrencyToNumber(totalRecords.currentMonth.incomeTotal);
+        const incomeTotalUpdated = incomeTotal + amount;
+        const incomeTotalString = formatNumberToCurrency(incomeTotalUpdated);
+        const payload: UpdateTotalExpenseIncomePayload = { newAmount: incomeTotalString, recordAgeCategory: 'Current Month' };
+        dispatch(updateTotalIncome(payload));
+      }
+      if (allRecords.lastMonth && isLastMonth) {
+        const incomeTotal = formatCurrencyToNumber(totalRecords.lastMonth.incomeTotal);
+        const incomeTotalUpdated = incomeTotal + amount;
+        const incomeTotalString = formatNumberToCurrency(incomeTotalUpdated);
+        const payload: UpdateTotalExpenseIncomePayload = { newAmount: incomeTotalString, recordAgeCategory: 'Last month' };
+        dispatch(updateTotalIncome(payload));
+      }
 
       // Show success notification
       updateGlobalNotification({
