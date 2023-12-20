@@ -30,7 +30,6 @@ import { editIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/ed
 import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expenses/updateRelatedExpenses';
 import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
-import { getTotalRecords } from '../../utils/getTotalRecords';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 import { RecordAgeCategory } from '../../aliasType';
 
