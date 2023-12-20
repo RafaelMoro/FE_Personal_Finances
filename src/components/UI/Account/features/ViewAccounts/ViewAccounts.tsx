@@ -50,10 +50,11 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   } = useAccountsActions();
 
   useEffect(() => {
-    if (user.userInfo) {
+    // Fetch only if we have user info and if we haven't fetched accounts before.
+    if (user.userInfo && !accounts.accounts) {
       dispatch(fetchAccounts({ bearerToken }));
     }
-  }, [bearerToken, dispatch, user.userInfo]);
+  }, [accounts, bearerToken, dispatch, user.userInfo]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
