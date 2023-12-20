@@ -1,10 +1,6 @@
-import { useEffect } from 'react';
-
 import { useNotification } from '../../hooks/useNotification';
 import { useDashboardActions } from '../../components/UI/SpeedDial/useDashboardActions';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { updateWindowSize } from '../../redux/slices/userInterface.slice';
-import { handleResizeWindow } from '../../utils';
+import { useAppSelector } from '../../redux/hooks';
 import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList, SpeedDial } from '../../components/UI';
 import { Header } from '../../components/templates/Header';
@@ -13,9 +9,9 @@ import { BackToTopButton } from '../../components/UI/BackToTopButton';
 import {
   DashboardContainer, RecordsBox,
 } from './Dashboard.styled';
+import { useResizeWindow } from '../../hooks/useResizeWindow';
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const accountsUI = useAppSelector((state) => state.accounts.accounts);
   const {
@@ -31,24 +27,7 @@ const Dashboard = () => {
   });
 
   const noAccountsCreated = accountsUI && accountsUI.length === 0;
-
-  useEffect(() => {
-    if (window.innerWidth > 480 && window.innerWidth <= 1024 && windowSize !== 'Tablet') {
-      dispatch(updateWindowSize('Tablet'));
-    }
-    if (window.innerWidth > 1024 && windowSize !== 'Desktop') dispatch(updateWindowSize('Desktop'));
-
-    window.addEventListener('resize', (event: UIEvent) => {
-      const windowResized = handleResizeWindow(event);
-      dispatch(updateWindowSize(windowResized));
-    });
-
-    return () => window.removeEventListener('resize', (event: UIEvent) => {
-      const windowResized = handleResizeWindow(event);
-      dispatch(updateWindowSize(windowResized));
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useResizeWindow();
 
   return (
     <DashboardContainer>
