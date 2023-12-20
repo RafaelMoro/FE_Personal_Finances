@@ -9,7 +9,7 @@ import { SelectInput } from '../../../SelectInput';
 
 import { Category, User } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
+import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
@@ -32,10 +32,10 @@ const CategoriesAndSubcategories = ({
   const { bearerToken } = user as User;
   const categoriesState = useAppSelector((state) => state.categories);
   const { updateGlobalNotification } = useNotification();
-  const onlyCategories = useMemo(() => categoriesState.categories.map((item) => item.categoryName), [categoriesState.categories]);
+  const onlyCategories = useMemo(() => (categoriesState.categories ?? []).map((item) => item.categoryName), [categoriesState.categories]);
 
   useEffect(() => {
-    if (user?.email) {
+    if (user && bearerToken && !categoriesState.categories) {
       try {
         dispatch(fetchCategories({ bearerToken, categoryToBeEdited })).unwrap();
       } catch (err) {
@@ -50,11 +50,11 @@ const CategoriesAndSubcategories = ({
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.email, bearerToken]);
+  }, [user, bearerToken, categoriesState.categories]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
-      const selectedCategory = categoriesState.categories.find((item) => item.categoryName === value);
+      const selectedCategory = (categoriesState.categories ?? []).find((item) => item.categoryName === value);
       if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
         dispatch(updateCurrentCategory(selectedCategory));
         if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
@@ -94,7 +94,7 @@ const CategoriesAndSubcategories = ({
         labelId="select-record-subcategory"
         labelName="Subcategory"
         fieldName="subCategory"
-        stringOptions={categoriesState.currentCategory.subCategories}
+        stringOptions={(categoriesState.currentCategory ?? CATEGORIES_RECORDS[0]).subCategories}
         colorOptions={[]}
         disabled={categoriesState.categoryNotSelected}
       />
