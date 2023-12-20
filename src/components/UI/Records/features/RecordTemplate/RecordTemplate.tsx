@@ -133,7 +133,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       setAdditionalData(newAdditionalData);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recordToBeEdited, edit, isCredit]);
+  }, [recordToBeEdited?.category.categoryName, edit, isCredit]);
 
   const openAddPersonModal = (values: any) => {
     // save initial values
