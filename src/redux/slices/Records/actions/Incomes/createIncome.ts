@@ -31,19 +31,22 @@ export const createIncomeFulfilled = (
     response, isLastMonth, isCurrentMonth,
   } = action.payload;
 
-  if (isCurrentMonth) {
-    const recordsUpdated = [...state.allRecords.currentMonth, response];
+  if (isCurrentMonth && state.allRecords.currentMonth) {
+    const recordsUpdated = [...state.allRecords.currentMonth];
+    recordsUpdated.unshift(response);
     state.allRecords.currentMonth = recordsUpdated;
     return;
   }
 
-  if (isLastMonth) {
-    const recordsUpdated = [...state.allRecords.lastMonth, response];
+  if (isLastMonth && state.allRecords.lastMonth) {
+    const recordsUpdated = [...state.allRecords.lastMonth];
+    recordsUpdated.unshift(response);
     state.allRecords.lastMonth = recordsUpdated;
     return;
   }
 
-  const recordsUpdated = [...state.allRecords.olderRecords, response];
+  const recordsUpdated = [...(state.allRecords.olderRecords ?? [])];
+  recordsUpdated.unshift(response);
   state.allRecords.olderRecords = recordsUpdated;
 });
 
