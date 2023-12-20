@@ -160,17 +160,14 @@ const useRecords = ({
           recordAgeCategory: 'Current Month',
         });
         dispatch(updateTotalExpense(payload));
-        // const expenseTotal = formatCurrencyToNumber(totalRecords.currentMonth.expenseTotal);
-        // const expenseTotalUpdated = expenseTotal + amount;
-        // const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
-        // const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Current Month' };
-        // dispatch(updateTotalExpense(payload));
       }
+
       if (!!allRecords.lastMonth && isLastMonth) {
-        const expenseTotal = formatCurrencyToNumber(totalRecords.lastMonth.expenseTotal);
-        const expenseTotalUpdated = expenseTotal + amount;
-        const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
-        const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Last month' };
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Last month',
+        });
         dispatch(updateTotalExpense(payload));
       }
 
@@ -260,17 +257,19 @@ const useRecords = ({
 
       // Update amount of total records
       if (allRecords.currentMonth && isCurrentMonth) {
-        const incomeTotal = formatCurrencyToNumber(totalRecords.currentMonth.incomeTotal);
-        const incomeTotalUpdated = incomeTotal + amount;
-        const incomeTotalString = formatNumberToCurrency(incomeTotalUpdated);
-        const payload: UpdateTotalExpenseIncomePayload = { newAmount: incomeTotalString, recordAgeCategory: 'Current Month' };
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.incomeTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Current Month',
+        });
         dispatch(updateTotalIncome(payload));
       }
       if (allRecords.lastMonth && isLastMonth) {
-        const incomeTotal = formatCurrencyToNumber(totalRecords.lastMonth.incomeTotal);
-        const incomeTotalUpdated = incomeTotal + amount;
-        const incomeTotalString = formatNumberToCurrency(incomeTotalUpdated);
-        const payload: UpdateTotalExpenseIncomePayload = { newAmount: incomeTotalString, recordAgeCategory: 'Last month' };
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.incomeTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Last month',
+        });
         dispatch(updateTotalIncome(payload));
       }
 
