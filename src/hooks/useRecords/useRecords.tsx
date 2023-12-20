@@ -346,6 +346,28 @@ const useRecords = ({
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
 
+      // Update amount of total records
+      if (allRecords.currentMonth && isCurrentMonth) {
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.incomeTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Current Month',
+        });
+        dispatch(updateTotalIncome(payload));
+      }
+      if (allRecords.lastMonth && isLastMonth) {
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.incomeTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Last month',
+        });
+        dispatch(updateTotalIncome(payload));
+      }
+
       // Set expenses as not paid to those that are removed from expenses related
       if (previousExpensesRelated.length > 0) {
         const payload: UpdateRelatedExpensesValues[] = previousExpensesRelated.map((expense) => ({
