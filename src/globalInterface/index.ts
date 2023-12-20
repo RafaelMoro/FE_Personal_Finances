@@ -61,11 +61,6 @@ export interface Category {
   subCategories: string[];
 }
 
-export interface EditCategory {
-  _id: string;
-  categoryName: string;
-}
-
 export interface AccountRecord {
   _id: string;
   userId: string;

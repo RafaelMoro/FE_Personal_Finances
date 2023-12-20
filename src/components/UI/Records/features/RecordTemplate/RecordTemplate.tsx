@@ -10,7 +10,7 @@ import {
   RecordTemplateProps, AdditionalData, TypeOfRecord,
 } from './interface';
 import { CreateRecordValues } from '../../interface';
-import { EditCategory, ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
+import { ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
@@ -60,7 +60,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   } = useIndebtedPeople();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
-  const categoryToBeEdited = (recordToBeEdited?.category ?? '') as EditCategory;
+  const categoryToBeEdited = recordToBeEdited?.category ?? null;
 
   const action: string = edit ? 'Edit' : 'Create';
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
@@ -91,7 +91,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
   // Update edit data to the initial values
   useEffect(() => {
-    if (edit && recordToBeEdited?.shortName) {
+    if (edit && recordToBeEdited) {
       // Set record type to income if it's an income.
       if (recordToBeEdited?.expensesPaid) {
         setTypeOfRecord('income');
@@ -101,7 +101,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
         description: recordToBeEdited.description,
-        category: categoryToBeEdited.categoryName,
+        category: recordToBeEdited.category.categoryName,
         subCategory: recordToBeEdited.subCategory,
         isPaid: recordToBeEdited.isPaid ?? !isCredit,
         date: dayjs(recordToBeEdited.date),
@@ -133,7 +133,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       setAdditionalData(newAdditionalData);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [categoryToBeEdited.categoryName, edit, isCredit]);
+  }, [recordToBeEdited, edit, isCredit]);
 
   const openAddPersonModal = (values: any) => {
     // save initial values
@@ -210,7 +210,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       const userIdRecord = recordToBeEdited?.userId ?? '';
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
-      const { oldRecords, newRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+      const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
       editIncome({
         values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
       });

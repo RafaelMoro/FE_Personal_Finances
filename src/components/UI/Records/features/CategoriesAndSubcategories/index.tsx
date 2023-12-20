@@ -7,7 +7,7 @@ import { Loader } from '../../../../../animations/Loader';
 import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
-import { EditCategory, User } from '../../../../../globalInterface';
+import { Category, User } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
@@ -21,7 +21,7 @@ interface CategoriesAndSubcategoriesProps {
   errorSubcategory?: string;
   touchedCategory?: boolean;
   touchedSubCategory?: boolean;
-  categoryToBeEdited: EditCategory;
+  categoryToBeEdited: Category | null;
 }
 
 const CategoriesAndSubcategories = ({
@@ -37,7 +37,7 @@ const CategoriesAndSubcategories = ({
   useEffect(() => {
     if (user?.email) {
       try {
-        dispatch(fetchCategories({ bearerToken })).unwrap();
+        dispatch(fetchCategories({ bearerToken, categoryToBeEdited })).unwrap();
       } catch (err) {
         const errorCatched = err as AxiosError;
         updateGlobalNotification({

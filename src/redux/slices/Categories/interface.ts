@@ -1,5 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import { Category } from '../../../globalInterface';
+import { CategoriesResponse } from '../../../components/UI/Records/interface';
 
 export interface CategoriesInitialState {
   categories: Category[],
@@ -12,4 +13,10 @@ export interface CategoriesInitialState {
 
 export interface FetchCategoriesThunkProps {
   bearerToken: AxiosRequestHeaders;
+  categoryToBeEdited: Category | null;
+}
+
+export interface FetchCategoriesThunkResponse {
+  response: CategoriesResponse;
+  categoryToBeEdited: Category | null;
 }

@@ -29,7 +29,7 @@ const SelectInput = ({
           <ColorCircle backgroundColor={option.color} />
         </PersonalizedMenuItem>
       )) }
-      { (stringOptions.length > 0) && (
+      { ((stringOptions ?? []).length > 0) && (
         stringOptions.map((option, index) => (
           <MenuItem key={`${fieldName}-${option}-${index + 1}`} value={option}>{option}</MenuItem>
         ))
