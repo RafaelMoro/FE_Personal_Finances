@@ -39,7 +39,7 @@ export const editIncomeFulfilled = (
   } = action.payload;
   const accountModified = action.payload.response;
 
-  if (isCurrentMonth) {
+  if (isCurrentMonth && state.allRecords.currentMonth) {
     // Get the index of the record that has been modified.
     const oldRecordIndex = state.allRecords.currentMonth.map((record) => record._id).indexOf(recordId);
     // Remove the old one and replace it with the modified record.
@@ -47,14 +47,14 @@ export const editIncomeFulfilled = (
     return;
   }
 
-  if (isLastMonth) {
+  if (isLastMonth && state.allRecords.lastMonth) {
     const oldRecordIndex = state.allRecords.lastMonth.map((record) => record._id).indexOf(recordId);
     state.allRecords.lastMonth.splice(oldRecordIndex, 1, accountModified);
     return;
   }
 
-  const oldRecordIndex = state.allRecords.olderRecords.map((record) => record._id).indexOf(recordId);
-  state.allRecords.olderRecords.splice(oldRecordIndex, 1, accountModified);
+  const oldRecordIndex = (state.allRecords.olderRecords ?? []).map((record) => record._id).indexOf(recordId);
+  (state.allRecords.olderRecords ?? []).splice(oldRecordIndex, 1, accountModified);
 });
 
 export const editIncomePending = (

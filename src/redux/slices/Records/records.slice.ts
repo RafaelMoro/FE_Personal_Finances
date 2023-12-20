@@ -26,9 +26,9 @@ const recordsInitialState: RecordsInitialState = {
   errorMessageOnAction: '',
   recordToBeModified: null,
   allRecords: {
-    currentMonth: [],
-    lastMonth: [],
-    olderRecords: [],
+    currentMonth: null,
+    lastMonth: null,
+    olderRecords: null,
   },
   totalRecords: {
     currentMonth: {

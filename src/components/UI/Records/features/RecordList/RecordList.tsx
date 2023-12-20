@@ -41,11 +41,12 @@ const RecordList = () => {
   const color = selectedAccount?.colorUI?.color ?? AppColors.black;
 
   useEffect(() => {
-    if (user && accounts) {
+    // Fetch if user, accounts exists and current month records are null
+    if (user && accounts && !recordsState.allRecords.currentMonth) {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
       dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
     }
-  }, [accountId, accounts, bearerToken, dispatch, month, selectedAccount, user, year]);
+  }, [accountId, accounts, bearerToken, dispatch, month, recordsState.allRecords.currentMonth, selectedAccount, user, year]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
@@ -70,7 +71,9 @@ const RecordList = () => {
     );
   }
 
-  if (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0 && selectedAccount && !recordsState.loading) {
+  if ((allRecords.currentMonth && allRecords.lastMonth)
+  && (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0)
+  && (selectedAccount && !recordsState.loading)) {
     return (
       <NoRecordsFound />
     );
@@ -86,7 +89,7 @@ const RecordList = () => {
         totalExpense={totalRecords.currentMonth.expenseTotal}
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
-        records={allRecords.currentMonth}
+        records={allRecords.currentMonth ?? []}
         loading={recordsState.loading}
         error={recordsState.error}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
@@ -104,7 +107,7 @@ const RecordList = () => {
         totalIncome={totalRecords.lastMonth.incomeTotal}
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
-        records={allRecords.lastMonth}
+        records={allRecords.lastMonth ?? []}
         loading={recordsState.loadingOnAction}
         error={recordsState.errorOnAction}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}

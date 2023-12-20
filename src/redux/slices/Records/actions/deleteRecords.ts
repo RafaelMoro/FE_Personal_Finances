@@ -36,19 +36,19 @@ export const deletRecordFulfilled = (
     values, isLastMonth, isCurrentMonth,
   } = action.payload;
 
-  if (isCurrentMonth) {
+  if (isCurrentMonth && state.allRecords.currentMonth) {
     const updatedRecords = state.allRecords.currentMonth.filter((record) => record._id !== values.recordId);
     state.allRecords.currentMonth = updatedRecords;
     return;
   }
 
-  if (isLastMonth) {
+  if (isLastMonth && state.allRecords.lastMonth) {
     const updatedRecords = state.allRecords.lastMonth.filter((record) => record._id !== values.recordId);
     state.allRecords.lastMonth = updatedRecords;
     return;
   }
 
-  const updatedRecords = state.allRecords.olderRecords.filter((record) => record._id !== values.recordId);
+  const updatedRecords = (state.allRecords.olderRecords ?? []).filter((record) => record._id !== values.recordId);
   state.allRecords.olderRecords = updatedRecords;
 });
 

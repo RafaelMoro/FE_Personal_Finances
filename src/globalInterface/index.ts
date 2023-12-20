@@ -119,9 +119,9 @@ export interface RecordsTotal {
 }
 
 export interface AllRecords {
-  currentMonth: AnyRecord[];
-  lastMonth: AnyRecord[];
-  olderRecords: AnyRecord[];
+  currentMonth: AnyRecord[] | null;
+  lastMonth: AnyRecord[] | null;
+  olderRecords: AnyRecord[] | null;
 }
 
 export interface GlobalNotification {

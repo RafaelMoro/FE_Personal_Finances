@@ -37,7 +37,7 @@ export const updateRelatedExpensesFulfilled = (
     response, isLastMonth, isCurrentMonth,
   } = action.payload;
 
-  if (isCurrentMonth) {
+  if (isCurrentMonth && state.allRecords.currentMonth) {
     const updatedRecords = state.allRecords.currentMonth.map((record) => {
       const recordFound = response.find((newRecord) => newRecord._id === record._id);
       if (recordFound) return { ...record, isPaid: recordFound.isPaid };
@@ -47,7 +47,7 @@ export const updateRelatedExpensesFulfilled = (
     return;
   }
 
-  if (isLastMonth) {
+  if (isLastMonth && state.allRecords.lastMonth) {
     const updatedRecords = state.allRecords.lastMonth.map((record) => {
       const recordFound = response.find((newRecord) => newRecord._id === record._id);
       if (recordFound) return { ...record, isPaid: recordFound.isPaid };
@@ -57,7 +57,7 @@ export const updateRelatedExpensesFulfilled = (
     return;
   }
 
-  const updatedRecords = state.allRecords.olderRecords.map((record) => {
+  const updatedRecords = (state.allRecords.olderRecords ?? []).map((record) => {
     const recordFound = response.find((newRecord) => newRecord._id === record._id);
     if (recordFound) return { ...record, isPaid: recordFound.isPaid };
     return record;

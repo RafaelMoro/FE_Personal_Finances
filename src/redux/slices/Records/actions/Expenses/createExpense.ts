@@ -31,19 +31,19 @@ export const createExpenseFulfilled = (
     response, isLastMonth, isCurrentMonth,
   } = action.payload;
 
-  if (isCurrentMonth) {
+  if (isCurrentMonth && state.allRecords.currentMonth) {
     const recordsUpdated = [...state.allRecords.currentMonth, response];
     state.allRecords.currentMonth = recordsUpdated;
     return;
   }
 
-  if (isLastMonth) {
+  if (isLastMonth && state.allRecords.lastMonth) {
     const recordsUpdated = [...state.allRecords.lastMonth, response];
     state.allRecords.lastMonth = recordsUpdated;
     return;
   }
 
-  const recordsUpdated = [...state.allRecords.olderRecords, response];
+  const recordsUpdated = [...(state.allRecords.olderRecords ?? []), response];
   state.allRecords.olderRecords = recordsUpdated;
 });
 
