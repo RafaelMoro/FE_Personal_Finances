@@ -52,52 +52,6 @@ const CategoriesAndSubcategories = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.email, bearerToken]);
 
-  // useEffect(() => {
-  //   const getCategories = async () => {
-  //     const response: CategoriesResponse = await GetRequest(GET_CATEGORIES, bearerToken);
-  //     const categoriesFetched = response.categories;
-
-  //     if (response.error) {
-  //       setIsLoading(false);
-  //       updateGlobalNotification({
-  //         newTitle: NOTIFICATION_TITLE,
-  //         newDescription: NOTIFICATION_DESCRIPTION,
-  //         newStatus: SystemStateEnum.Error,
-  //       });
-  //       setTimeout(() => {
-  //         setError(true);
-  //       }, 3000);
-  //       return;
-  //     }
-
-  //     if (response.categories.length === 0) {
-  //       // there are no categories created, do not update the state and just set the loading flag as false.
-  //       setIsLoading(false);
-  //       return;
-  //     }
-
-  //     setIsLoading(false);
-
-  //     // Filter the categories unique from the categories fetched and the local categories
-  //     const allCategories = [...categories, ...categoriesFetched];
-  //     const localCategoriesNames = categories.map((category) => category.categoryName);
-  //     const notRepeatedFetchedCategories = allCategories.filter((category) => localCategoriesNames.indexOf(category.categoryName) === -1);
-  //     const uniqueCategories = [...categories, ...notRepeatedFetchedCategories];
-
-  //     setCategories(uniqueCategories);
-
-  //     // Check if the category to be edited exists, if so, set current category
-  //     if (categoryToBeEdited) {
-  //       const newCurrentCategory = categories.find((category) => category.categoryName === categoryToBeEdited.categoryName);
-  //       setCurrentCategory(newCurrentCategory ?? CATEGORIES_RECORDS[0]);
-  //     }
-  //   };
-
-  //   // Fetch while the categories are 12 because are the total of the local categories.
-  //   // If there are more, categories has been fetched already.
-  //   if (!!userReduxState && bearerToken && categories.length === 11 && !error) getCategories();
-  // }, [bearerToken, categories, error, updateGlobalNotification, categoryToBeEdited, userReduxState]);
-
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
       const selectedCategory = categoriesState.categories.find((item) => item.categoryName === value);
