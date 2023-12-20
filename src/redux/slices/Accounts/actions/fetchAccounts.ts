@@ -3,11 +3,14 @@ import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
 import { AccountsInitialState, FetchAccountsValues } from '../interface';
 import { GetRequest, formatAccounts } from '../../../../utils';
 import { GET_ACCOUNTS_ROUTE } from '../../../../components/UI/Account/features/ViewAccounts/constants';
+import { NETWORK_CATCH_ERROR } from '../../../../constants';
 
 export const fetchAccounts = createAsyncThunk(
   'accounts/fetchAccounts',
-  async ({ bearerToken }: FetchAccountsValues) => {
+  async ({ bearerToken }: FetchAccountsValues, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
     const response = await GetRequest(GET_ACCOUNTS_ROUTE, bearerToken);
+    if (response?.error || response?.message === NETWORK_CATCH_ERROR) return rejectWithValue(response);
     return response;
   },
 );

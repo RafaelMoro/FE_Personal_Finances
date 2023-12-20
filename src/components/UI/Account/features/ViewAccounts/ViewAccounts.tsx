@@ -52,7 +52,8 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   useEffect(() => {
     // Fetch only if we have user info and if we haven't fetched accounts before.
     if (user.userInfo && !accounts.accounts) {
-      dispatch(fetchAccounts({ bearerToken }));
+      // If we got an error after fetching the first time, don't keep trying to fetch.
+      if (!accounts.error) dispatch(fetchAccounts({ bearerToken }));
     }
   }, [accounts, bearerToken, dispatch, user.userInfo]);
 

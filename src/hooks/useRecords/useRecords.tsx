@@ -32,6 +32,7 @@ import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteR
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
 import { getTotalRecords } from '../../utils/getTotalRecords';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
+import { RecordAgeCategory } from '../../aliasType';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -116,6 +117,22 @@ const useRecords = ({
     }
   };
 
+  interface UpdateTotalCurrencyProps {
+    currentTotal: string;
+    newAmount: number;
+    recordAgeCategory: RecordAgeCategory;
+  }
+
+  const updateTotalCurrency = ({
+    currentTotal, newAmount, recordAgeCategory,
+  }: UpdateTotalCurrencyProps): UpdateTotalExpenseIncomePayload => {
+    const currentTotalNumber = formatCurrencyToNumber(currentTotal);
+    const totalUpdated = currentTotalNumber + newAmount;
+    const newTotalCurrency = formatNumberToCurrency(totalUpdated);
+    const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
+    return payload;
+  };
+
   const createExpense = async (values: CreateExpenseValues) => {
     try {
       const { amount, date: dateValue } = values;
@@ -137,11 +154,17 @@ const useRecords = ({
 
       // Update amount of total records
       if (!!allRecords.currentMonth && isCurrentMonth) {
-        const expenseTotal = formatCurrencyToNumber(totalRecords.currentMonth.expenseTotal);
-        const expenseTotalUpdated = expenseTotal + amount;
-        const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
-        const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Current Month' };
+        const payload = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Current Month',
+        });
         dispatch(updateTotalExpense(payload));
+        // const expenseTotal = formatCurrencyToNumber(totalRecords.currentMonth.expenseTotal);
+        // const expenseTotalUpdated = expenseTotal + amount;
+        // const expenseTotalString = formatNumberToCurrency(expenseTotalUpdated);
+        // const payload: UpdateTotalExpenseIncomePayload = { newAmount: expenseTotalString, recordAgeCategory: 'Current Month' };
+        // dispatch(updateTotalExpense(payload));
       }
       if (!!allRecords.lastMonth && isLastMonth) {
         const expenseTotal = formatCurrencyToNumber(totalRecords.lastMonth.expenseTotal);
