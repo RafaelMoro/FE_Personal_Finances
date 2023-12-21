@@ -22,6 +22,7 @@ import {
   DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
+import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -52,6 +53,8 @@ const AccountDialog = ({
     try {
       const createAccountThunkProps: CreateAccountThunkProps = { values, bearerToken };
       await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
+
+      dispatch(resetAllRecords());
 
       // Show success notification
       updateGlobalNotification({
