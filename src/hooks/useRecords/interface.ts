@@ -1,3 +1,4 @@
+import { RecordAgeCategory } from '../../aliasType';
 import { CreateExpenseValues, CreateIncomeValues } from '../../components/UI/Records/interface';
 import { AnyRecord, ExpensePaid } from '../../globalInterface';
 
@@ -44,4 +45,12 @@ export interface EditIncomeProps {
   amountTouched: boolean;
   previousAmount: number;
   previousExpensesRelated: ExpensePaid[];
+}
+
+export interface UpdateTotalCurrencyProps {
+  currentTotal: string;
+  newAmount: number;
+  recordAgeCategory: RecordAgeCategory;
+  editRecord?: boolean;
+  previousAmount?: number;
 }

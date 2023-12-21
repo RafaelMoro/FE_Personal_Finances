@@ -12,6 +12,7 @@ import { useDate } from '../useDate';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
+  UpdateTotalCurrencyProps,
 } from './interface';
 import { SystemStateEnum } from '../../enums';
 import { useNotification } from '../useNotification';
@@ -31,7 +32,6 @@ import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expens
 import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
-import { RecordAgeCategory } from '../../aliasType';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -115,14 +115,6 @@ const useRecords = ({
       return errorCatched?.message;
     }
   };
-
-  interface UpdateTotalCurrencyProps {
-    currentTotal: string;
-    newAmount: number;
-    recordAgeCategory: RecordAgeCategory;
-    editRecord?: boolean;
-    previousAmount?: number;
-  }
 
   const updateTotalCurrency = ({
     currentTotal, newAmount, recordAgeCategory, editRecord, previousAmount,
