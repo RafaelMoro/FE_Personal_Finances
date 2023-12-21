@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import { ModalAction } from '../../../aliasType';
 import { Account } from '../../../globalInterface';
 import { BackgroundColors, TextColors } from '../../../styles/interface';
@@ -34,4 +35,24 @@ export interface AccountDialogProps {
   onClose: () => void;
   accountAction: ModalAction;
   account: AccountUI | null;
+}
+
+export interface AccountToBeDeleted {
+  accountId: string;
+  accountName: string;
+}
+
+export interface AccountActions {
+  accountAction: ModalAction;
+  openAccountModal: boolean;
+  openChangeToOtherAccountModal: boolean;
+  modifyAccount: AccountUI | null;
+  openDeleteAccountModal: boolean;
+  accountToBeDeleted: MutableRefObject<AccountToBeDeleted>;
+  handleCloseAccountModal: () => void;
+  handleOpenCreateAccount: () => void;
+  handleOpenModifyAccount: (accountId: string) => void;
+  toggleChangeOtherAccountModal: () => void;
+  handleCloseDeleteAccount: () => void;
+  handleOpenDeleteAccount: (accountId: string, accountName: string) => void;
 }

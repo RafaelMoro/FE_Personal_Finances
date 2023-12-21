@@ -35,6 +35,7 @@ export const deletRecordFulfilled = (
   const {
     values, isLastMonth, isCurrentMonth,
   } = action.payload;
+  state.loadingOnAction = false;
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     const updatedRecords = state.allRecords.currentMonth.filter((record) => record._id !== values.recordId);

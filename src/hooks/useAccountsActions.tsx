@@ -1,28 +1,27 @@
 import { useState, useRef } from 'react';
 import { useAppSelector } from '../redux/hooks';
-import { AccountUI } from '../components/UI/Account/interface';
+import { AccountActions, AccountToBeDeleted, AccountUI } from '../components/UI/Account/interface';
 import { ModalAction } from '../aliasType';
 
-const useAccountsActions = () => {
+const useAccountsActions = (): AccountActions => {
   const accountsReduxState = useAppSelector((state) => state.accounts);
   const [accountAction, setAccountAction] = useState<ModalAction>('Create');
 
   const [openAccountModal, setOpenAccountModal] = useState<boolean>(false);
-  const [openChangeAccountModal, setOpenChangeAccountModal] = useState<boolean>(false);
+  const [openChangeToOtherAccountModal, setopenChangeToOtherAccountModal] = useState<boolean>(false);
   const [openDeleteAccountModal, setOpenDeleteAccountModal] = useState<boolean>(false);
   const [modifyAccount, setModifyAccount] = useState<AccountUI | null>(null);
 
-  const accountToBeDeleted = useRef({ accountId: '', accountName: '' });
+  const accountToBeDeleted = useRef<AccountToBeDeleted>({ accountId: '', accountName: '' });
 
-  const handleCloseCreateAccount = () => setOpenAccountModal(false);
+  const handleCloseAccountModal = () => setOpenAccountModal(false);
 
   const handleOpenCreateAccount = () => {
     setAccountAction('Create');
     setOpenAccountModal(true);
   };
 
-  const handleOpenChangeAccount = () => setOpenChangeAccountModal(true);
-  const handleCloseChangeAccount = () => setOpenChangeAccountModal(false);
+  const toggleChangeOtherAccountModal = () => setopenChangeToOtherAccountModal((prevState) => !prevState);
 
   const handleOpenDeleteAccount = (accountId: string, accountName: string) => {
     accountToBeDeleted.current.accountId = accountId;
@@ -43,15 +42,14 @@ const useAccountsActions = () => {
   return {
     accountAction,
     openAccountModal,
-    openChangeAccountModal,
+    openChangeToOtherAccountModal,
     modifyAccount,
     openDeleteAccountModal,
     accountToBeDeleted,
-    handleCloseCreateAccount,
+    handleCloseAccountModal,
     handleOpenCreateAccount,
     handleOpenModifyAccount,
-    handleOpenChangeAccount,
-    handleCloseChangeAccount,
+    toggleChangeOtherAccountModal,
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
   };

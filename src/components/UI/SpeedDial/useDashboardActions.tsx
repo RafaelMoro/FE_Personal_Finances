@@ -8,15 +8,16 @@ import { CREATE_RECORD_ROUTE } from '../../../pages/RoutesConstants';
 const useDashboardActions = ({
   hideChangeAccount = false, hideAddRecord = false,
 }: CurrentDashboardActionsProps) => {
-  const { handleOpenCreateAccount, handleOpenChangeAccount } = useAccountsActions();
   const navigate = useNavigate();
+  const accountActions = useAccountsActions();
+  const { handleOpenCreateAccount, toggleChangeOtherAccountModal } = accountActions;
   const navigateToCreateRecord = () => navigate(CREATE_RECORD_ROUTE);
 
   const createRecord: SpeedDialActions = {
     icon: <AddTask />, name: 'Create Record', actionCallback: navigateToCreateRecord,
   };
   const changeAccount: SpeedDialActions = {
-    icon: <CompareArrows />, name: 'Change Account', actionCallback: handleOpenChangeAccount,
+    icon: <CompareArrows />, name: 'Change Account', actionCallback: toggleChangeOtherAccountModal,
   };
   const createAccount: SpeedDialActions = {
     icon: <AddCard />, name: 'Create Account', actionCallback: handleOpenCreateAccount,
@@ -29,6 +30,7 @@ const useDashboardActions = ({
 
   return {
     dashboardActions,
+    accountActions,
   };
 };
 

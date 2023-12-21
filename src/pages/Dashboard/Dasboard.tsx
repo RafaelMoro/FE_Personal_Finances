@@ -19,7 +19,7 @@ const Dashboard = () => {
   } = useNotification();
   const { visible, scrollToTop } = useBackToTopButton();
 
-  const { dashboardActions } = useDashboardActions({
+  const { dashboardActions, accountActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
     hideChangeAccount: ((accountsUI && accountsUI.length < 2) || windowSize !== 'Mobile'),
     // Set it as true if accountsUI array is empty
@@ -40,7 +40,7 @@ const Dashboard = () => {
         />
       )}
       <Header />
-      <ViewAccounts hide={noAccountsCreated} />
+      <ViewAccounts hide={noAccountsCreated} accountsActions={accountActions} />
       <RecordsBox noAccountsCreated={noAccountsCreated}>
         <RecordList />
       </RecordsBox>

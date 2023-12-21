@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { AxiosRequestHeaders } from 'axios';
 
+import { GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE } from '../../../Records/constants';
 import { ViewAccountsProps } from './interface';
 import { AccountUI } from '../../interface';
-import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
+import { useDate } from '../../../../../hooks/useDate';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchCurrentMonthRecords';
 import { fetchAccounts } from '../../../../../redux/slices/Accounts/actions';
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
@@ -23,7 +25,7 @@ import {
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 
-const ViewAccounts = ({ hide }: ViewAccountsProps) => {
+const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts);
   const user = useAppSelector((state) => state.user);
@@ -31,23 +33,24 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
   const accountsUI = accounts?.accounts;
   const selectedAccount = accounts?.accountSelected;
   const bearerToken = user.userInfo?.bearerToken as AxiosRequestHeaders;
+  const { month, year } = useDate();
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
 
   const {
     accountAction,
     openAccountModal,
-    openChangeAccountModal,
+    openChangeToOtherAccountModal,
     modifyAccount,
     openDeleteAccountModal,
     accountToBeDeleted,
-    handleCloseCreateAccount,
+    handleCloseAccountModal,
     handleOpenCreateAccount,
     handleOpenModifyAccount,
-    handleCloseChangeAccount,
+    toggleChangeOtherAccountModal,
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
-  } = useAccountsActions();
+  } = accountsActions;
 
   useEffect(() => {
     // Fetch only if we have user info and if we haven't fetched accounts before.
@@ -81,6 +84,10 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
       return { ...account, selected: false };
     });
     dispatch(updateAccountsWithNewSelectedAccount(newAccountsUI));
+
+    // Fetch records of selected account
+    const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
+    dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
   };
 
   if (accounts.loading) {
@@ -122,7 +129,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
         </AccountSlider>
         <AccountDialog
           open={openAccountModal}
-          onClose={handleCloseCreateAccount}
+          onClose={handleCloseAccountModal}
           accountAction={accountAction}
           account={modifyAccount}
         />
@@ -151,7 +158,7 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
         ))}
         <AccountDialog
           open={openAccountModal}
-          onClose={handleCloseCreateAccount}
+          onClose={handleCloseAccountModal}
           accountAction={accountAction}
           account={modifyAccount}
         />
@@ -182,13 +189,13 @@ const ViewAccounts = ({ hide }: ViewAccountsProps) => {
       </AccountsContainer>
       { (selectedAccount && accountsUI) && (
         <SelectAccountDialog
-          open={openChangeAccountModal}
-          onClose={handleCloseChangeAccount}
+          open={openChangeToOtherAccountModal}
+          onClose={toggleChangeOtherAccountModal}
         />
       )}
       <AccountDialog
         open={openAccountModal}
-        onClose={handleCloseCreateAccount}
+        onClose={handleCloseAccountModal}
         accountAction={accountAction}
         account={modifyAccount}
       />
