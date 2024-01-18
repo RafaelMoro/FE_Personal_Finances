@@ -9,8 +9,7 @@ export const deleteRecordsThunkFn = createAsyncThunk(
   'records/deleteRecord',
   async ({
     values, route, bearerToken, isLastMonth, isCurrentMonth,
-  }: DeleteRecordThunkProps, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+  }: DeleteRecordThunkProps) => {
     const responseDeleteRecord: DeleteRecordResponse = await HttpRequestWithBearerToken(
       values,
       route,
@@ -18,7 +17,6 @@ export const deleteRecordsThunkFn = createAsyncThunk(
       bearerToken,
     );
 
-    if (responseDeleteRecord?.message) return rejectWithValue(responseDeleteRecord);
     const response: DeleteExpenseThunkResponse = {
       response: responseDeleteRecord,
       values,

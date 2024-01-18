@@ -70,10 +70,8 @@ export interface CreateEditRecordResponse extends Omit<GeneralResponse, 'data'> 
 }
 
 // Same response for income and expense
-export interface DeleteRecordResponse {
-  message: string | null;
-  error: null | string;
-  deleteRecordSuccess: boolean;
+export interface DeleteRecordResponse extends Omit<GeneralResponse, 'data'> {
+  data: AnyRecord;
 }
 
 // Select Month and year on select expense
