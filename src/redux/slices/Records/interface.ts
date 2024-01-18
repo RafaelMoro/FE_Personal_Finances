@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
+  CreateEditRecordResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
   AllRecords, AnyRecord, Expense, RecordsTotal,
@@ -37,7 +37,7 @@ export interface CreateExpenseThunkProps {
 }
 
 export interface CreateExpenseThunkResponse {
-  response: CreateEditExpenseResponse;
+  response: CreateEditRecordResponse;
   isLastMonth?: boolean;
   isCurrentMonth?: boolean;
 }
@@ -55,7 +55,7 @@ export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'v
   route: string;
 }
 export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditExpenseResponse;
+  response: CreateEditRecordResponse;
 }
 
 export interface DeleteExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
@@ -78,7 +78,7 @@ export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'va
 }
 
 export interface EditExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditExpenseResponse;
+  response: CreateEditRecordResponse;
 }
 
 export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
@@ -90,7 +90,7 @@ export interface UpdateRelatedExpenses extends Omit<CreateExpenseThunkProps, 'va
 }
 
 export interface EditIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditExpenseResponse;
+  response: CreateEditRecordResponse;
 }
 
 export interface UpdateRelatedExpensesValues {

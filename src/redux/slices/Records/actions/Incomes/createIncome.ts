@@ -2,7 +2,7 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
 import { INCOME_ROUTE } from '../../../../../components/UI/Records/constants';
 import { postRequestWithBearer } from '../../../../../utils';
-import { CreateEditExpenseResponse } from '../../../../../components/UI/Records/interface';
+import { CreateEditRecordResponse } from '../../../../../components/UI/Records/interface';
 import { CreateExpenseThunkProps, CreateIncomeThunkResponse, RecordsInitialState } from '../../interface';
 
 export const createIncomeThunkFn = createAsyncThunk(
@@ -10,7 +10,7 @@ export const createIncomeThunkFn = createAsyncThunk(
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
   }: CreateExpenseThunkProps) => {
-    const incomeResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
+    const incomeResponse: CreateEditRecordResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
 
     const response: CreateIncomeThunkResponse = {
       response: incomeResponse,
