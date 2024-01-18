@@ -87,7 +87,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
 
     // Fetch records of selected account
     const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-    dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
+    dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
   };
 
   if (accounts.loading) {

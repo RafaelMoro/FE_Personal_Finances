@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { Dayjs } from 'dayjs';
 import {
   Category, ExpensePaid, AnyRecord, IndebtedPeople, CompleteMonthsType,
+  GeneralResponse,
 } from '../../../globalInterface';
 
 export interface RecordProps {
@@ -34,10 +35,8 @@ export interface RecordDrawerProps {
   openDeleteRecordModal?: () => void;
 }
 
-export interface IncomeAndExpensesResponse {
-  records: AnyRecord []
-  message: string;
-  error?: boolean;
+export interface IncomeAndExpensesResponse extends Omit<GeneralResponse, 'data'> {
+  data: AnyRecord [];
 }
 
 export interface CategoriesResponse {

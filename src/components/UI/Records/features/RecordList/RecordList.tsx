@@ -44,14 +44,14 @@ const RecordList = () => {
     // Fetch if user, accounts exists and current month records are null
     if (user && accounts && !recordsState.allRecords.currentMonth) {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-      dispatch(fetchCurrentMonthRecords({ expensesFullRoute, bearerToken }));
+      dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
     }
   }, [accountId, accounts, bearerToken, dispatch, month, recordsState.allRecords.currentMonth, selectedAccount, user, year]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
-      await dispatch(fetchLastMonthRecords({ expensesFullRoute, bearerToken })).unwrap();
+      await dispatch(fetchLastMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken })).unwrap();
     } catch (err) {
       console.error(`Error ocurred while fetching last month records: ${err}`);
     }

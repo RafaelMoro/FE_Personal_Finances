@@ -4,16 +4,16 @@ import { IncomeAndExpensesResponse } from '../../components/UI/Records/interface
 import { GetRequest } from '../GetRequest';
 
 interface GetRecordByMonthAndYearProps {
-  expensesFullRoute: string;
+  recordsFullRoute: string;
   bearerToken: AxiosRequestHeaders;
 }
 
 export const getRecordsByMonthAndYear = async (
-  { expensesFullRoute, bearerToken }: GetRecordByMonthAndYearProps,
+  { recordsFullRoute, bearerToken }: GetRecordByMonthAndYearProps,
   thunkAPI: GetThunkAPI<AsyncThunkConfig>,
 ) => {
   const { rejectWithValue } = thunkAPI;
-  const response: IncomeAndExpensesResponse = await GetRequest(expensesFullRoute, bearerToken);
+  const response: IncomeAndExpensesResponse = await GetRequest(recordsFullRoute, bearerToken);
   if (response?.error) return rejectWithValue(response);
   return response;
 };
