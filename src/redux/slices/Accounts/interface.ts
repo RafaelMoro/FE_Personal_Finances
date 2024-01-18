@@ -1,5 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
+import { Account, GeneralResponse } from '../../../globalInterface';
 
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
@@ -43,4 +44,8 @@ export interface UpdateAmountPayload {
 export interface UpdateAmountAccountThunkProps {
   payload: UpdateAmountPayload
   bearerToken: AxiosRequestHeaders;
+}
+
+export interface FetchAccountsResponse extends Omit<GeneralResponse, 'data'> {
+  data: Account[];
 }
