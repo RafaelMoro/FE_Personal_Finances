@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { AccountsInitialState, DeleteAccountThunkProps } from '../interface';
+import { AccountsInitialState, DeleteAccountResponse, DeleteAccountThunkProps } from '../interface';
 import { HttpRequestWithBearerToken } from '../../../../utils/HttpRequestWithBearerToken';
 import { DELETE_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
 import { DELETE_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToken/constants';
@@ -8,7 +8,7 @@ import { DELETE_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToke
 export const deleteAccount = createAsyncThunk(
   'accounts/deleteAccount',
   async ({ values, bearerToken }: DeleteAccountThunkProps) => {
-    const responseDeleteAccountRequest = await HttpRequestWithBearerToken(
+    const responseDeleteAccountRequest: DeleteAccountResponse = await HttpRequestWithBearerToken(
       values,
       DELETE_ACCOUNT_ROUTE,
       DELETE_HTTP_REQUEST,
@@ -33,7 +33,7 @@ export const deleteAccountFullfilled = (
 ) => builder.addCase(deleteAccount.fulfilled, (state, action) => {
   state.loadingOnAction = false;
 
-  const accountsFiltered = (state.accounts || []).filter((account) => account._id !== action.payload?._id);
+  const accountsFiltered = (state.accounts || []).filter((account) => account._id !== action.payload.data.accountDeleted._id);
   const [firstAccount] = accountsFiltered;
   if (accountsFiltered.length > 0) firstAccount.selected = true;
   state.accountSelected = firstAccount;
