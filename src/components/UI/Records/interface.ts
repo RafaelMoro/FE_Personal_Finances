@@ -39,9 +39,8 @@ export interface IncomeAndExpensesResponse extends Omit<GeneralResponse, 'data'>
   data: AnyRecord [];
 }
 
-export interface CategoriesResponse {
-  categories: Category[];
-  error: boolean;
+export interface CategoriesResponse extends Omit<GeneralResponse, 'data'> {
+  data: Category[];
 }
 // Check the IndebtedPeople array and fields that may be different.
 export interface CreateRecordValues {
@@ -66,12 +65,8 @@ export interface CreateIncomeValues extends CreateExpenseValues {
   expensesPaid: string[];
 }
 
-export interface CreateEditExpenseResponse extends AnyRecord {
-  message?: string;
-}
-
-export interface CreateIncomeResponse extends AnyRecord {
-  message?: string;
+export interface CreateEditExpenseResponse extends Omit<GeneralResponse, 'data'> {
+  data: AnyRecord;
 }
 
 // Same response for income and expense
