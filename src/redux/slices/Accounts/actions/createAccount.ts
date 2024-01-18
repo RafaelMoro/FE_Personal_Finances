@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { AccountsInitialState, CreateAccountThunkProps } from '../interface';
+import { AccountsInitialState, CreateAccountResponse, CreateAccountThunkProps } from '../interface';
 import { HttpRequestWithBearerToken } from '../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
 import { POST_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToken/constants';
@@ -10,7 +10,7 @@ import { formatAccounts } from '../../../../utils';
 export const createAccountThunkFn = createAsyncThunk(
   'accounts/createAccount',
   async ({ values, bearerToken }: CreateAccountThunkProps) => {
-    const responseCreateAccountRequest = await HttpRequestWithBearerToken(
+    const responseCreateAccountRequest: CreateAccountResponse = await HttpRequestWithBearerToken(
       values,
       POST_PUT_ACCOUNT_ROUTE,
       POST_HTTP_REQUEST,
@@ -33,7 +33,7 @@ export const createAccountPending = (
 export const createAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(createAccountThunkFn.fulfilled, (state, action) => {
-  const newAccountFormatted: AccountUI[] = formatAccounts({ accounts: [action.payload] });
+  const newAccountFormatted: AccountUI[] = formatAccounts({ accounts: [action.payload.data] });
   const [newAccount] = newAccountFormatted;
   state.accounts?.push(newAccount);
 
