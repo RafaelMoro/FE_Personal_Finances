@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import {
-  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeResponse, CreateIncomeValues, DeleteRecordResponse,
+  CreateEditExpenseResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
   AllRecords, AnyRecord, Expense, RecordsTotal,
@@ -55,7 +55,7 @@ export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'v
   route: string;
 }
 export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateIncomeResponse;
+  response: CreateEditExpenseResponse;
 }
 
 export interface DeleteExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {

@@ -10,17 +10,13 @@ export const editIncomeThunkFn = createAsyncThunk(
   'records/incomes/editIncome',
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
-  }: EditIncomeThunkProps, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+  }: EditIncomeThunkProps) => {
     const expenseResponse: CreateEditExpenseResponse = await HttpRequestWithBearerToken(
       values,
       INCOME_ROUTE,
       PUT_HTTP_REQUEST,
       bearerToken,
     );
-
-    // If the response has a message, it's because it's an error. Then, reject.
-    if (expenseResponse?.message) return rejectWithValue(expenseResponse);
 
     const response: EditIncomeThunkResponse = {
       response: expenseResponse,
@@ -35,9 +31,9 @@ export const editIncomeFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(editIncomeThunkFn.fulfilled, (state, action) => {
   const {
-    response: { _id: recordId }, isLastMonth, isCurrentMonth,
+    response: { data: { _id: recordId } }, isLastMonth, isCurrentMonth,
   } = action.payload;
-  const accountModified = action.payload.response;
+  const accountModified = action.payload.response.data;
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     // Get the index of the record that has been modified.

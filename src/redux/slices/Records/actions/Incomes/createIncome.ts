@@ -2,18 +2,15 @@
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
 import { INCOME_ROUTE } from '../../../../../components/UI/Records/constants';
 import { postRequestWithBearer } from '../../../../../utils';
-import { CreateIncomeResponse } from '../../../../../components/UI/Records/interface';
+import { CreateEditExpenseResponse } from '../../../../../components/UI/Records/interface';
 import { CreateExpenseThunkProps, CreateIncomeThunkResponse, RecordsInitialState } from '../../interface';
 
 export const createIncomeThunkFn = createAsyncThunk(
   'records/incomes/createIncome',
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
-  }: CreateExpenseThunkProps, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    const incomeResponse: CreateIncomeResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
-    // If the response has a message, it's because it's an error. Then, reject.
-    if (incomeResponse?.message) return rejectWithValue(incomeResponse);
+  }: CreateExpenseThunkProps) => {
+    const incomeResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, INCOME_ROUTE, bearerToken);
 
     const response: CreateIncomeThunkResponse = {
       response: incomeResponse,
@@ -33,20 +30,20 @@ export const createIncomeFulfilled = (
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     const recordsUpdated = [...state.allRecords.currentMonth];
-    recordsUpdated.unshift(response);
+    recordsUpdated.unshift(response.data);
     state.allRecords.currentMonth = recordsUpdated;
     return;
   }
 
   if (isLastMonth && state.allRecords.lastMonth) {
     const recordsUpdated = [...state.allRecords.lastMonth];
-    recordsUpdated.unshift(response);
+    recordsUpdated.unshift(response.data);
     state.allRecords.lastMonth = recordsUpdated;
     return;
   }
 
   const recordsUpdated = [...(state.allRecords.olderRecords ?? [])];
-  recordsUpdated.unshift(response);
+  recordsUpdated.unshift(response.data);
   state.allRecords.olderRecords = recordsUpdated;
 });
 

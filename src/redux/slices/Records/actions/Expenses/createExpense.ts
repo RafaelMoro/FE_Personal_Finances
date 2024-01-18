@@ -9,11 +9,8 @@ export const createExpenseThunkFn = createAsyncThunk(
   'records/expenses/createExpense',
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
-  }: CreateExpenseThunkProps, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
+  }: CreateExpenseThunkProps) => {
     const expenseResponse: CreateEditExpenseResponse = await postRequestWithBearer(values, EXPENSE_ROUTE, bearerToken);
-    // If the response has a message, it's because it's an error. Then, reject.
-    if (expenseResponse?.message) return rejectWithValue(expenseResponse);
 
     const response: CreateExpenseThunkResponse = {
       response: expenseResponse,
@@ -33,20 +30,20 @@ export const createExpenseFulfilled = (
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     const recordsUpdated = [...state.allRecords.currentMonth];
-    recordsUpdated.unshift(response);
+    recordsUpdated.unshift(response.data);
     state.allRecords.currentMonth = recordsUpdated;
     return;
   }
 
   if (isLastMonth && state.allRecords.lastMonth) {
     const recordsUpdated = [...state.allRecords.lastMonth];
-    recordsUpdated.unshift(response);
+    recordsUpdated.unshift(response.data);
     state.allRecords.lastMonth = recordsUpdated;
     return;
   }
 
   const recordsUpdated = [...(state.allRecords.olderRecords ?? [])];
-  recordsUpdated.unshift(response);
+  recordsUpdated.unshift(response.data);
   state.allRecords.olderRecords = recordsUpdated;
 });
 
