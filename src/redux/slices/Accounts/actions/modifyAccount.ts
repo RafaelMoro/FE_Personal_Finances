@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { AccountsInitialState, CreateAccountResponse, ModifyAccountThunkProps } from '../interface';
+import { AccountsInitialState, SingleAccountResponse, ModifyAccountThunkProps } from '../interface';
 import { HttpRequestWithBearerToken } from '../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
 import { PUT_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToken/constants';
@@ -9,7 +9,7 @@ import { formatAccounts } from '../../../../utils';
 export const modifyAccountThunkFn = createAsyncThunk(
   'accounts/modifyAccount',
   async ({ values, bearerToken }: ModifyAccountThunkProps) => {
-    const responsePutAccountRequest: CreateAccountResponse = await HttpRequestWithBearerToken(
+    const responsePutAccountRequest: SingleAccountResponse = await HttpRequestWithBearerToken(
       values,
       POST_PUT_ACCOUNT_ROUTE,
       PUT_HTTP_REQUEST,
