@@ -29,6 +29,14 @@ export const MONTHS = [
 ] as const;
 export type CompleteMonthsType = typeof MONTHS[number];
 
+export interface GeneralResponse {
+  version: string;
+  success: boolean;
+  message: null | string;
+  data: unknown | null;
+  error: null | never;
+}
+
 export interface Account {
   _id: string;
   __v: number;

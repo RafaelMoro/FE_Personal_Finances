@@ -1,4 +1,4 @@
-import { User } from '../../../globalInterface';
+import { GeneralResponse, User } from '../../../globalInterface';
 
 export interface UserInitialState {
   userInfo: null | User;
@@ -16,10 +16,11 @@ export interface UserResponseLogin {
   middleName: string;
 }
 
-export interface LoginInfoResponse {
+export interface LoginData {
   accessToken: string;
-  user: UserResponseLogin
-  error?: string;
-  message?: string;
-  statusCode?: number;
+  user: UserResponseLogin;
+}
+
+export interface LoginResponse extends Omit<GeneralResponse, 'data'> {
+  data: LoginData;
 }

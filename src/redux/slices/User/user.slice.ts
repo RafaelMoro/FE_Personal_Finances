@@ -4,7 +4,7 @@ import { postRequest, updateLocalStorage } from '../../../utils';
 import { LoginValues } from '../../../pages/LoginModule/Login/interface';
 import { User } from '../../../globalInterface';
 import { LOGIN_POST_ROUTE } from '../../../pages/LoginModule/Login/constants';
-import { LoginInfoResponse, UserInitialState } from './interface';
+import { LoginResponse, UserInitialState } from './interface';
 
 const userInitialState: UserInitialState = {
   userInfo: null,
@@ -17,8 +17,8 @@ const userInitialState: UserInitialState = {
 export const loginUser = createAsyncThunk(
   'user/login',
   async (values: LoginValues) => {
-    const loginInfo: LoginInfoResponse = await postRequest(values, LOGIN_POST_ROUTE);
-    return loginInfo;
+    const loginResponse: LoginResponse = await postRequest(values, LOGIN_POST_ROUTE);
+    return loginResponse;
   },
 );
 
@@ -48,7 +48,7 @@ export const userSlice = createSlice({
     builder.addCase(loginUser.fulfilled, (state, action) => {
       state.loading = false;
 
-      const { accessToken, user: { email } } = action.payload;
+      const { accessToken, user: { email } } = action.payload.data;
       const bearerToken = { Authorization: `Bearer ${accessToken}` };
       const user: User = { accessToken, email, bearerToken };
       updateLocalStorage(
