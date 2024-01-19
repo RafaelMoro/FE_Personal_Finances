@@ -1,24 +1,24 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { CreateEditRecordResponse } from '../../../../../components/UI/Records/interface';
+import { RecordOperationResponse } from '../../../../../components/UI/Records/interface';
 import { HttpRequestWithBearerToken } from '../../../../../utils/HttpRequestWithBearerToken';
 import { EXPENSE_ROUTE } from '../../../../../components/UI/Records/constants';
 import { PUT_HTTP_REQUEST } from '../../../../../utils/HttpRequestWithBearerToken/constants';
-import { RecordsInitialState, EditExpenseThunkProps, EditExpenseThunkResponse } from '../../interface';
+import { RecordsInitialState, EditExpenseThunkProps, RecordOperationThunkResponse } from '../../interface';
 
 export const editExpenseThunkFn = createAsyncThunk(
   'records/expenses/editExpense',
   async ({
     values, bearerToken, isLastMonth = false, isCurrentMonth = false,
   }: EditExpenseThunkProps) => {
-    const expenseResponse: CreateEditRecordResponse = await HttpRequestWithBearerToken(
+    const expenseResponse: RecordOperationResponse = await HttpRequestWithBearerToken(
       values,
       EXPENSE_ROUTE,
       PUT_HTTP_REQUEST,
       bearerToken,
     );
 
-    const response: EditExpenseThunkResponse = {
+    const response: RecordOperationThunkResponse = {
       response: expenseResponse,
       isLastMonth,
       isCurrentMonth,

@@ -65,7 +65,7 @@ export interface CreateIncomeValues extends CreateExpenseValues {
   expensesPaid: string[];
 }
 
-export interface CreateEditRecordResponse extends Omit<GeneralResponse, 'data'> {
+export interface RecordOperationResponse extends Omit<GeneralResponse, 'data'> {
   data: AnyRecord;
 }
 

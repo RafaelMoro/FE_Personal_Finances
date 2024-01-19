@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import {
-  CreateEditRecordResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
+  RecordOperationResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
   AllRecords, AnyRecord, Expense, RecordsTotal,
@@ -36,8 +36,8 @@ export interface CreateExpenseThunkProps {
   isCurrentMonth?: boolean;
 }
 
-export interface CreateExpenseThunkResponse {
-  response: CreateEditRecordResponse;
+export interface RecordOperationThunkResponse {
+  response: RecordOperationResponse;
   isLastMonth?: boolean;
   isCurrentMonth?: boolean;
 }
@@ -54,11 +54,8 @@ export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'v
   values: DeleteRecordProps;
   route: string;
 }
-export interface CreateIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditRecordResponse;
-}
 
-export interface DeleteExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
+export interface DeleteExpenseThunkResponse extends Omit<RecordOperationThunkResponse, 'response'> {
   response: DeleteRecordResponse;
   values: DeleteRecordProps;
 }
@@ -77,10 +74,6 @@ export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'va
   values: EditExpenseValues;
 }
 
-export interface EditExpenseThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditRecordResponse;
-}
-
 export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
   values: EditIncomeValues;
 }
@@ -89,8 +82,8 @@ export interface UpdateRelatedExpenses extends Omit<CreateExpenseThunkProps, 'va
   payload: UpdateRelatedExpensesValues[];
 }
 
-export interface EditIncomeThunkResponse extends Omit<CreateExpenseThunkResponse, 'response'> {
-  response: CreateEditRecordResponse;
+export interface EditIncomeThunkResponse extends Omit<RecordOperationThunkResponse, 'response'> {
+  response: RecordOperationResponse;
 }
 
 export interface UpdateRelatedExpensesValues {
