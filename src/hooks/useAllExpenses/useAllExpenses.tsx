@@ -27,11 +27,11 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
         const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
         const response: GetExpensesNotPaidResponse = await GetRequest(fullRoute, bearerToken);
 
-        if (response.message === null) {
+        if (response.data?.records) {
           // set it as false if it was previously true.
           setNoExpensesFound(false);
           // response returned the array of expenses
-          const expensesShorted = response.expenses.map((expense) => {
+          const expensesShorted = response.data.records.map((expense) => {
             const {
               // eslint-disable-next-line @typescript-eslint/naming-convention
               _id, shortName, amountFormatted, fullDate, formattedTime, date,

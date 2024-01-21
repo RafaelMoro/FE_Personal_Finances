@@ -1,11 +1,12 @@
-import { Expense } from '../../globalInterface';
+import { Expense, GeneralResponse } from '../../globalInterface';
 
 export interface UseAllExpensesProps {
   month: string;
   year: string;
 }
 
-export interface GetExpensesNotPaidResponse {
-  message: null | string;
-  expenses: Expense[];
+export interface GetExpensesNotPaidResponse extends Omit<GeneralResponse, 'data'> {
+  data: {
+    records: Expense[];
+  };
 }
