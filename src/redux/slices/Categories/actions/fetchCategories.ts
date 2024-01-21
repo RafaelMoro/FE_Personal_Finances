@@ -23,7 +23,7 @@ export const fetchCategoriesFulfilled = (
 ) => builder.addCase(fetchCategories.fulfilled, (state, action) => {
   state.loading = false;
   const { categoryToBeEdited } = action.payload;
-  const categoriesFetched = action.payload.response.data;
+  const categoriesFetched = action.payload.response.data.categories;
 
   // Filter the categories unique from the categories fetched and the local categories
   const allCategories = [...CATEGORIES_RECORDS, ...categoriesFetched];

@@ -36,11 +36,15 @@ export interface RecordDrawerProps {
 }
 
 export interface IncomeAndExpensesResponse extends Omit<GeneralResponse, 'data'> {
-  data: AnyRecord [];
+  data: {
+    records: AnyRecord [];
+  };
 }
 
 export interface CategoriesResponse extends Omit<GeneralResponse, 'data'> {
-  data: Category[];
+  data: {
+    categories: Category[];
+  };
 }
 // Check the IndebtedPeople array and fields that may be different.
 export interface CreateRecordValues {
@@ -66,7 +70,9 @@ export interface CreateIncomeValues extends CreateExpenseValues {
 }
 
 export interface RecordOperationResponse extends Omit<GeneralResponse, 'data'> {
-  data: AnyRecord;
+  data: {
+    record: AnyRecord;
+  };
 }
 
 // Same response for income and expense
