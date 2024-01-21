@@ -1,17 +1,20 @@
 import { IconButton } from '@mui/material';
+
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
+import { useDate } from '../../../../../hooks/useDate';
+import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { SelectMonthYearValues } from '../../interface';
 import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalInterface';
+
+import { SelectMonthYear } from './SelectMonthYear';
+import { Error } from '../../../Error';
+import { CloseIcon } from '../../../Icons';
 import { Loader } from '../../../../../animations/Loader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
 import {
   CloseDrawerContainer, ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer,
 } from '../Features.styled';
-import { SelectMonthYear } from './SelectMonthYear';
-import { useDate } from '../../../../../hooks/useDate';
-import { Error } from '../../../Error';
-import { CloseIcon } from '../../../Icons';
 
 interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
@@ -36,13 +39,6 @@ const SelectExpenses = ({
     updateYear(newYear);
   };
 
-  if (error !== 'No error found') {
-    return (
-      <SelectExpensesContainer>
-        <Error description="An error was found, try again later" />
-      </SelectExpensesContainer>
-    );
-  }
   return (
     <>
       <CloseDrawerContainer>
@@ -50,12 +46,19 @@ const SelectExpenses = ({
           <CloseIcon />
         </IconButton>
       </CloseDrawerContainer>
-      <SelectMonthYear
-        updateMonthYear={updateMonthAndYear}
-        completeMonth={completeMonth}
-        currentYear={year}
-        yearsArray={years}
-      />
+      { (error === 'No error found') && (
+        <SelectMonthYear
+          updateMonthYear={updateMonthAndYear}
+          completeMonth={completeMonth}
+          currentYear={year}
+          yearsArray={years}
+        />
+      ) }
+      { (error !== 'No error found') && (
+        <SelectExpensesContainer>
+          <Error description={ERROR_MESSAGE_GENERAL} />
+        </SelectExpensesContainer>
+      ) }
       { (loading) && (
       <LoadingExpensesContainer>
         <Paragraph>Loading expenses...</Paragraph>
