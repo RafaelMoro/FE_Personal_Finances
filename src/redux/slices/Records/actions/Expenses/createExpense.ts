@@ -30,20 +30,20 @@ export const createExpenseFulfilled = (
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     const recordsUpdated = [...state.allRecords.currentMonth];
-    recordsUpdated.unshift(response.data);
+    recordsUpdated.unshift(response.data.record);
     state.allRecords.currentMonth = recordsUpdated;
     return;
   }
 
   if (isLastMonth && state.allRecords.lastMonth) {
     const recordsUpdated = [...state.allRecords.lastMonth];
-    recordsUpdated.unshift(response.data);
+    recordsUpdated.unshift(response.data.record);
     state.allRecords.lastMonth = recordsUpdated;
     return;
   }
 
   const recordsUpdated = [...(state.allRecords.olderRecords ?? [])];
-  recordsUpdated.unshift(response.data);
+  recordsUpdated.unshift(response.data.record);
   state.allRecords.olderRecords = recordsUpdated;
 });
 

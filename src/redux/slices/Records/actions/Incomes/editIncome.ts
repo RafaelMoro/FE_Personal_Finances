@@ -31,9 +31,9 @@ export const editIncomeFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(editIncomeThunkFn.fulfilled, (state, action) => {
   const {
-    response: { data: { _id: recordId } }, isLastMonth, isCurrentMonth,
+    response: { data: { record: { _id: recordId } } }, isLastMonth, isCurrentMonth,
   } = action.payload;
-  const accountModified = action.payload.response.data;
+  const accountModified = action.payload.response.data.record;
 
   if (isCurrentMonth && state.allRecords.currentMonth) {
     // Get the index of the record that has been modified.
