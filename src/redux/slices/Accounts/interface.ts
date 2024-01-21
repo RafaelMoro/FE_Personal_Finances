@@ -47,7 +47,9 @@ export interface UpdateAmountAccountThunkProps {
 }
 
 export interface FetchAccountsResponse extends Omit<GeneralResponse, 'data'> {
-  data: Account[];
+  data: {
+    accounts: Account[]
+  };
 }
 
 export interface SingleAccountResponse extends Omit<GeneralResponse, 'data'> {

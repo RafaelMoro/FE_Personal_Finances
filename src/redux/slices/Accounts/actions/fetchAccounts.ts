@@ -19,7 +19,7 @@ export const fetchAccountsFullfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(fetchAccounts.fulfilled, (state, action) => {
   state.loading = false;
-  const formattedAccounts = formatAccounts({ accounts: action.payload.data });
+  const formattedAccounts = formatAccounts({ accounts: action.payload.data.accounts });
   const [firstAccount] = formattedAccounts;
   state.accountSelected = firstAccount;
   state.accounts = formattedAccounts;
