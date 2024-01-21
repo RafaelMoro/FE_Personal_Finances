@@ -12,6 +12,15 @@ export const SelectExpensesContainer = styled.div`
   justify-content: center;
   gap: 2rem;
   width: 100%;
+  min-width: 32rem;
+
+  @media(min-width: 480px) {
+    min-width: 48rem;
+  }
+
+  @media(min-width: 1024px) {
+    min-width: 70rem;
+  }
 `;
 
 export const CloseDrawerContainer = styled.div`
