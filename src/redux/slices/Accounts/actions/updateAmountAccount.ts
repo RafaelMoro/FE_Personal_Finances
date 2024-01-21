@@ -3,12 +3,14 @@ import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
 import { HttpRequestWithBearerToken } from '../../../../utils/HttpRequestWithBearerToken';
 import { POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
 import { PUT_HTTP_REQUEST } from '../../../../utils/HttpRequestWithBearerToken/constants';
-import { AccountsInitialState, UpdateAmountAccountThunkProps } from '../interface';
+import { AccountsInitialState, SingleAccountResponse, UpdateAmountAccountThunkProps } from '../interface';
+import { formatAccounts } from '../../../../utils';
+import { AccountUI } from '../../../../components/UI/Account/interface';
 
 export const updateAmountAccountThunkFn = createAsyncThunk(
   'accounts/updateAmountAccount',
   async ({ payload, bearerToken }: UpdateAmountAccountThunkProps) => {
-    const updateAccountResponse = await HttpRequestWithBearerToken(
+    const updateAccountResponse: SingleAccountResponse = await HttpRequestWithBearerToken(
       payload,
       POST_PUT_ACCOUNT_ROUTE,
       PUT_HTTP_REQUEST,
@@ -21,18 +23,21 @@ export const updateAmountAccountThunkFn = createAsyncThunk(
 export const updateAmountAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(updateAmountAccountThunkFn.fulfilled, (state, action) => {
-  const { amount: newAmount, accountId } = action.payload;
+  const { data: { account: accountUpdated } } = action.payload;
+  const newAccountFormatted: AccountUI[] = formatAccounts({ accounts: [accountUpdated] });
+  const [newAccount] = newAccountFormatted;
+  const { amount: newAmount, _id: accountId, amountFormatted } = newAccount;
 
   // Update account selected with the new amount.
   if (state.accountSelected) {
-    const accountUpdated = { ...state.accountSelected, amount: newAmount };
-    state.accountSelected = accountUpdated;
+    const newAccountSelected = { ...state.accountSelected, amount: newAmount, amountFormatted };
+    state.accountSelected = newAccountSelected;
   }
 
   // Update the account with the new amount in the accounts state.
   const accountsUpdated = (state.accounts || []).map((account) => {
     if (account._id === accountId) {
-      return { ...account, amount: newAmount };
+      return { ...account, amount: newAmount, amountFormatted };
     }
     return account;
   });
