@@ -25,7 +25,7 @@ export const fetchLastMonthRecordsFullfilled = (
     return;
   }
 
-  const recordsFetched = action.payload.data;
+  const recordsFetched = action.payload.data.records;
 
   // Set total amount of expenses and incomes.
   let expenseTotalCounter = 0;
