@@ -41,8 +41,8 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
           <TableRow>
             <TableCell>Name:</TableCell>
             <TableCell>Date:</TableCell>
-            <TableCell>Time:</TableCell>
-            <TableCell>Amount</TableCell>
+            <TableCell>Paid:</TableCell>
+            <TableCell>Amount:</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,7 +50,7 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
             <TableRow key={`${expense._id}-${index + 1}`}>
               <TableCell>{expense.shortName}</TableCell>
               <TableCell>{expense.fullDate}</TableCell>
-              <TableCell>{expense.formattedTime}</TableCell>
+              <TableCell>{ (expense.isPaid) ? 'Yes' : 'No'}</TableCell>
               <TableCell>{expense.amount}</TableCell>
             </TableRow>
           )) }

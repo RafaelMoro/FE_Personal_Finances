@@ -107,7 +107,7 @@ export interface ExpensePaid {
   shortName: string;
   amount: string;
   fullDate: string;
-  formattedTime: string;
+  isPaid: boolean;
   date?: Date;
 }
 

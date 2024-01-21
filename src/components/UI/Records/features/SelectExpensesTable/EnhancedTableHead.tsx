@@ -27,10 +27,10 @@ const headCells: readonly HeadCell[] = [
     label: 'Date',
   },
   {
-    id: 'formattedTime',
+    id: 'isPaid',
     numeric: false,
     disablePadding: false,
-    label: 'Time',
+    label: 'Paid',
   },
 ];
 

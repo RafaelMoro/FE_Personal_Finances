@@ -125,7 +125,7 @@ function SelectExpensesTable({
                   </TableCell>
                   <SelectExpensesCell align="right">{row.amount}</SelectExpensesCell>
                   <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
-                  <SelectExpensesCell align="right">{row.formattedTime}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">{ (row.isPaid) ? 'Yes' : 'No '}</SelectExpensesCell>
                 </TableRow>
               );
             })}

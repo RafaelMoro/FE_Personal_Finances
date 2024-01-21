@@ -13,7 +13,12 @@ export function orderExpenses(expenses: readonly ExpensePaid[], order: Order, or
     return formattedExpenses;
   }
 
-  if (orderBy === 'fullDate' || orderBy === 'date' || orderBy === 'formattedTime') {
+  if (orderBy === 'isPaid') {
+    if (order === 'desc') return formattedExpenses.sort((firstItem, secondItem) => +secondItem.isPaid - +firstItem.isPaid);
+    return formattedExpenses.sort((firstItem, secondItem) => +firstItem.isPaid - +secondItem.isPaid);
+  }
+
+  if (orderBy === 'fullDate' || orderBy === 'date') {
     formattedExpenses.sort((firstItem, secondItem) => {
       if (firstItem.date && secondItem.date) {
         return (secondItem?.date.valueOf() || 1) - (firstItem?.date.valueOf() || 0);
