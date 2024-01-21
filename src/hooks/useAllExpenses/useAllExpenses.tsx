@@ -1,20 +1,11 @@
 import { useEffect, useState } from 'react';
 import { AxiosRequestHeaders, AxiosError } from 'axios';
 
-import { GetRequest } from '../utils';
-import { GET_EXPENSES } from '../components/UI/Records/constants';
-import { Expense, ExpensePaid } from '../globalInterface';
-import { useAppSelector } from '../redux/hooks';
-
-interface UseAllExpensesProps {
-  month: string;
-  year: string;
-}
-
-interface GetExpensesNotPaidResponse {
-  message: null | string;
-  expenses: Expense[];
-}
+import { GetRequest } from '../../utils';
+import { GET_EXPENSES } from '../../components/UI/Records/constants';
+import { UseAllExpensesProps, GetExpensesNotPaidResponse } from './interface';
+import { ExpensePaid } from '../../globalInterface';
+import { useAppSelector } from '../../redux/hooks';
 
 const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   const userReduxState = useAppSelector((state) => state.user);
