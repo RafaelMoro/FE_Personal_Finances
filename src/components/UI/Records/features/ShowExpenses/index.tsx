@@ -4,6 +4,7 @@ import {
 import { useMemo } from 'react';
 
 import { ExpensePaid } from '../../../../../globalInterface';
+import { TickMark, XMark } from '../../../Icons';
 import { RecordTable, TableTitle } from '../RecordDrawer/RecordDrawer.styled';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';
@@ -50,7 +51,7 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
             <TableRow key={`${expense._id}-${index + 1}`}>
               <TableCell>{expense.shortName}</TableCell>
               <TableCell>{expense.fullDate}</TableCell>
-              <TableCell>{ (expense.isPaid) ? 'Yes' : 'No'}</TableCell>
+              <TableCell>{ (expense.isPaid) ? <TickMark /> : <XMark />}</TableCell>
               <TableCell>{expense.amount}</TableCell>
             </TableRow>
           )) }

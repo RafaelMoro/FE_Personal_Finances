@@ -9,6 +9,8 @@ import { EnhancedTableHead } from './EnhancedTableHead';
 import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../../../../globalInterface';
 import { orderExpenses } from './utils';
+
+import { TickMark, XMark } from '../../../Icons';
 import {
   TableCell, CancelButton, FlexContainer, ConfirmButton,
 } from '../../../../../styles';
@@ -125,7 +127,7 @@ function SelectExpensesTable({
                   </TableCell>
                   <SelectExpensesCell align="right">{row.amount}</SelectExpensesCell>
                   <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
-                  <SelectExpensesCell align="right">{ (row.isPaid) ? 'Yes' : 'No '}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">{ (row.isPaid) ? <TickMark /> : <XMark />}</SelectExpensesCell>
                 </TableRow>
               );
             })}
