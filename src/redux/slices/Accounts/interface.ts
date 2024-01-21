@@ -53,7 +53,9 @@ export interface FetchAccountsResponse extends Omit<GeneralResponse, 'data'> {
 }
 
 export interface SingleAccountResponse extends Omit<GeneralResponse, 'data'> {
-  data: Account;
+  data: {
+    account: Account;
+  };
 }
 
 export interface DeleteAccountData {

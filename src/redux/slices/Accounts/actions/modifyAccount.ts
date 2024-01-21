@@ -38,10 +38,10 @@ export const modifyAccountFulfilled = (
     state.accounts[oldSelectedAccountIndex].selected = false;
   }
 
-  const indexOfAccountToBeModified = (state.accounts || []).map((account) => account._id).indexOf(action.payload.data._id);
+  const indexOfAccountToBeModified = (state.accounts || []).map((account) => account._id).indexOf(action.payload.data.account._id);
   const filteredAccounts = (state.accounts || [])
-    .filter((filteredAccount) => filteredAccount._id !== action.payload.data._id);
-  const accountModifiedFormatted = formatAccounts({ accounts: [action.payload.data] });
+    .filter((filteredAccount) => filteredAccount._id !== action.payload.data.account._id);
+  const accountModifiedFormatted = formatAccounts({ accounts: [action.payload.data.account] });
   const [accountModified] = accountModifiedFormatted;
   // Add account modified with format of accountUI on the filteredAccount array.
   filteredAccounts.splice(indexOfAccountToBeModified, 0, accountModified);
