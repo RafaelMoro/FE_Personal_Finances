@@ -15,7 +15,7 @@ const headCells: readonly HeadCell[] = [
     label: 'Short Description',
   },
   {
-    id: 'amount',
+    id: 'amountFormatted',
     numeric: false,
     disablePadding: false,
     label: 'Amount',

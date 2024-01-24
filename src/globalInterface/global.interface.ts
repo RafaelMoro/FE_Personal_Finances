@@ -105,7 +105,8 @@ export interface Income extends AccountRecord {
 export interface ExpensePaid {
   _id: string;
   shortName: string;
-  amount: string;
+  amountFormatted: string;
+  formattedTime: string;
   fullDate: string;
   isPaid: boolean;
   date?: Date;

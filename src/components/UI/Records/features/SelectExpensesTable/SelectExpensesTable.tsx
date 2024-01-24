@@ -33,7 +33,7 @@ function SelectExpensesTable({
   } = usePaginationTable({ arrayOfOptions: expenses, initialRowsPerPage: 10 });
 
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amount');
+  const [orderBy, setOrderBy] = useState<keyof ExpensePaidTable>('amountFormatted');
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -125,7 +125,7 @@ function SelectExpensesTable({
                   >
                     {row.shortName}
                   </TableCell>
-                  <SelectExpensesCell align="right">{row.amount}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">{row.amountFormatted}</SelectExpensesCell>
                   <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
                   <SelectExpensesCell align="right">{ (row.isPaid) ? <TickMark /> : <XMark />}</SelectExpensesCell>
                 </TableRow>

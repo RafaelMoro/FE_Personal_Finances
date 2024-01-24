@@ -4,7 +4,6 @@ import {
 import { useMemo } from 'react';
 
 import { ExpensePaid } from '../../../../../globalInterface';
-import { TickMark, XMark } from '../../../Icons';
 import { RecordTable, TableTitle } from '../RecordDrawer/RecordDrawer.styled';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';
@@ -42,7 +41,7 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
           <TableRow>
             <TableCell>Name:</TableCell>
             <TableCell>Date:</TableCell>
-            <TableCell>Paid:</TableCell>
+            <TableCell>Time:</TableCell>
             <TableCell>Amount:</TableCell>
           </TableRow>
         </TableHead>
@@ -51,8 +50,8 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
             <TableRow key={`${expense._id}-${index + 1}`}>
               <TableCell>{expense.shortName}</TableCell>
               <TableCell>{expense.fullDate}</TableCell>
-              <TableCell>{ (expense.isPaid) ? <TickMark /> : <XMark />}</TableCell>
-              <TableCell>{expense.amount}</TableCell>
+              <TableCell>{expense.formattedTime}</TableCell>
+              <TableCell>{expense.amountFormatted}</TableCell>
             </TableRow>
           )) }
           {(emptyRows > 0 && usePagination) && (<EmptyTableRow emptyRows={emptyRows} colSpan={4} />)}

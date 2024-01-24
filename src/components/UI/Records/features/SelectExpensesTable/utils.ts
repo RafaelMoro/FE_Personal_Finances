@@ -32,7 +32,7 @@ export function orderExpenses(expenses: readonly ExpensePaid[], order: Order, or
 
   // Order by amount by default.
   const expensesTranformed = expenses.map((item) => {
-    const slicedAmount = item.amount.slice(1, item.amount.length);
+    const slicedAmount = item.amountFormatted.slice(1, item.amountFormatted.length);
     const amountAsNumber = Number(slicedAmount);
     return { ...item, amount: amountAsNumber };
   });

@@ -30,18 +30,7 @@ const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
         if (response.data?.records) {
           // set it as false if it was previously true.
           setNoExpensesFound(false);
-          // response returned the array of expenses
-          const expensesShorted = response.data.records.map((expense) => {
-            const {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              _id, shortName, amountFormatted, fullDate, isPaid, date,
-            } = expense;
-            const shortExpense: ExpensePaid = {
-              _id, shortName, amount: amountFormatted, fullDate, isPaid, date,
-            };
-            return shortExpense;
-          });
-          setExpenses(expensesShorted);
+          setExpenses(response.data?.records);
           setLoading(false);
           return;
         }
