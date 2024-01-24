@@ -243,6 +243,7 @@ export const IncomeSampleWithExpensesPaid: AnyRecord = {
     {
       _id: '64600b8f2bb57b9d17843d87',
       shortName: 'Chilaquiles',
+      amount: 96.03,
       amountFormatted: '$96.03',
       formattedTime: '16:03',
       fullDate: 'May 20',
@@ -251,6 +252,7 @@ export const IncomeSampleWithExpensesPaid: AnyRecord = {
     {
       _id: '64600b8f2bb57b9d17843d87',
       shortName: 'Chilaquiles',
+      amount: 96.03,
       amountFormatted: '$96.03',
       formattedTime: '16:03',
       fullDate: 'May 20',
