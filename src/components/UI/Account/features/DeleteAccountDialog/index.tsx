@@ -16,12 +16,14 @@ import { AccountDialogContainer, DialogParagraph } from './DeleteAccountDialog.s
 import {
   DialogTitle, SecondaryButton, CancelButton, FlexContainer,
 } from '../../../../../styles';
+import { LoadingSpinner } from '../../../LoadingSpinner';
 
 const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
+  const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
 
   const { updateGlobalNotification } = useNotification();
@@ -70,7 +72,9 @@ const DeleteAccountDialog = ({
           ?
         </DialogParagraph>
         <SecondaryButton variant="contained" size="medium" onClick={onClose}>Go Back</SecondaryButton>
-        <CancelButton variant="contained" onClick={handleSubmit} size="medium">Delete Account</CancelButton>
+        <CancelButton variant="contained" onClick={handleSubmit} size="medium">
+          { (loadingOnAction) ? (<LoadingSpinner />) : 'Delete Account' }
+        </CancelButton>
       </AccountDialogContainer>
     </Dialog>
   );
