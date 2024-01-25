@@ -200,7 +200,7 @@ export const ChipContainer = styled.div`
   gap: 1rem;
 
   @media(min-width: 480px) {
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: 1fr;
     grid-auto-rows: minmax(3.2rem, auto);
   }
 `;
