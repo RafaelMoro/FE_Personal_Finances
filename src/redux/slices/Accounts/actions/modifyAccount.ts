@@ -32,6 +32,8 @@ export const modifyAccountPending = (
 export const modifyAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(modifyAccountThunkFn.fulfilled, (state, action) => {
+  state.loadingOnAction = false;
+
   if (state.accounts) {
     // Get old selected account and set selected as false
     const oldSelectedAccountIndex = state.accounts.map((account) => account.selected).indexOf(true);

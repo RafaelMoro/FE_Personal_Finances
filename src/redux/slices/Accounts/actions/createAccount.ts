@@ -33,6 +33,8 @@ export const createAccountPending = (
 export const createAccountFulfilled = (
   builder: ActionReducerMapBuilder<AccountsInitialState>,
 ) => builder.addCase(createAccountThunkFn.fulfilled, (state, action) => {
+  state.loadingOnAction = false;
+
   const newAccountFormatted: AccountUI[] = formatAccounts({ accounts: [action.payload.data.account] });
   const [newAccount] = newAccountFormatted;
   state.accounts?.push(newAccount);
