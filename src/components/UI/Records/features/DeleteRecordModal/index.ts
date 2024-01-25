@@ -1,0 +1,1 @@
+export { DeleteRecordModal } from './DeleteRecordModal';
