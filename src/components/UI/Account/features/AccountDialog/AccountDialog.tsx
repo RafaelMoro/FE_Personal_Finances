@@ -23,6 +23,7 @@ import {
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
+import { LoadingSpinner } from '../../../LoadingSpinner';
 
 const initialValuesCreateAccount: CreateAccount = {
   title: '',
@@ -40,6 +41,7 @@ const AccountDialog = ({
 }: AccountDialogProps) => {
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
+  const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
 
   // Copying constant because it is readyonly
@@ -169,7 +171,9 @@ const AccountDialog = ({
                 stringOptions={[]}
                 colorOptions={AllTextColors}
               />
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">{ buttonModalText }</PrimaryButton>
+              <PrimaryButton variant="contained" onClick={submitForm} size="medium">
+                { (loadingOnAction) ? (<LoadingSpinner />) : buttonModalText }
+              </PrimaryButton>
             </AccountDialogFormContainer>
           )}
         </Formik>
