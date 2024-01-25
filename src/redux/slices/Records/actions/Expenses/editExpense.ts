@@ -30,6 +30,8 @@ export const editExpenseThunkFn = createAsyncThunk(
 export const editExpenseFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(editExpenseThunkFn.fulfilled, (state, action) => {
+  state.loadingOnAction = false;
+
   const {
     response: { data: { record: { _id: recordId } } }, isLastMonth, isCurrentMonth,
   } = action.payload;

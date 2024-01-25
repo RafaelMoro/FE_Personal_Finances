@@ -24,6 +24,8 @@ export const createIncomeThunkFn = createAsyncThunk(
 export const createIncomeFulfilled = (
   builder: ActionReducerMapBuilder<RecordsInitialState>,
 ) => builder.addCase(createIncomeThunkFn.fulfilled, (state, action) => {
+  state.loadingOnAction = false;
+
   const {
     response, isLastMonth, isCurrentMonth,
   } = action.payload;
