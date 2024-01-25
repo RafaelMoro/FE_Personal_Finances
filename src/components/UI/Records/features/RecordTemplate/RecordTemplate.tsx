@@ -17,6 +17,7 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
+import { LoadingSpinner } from '../../../LoadingSpinner';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
@@ -60,19 +61,15 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   } = useIndebtedPeople();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
-  const categoryToBeEdited = recordToBeEdited?.category ?? null;
+  const loadingOnAction = useAppSelector((state) => state.records.loadingOnAction);
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
 
   const action: string = edit ? 'Edit' : 'Create';
-  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
-  const isExpense = typeOfRecord === 'expense';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
-  const startAdornment = isExpense
-    ? <InputAdornment position="start">- $</InputAdornment>
-    : <InputAdornment position="start">+ $</InputAdornment>;
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
-  const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -88,6 +85,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     budgets: [],
     tag: [],
   });
+
+  const isExpense = typeOfRecord === 'expense';
+  const startAdornment = isExpense
+    ? <InputAdornment position="start">- $</InputAdornment>
+    : <InputAdornment position="start">+ $</InputAdornment>;
+  const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
+  const buttonText = `${action} record`;
 
   // Update edit data to the initial values
   useEffect(() => {
@@ -336,9 +340,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
               </AnchorButton>
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">
-                { action }
-                {' '}
-                Record
+                { (loadingOnAction) ? (<LoadingSpinner />) : buttonText }
               </PrimaryButton>
             </FlexContainer>
           </FormContainer>
