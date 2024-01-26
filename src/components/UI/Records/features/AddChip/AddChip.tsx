@@ -7,8 +7,9 @@ import {
   AddButton, ChipsContainer, ChipForm, AddChipButtonContainer,
 } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  InputForm, Chip,
+  InputForm, Chip, FlexContainer,
 } from '../../../../../styles';
+import { RecordSubtitleText } from '../../Records.styled';
 
 const AddChip = ({
   name, label, action, chipsData = [], updateData,
@@ -46,9 +47,9 @@ const AddChip = ({
   return (
     <ChipForm>
       { (chips.length === 0) && (
-        <ChipsContainer>
-          <Chip label={`No ${name}s added`} variant="outlined" color="primary" />
-        </ChipsContainer>
+        <FlexContainer justifyContent="center">
+          <RecordSubtitleText>{`No ${name}s added`}</RecordSubtitleText>
+        </FlexContainer>
       ) }
       { (chips.length > 0) && (
         <ChipsContainer>
