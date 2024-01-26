@@ -26,15 +26,15 @@ import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
-  ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton, FlexContainer, FormControlLabel,
-  SecondaryButton, ToggleButton,
+  ParagraphTitle, InputForm, InputAdornment,
+  AnchorButton, FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
 import { CloseIcon } from '../../../Icons';
 
 /** Styles */
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup, ShowIndebtedPeopleContainer,
+  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
+  ShowIndebtedPeopleContainer, PrimaryButtonForm, CancelButtonForm, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
@@ -323,7 +323,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   modifyIndebtedPerson={fetchPersonToModify}
                 />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
+                  <SecondaryButtonForm variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButtonForm>
                 </FlexContainer>
               </ShowIndebtedPeopleContainer>
             ) }
@@ -331,17 +331,19 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <>
                 <ShowExpenses usePagination expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
+                  <SecondaryButtonForm variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">
+                    {showExpenseText}
+                  </SecondaryButtonForm>
                 </FlexContainer>
               </>
             ) }
             <FlexContainer justifyContent="space-between">
               <AnchorButton to={DASHBOARD_ROUTE}>
-                <CancelButton variant="contained" size="medium">Cancel</CancelButton>
+                <CancelButtonForm variant="contained" size="medium">Cancel</CancelButtonForm>
               </AnchorButton>
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">
+              <PrimaryButtonForm variant="contained" onClick={submitForm} size="medium">
                 { (loadingOnAction) ? (<LoadingSpinner />) : buttonText }
-              </PrimaryButton>
+              </PrimaryButtonForm>
             </FlexContainer>
           </FormContainer>
         )}
