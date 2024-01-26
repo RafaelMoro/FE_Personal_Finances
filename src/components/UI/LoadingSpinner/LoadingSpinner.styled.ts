@@ -1,5 +1,6 @@
 import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import { AppColors } from '../../../styles';
 
 export const loadingSpinnerKeyframe = keyframes`
     0% {
@@ -16,9 +17,9 @@ export const loadingSpinnerAnimation = css`
 `;
 
 export const Spinner = styled.span`
-    width: 48px;
-    height: 48px;
-    border: 5px solid #FFF;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 5px solid ${AppColors.white};
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;
