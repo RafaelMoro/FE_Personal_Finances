@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
 import {
-  AddButton, ChipsContainer, ChipForm, AddChipButtonContainer,
+  ChipsContainer, ChipForm, AddChipButtonContainer, SecondaryButtonForm,
 } from '../RecordTemplate/RecordTemplate.styled';
 import {
   InputForm, Chip, FlexContainer,
@@ -83,11 +83,11 @@ const AddChip = ({
               />
             </div>
             <AddChipButtonContainer>
-              <AddButton variant="contained" onClick={submitForm} size="medium">
+              <SecondaryButtonForm variant="contained" onClick={submitForm} size="medium">
                 Add
                 {' '}
                 {action}
-              </AddButton>
+              </SecondaryButtonForm>
             </AddChipButtonContainer>
           </>
         )}

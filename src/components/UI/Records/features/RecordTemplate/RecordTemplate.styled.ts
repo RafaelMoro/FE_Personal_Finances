@@ -28,10 +28,6 @@ export const FormContainer = styled(Form)`
   gap: 2rem;
 `;
 
-export const AddButton = styled(SecondaryButton)`
-  min-width: 15rem;
-`;
-
 export const PrimaryButtonForm = styled(PrimaryButton)`
   min-width: 18rem;
 `;
