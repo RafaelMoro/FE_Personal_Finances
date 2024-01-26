@@ -27,14 +27,14 @@ import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
   ParagraphTitle, InputForm, InputAdornment,
-  AnchorButton, FlexContainer, FormControlLabel, ToggleButton,
+  FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
 import { CloseIcon } from '../../../Icons';
 
 /** Styles */
 import {
   RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
-  ShowIndebtedPeopleContainer, PrimaryButtonForm, CancelButtonForm, SecondaryButtonForm,
+  ShowIndebtedPeopleContainer, PrimaryButtonForm, CancelButtonForm, SecondaryButtonForm, ButtonContainer, AnchorButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
@@ -337,14 +337,14 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 </FlexContainer>
               </>
             ) }
-            <FlexContainer justifyContent="space-between">
-              <AnchorButton to={DASHBOARD_ROUTE}>
+            <ButtonContainer>
+              <AnchorButtonForm to={DASHBOARD_ROUTE}>
                 <CancelButtonForm variant="contained" size="medium">Cancel</CancelButtonForm>
-              </AnchorButton>
+              </AnchorButtonForm>
               <PrimaryButtonForm variant="contained" onClick={submitForm} size="medium">
                 { (loadingOnAction) ? (<LoadingSpinner />) : buttonText }
               </PrimaryButtonForm>
-            </FlexContainer>
+            </ButtonContainer>
           </FormContainer>
         )}
       </Formik>
