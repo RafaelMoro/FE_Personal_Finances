@@ -291,9 +291,9 @@ export const RecordLoaderContainer = styled.div`
 export const LoadingCategoriesContainer = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
   justify-content: center;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 // Show expenses
