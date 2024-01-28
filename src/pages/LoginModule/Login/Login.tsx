@@ -9,7 +9,7 @@ import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
-import { BrandLogoName } from '../../../components/templates/BrandLogoName';
+import { BrandLogoName } from '../../../components/templates';
 import {
   Main, LoginCard, LogoContainer, LoginCardActions,
   FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
