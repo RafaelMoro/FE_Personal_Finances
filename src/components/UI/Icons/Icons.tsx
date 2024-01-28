@@ -1,6 +1,6 @@
 import {
   EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
-  DoneOutlined,
+  DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
 
@@ -38,4 +38,12 @@ export const XMark = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) 
 
 export const TickMark = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
   <DoneOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.positive }} />
+);
+
+export const Visibility = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
+  <VisibilityMui sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
+);
+
+export const VisibilityOff = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
+  <VisibilityOffMui sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
 );

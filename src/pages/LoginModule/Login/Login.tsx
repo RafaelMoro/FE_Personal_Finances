@@ -1,12 +1,14 @@
-import { CardContent } from '@mui/material';
+import { CardContent, InputAdornment, IconButton } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
+import { useState } from 'react';
 
 import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
+import { Visibility, VisibilityOff } from '../../../components/UI/Icons';
 import { BrandLogoName } from '../../../components/templates/BrandLogoName';
 import {
   Main, LoginCard, LogoContainer, LoginCardActions,
@@ -18,6 +20,15 @@ const Login = () => {
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
   } = useLogin();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+  const endAdornment = (
+    <InputAdornment position="end">
+      <IconButton onClick={toggleShowPassword}>
+        { (showPassword) ? (<VisibilityOff size="1.5rem" />) : (<Visibility size="2rem" />) }
+      </IconButton>
+    </InputAdornment>
+  );
 
   return (
     <>
@@ -60,10 +71,13 @@ const Login = () => {
                   <Field
                     component={LoginInput}
                     name="password"
-                    type="password"
+                    type={(showPassword) ? 'text' : 'password'}
                     variant="standard"
                     fullWidth
                     label="Password"
+                    InputProps={{
+                      endAdornment,
+                    }}
                   />
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
