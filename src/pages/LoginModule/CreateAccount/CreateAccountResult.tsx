@@ -4,13 +4,13 @@ import {
 
 import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
+import { Error } from '../../../components/UI';
+import { HorizontalLoader } from '../../../components/UI/HorizontalLoader';
+import { AnimateBox } from '../../../animations';
+import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
 import {
   AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
 } from '../../../styles';
-import { Error } from '../../../components/UI';
-import { AnimateBox } from '../../../animations';
-import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
-import { Loader } from '../../../animations/Loader';
 
 const {
   positive,
@@ -21,7 +21,7 @@ const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount)
   return (
     <AnimateBox direction={direction}>
       <LoaderContainer>
-        <Loader />
+        <HorizontalLoader />
         <Paragraph>Your account is being created. Please wait...</Paragraph>
       </LoaderContainer>
     </AnimateBox>

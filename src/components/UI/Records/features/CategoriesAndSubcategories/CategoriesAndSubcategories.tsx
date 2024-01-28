@@ -3,7 +3,6 @@ import {
 } from 'react';
 import { AxiosError } from 'axios';
 
-import { Loader } from '../../../../../animations/Loader';
 import {
   AppColors, ErrorParagraphValidation, FlexContainer, Paragraph,
 } from '../../../../../styles';

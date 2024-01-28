@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 
-import { AppColors } from '../styles';
-import { ldsEllipsis1, ldsEllipsis2, ldsEllipsis3 } from '../styles/animations/loaderKeyframes';
+import { AppColors } from '../../../styles';
+import { ldsEllipsis1, ldsEllipsis2, ldsEllipsis3 } from '../../../styles/animations/loaderKeyframes';
 
 export const LoaderStyled = styled(motion.div)`
   display: inline-block;

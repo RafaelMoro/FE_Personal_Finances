@@ -2,7 +2,6 @@ import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { SpinnerProps } from './interface';
-import { AppColors } from '../../../styles';
 
 export const loadingSpinnerKeyframe = keyframes`
     0% {

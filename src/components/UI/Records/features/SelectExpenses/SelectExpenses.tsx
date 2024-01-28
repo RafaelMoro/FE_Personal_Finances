@@ -9,7 +9,7 @@ import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalIn
 import { SelectMonthYear } from './SelectMonthYear';
 import { Error } from '../../../Error';
 import { CloseIcon } from '../../../Icons';
-import { Loader } from '../../../../../animations/Loader';
+import { HorizontalLoader } from '../../../HorizontalLoader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import { Paragraph } from '../../../../../styles';
 import {
@@ -62,7 +62,7 @@ const SelectExpenses = ({
       { (loading) && (
       <LoadingExpensesContainer>
         <Paragraph>Loading expenses...</Paragraph>
-        <Loader />
+        <HorizontalLoader />
       </LoadingExpensesContainer>
       ) }
       { (noExpensesFound && !loading && expenses.length === 0) && (
