@@ -16,7 +16,10 @@ import { Notification } from '../../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
 } from '../../../styles/LoginModule.styled';
-import { InputForm, PrimaryButton, SecondaryButton } from '../../../styles';
+import {
+  AnchorButton, CancelButton, InputForm, PrimaryButton, SecondaryButton,
+} from '../../../styles';
+import { ButtonContainer } from '../../../components/UI/Records/features/RecordTemplate/RecordTemplate.styled';
 
 const NOTIFICATION_TITLE = 'Email Sent';
 const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
@@ -99,7 +102,19 @@ const ForgotPassword = (): ReactElement => {
                   variant="standard"
                   label="Email"
                 />
-                <PrimaryButton variant="contained" onClick={submitForm} size="medium">Change my password</PrimaryButton>
+                <ButtonContainer>
+                  <PrimaryButton
+                    sx={{ minWidth: '10.5rem' }}
+                    variant="contained"
+                    onClick={submitForm}
+                    size="medium"
+                  >
+                    Enviar
+                  </PrimaryButton>
+                  <AnchorButton to={LOGIN_ROUTE}>
+                    <CancelButton sx={{ minWidth: '10.5rem' }} variant="contained" size="medium">Cancel</CancelButton>
+                  </AnchorButton>
+                </ButtonContainer>
               </FormContainer>
             )}
           </Formik>
