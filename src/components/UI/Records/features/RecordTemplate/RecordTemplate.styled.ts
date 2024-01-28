@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Form } from 'formik';
 import { ToggleButtonGroup as ToggleButtonGroupMUI } from '@mui/material';
 import {
-  AnchorButton, AppColors, CancelButton, PrimaryButton, SecondaryButton,
+  AnchorButton, AppColors, SecondaryButton,
 } from '../../../../../styles';
 
 export const RecordTemplateMain = styled.main`
@@ -28,42 +28,8 @@ export const FormContainer = styled(Form)`
   gap: 2rem;
 `;
 
-export const PrimaryButtonForm = styled(PrimaryButton)`
-  min-width: 18rem;
-  order: 1;
-
-  @media(min-width: 480px) {
-    order: 2;
-  }
-`;
-
-export const AnchorButtonForm = styled(AnchorButton)`
-  display: flex;
-  order: 2;
-
-  @media(min-width: 480px) {
-    order: 1;
-  }
-`;
-
-export const CancelButtonForm = styled(CancelButton)`
-  min-width: 18rem;
-`;
-
 export const SecondaryButtonForm = styled(SecondaryButton)`
   min-width: 18rem;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  align-items: center;
-
-  @media(min-width: 480px) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
 `;
 
 export const AddChipContainer = styled.div`

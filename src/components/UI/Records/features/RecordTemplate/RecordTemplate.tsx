@@ -17,7 +17,6 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
-import { LoadingSpinner } from '../../../LoadingSpinner';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
@@ -34,13 +33,14 @@ import { CloseIcon } from '../../../Icons';
 /** Styles */
 import {
   RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
-  ShowIndebtedPeopleContainer, PrimaryButtonForm, CancelButtonForm, SecondaryButtonForm, ButtonContainer, AnchorButtonForm,
+  ShowIndebtedPeopleContainer, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
+import { ActionButtonPanel } from '../../../../templates';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
@@ -337,14 +337,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                 </FlexContainer>
               </>
             ) }
-            <ButtonContainer>
-              <AnchorButtonForm to={DASHBOARD_ROUTE}>
-                <CancelButtonForm variant="contained" size="medium">Cancel</CancelButtonForm>
-              </AnchorButtonForm>
-              <PrimaryButtonForm variant="contained" onClick={submitForm} size="medium">
-                { (loadingOnAction) ? (<LoadingSpinner />) : buttonText }
-              </PrimaryButtonForm>
-            </ButtonContainer>
+            <ActionButtonPanel
+              route={DASHBOARD_ROUTE}
+              minWidthNumber="18"
+              buttonText={buttonText}
+              loading={loadingOnAction}
+              submitForm={submitForm}
+            />
           </FormContainer>
         )}
       </Formik>
