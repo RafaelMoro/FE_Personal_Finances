@@ -1,4 +1,4 @@
-import { CardContent, InputAdornment, IconButton } from '@mui/material';
+import { CardContent } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
@@ -8,7 +8,7 @@ import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
-import { Visibility, VisibilityOff } from '../../../components/UI/Icons';
+import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
 import { BrandLogoName } from '../../../components/templates/BrandLogoName';
 import {
   Main, LoginCard, LogoContainer, LoginCardActions,
@@ -22,13 +22,6 @@ const Login = () => {
   } = useLogin();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
-  const endAdornment = (
-    <InputAdornment position="end">
-      <IconButton onClick={toggleShowPassword}>
-        { (showPassword) ? (<VisibilityOff size="1.5rem" />) : (<Visibility size="2rem" />) }
-      </IconButton>
-    </InputAdornment>
-  );
 
   return (
     <>
@@ -76,7 +69,7 @@ const Login = () => {
                     fullWidth
                     label="Password"
                     InputProps={{
-                      endAdornment,
+                      endAdornment: <TogglePasswordAdornment showPassword={showPassword} toggleShowPassword={toggleShowPassword} />,
                     }}
                   />
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
