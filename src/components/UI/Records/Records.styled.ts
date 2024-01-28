@@ -282,20 +282,6 @@ export const MonthRecordBox = styled.div`
   }
 `;
 
-// Categories and subcategories
-
-export const RecordLoaderContainer = styled.div`
-  margin: 0 auto;
-`;
-
-export const LoadingCategoriesContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  justify-content: center;
-  gap: 1rem;
-`;
-
 // Show expenses
 
 export const SelectExpensesContainer = styled.div`

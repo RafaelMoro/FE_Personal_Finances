@@ -4,17 +4,19 @@ import {
 import { AxiosError } from 'axios';
 
 import { Loader } from '../../../../../animations/Loader';
-import { ErrorParagraphValidation, Paragraph } from '../../../../../styles';
+import {
+  AppColors, ErrorParagraphValidation, FlexContainer, Paragraph,
+} from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
 import { Category, User } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
-import { LoadingCategoriesContainer, RecordLoaderContainer } from '../../Records.styled';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { fetchCategories } from '../../../../../redux/slices/Categories/actions/fetchCategories';
 import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
+import { LoadingSpinner } from '../../../LoadingSpinner';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -64,16 +66,36 @@ const CategoriesAndSubcategories = ({
 
   if (categoriesState.loading) {
     return (
-      <LoadingCategoriesContainer>
-        <RecordLoaderContainer>
-          <Loader />
-        </RecordLoaderContainer>
-        <Paragraph>Loading categories</Paragraph>
-        <RecordLoaderContainer>
-          <Loader />
-        </RecordLoaderContainer>
-        <Paragraph>Loading subcategories</Paragraph>
-      </LoadingCategoriesContainer>
+      <>
+        <SelectInput
+          labelId="select-record-category"
+          labelName={(
+            <FlexContainer justifyContent="center" gap="2">
+              <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
+              <Paragraph>Loading categories</Paragraph>
+            </FlexContainer>
+          )}
+          fieldName="category"
+          stringOptions={[]}
+          colorOptions={[]}
+          processSelectDataFn={setNewCategory}
+          disabled
+        />
+        <SelectInput
+          labelId="select-record-category"
+          labelName={(
+            <FlexContainer justifyContent="center" gap="2">
+              <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
+              <Paragraph>Loading subcategories</Paragraph>
+            </FlexContainer>
+          )}
+          fieldName="category"
+          stringOptions={[]}
+          colorOptions={[]}
+          processSelectDataFn={setNewCategory}
+          disabled
+        />
+      </>
     );
   }
 

@@ -21,7 +21,7 @@ export interface SelectFormikProps {
 
 export interface SelectInputProps {
   labelId: string;
-  labelName: string;
+  labelName: string | ReactNode;
   fieldName: string;
   stringOptions: string[];
   colorOptions: | TextColors[] | BackgroundColors[];
