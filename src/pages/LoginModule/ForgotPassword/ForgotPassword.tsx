@@ -5,13 +5,12 @@ import {
 } from 'formik';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
+import { AxiosError } from 'axios';
 import { useNotification } from '../../../hooks/useNotification';
-import { FORGOT_PASSWORD_POST_ROUTE } from './constants';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
-import { IForgotPasswordValues } from './interface';
+import { ForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
-import { postRequest } from '../../../utils/PostRequest.ts';
 import { Notification } from '../../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
@@ -20,6 +19,8 @@ import {
   InputForm, SecondaryButton,
 } from '../../../styles';
 import { ActionButtonPanel } from '../../../components/templates';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { forgotPasswordThunkFn } from '../../../redux/slices/User/actions/forgotPassword';
 
 const NOTIFICATION_TITLE = 'Email Sent';
 const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
@@ -33,6 +34,8 @@ const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contai
 
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
   const {
     showNotification, hideNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus, notification,
@@ -40,29 +43,30 @@ const ForgotPassword = (): ReactElement => {
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
 
-  const handleSubmit = async (values: IForgotPasswordValues) => {
-    const responseForgotPasswordRequest = await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
+  const handleSubmit = async (values: ForgotPasswordValues) => {
+    try {
+      await dispatch(forgotPasswordThunkFn(values)).unwrap();
 
-    if (responseForgotPasswordRequest?.error) {
+      if (notificationInfo.current.title === NOTIFICATION_ERROR_TITLE) {
+        updateTitle(NOTIFICATION_TITLE);
+        updateDescription(NOTIFICATION_DESCRIPTION);
+        updateStatus(NOTIFICATION_STATUS);
+      }
+
+      showNotification();
+      setTimeout(() => {
+        navigate(LOGIN_ROUTE);
+      }, 5000);
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      // eslint-disable-next-line no-console
+      console.error(errorCatched.message);
       updateTitle(NOTIFICATION_ERROR_TITLE);
       updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
       updateStatus(NOTIFICATION_ERROR_STATUS);
 
       showNotification();
-      return;
     }
-
-    // Update notification info in case the last notification was error.
-    if (notificationInfo.current.title === NOTIFICATION_ERROR_TITLE) {
-      updateTitle(NOTIFICATION_TITLE);
-      updateDescription(NOTIFICATION_DESCRIPTION);
-      updateStatus(NOTIFICATION_STATUS);
-    }
-
-    showNotification();
-    setTimeout(() => {
-      navigate(LOGIN_ROUTE);
-    }, 5000);
   };
 
   return (
@@ -106,7 +110,7 @@ const ForgotPassword = (): ReactElement => {
                   route={LOGIN_ROUTE}
                   minWidthNumber="10.5"
                   buttonText="Enviar"
-                  loading={false}
+                  loading={userLoadingOnAction}
                   submitForm={submitForm}
                 />
               </FormContainer>

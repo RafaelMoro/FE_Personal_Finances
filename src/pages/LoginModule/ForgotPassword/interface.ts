@@ -1,3 +1,3 @@
-export interface IForgotPasswordValues {
+export interface ForgotPasswordValues {
   email: string;
 }

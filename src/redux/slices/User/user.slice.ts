@@ -5,12 +5,17 @@ import { LoginValues } from '../../../pages/LoginModule/Login/interface';
 import { User } from '../../../globalInterface';
 import { LOGIN_POST_ROUTE } from '../../../pages/LoginModule/Login/constants';
 import { LoginResponse, UserInitialState } from './interface';
+import { forgotPasswordFulfilled, forgotPasswordPending, forgotPasswordRejected } from './actions/forgotPassword';
 
 const userInitialState: UserInitialState = {
   userInfo: null,
   loading: false,
+  loadingOnAction: false,
+  successOnAction: false,
   error: false,
+  errorOnAction: false,
   errorMessage: '',
+  errorMessageOnAction: '',
   navigateToDashboard: false,
 };
 
@@ -65,6 +70,10 @@ export const userSlice = createSlice({
       state.error = true;
       state.errorMessage = action.error.message;
     });
+
+    forgotPasswordPending(builder);
+    forgotPasswordFulfilled(builder);
+    forgotPasswordRejected(builder);
   },
 });
 

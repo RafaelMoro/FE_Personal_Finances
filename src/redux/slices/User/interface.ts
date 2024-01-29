@@ -3,8 +3,12 @@ import { GeneralResponse, User } from '../../../globalInterface';
 export interface UserInitialState {
   userInfo: null | User;
   loading: boolean;
+  loadingOnAction: boolean;
+  successOnAction: boolean;
   error: boolean;
+  errorOnAction: boolean;
   errorMessage: string | unknown;
+  errorMessageOnAction: string | unknown;
   navigateToDashboard: boolean;
 }
 
