@@ -21,9 +21,10 @@ import {
 import { ActionButtonPanel } from '../../../components/templates';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { forgotPasswordThunkFn } from '../../../redux/slices/User/actions/forgotPassword';
+import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 
 const NOTIFICATION_TITLE = 'Email Sent';
-const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
+const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions. Redirecting to sign in page';
 const NOTIFICATION_STATUS = SystemStateEnum.Success;
 
 const NOTIFICATION_ERROR_TITLE = 'Incorrect Email.';
@@ -36,6 +37,7 @@ const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
+  const userSuccessOnAction = useAppSelector((state) => state.user.successOnAction);
   const {
     showNotification, hideNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus, notification,
@@ -55,12 +57,13 @@ const ForgotPassword = (): ReactElement => {
 
       showNotification();
       setTimeout(() => {
+        dispatch(resetSuccessOnAction());
         navigate(LOGIN_ROUTE);
       }, 5000);
     } catch (err) {
       const errorCatched = err as AxiosError;
       // eslint-disable-next-line no-console
-      console.error(errorCatched.message);
+      console.error('Error while submitting forgot Password: ', errorCatched.message);
       updateTitle(NOTIFICATION_ERROR_TITLE);
       updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
       updateStatus(NOTIFICATION_ERROR_STATUS);
@@ -111,6 +114,7 @@ const ForgotPassword = (): ReactElement => {
                   minWidthNumber="10.5"
                   buttonText="Enviar"
                   loading={userLoadingOnAction}
+                  success={userSuccessOnAction}
                   submitForm={submitForm}
                 />
               </FormContainer>

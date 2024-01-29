@@ -342,6 +342,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               minWidthNumber="18"
               buttonText={buttonText}
               loading={loadingOnAction}
+              success={false}
               submitForm={submitForm}
             />
           </FormContainer>

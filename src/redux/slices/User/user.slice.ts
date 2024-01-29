@@ -40,6 +40,9 @@ export const userSlice = createSlice({
     signOn: (state, action) => {
       state.userInfo = action.payload;
     },
+    resetSuccessOnAction: (state) => {
+      state.successOnAction = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state) => {
@@ -77,6 +80,8 @@ export const userSlice = createSlice({
   },
 });
 
-export const { toggleNavigateDashboardFlag, signOff, signOn } = userSlice.actions;
+export const {
+  toggleNavigateDashboardFlag, signOff, signOn, resetSuccessOnAction,
+} = userSlice.actions;
 
 export default userSlice.reducer;

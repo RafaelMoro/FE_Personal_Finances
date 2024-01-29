@@ -24,6 +24,7 @@ export const forgotPasswordPending = (
 
   // Reset previous error status if it occurred
   state.errorOnAction = false;
+  state.successOnAction = false;
   state.errorMessageOnAction = '';
 });
 
@@ -39,6 +40,7 @@ export const forgotPasswordRejected = (
   builder: ActionReducerMapBuilder<UserInitialState>,
 ) => builder.addCase(forgotPasswordThunkFn.rejected, (state, action) => {
   state.loadingOnAction = false;
+  state.successOnAction = false;
   state.errorOnAction = true;
   state.errorMessageOnAction = action.error.message;
 });

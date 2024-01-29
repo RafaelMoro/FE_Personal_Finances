@@ -3,6 +3,7 @@ export interface ActionButtonPanelProps {
   minWidthNumber: string;
   buttonText: string;
   loading: boolean;
+  success: boolean;
   submitForm: () => void;
 }
 
