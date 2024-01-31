@@ -1,4 +1,4 @@
-import { AxiosRequestHeaders } from 'axios';
+import { AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { SystemStateEnum } from '../enums';
 
 export interface User {
@@ -29,7 +29,7 @@ export const MONTHS = [
 ] as const;
 export type CompleteMonthsType = typeof MONTHS[number];
 
-export interface GeneralResponse {
+export interface GeneralResponse extends AxiosResponse {
   version: string;
   success: boolean;
   message: null | string;

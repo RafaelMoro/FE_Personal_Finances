@@ -7,7 +7,7 @@ export interface UserInitialState {
   successOnAction: boolean;
   error: boolean;
   errorOnAction: boolean;
-  errorMessage: string | unknown;
+  errorMessage: string | unknown | string[];
   errorMessageOnAction: string | unknown;
   navigateToDashboard: boolean;
 }

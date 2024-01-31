@@ -8,6 +8,10 @@ import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 import { AxiosError } from 'axios';
 import { useNotification } from '../../../hooks/useNotification';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
+import {
+  ERROR_INCORRECT_MAIL_TITLE,
+  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
+} from '../../../constants';
 import { ForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
@@ -23,14 +27,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { forgotPasswordThunkFn } from '../../../redux/slices/User/actions/forgotPassword';
 import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 
-const NOTIFICATION_TITLE = 'Email Sent';
-const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions. Redirecting to sign in page';
-const NOTIFICATION_STATUS = SystemStateEnum.Success;
-
-const NOTIFICATION_ERROR_TITLE = 'Incorrect Email.';
-const NOTIFICATION_ERROR_DESCRIPTION = 'Verify that your email is correct or create an account';
-const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Info;
-
 const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contained" size="medium">Create Account</SecondaryButton>;
 
 const ForgotPassword = (): ReactElement => {
@@ -42,17 +38,19 @@ const ForgotPassword = (): ReactElement => {
     showNotification, hideNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus, notification,
   } = useNotification({
-    title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
+    title: SUCCESS_FORGOT_PASSWORD_TITLE,
+    description: SUCCESS_FORGOT_PASSWORD_DESC,
+    status: SystemStateEnum.Success,
   });
 
   const handleSubmit = async (values: ForgotPasswordValues) => {
     try {
       await dispatch(forgotPasswordThunkFn(values)).unwrap();
 
-      if (notificationInfo.current.title === NOTIFICATION_ERROR_TITLE) {
-        updateTitle(NOTIFICATION_TITLE);
-        updateDescription(NOTIFICATION_DESCRIPTION);
-        updateStatus(NOTIFICATION_STATUS);
+      if (notificationInfo.current.title === ERROR_INCORRECT_MAIL_TITLE) {
+        updateTitle(SUCCESS_FORGOT_PASSWORD_TITLE);
+        updateDescription(SUCCESS_FORGOT_PASSWORD_DESC);
+        updateStatus(SystemStateEnum.Success);
       }
 
       showNotification();
@@ -63,10 +61,10 @@ const ForgotPassword = (): ReactElement => {
     } catch (err) {
       const errorCatched = err as AxiosError;
       // eslint-disable-next-line no-console
-      console.error('Error while submitting forgot Password: ', errorCatched.message);
-      updateTitle(NOTIFICATION_ERROR_TITLE);
-      updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
-      updateStatus(NOTIFICATION_ERROR_STATUS);
+      console.error('Error while submitting forgot Password: ', errorCatched);
+      updateTitle(ERROR_TITLE_GENERAL);
+      updateDescription(ERROR_MESSAGE_GENERAL);
+      updateStatus(SystemStateEnum.Error);
 
       showNotification();
     }
@@ -81,7 +79,7 @@ const ForgotPassword = (): ReactElement => {
         status={notificationInfo.current.status}
         close={hideNotification}
         UIElement={
-          notificationInfo.current.status === NOTIFICATION_ERROR_STATUS
+          notificationInfo.current.status === SystemStateEnum.Error
             ? createAccountButton
             : null
         }

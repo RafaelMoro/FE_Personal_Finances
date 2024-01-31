@@ -1,11 +1,20 @@
 import { Category } from './globalInterface';
 
+export const BACKEND_URI = process.env.REACT_APP_BACKEND_URI;
+
 /** Errors */
 export const NETWORK_CATCH_ERROR = 'Network Error';
+export const NETWORK_ERROR_MESSAGE = 'There is a network error. Please check you are connected to Internet.';
 export const UNAUTHORIZED_ERROR = 'Request failed with status code 401';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
+export const ERROR_TITLE_GENERAL = 'Error';
 export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
 export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
+export const ERROR_INCORRECT_MAIL_TITLE = 'Incorrect Email.';
+export const ERROR_INCORRECT_MAIL_DESC = 'Verify that your email is correct or create an account.';
+
+export const SUCCESS_FORGOT_PASSWORD_TITLE = 'Email Sent.';
+export const SUCCESS_FORGOT_PASSWORD_DESC = 'Kindly check your email inbox and follow the instructions. Redirecting to sign in page';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'December'];
 export const ZERO_CURRENCY = '$0.00';

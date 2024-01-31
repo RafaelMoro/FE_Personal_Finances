@@ -1,19 +1,17 @@
 /* eslint-disable no-param-reassign */
 import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 import { FORGOT_PASSWORD_POST_ROUTE } from '../../../../pages/LoginModule/ForgotPassword/constants';
 import { GeneralResponse } from '../../../../globalInterface';
 import { ForgotPasswordValues } from '../../../../pages/LoginModule/ForgotPassword/interface';
-import { postRequest } from '../../../../utils';
 import { UserInitialState } from '../interface';
+import { BACKEND_URI } from '../../../../constants';
 
 export const forgotPasswordThunkFn = createAsyncThunk(
   'user/forgotPassword',
   async (values: ForgotPasswordValues) => {
-    const response: GeneralResponse = await postRequest(
-      values,
-      FORGOT_PASSWORD_POST_ROUTE,
-    );
-    return response;
+    const standardResponse = await axios.post<GeneralResponse>(`${BACKEND_URI}/${FORGOT_PASSWORD_POST_ROUTE}`, values);
+    return standardResponse?.data;
   },
 );
 
@@ -42,5 +40,5 @@ export const forgotPasswordRejected = (
   state.loadingOnAction = false;
   state.successOnAction = false;
   state.errorOnAction = true;
-  state.errorMessageOnAction = action.error.message;
+  state.errorMessageOnAction = action.error;
 });
