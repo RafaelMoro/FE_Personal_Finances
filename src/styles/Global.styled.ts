@@ -146,7 +146,7 @@ export const CancelButton = styled(Button)`
   color: ${AppColors.white};
 
   &:hover {
-    background-color: ${AppColors.negativeDarker};
+    background-color: ${AppColors.negativeDark};
     color: ${AppColors.white};
   }
 `;
@@ -157,7 +157,7 @@ export const ConfirmButton = styled(Button)`
   color: ${AppColors.white};
 
   &:hover {
-    background-color: ${AppColors.positiveDarker};
+    background-color: ${AppColors.positiveDark};
     color: ${AppColors.white};
   }
 `;
