@@ -24,6 +24,7 @@
   "plugins": ["react", "@typescript-eslint"],
   "ignorePatterns": ["temp.js", "**/*.stories.tsx"],
   "rules": {
+    "no-unused-vars": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".tsx", ".ts"] }],
     "no-underscore-dangle":  ["error", { "allow": ["_id"] }],
     "react/function-component-definition": [
