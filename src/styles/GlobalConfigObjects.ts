@@ -6,9 +6,9 @@ import { IGlobalConfiguration, BackgroundColors, TextColors } from './interface'
 */
 
 export const AppColors = {
-  primary: '#FE955E',
-  primaryDark: '#B16841',
-  primaryLight: '#FEAA7E',
+  primary: '#B16841',
+  primaryDark: '#C08667',
+  primaryLight: '#7B482D',
   secondary: '#592418',
   secondaryLight: '#7A4F46',
   secondaryDark: '#3E1910',
@@ -20,8 +20,12 @@ export const AppColors = {
   negative: '#bd4a0e',
   negativeDark: '#843309',
   negativeLight: '#CA6E3E',
-  info: '#1ea7fd',
-  warning: '#d9f117',
+  info: '#0288d1',
+  infoDark: '#01579b',
+  infoLight: '#03a9f4',
+  warning: '#ed6c02',
+  warningLight: '#F08934',
+  warningDark: '#A54B01',
   bgColorLight: '#F5EFE5',
   bgColorDark: '#66440D',
   bgColorGrey: '#dbcaca',
