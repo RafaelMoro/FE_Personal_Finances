@@ -41,13 +41,16 @@ export const appTheme = createTheme({
 });
 
 appTheme.typography.h1 = {
-  [appTheme.breakpoints.up('sm')]: {
+  /** Below small: 600px, use this styles  */
+  [appTheme.breakpoints.down('sm')]: {
     fontSize: '2.2rem',
   },
-  [appTheme.breakpoints.only('md')]: {
+  /** Between small 600px and medium 900px: use this styles  */
+  [appTheme.breakpoints.between('sm', 'md')]: {
     fontSize: '2.4rem',
   },
-  [appTheme.breakpoints.between('lg', 'xl')]: {
+  /** Above medium: 900px, use this styles  */
+  [appTheme.breakpoints.up('md')]: {
     fontSize: '3.2rem',
   },
 };
