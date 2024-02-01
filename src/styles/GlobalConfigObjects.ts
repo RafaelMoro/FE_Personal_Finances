@@ -1,4 +1,4 @@
-import { IGlobalConfiguration, BackgroundColors, TextColors } from './interface';
+import { GlobalConfiguration, BackgroundColors, TextColors } from './interface';
 
 /*
 * This file saves colors, breakpoints for responsive web design, font sizes
@@ -96,7 +96,7 @@ export const ResponsiveBreakpoints = {
   desktop: '1024px',
 };
 
-export const GlobalConfiguration: IGlobalConfiguration = {
+export const globalConfiguration: GlobalConfiguration = {
   mobile: {
     fontSizes: {
       H1: '2.2rem',

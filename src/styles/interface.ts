@@ -6,7 +6,7 @@ export interface FontSizes {
   P: string,
   Sub: string,
 }
-export interface IGlobalConfiguration {
+export interface GlobalConfiguration {
   mobile: {
     fontSizes: FontSizes
   },
