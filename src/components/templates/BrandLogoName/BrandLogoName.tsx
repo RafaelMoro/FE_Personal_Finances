@@ -11,7 +11,7 @@ const BrandLogoName = ({ isLoginPage = false }: BrandLogoNameProps) => {
         <source srcSet={logoWebp} type="image/webp" />
         <img src={logoPng} alt="Budget Master logo" />
       </LogoImageContainer>
-      <Title>Budget Master</Title>
+      <Title variant="h1">Budget Master</Title>
     </>
   );
 };
