@@ -87,7 +87,7 @@ const ForgotPassword = (): ReactElement => {
       )}
       <Main>
         <MainContainer>
-          <FormTitle>Forgot password</FormTitle>
+          <FormTitle variant="h1">Forgot password</FormTitle>
           <FormDescription>
             Please enter your email and
             we will send you the instructions to reset your password.

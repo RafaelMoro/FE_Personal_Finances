@@ -78,7 +78,7 @@ const CreateAccount = ():ReactElement => {
   return (
     <Main>
       <MainContainer>
-        <FormTitle>Create account</FormTitle>
+        <FormTitle variant="h1">Create account</FormTitle>
         <FormDescription>Fill the following information to create your account.</FormDescription>
         <PersonalInformation goNext={goNext} counterView={counterView} direction={direction} />
         <UserAndPassword

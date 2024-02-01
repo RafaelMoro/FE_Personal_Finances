@@ -69,7 +69,7 @@ const ResetPassword = (): ReactElement => {
       )}
       <Main>
         <MainContainer>
-          <FormTitle>Reset Password</FormTitle>
+          <FormTitle variant="h1">Reset Password</FormTitle>
           <FormDescription>
             Enter your new password in the fields below:
           </FormDescription>
