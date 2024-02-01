@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { AppColors } from './GlobalConfigObjects';
+import { AppColors, globalConfiguration } from './GlobalConfigObjects';
 
 export const appTheme = createTheme({
   palette: {
@@ -43,14 +43,26 @@ export const appTheme = createTheme({
 appTheme.typography.h1 = {
   /** Below small: 600px, use this styles  */
   [appTheme.breakpoints.down('sm')]: {
-    fontSize: '2.2rem',
+    fontSize: globalConfiguration.mobile.fontSizes.H1,
   },
   /** Between small 600px and medium 900px: use this styles  */
   [appTheme.breakpoints.between('sm', 'md')]: {
-    fontSize: '2.4rem',
+    fontSize: globalConfiguration.tablet.fontSizes.H1,
   },
   /** Above medium: 900px, use this styles  */
   [appTheme.breakpoints.up('md')]: {
-    fontSize: '3.2rem',
+    fontSize: globalConfiguration.desktop.fontSizes.H1,
+  },
+};
+
+appTheme.typography.h2 = {
+  [appTheme.breakpoints.down('sm')]: {
+    fontSize: globalConfiguration.mobile.fontSizes.H2,
+  },
+  [appTheme.breakpoints.between('sm', 'md')]: {
+    fontSize: globalConfiguration.tablet.fontSizes.H2,
+  },
+  [appTheme.breakpoints.up('md')]: {
+    fontSize: globalConfiguration.desktop.fontSizes.H2,
   },
 };
