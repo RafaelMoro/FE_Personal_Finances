@@ -1,6 +1,7 @@
+import { Typography } from '@mui/material';
 import { Header } from '../../components/templates';
 import {
-  Heading1, PrimaryButton,
+  PrimaryButton,
 } from '../../styles';
 import {
   Container404, GoBackAnchor, NotFoundContainer, NotFoundImageContainer, Number404,
@@ -25,7 +26,7 @@ const NotFound = () => {
           </NotFoundImageContainer>
           <Number404>4</Number404>
         </Container404>
-        <Heading1>Oops! Looks like you got lost</Heading1>
+        <Typography variant="h1">Oops! Looks like you got lost</Typography>
         <GoBackAnchor to={route}>
           <PrimaryButton variant="contained" size="medium">Go Back</PrimaryButton>
         </GoBackAnchor>
