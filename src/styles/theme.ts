@@ -35,4 +35,19 @@ export const appTheme = createTheme({
       dark: AppColors.infoDark,
     },
   },
+  typography: {
+    fontFamily: 'Roboto',
+  },
 });
+
+appTheme.typography.h1 = {
+  [appTheme.breakpoints.up('sm')]: {
+    fontSize: '2.2rem',
+  },
+  [appTheme.breakpoints.only('md')]: {
+    fontSize: '2.4rem',
+  },
+  [appTheme.breakpoints.between('lg', 'xl')]: {
+    fontSize: '3.2rem',
+  },
+};
