@@ -13,7 +13,7 @@ import {
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, RecordSub,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -157,10 +157,10 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
       <ListItemRecord onClick={showLongView}>
         <RecordTitle align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
         { amountShown }
-        <RecordDate>{ fullDate }</RecordDate>
-        <RecordTime>{ formattedTime }</RecordTime>
-        <RecordSub>{ category.categoryName }</RecordSub>
-        <RecordSub>{ subCategory }</RecordSub>
+        <Typography variant="body2">{ fullDate }</Typography>
+        <Typography variant="body2">{ formattedTime }</Typography>
+        <Typography variant="body2">{ category.categoryName }</Typography>
+        <Typography variant="body2">{ subCategory }</Typography>
         <BudgetChipContainer>
           { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (

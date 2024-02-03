@@ -1,12 +1,12 @@
 import {
-  IconButton,
+  IconButton, Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
 import { DeleteIcon, CloseIcon, EditIcon } from '../../../Icons';
 import {
-  RecordDrawerContainer, RecordDrawerTitle, RecordDrawerDatetime, RecordDrawerText,
+  RecordDrawerContainer, RecordDrawerTitle, RecordDrawerText,
   RecordDrawerDescription, DrawerChipContainer,
   RecordDrawerPriceContainer,
   DrawerTitleContainer,
@@ -51,8 +51,8 @@ const RecordDrawer = ({
           <DeleteIcon />
         </IconButton>
       </DrawerTitleContainer>
-      <RecordDrawerDatetime>{fullDate}</RecordDrawerDatetime>
-      <RecordDrawerDatetime>{formattedTime}</RecordDrawerDatetime>
+      <Typography variant="body2">{fullDate}</Typography>
+      <Typography variant="body2">{formattedTime}</Typography>
       <RecordDrawerText>{category.categoryName}</RecordDrawerText>
       <RecordDrawerText>{subCategory}</RecordDrawerText>
       <RecordDrawerPriceContainer>

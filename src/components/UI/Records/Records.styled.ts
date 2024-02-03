@@ -48,21 +48,7 @@ export const RecordTitle = styled(ParagraphTitle)`
   }
 `;
 
-export const RecordSub = styled(Sub)`
-  opacity: 0.7;
-  text-align: center;
-
-  @media(min-width: 480px) {
-    text-align: start;
-  }
-`;
-
-export const RecordDateTime = styled(Sub)`
-  opacity: 0.7;
-  text-align: center;
-`;
-
-export const RecordDate = styled(RecordDateTime)`
+export const RecordDate = styled(Typography)`
   @media(min-width: 480px) {
     grid-column: 2 / 3;
     text-align: start;
@@ -74,7 +60,7 @@ export const RecordDate = styled(RecordDateTime)`
   }
 `;
 
-export const RecordTime = styled(RecordDateTime)`
+export const RecordTime = styled(Typography)`
   @media(min-width: 480px) {
     grid-column: 3 / 4;
     text-align: start;

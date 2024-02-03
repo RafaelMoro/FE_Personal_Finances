@@ -4,7 +4,7 @@ import { Table, Typography } from '@mui/material';
 import {
   AppColors, ParagraphTitle, Sub,
 } from '../../../../../styles';
-import { ChipContainer, RecordDateTime, RecordSubtitleText } from '../../Records.styled';
+import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
 
 export const RecordDrawerContainer = styled.div`
@@ -36,10 +36,6 @@ export const DrawerCloseBox = styled.div`
 export const RecordDrawerTitle = styled(ParagraphTitle)`
   text-align: center;
   grid-column: 1 / 3;
-`;
-
-export const RecordDrawerDatetime = styled(RecordDateTime)`
-  text-align: start;
 `;
 
 export const RecordDrawerText = styled(Sub)`
