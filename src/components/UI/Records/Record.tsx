@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Drawer,
+  Drawer, Typography,
 } from '@mui/material';
 
 import { RecordProps } from './interface';
@@ -8,7 +8,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import { RecordDrawer } from './features/RecordDrawer';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
 import {
-  Chip, Paragraph,
+  Chip,
 } from '../../../styles';
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
@@ -95,7 +95,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           <RecordStatusContainer>
             <RecordStatus isPaid={isPaid ?? true}>
               <StatusWhiteCircle />
-              <Paragraph>{status}</Paragraph>
+              <Typography>{status}</Typography>
             </RecordStatus>
           </RecordStatusContainer>
           ) }
@@ -200,7 +200,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           <RecordStatusContainer>
             <RecordStatus isPaid={isPaid ?? true}>
               <StatusWhiteCircle />
-              <Paragraph>{status}</Paragraph>
+              <Typography>{status}</Typography>
             </RecordStatus>
           </RecordStatusContainer>
         ) }
