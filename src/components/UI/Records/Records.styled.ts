@@ -8,7 +8,7 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Paragraph, Sub, ParagraphTitle,
+  AppColors, Sub, ParagraphTitle,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -108,9 +108,7 @@ export const RecordExpense = styled(RecordPrice)`
   color: ${AppColors.negative};
 `;
 
-// TODO: Change for body2
-export const RecordSubtitleText = styled(Paragraph)`
-  color: ${AppColors.subtitleColor};
+export const RecordSubtitleText = styled(Typography)`
   text-align: center;
 
   @media(min-width: 480px) {

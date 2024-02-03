@@ -100,19 +100,19 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           </RecordStatusContainer>
           ) }
           <BudgetChipContainer>
-            { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
+            { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
             ))}
           </BudgetChipContainer>
           <TagsChipContainer>
-            { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
+            { tag.length === 0 && (<RecordSubtitleText variant="body2">No tags</RecordSubtitleText>) }
             { tag.length > 0 && tag.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
             ))}
           </TagsChipContainer>
           { (indebtedPeople.length > 0 && !openLongView) && (
-            <RecordSubtitleText>
+            <RecordSubtitleText variant="body2">
               People involved:
               {' '}
               {
@@ -121,7 +121,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             </RecordSubtitleText>
           ) }
           { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-            <RecordSubtitleText>
+            <RecordSubtitleText variant="body2">
               Records Paid:
               {' '}
               { expensesPaid.length }
