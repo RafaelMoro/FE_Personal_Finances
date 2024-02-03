@@ -1,10 +1,9 @@
 import { ReactNode, useEffect, useState } from 'react';
 import {
-  Collapse, List,
+  Collapse, List, Typography,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { ListExpandableContainer } from '../../Records.styled';
-import { Paragraph } from '../../../../../styles';
 
 interface MonthAccordeonProps {
   opened?: boolean;
@@ -45,7 +44,7 @@ const MonthAccordeon = ({
   return (
     <>
       <ListExpandableContainer backgroundColor={backgroundColor} color={color} onClick={handleClick}>
-        <Paragraph>{title}</Paragraph>
+        <Typography>{title}</Typography>
         {openCollapse ? <ExpandLess sx={iconSize} /> : <ExpandMore sx={iconSize} />}
       </ListExpandableContainer>
       <Collapse in={openCollapse} timeout="auto" unmountOnExit>
