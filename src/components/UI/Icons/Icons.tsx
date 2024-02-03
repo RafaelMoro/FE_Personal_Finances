@@ -1,6 +1,7 @@
 import {
   EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
   DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
+  ErrorOutlineOutlined,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
 
@@ -14,6 +15,10 @@ const DEFAULT_SIZE_CLOSE_ICON = '3.5rem';
 
 export const DeleteIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <DeleteOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />
+);
+
+export const ErrorIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <ErrorOutlineOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />
 );
 
 export const EditIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
