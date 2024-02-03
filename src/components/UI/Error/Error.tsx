@@ -1,5 +1,6 @@
+import { Typography } from '@mui/material';
 import { ErrorOutlineOutlined } from '@mui/icons-material';
-import { Paragraph, AppColors } from '../../../styles';
+import { AppColors } from '../../../styles';
 import { MessageContainer } from '../../../styles/LoginModule.styled';
 import { ErrorProps } from './interface';
 
@@ -10,8 +11,8 @@ const Error = ({
 }: ErrorProps) => (
   <MessageContainer>
     { !hideIcon && (<ErrorOutlineOutlined sx={{ fontSize: '4.5rem', fill: negative }} />) }
-    { title && (<Paragraph>{title}</Paragraph>) }
-    <Paragraph>{description}</Paragraph>
+    { title && (<Typography>{title}</Typography>) }
+    <Typography>{description}</Typography>
     { children }
   </MessageContainer>
 );
