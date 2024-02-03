@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  Dialog, IconButton,
+  Dialog,
 } from '@mui/material';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 
@@ -12,9 +12,11 @@ import { CloseIcon } from '../../../Icons';
 import { DeleteAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { deleteAccount } from '../../../../../redux/slices/Accounts/actions';
-import { AccountDialogContainer, DialogParagraph } from './DeleteAccountDialog.styled';
 import {
-  DialogTitle, SecondaryButton, CancelButton, FlexContainer,
+  AccountDialogContainer, DeleteAccountIconButton, DeleteAccountTitle, DialogParagraph, DialogParagraphWarning,
+} from './DeleteAccountDialog.styled';
+import {
+  SecondaryButton, CancelButton,
 } from '../../../../../styles';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 
@@ -57,14 +59,12 @@ const DeleteAccountDialog = ({
 
   return (
     <Dialog onClose={onClose} open={open}>
-      <FlexContainer justifyContent="end" padding="1rem">
-        <IconButton onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
-      </FlexContainer>
-      <DialogTitle>Delete Account</DialogTitle>
       <AccountDialogContainer>
-        <DialogParagraph>THERE IS NO WAY OF RECOVERING YOUR ACCOUNT.</DialogParagraph>
+        <DeleteAccountTitle variant="h4">Delete Account</DeleteAccountTitle>
+        <DeleteAccountIconButton onClick={onClose}>
+          <CloseIcon />
+        </DeleteAccountIconButton>
+        <DialogParagraphWarning>THERE IS NO WAY OF RECOVERING YOUR ACCOUNT.</DialogParagraphWarning>
         <DialogParagraph>
           Are you sure you want to delete the account
           {' '}
