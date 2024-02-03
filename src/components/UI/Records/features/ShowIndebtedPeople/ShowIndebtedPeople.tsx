@@ -32,7 +32,7 @@ const ShowIndebtedPeople = ({
           If so, click on &quot; Add Person &quot;
         </TableNote>
       ) }
-      <TableTitle isGrid={inRecordDrawer}>
+      <TableTitle align="center" isGrid={inRecordDrawer}>
         People related to this transaction:
         {' '}
         {indebtedPeople.length}

@@ -35,7 +35,7 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
   }
   return (
     <>
-      <TableTitle isGrid={isGrid}>Expenses Selected: </TableTitle>
+      <TableTitle align="center" isGrid={isGrid}>Expenses Selected: </TableTitle>
       <RecordTable isGrid={isGrid}>
         <TableHead>
           <TableRow>
