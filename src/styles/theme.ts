@@ -90,3 +90,15 @@ appTheme.typography.h4 = {
     fontSize: globalConfiguration.desktop.fontSizes.H4,
   },
 };
+
+appTheme.typography.body1 = {
+  [appTheme.breakpoints.down('sm')]: {
+    fontSize: globalConfiguration.mobile.fontSizes.P,
+  },
+  [appTheme.breakpoints.between('sm', 'md')]: {
+    fontSize: globalConfiguration.tablet.fontSizes.P,
+  },
+  [appTheme.breakpoints.up('md')]: {
+    fontSize: globalConfiguration.desktop.fontSizes.P,
+  },
+};
