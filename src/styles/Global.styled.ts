@@ -166,12 +166,6 @@ export const TransparentButton = styled(Button)`
   color: inherit;
 `;
 
-// **** Headings
-
-export const Heading4 = styled.h4`
-  ${createResponsiveProps({ fontSize: 'H4' })}
-`;
-
 // **** Paragraphs
 
 export const ParagraphTitle = styled.p`
