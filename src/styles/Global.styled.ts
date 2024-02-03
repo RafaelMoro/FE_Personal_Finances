@@ -13,6 +13,7 @@ import {
   InputAdornment as InputAdornmentMUI,
   FormControlLabel as FormControlLabelMUI,
   ToggleButton as ToggleButtonMui,
+  Typography,
 } from '@mui/material';
 import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
@@ -47,12 +48,6 @@ export const GlobalStyles = css`
     position: relative;
     z-index: 1;
   }
-  .MuiFormHelperText-root {
-    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
-  }
-  .MuiTableCell-root {
-    ${createResponsiveProps({ fontSize: 'P' })}
-  }
 
   // Chip delete svg
   .MuiChip-deleteIcon {
@@ -60,15 +55,6 @@ export const GlobalStyles = css`
   }
 
   // DateTimePicker css classes - calendar open.
-  .MuiPickersCalendarHeader-label{
-    ${createResponsiveProps({ fontSize: 'P' })}
-  }
-  &.MuiDayCalendar-weekDayLabel,
-  &.MuiPickersDay-root,
-  .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
-  .css-1e3wlyl-MuiButtonBase-root-MuiMenuItem-root-MuiMultiSectionDigitalClockSection-item {
-    ${createResponsiveProps({ fontSize: 'P', important: true })}
-  }
   .MuiPickersCalendarHeader-switchViewIcon,
   .css-1vooibu-MuiSvgIcon-root {
     width: 3rem !important;
@@ -79,13 +65,6 @@ export const GlobalStyles = css`
   .MuiTablePagination-selectIcon {
     width: 2rem !important;
     height: 2rem !important;
-  }
-
-  &.MuiTablePagination-selectLabel,
-  &.MuiTablePagination-displayedRows,
-  &.MuiTablePagination-select,
-  &.MuiTablePagination-menuItem {
-    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
   }
 
   [class*='MuiInputBase-root-MuiTablePagination-select']{
@@ -173,16 +152,7 @@ export const ParagraphTitle = styled.p`
   ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
 `;
 
-export const Sub = styled.p`
-  ${createResponsiveProps({ fontSize: 'Sub' })}
-`;
-
-export const Paragraph = styled.p`
-  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
-  ${createResponsiveProps({ fontSize: 'P' })}
-`;
-
-export const ErrorParagraphValidation = styled(Paragraph)`
+export const ErrorParagraphValidation = styled(Typography)`
   color: ${AppColors.validationError};
 `;
 
@@ -273,10 +243,6 @@ export const Chip = styled(ChipMUI, { shouldForwardProp: (props) => props !== 'c
   max-width: 15rem;
   color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
-
-  span {
-    ${createResponsiveProps({ fontSize: 'Sub' })}
-  }
 `;
 
 export const MobileChip = styled(Chip)`

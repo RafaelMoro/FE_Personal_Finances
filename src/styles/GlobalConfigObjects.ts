@@ -92,8 +92,9 @@ export const AllBackgroundColors: BackgroundColors [] = [
 ];
 
 export const ResponsiveBreakpoints = {
-  tablet: '480px',
-  desktop: '1024px',
+  mobile: '(max-width: 599.95px)',
+  tablet: '(min-width: 600px) and (max-width: 899.95px)',
+  desktop: '(min-width: 900px)',
 };
 
 export const globalConfiguration: GlobalConfiguration = {
@@ -104,7 +105,6 @@ export const globalConfiguration: GlobalConfiguration = {
       H3: '1.7rem',
       H4: '1.7rem',
       P: '1.6rem',
-      Sub: '1.4rem',
     },
   },
   tablet: {
@@ -114,7 +114,6 @@ export const globalConfiguration: GlobalConfiguration = {
       H3: '2rem',
       H4: '2rem',
       P: '1.6rem',
-      Sub: '1.5rem',
     },
   },
   desktop: {
@@ -124,7 +123,6 @@ export const globalConfiguration: GlobalConfiguration = {
       H3: '2.4rem',
       H4: '2.4rem',
       P: '1.8rem',
-      Sub: '1.6rem',
     },
   },
 };

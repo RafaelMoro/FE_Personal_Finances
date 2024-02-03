@@ -4,7 +4,6 @@ export interface FontSizes {
   H3: string,
   H4: string,
   P: string,
-  Sub: string,
 }
 export interface GlobalConfiguration {
   mobile: {
