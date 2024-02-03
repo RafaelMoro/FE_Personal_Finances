@@ -168,10 +168,6 @@ export const TransparentButton = styled(Button)`
 
 // **** Headings
 
-export const Heading3 = styled.h3`
-  ${createResponsiveProps({ fontSize: 'H3' })}
-`;
-
 export const Heading4 = styled.h4`
   ${createResponsiveProps({ fontSize: 'H4' })}
 `;
