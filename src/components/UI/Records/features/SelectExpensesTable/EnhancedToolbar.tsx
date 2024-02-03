@@ -1,8 +1,8 @@
 import { alpha } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
 import { EnhancedTableToolbarProps } from './interface';
 import { SelectExpensesToolbar, SideNoteSelectExpense } from '../Features.styled';
-import { Paragraph } from '../../../../../styles';
 
 function EnhancedTableToolbar({ numSelected }: EnhancedTableToolbarProps) {
   return (
@@ -17,17 +17,17 @@ function EnhancedTableToolbar({ numSelected }: EnhancedTableToolbarProps) {
         <SideNoteSelectExpense>
           Note: If you cannot find your expense, it may be under other account or a different month.
         </SideNoteSelectExpense>
-        <Paragraph
+        <Typography
           id="tableTitle"
         >
           Select the expenses:
-        </Paragraph>
+        </Typography>
         { (numSelected > 0) && (
-        <Paragraph>
+        <Typography>
           {numSelected}
           {' '}
           selected
-        </Paragraph>
+        </Typography>
         ) }
       </>
     </SelectExpensesToolbar>
