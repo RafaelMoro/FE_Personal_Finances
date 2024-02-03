@@ -2,9 +2,10 @@ import {
   useEffect, useMemo,
 } from 'react';
 import { AxiosError } from 'axios';
+import { Typography } from '@mui/material';
 
 import {
-  AppColors, ErrorParagraphValidation, FlexContainer, Paragraph,
+  AppColors, ErrorParagraphValidation, FlexContainer,
 } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
@@ -71,7 +72,7 @@ const CategoriesAndSubcategories = ({
           labelName={(
             <FlexContainer justifyContent="center" gap="2">
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
-              <Paragraph>Loading categories</Paragraph>
+              <Typography>Loading categories</Typography>
             </FlexContainer>
           )}
           fieldName="category"
@@ -85,7 +86,7 @@ const CategoriesAndSubcategories = ({
           labelName={(
             <FlexContainer justifyContent="center" gap="2">
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
-              <Paragraph>Loading subcategories</Paragraph>
+              <Typography>Loading subcategories</Typography>
             </FlexContainer>
           )}
           fieldName="category"
