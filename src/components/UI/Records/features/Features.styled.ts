@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Toolbar, Typography } from '@mui/material';
 
 import {
-  AppColors, Sub, TableCell,
+  AppColors, TableCell,
 } from '../../../../styles';
 
 /** SelectExpenses */
@@ -52,10 +52,6 @@ export const ExpensesNotFoundContainer = styled.div`
   @media(min-width: 480px) {
     min-width: 77rem;
   }
-`;
-
-export const SideNoteSelectExpense = styled(Sub)`
-  color: ${AppColors.subtitleColor};
 `;
 
 export const SelectExpensesToolbar = styled(Toolbar)`
