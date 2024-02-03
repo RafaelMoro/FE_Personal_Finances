@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { CardActions, Typography } from '@mui/material';
 
 import {
-  AppColors, InputForm, Paragraph, Anchor,
+  InputForm, Anchor,
 } from '../../../styles';
 
 export const Main = styled.main`
@@ -43,9 +43,7 @@ export const FormLoginTitle = styled(Typography)`
   margin-bottom: 2rem;
 `;
 
-// TODO: change to body2
-export const FormInstructions = styled(Paragraph)`
-  color: ${AppColors.subtitleColor};
+export const FormInstructions = styled(Typography)`
   margin-bottom: 1rem;
 `;
 
