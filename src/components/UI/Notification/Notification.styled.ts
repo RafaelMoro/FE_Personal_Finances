@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { AppColors, Paragraph } from '../../../styles';
+import { AppColors } from '../../../styles';
 
 export const NotificationWrapper = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ export const NotificationTitle = styled(Typography)`
   align-self: center;
 `;
 
-export const NotificationDescription = styled(Paragraph)`
+export const NotificationDescription = styled(Typography)`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   margin: 2rem 0;
