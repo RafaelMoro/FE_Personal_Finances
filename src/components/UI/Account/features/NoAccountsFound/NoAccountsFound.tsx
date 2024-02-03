@@ -1,4 +1,5 @@
-import { Paragraph, PrimaryButton } from '../../../../../styles';
+import { Typography } from '@mui/material';
+import { PrimaryButton } from '../../../../../styles';
 import { NoAccountsFoundContainer, NoAccountsFoundPicture } from './NoAccountsFound.styled';
 import { useAccountsActions } from '../../../../../hooks/useAccountsActions';
 import noAccountsFoundPng from '../../../../../assets/no_accounts_found_png.png';
@@ -15,9 +16,9 @@ const NoAccountsFound = () => {
         <source srcSet={noAccountsFoundWebp} type="image/webp" />
         <img src={noAccountsFoundPng} alt="No Accounts Found" />
       </NoAccountsFoundPicture>
-      <Paragraph align="center">
+      <Typography align="center">
         You have not created accounts yet. Start now!
-      </Paragraph>
+      </Typography>
       <PrimaryButton onClick={handleOpenCreateAccount}>Create account</PrimaryButton>
     </NoAccountsFoundContainer>
   );
