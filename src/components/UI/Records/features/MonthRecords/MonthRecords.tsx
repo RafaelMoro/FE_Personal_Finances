@@ -1,10 +1,10 @@
 import { ReactElement } from 'react';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { AnyRecord } from '../../../../../globalInterface';
 import { MonthAccordeon } from '../MonthAccordeon';
 import { ShowRecords } from '../ShowRecords';
 import { Record } from '../../Record';
-import { FlexContainer, Paragraph } from '../../../../../styles';
+import { FlexContainer } from '../../../../../styles';
 import { RecordExpense, RecordIncome } from '../../Records.styled';
 import { ShowTotalContianer } from '../Features.styled';
 
@@ -40,11 +40,11 @@ const MonthRecords = ({
   >
     <ShowTotalContianer>
       <FlexContainer gap="1">
-        <Paragraph>Total Expense: </Paragraph>
+        <Typography>Total Expense: </Typography>
         <RecordExpense>{totalExpense}</RecordExpense>
       </FlexContainer>
       <FlexContainer gap="1">
-        <Paragraph>Total Income: </Paragraph>
+        <Typography>Total Income: </Typography>
         <RecordIncome>{totalIncome}</RecordIncome>
       </FlexContainer>
     </ShowTotalContianer>
