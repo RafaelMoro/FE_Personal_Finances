@@ -12,7 +12,7 @@ import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAd
 import { BrandLogoName } from '../../../components/templates';
 import {
   Main, LoginCard, LogoContainer, LoginCardActions,
-  FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
+  FormLoginTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
 import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
 
@@ -51,7 +51,7 @@ const Login = () => {
                 }}
               >
                 <CardContent>
-                  <FormTitle>Welcome back</FormTitle>
+                  <FormLoginTitle variant="h2">Welcome back</FormLoginTitle>
                   <FormInstructions>Enter your credentials to enter your account.</FormInstructions>
                   <Field
                     component={LoginInput}

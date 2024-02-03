@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { CardActions } from '@mui/material';
+import { CardActions, Typography } from '@mui/material';
 
 import {
-  AppColors, InputForm, Paragraph, Anchor, Heading2,
+  AppColors, InputForm, Paragraph, Anchor,
 } from '../../../styles';
 
 export const Main = styled.main`
@@ -38,7 +38,7 @@ export const LoginCard = styled.div`
   }
 `;
 
-export const FormTitle = styled(Heading2)`
+export const FormLoginTitle = styled(Typography)`
   text-align: center;
   margin-bottom: 2rem;
 `;
