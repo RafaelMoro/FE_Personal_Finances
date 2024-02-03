@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { Paragraph, ErrorParagraphValidation } from '../../../../../styles';
+import { Typography } from '@mui/material';
+import { ErrorParagraphValidation } from '../../../../../styles';
 
 export const DeleteRecordContainer = styled.div`
   padding: 3rem;
@@ -8,7 +9,7 @@ export const DeleteRecordContainer = styled.div`
   grid-template-columns: 1fr 1fr;
 `;
 
-export const DeleteRecordTitle = styled(Paragraph)`
+export const DeleteRecordTitle = styled(Typography)`
   grid-column: 1 / 3;
 `;
 
