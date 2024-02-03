@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { useDate } from '../../../../../hooks/useDate';
@@ -11,7 +11,6 @@ import { Error } from '../../../Error';
 import { CloseIcon } from '../../../Icons';
 import { HorizontalLoader } from '../../../HorizontalLoader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
-import { Paragraph } from '../../../../../styles';
 import {
   CloseDrawerContainer, ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer,
 } from '../Features.styled';
@@ -61,13 +60,13 @@ const SelectExpenses = ({
       ) }
       { (loading) && (
       <LoadingExpensesContainer>
-        <Paragraph>Loading expenses...</Paragraph>
+        <Typography>Loading expenses...</Typography>
         <HorizontalLoader />
       </LoadingExpensesContainer>
       ) }
       { (noExpensesFound && !loading && expenses.length === 0) && (
         <ExpensesNotFoundContainer>
-          <Paragraph align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Paragraph>
+          <Typography align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Typography>
         </ExpensesNotFoundContainer>
       ) }
       { (!noExpensesFound && !loading && expenses.length > 0) && (
