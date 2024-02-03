@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Toolbar } from '@mui/material';
+import { Toolbar, Typography } from '@mui/material';
 
 import {
-  AppColors, Paragraph, Sub, TableCell,
+  AppColors, Sub, TableCell,
 } from '../../../../styles';
 
 /** SelectExpenses */
@@ -109,7 +109,7 @@ export const NameCell = styled(TableCell)`
   gap: 1rem;
 `;
 
-export const IndebtedPeopleName = styled(Paragraph)`
+export const IndebtedPeopleName = styled(Typography)`
   padding: 1rem 0;
   text-align: center;
 `;
@@ -118,7 +118,7 @@ export const IconsCell = styled(TableCell)`
   display: flex;
 `;
 
-export const IndebtedPersonName = styled(Paragraph)`
+export const IndebtedPersonName = styled(Typography)`
   grid-column: 1 / 3;
   text-align: center;
 `;
