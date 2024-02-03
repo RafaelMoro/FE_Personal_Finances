@@ -1,8 +1,7 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 
 import { EditIcon, DeleteIcon } from '../Icons';
 import { AccountComponentProps } from './interface';
-import { Paragraph } from '../../../styles';
 import {
   AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
 } from './Account.styled';
@@ -25,7 +24,7 @@ const Account = ({
       onClick={selectAccountOnClick}
     >
       <AccountTitle variant="h4">{ title }</AccountTitle>
-      <Paragraph>{ amountFormatted }</Paragraph>
+      <Typography>{ amountFormatted }</Typography>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
           <EditIcon fillColor={colorUI.color} />
@@ -34,10 +33,10 @@ const Account = ({
           <DeleteIcon fillColor={colorUI.color} />
         </IconButton>
       </AccountIconsContainer>
-      <Paragraph>{ accountType }</Paragraph>
+      <Typography>{ accountType }</Typography>
       { (selected) && (
         <SelectedTextBox>
-          <Paragraph>Selected</Paragraph>
+          <Typography>Selected</Typography>
         </SelectedTextBox>
       ) }
     </AccountContainerColoroued>
