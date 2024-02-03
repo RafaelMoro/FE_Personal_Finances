@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import {
   CheckCircleOutlineOutlined,
 } from '@mui/icons-material';
@@ -9,7 +10,7 @@ import { HorizontalLoader } from '../../../components/UI/HorizontalLoader';
 import { AnimateBox } from '../../../animations';
 import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
 import {
-  AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
+  AppColors, AnchorButton, PrimaryButton, SecondaryButton,
 } from '../../../styles';
 
 const {
@@ -22,7 +23,7 @@ const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount)
     <AnimateBox direction={direction}>
       <LoaderContainer>
         <HorizontalLoader />
-        <Paragraph>Your account is being created. Please wait...</Paragraph>
+        <Typography>Your account is being created. Please wait...</Typography>
       </LoaderContainer>
     </AnimateBox>
   );
@@ -31,7 +32,7 @@ const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount)
 const SuccessCreateAccount = () => (
   <MessageContainer>
     <CheckCircleOutlineOutlined sx={{ fontSize: '4.5rem', fill: positive }} />
-    <Paragraph>Your account has being created.</Paragraph>
+    <Typography>Your account has being created.</Typography>
     <AnchorButton padding="6rem 0 0 0" to={LOGIN_ROUTE}>
       <PrimaryButton variant="contained" size="medium">Go to Login</PrimaryButton>
     </AnchorButton>
