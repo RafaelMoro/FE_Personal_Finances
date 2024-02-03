@@ -102,3 +102,16 @@ appTheme.typography.body1 = {
     fontSize: globalConfiguration.desktop.fontSizes.P,
   },
 };
+
+appTheme.typography.body2 = {
+  color: AppColors.subtitleColor,
+  [appTheme.breakpoints.down('sm')]: {
+    fontSize: globalConfiguration.mobile.fontSizes.P,
+  },
+  [appTheme.breakpoints.between('sm', 'md')]: {
+    fontSize: globalConfiguration.tablet.fontSizes.P,
+  },
+  [appTheme.breakpoints.up('md')]: {
+    fontSize: globalConfiguration.desktop.fontSizes.P,
+  },
+};
