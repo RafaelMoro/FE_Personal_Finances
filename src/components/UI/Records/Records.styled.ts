@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import {
-  ListItem, ListItemButton, List as ListMUI,
+  ListItem, ListItemButton, List as ListMUI, Typography,
 } from '@mui/material';
 
 import {
@@ -86,7 +86,7 @@ export const RecordTime = styled(RecordDateTime)`
   }
 `;
 
-export const RecordPrice = styled(Paragraph)`
+export const RecordPrice = styled(Typography)`
   font-weight: 500;
   text-align: center;
   grid-column: 1 / 3;
@@ -108,6 +108,7 @@ export const RecordExpense = styled(RecordPrice)`
   color: ${AppColors.negative};
 `;
 
+// TODO: Change for body2
 export const RecordSubtitleText = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
   text-align: center;
@@ -143,7 +144,7 @@ export const RecordSubCategory = styled(Sub)`
   }
 `;
 
-export const RecordDescription = styled(Paragraph)`
+export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 
   @media(min-width: 480px) {
@@ -185,7 +186,7 @@ export const StatusWhiteCircle = styled.div`
   padding-right: .5rem;
 `;
 
-export const RecordText = styled(Paragraph)`
+export const RecordText = styled(Typography)`
   grid-column: 1 / 3;
 
   @media(min-width: 1024px) {
