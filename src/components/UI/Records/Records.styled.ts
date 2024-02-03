@@ -8,7 +8,7 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Sub, ParagraphTitle,
+  AppColors, ParagraphTitle,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -102,8 +102,7 @@ export const RecordSubtitleText = styled(Typography)`
   }
 `;
 
-export const RecordCategory = styled(Sub)`
-  opacity: 0.7;
+export const RecordCategory = styled(Typography)`
   grid-column: 2 / 4;
 
   @media(min-width: 480px) {
@@ -115,8 +114,7 @@ export const RecordCategory = styled(Sub)`
   }
 `;
 
-export const RecordSubCategory = styled(Sub)`
-  opacity: 0.7;
+export const RecordSubCategory = styled(Typography)`
   grid-column: 2 / 4;
 
   @media(min-width: 480px) {

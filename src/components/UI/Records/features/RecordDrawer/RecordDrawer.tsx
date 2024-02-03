@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { RecordDrawerProps } from '../../interface';
 import { DeleteIcon, CloseIcon, EditIcon } from '../../../Icons';
 import {
-  RecordDrawerContainer, RecordDrawerTitle, RecordDrawerText,
+  RecordDrawerContainer, RecordDrawerTitle,
   RecordDrawerDescription, DrawerChipContainer,
   RecordDrawerPriceContainer,
   DrawerTitleContainer,
@@ -51,10 +51,10 @@ const RecordDrawer = ({
           <DeleteIcon />
         </IconButton>
       </DrawerTitleContainer>
-      <Typography variant="body2">{fullDate}</Typography>
-      <Typography variant="body2">{formattedTime}</Typography>
-      <RecordDrawerText>{category.categoryName}</RecordDrawerText>
-      <RecordDrawerText>{subCategory}</RecordDrawerText>
+      <Typography>{fullDate}</Typography>
+      <Typography>{formattedTime}</Typography>
+      <Typography>{category.categoryName}</Typography>
+      <Typography>{subCategory}</Typography>
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>

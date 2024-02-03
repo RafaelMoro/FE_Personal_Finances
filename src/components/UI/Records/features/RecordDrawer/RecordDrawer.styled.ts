@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Table, Typography } from '@mui/material';
 
 import {
-  AppColors, ParagraphTitle, Sub,
+  AppColors, ParagraphTitle,
 } from '../../../../../styles';
 import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
@@ -38,10 +38,6 @@ export const RecordDrawerTitle = styled(ParagraphTitle)`
   grid-column: 1 / 3;
 `;
 
-export const RecordDrawerText = styled(Sub)`
-  opacity: 0.7;
-`;
-
 export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
 `;
@@ -50,8 +46,7 @@ export const TableTitle = styled(Typography, { shouldForwardProp: (props) => pro
   ${({ isGrid = false }: RecordTableProps) => (isGrid && 'grid-column: 1 / 3;')}
 `;
 
-export const TableNote = styled(Sub)`
-  color: ${AppColors.subtitleColor};
+export const TableNote = styled(Typography)`
   text-align: justify;
 `;
 
