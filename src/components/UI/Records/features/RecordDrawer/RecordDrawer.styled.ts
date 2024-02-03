@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Table } from '@mui/material';
+import { Table, Typography } from '@mui/material';
 
 import {
-  AppColors, Paragraph, ParagraphTitle, Sub,
+  AppColors, ParagraphTitle, Sub,
 } from '../../../../../styles';
 import { ChipContainer, RecordDateTime, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
@@ -50,9 +50,8 @@ export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
 `;
 
-export const TableTitle = styled(Paragraph, { shouldForwardProp: (props) => props !== 'isGrid' })`
+export const TableTitle = styled(Typography, { shouldForwardProp: (props) => props !== 'isGrid' })`
   ${({ isGrid = false }: RecordTableProps) => (isGrid && 'grid-column: 1 / 3;')}
-  text-align: center;
 `;
 
 export const TableNote = styled(Sub)`
