@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import { Typography } from '@mui/material';
 
 import { IAccountDynamicStylesProps } from './interface';
-import { AppColors, Heading4 } from '../../../styles';
+import { AppColors } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import { FormContainer } from '../../../styles/LoginModule.styled';
 
@@ -50,7 +51,8 @@ export const AddAccountContainer = styled(AccountContainerBasicStyles)`
   gap: 2rem;
 `;
 
-export const AccountTitle = styled(Heading4)`
+export const AccountTitle = styled(Typography)`
+  font-weight: 500;
   align-self: start;
   text-overflow: ellipsis;
   white-space: nowrap;

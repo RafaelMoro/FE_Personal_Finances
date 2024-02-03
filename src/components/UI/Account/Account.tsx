@@ -24,7 +24,7 @@ const Account = ({
       selected={selected}
       onClick={selectAccountOnClick}
     >
-      <AccountTitle>{ title }</AccountTitle>
+      <AccountTitle variant="h4">{ title }</AccountTitle>
       <Paragraph>{ amountFormatted }</Paragraph>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
