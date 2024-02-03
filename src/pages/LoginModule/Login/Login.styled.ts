@@ -43,6 +43,7 @@ export const FormLoginTitle = styled(Typography)`
   margin-bottom: 2rem;
 `;
 
+// TODO: change to body2
 export const FormInstructions = styled(Paragraph)`
   color: ${AppColors.subtitleColor};
   margin-bottom: 1rem;
