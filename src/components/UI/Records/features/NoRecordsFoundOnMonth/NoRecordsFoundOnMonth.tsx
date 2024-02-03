@@ -1,4 +1,4 @@
-import { Paragraph } from '../../../../../styles';
+import { Typography } from '@mui/material';
 
 interface NoRecordsFoundOnMonthProps {
   month: string;
@@ -8,7 +8,7 @@ interface NoRecordsFoundOnMonthProps {
 const NoRecordsFoundOnMonth = ({
   month, accountTitle,
 }: NoRecordsFoundOnMonthProps) => (
-  <Paragraph align="center">
+  <Typography align="center">
     There are no records in
     {' '}
     { month }
@@ -19,7 +19,7 @@ const NoRecordsFoundOnMonth = ({
     {accountTitle}
     &quot;
     .
-  </Paragraph>
+  </Typography>
 );
 
 export { NoRecordsFoundOnMonth };
