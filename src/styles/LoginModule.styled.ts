@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
 import { Typography } from '@mui/material';
-import { Paragraph } from './Global.styled';
 
 /*
 * Here are all emotion components that may be re-used in the Login module
@@ -31,7 +30,7 @@ export const FormTitle = styled(Typography)`
   place-self: center;
 `;
 
-export const FormDescription = styled(Paragraph)`
+export const FormDescription = styled(Typography)`
   padding-left: 1rem;
   justify-self: center;
 `;
