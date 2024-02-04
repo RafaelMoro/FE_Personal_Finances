@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material';
-import { AppColors, globalConfiguration } from './GlobalConfigObjects';
+import { AppColors, globalConfiguration, responsiveBreakpoints } from './GlobalConfigObjects';
 
 export const appTheme = createTheme({
   palette: {
@@ -37,6 +37,23 @@ export const appTheme = createTheme({
   },
   typography: {
     fontFamily: 'Roboto',
+  },
+  components: {
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          [`@media${responsiveBreakpoints.mobile}`]: {
+            fontSize: globalConfiguration.mobile.fontSizes.P,
+          },
+          [`@media${responsiveBreakpoints.tablet}`]: {
+            fontSize: globalConfiguration.tablet.fontSizes.P,
+          },
+          [`@media${responsiveBreakpoints.desktop}`]: {
+            fontSize: globalConfiguration.desktop.fontSizes.P,
+          },
+        },
+      },
+    },
   },
 });
 
