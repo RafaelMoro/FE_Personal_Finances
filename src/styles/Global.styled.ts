@@ -49,6 +49,17 @@ export const GlobalStyles = css`
     z-index: 1;
   }
 
+  // Calendar Header
+  // Style for the week days span from M to S
+  .MuiDayCalendar-header .MuiDayCalendar-weekDayLabel {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+
+  // Style to override the years when selected other year and years are listed.
+  & .MuiPickersYear-yearButton {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+
   // Table pagination of select expenses of the select and sort table MUI
   .MuiTablePagination-selectIcon {
     width: 2rem !important;
@@ -194,6 +205,9 @@ export const Select = styled(SelectMUI)`
 
 export const DateTimePicker = styled(DateTimePickerMUI)`
   label {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
+  & .MuiTypography-root .MuiDayCalendar-weekDayLabel {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
   fieldset {
