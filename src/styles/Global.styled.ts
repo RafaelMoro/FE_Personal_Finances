@@ -49,11 +49,6 @@ export const GlobalStyles = css`
     z-index: 1;
   }
 
-  // Chip delete svg
-  .MuiChip-deleteIcon {
-    color: ${AppColors.primary} !important;
-  }
-
   // DateTimePicker css classes - calendar open.
   .MuiPickersCalendarHeader-switchViewIcon,
   .css-1vooibu-MuiSvgIcon-root {
