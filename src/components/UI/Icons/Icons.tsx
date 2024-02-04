@@ -1,7 +1,8 @@
 import {
   EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
   DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
-  ErrorOutlineOutlined,
+  ErrorOutlineOutlined, ArrowDropDown as ArrowDropDownMUI, ChevronLeft as ChevronLeftMUI,
+  ChevronRight as ChevronRightMUI, CalendarMonth as CalendarMonthMUI,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
 
@@ -51,4 +52,21 @@ export const Visibility = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconPr
 
 export const VisibilityOff = ({ size = DEFAULT_SIZE_CLOSE_ICON, fillColor }: IconProps) => (
   <VisibilityOffMui sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
+);
+
+/** Date Picker Icons */
+export const CalendarMonthIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <CalendarMonthMUI sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
+);
+
+export const ArrowDropDownIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <ArrowDropDownMUI sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
+);
+
+export const ChevronLeftIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <ChevronLeftMUI sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
+);
+
+export const ChevronRightIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <ChevronRightMUI sx={{ fontSize: size, fill: fillColor ?? AppColors.grey }} />
 );
