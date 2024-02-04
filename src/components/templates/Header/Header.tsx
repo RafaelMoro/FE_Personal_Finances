@@ -1,9 +1,9 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 
 import { useLogin } from '../../../hooks/useLogin';
 import { useAppSelector } from '../../../redux/hooks';
 import {
-  FlexContainer, ParagraphTitle,
+  FlexContainer,
 } from '../../../styles';
 import { LogOutIcon } from '../../UI/Icons';
 import { HeaderContainer } from './Header.styled';
@@ -18,7 +18,7 @@ const Header = () => {
       <FlexContainer gap="3" alignItems="center">
         <BrandLogoName />
       </FlexContainer>
-      { (windowSize === 'Desktop') && (<ParagraphTitle>Account management</ParagraphTitle>) }
+      { (windowSize === 'Desktop') && (<Typography variant="h3">Account management</Typography>) }
       <IconButton onClick={signOut}>
         <LogOutIcon />
       </IconButton>
