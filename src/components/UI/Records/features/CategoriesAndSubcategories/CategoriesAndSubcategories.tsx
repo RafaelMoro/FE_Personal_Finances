@@ -110,7 +110,7 @@ const CategoriesAndSubcategories = ({
         processSelectDataFn={setNewCategory}
       />
       { (touchedCategory && errorCategory) && (
-        <ErrorParagraphValidation>{errorCategory}</ErrorParagraphValidation>
+        <ErrorParagraphValidation variant="subText">{errorCategory}</ErrorParagraphValidation>
       ) }
       <SelectInput
         labelId="select-record-subcategory"
@@ -121,7 +121,7 @@ const CategoriesAndSubcategories = ({
         disabled={categoriesState.categoryNotSelected}
       />
       { (touchedSubCategory && errorSubcategory) && (
-        <ErrorParagraphValidation>{errorSubcategory}</ErrorParagraphValidation>
+        <ErrorParagraphValidation variant="subText">{errorSubcategory}</ErrorParagraphValidation>
       ) }
     </>
   );
