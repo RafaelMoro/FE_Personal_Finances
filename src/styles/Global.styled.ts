@@ -19,7 +19,7 @@ import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
-import { FlexContainerProps, ParagraphProps, ChipProps } from './interface';
+import { FlexContainerProps, ChipProps } from './interface';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 import { dynamicPadding } from './DynamicStyles.styled';
