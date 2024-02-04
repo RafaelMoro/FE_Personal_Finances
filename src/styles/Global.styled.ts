@@ -147,11 +147,6 @@ export const TransparentButton = styled(Button)`
 
 // **** Paragraphs
 
-export const ParagraphTitle = styled.p`
-  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
-  ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
-`;
-
 export const ErrorParagraphValidation = styled(Typography)`
   color: ${AppColors.validationError};
 `;
