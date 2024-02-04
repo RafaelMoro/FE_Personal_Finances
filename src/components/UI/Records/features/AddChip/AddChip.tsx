@@ -48,7 +48,7 @@ const AddChip = ({
     <ChipForm>
       { (chips.length === 0) && (
         <FlexContainer justifyContent="center">
-          <RecordSubtitleText>{`No ${name}s added`}</RecordSubtitleText>
+          <RecordSubtitleText variant="body2">{`No ${name}s added`}</RecordSubtitleText>
         </FlexContainer>
       ) }
       { (chips.length > 0) && (
