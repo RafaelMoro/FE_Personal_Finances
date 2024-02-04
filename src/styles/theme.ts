@@ -55,6 +55,22 @@ export const appTheme = createTheme({
         },
       },
     },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          /** Override the fontsize breakpoints of buttons */
+          [`@media${responsiveBreakpoints.mobile}`]: {
+            fontSize: globalConfiguration.mobile.fontSizes.P,
+          },
+          [`@media${responsiveBreakpoints.tablet}`]: {
+            fontSize: globalConfiguration.tablet.fontSizes.P,
+          },
+          [`@media${responsiveBreakpoints.desktop}`]: {
+            fontSize: globalConfiguration.desktop.fontSizes.P,
+          },
+        },
+      },
+    },
   },
 });
 
