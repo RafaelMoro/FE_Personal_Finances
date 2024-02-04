@@ -1,6 +1,21 @@
 import { createTheme } from '@mui/material';
 import { AppColors, globalConfiguration, responsiveBreakpoints } from './GlobalConfigObjects';
 
+declare module '@mui/material' {
+  interface TypographyOptions {
+    subText: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme`
+  interface TypographyVariantsOptions {
+    subText?: React.CSSProperties;
+  }
+
+  interface TypographyPropsVariantOverrides {
+    subText: true;
+  }
+}
+
 export const appTheme = createTheme({
   palette: {
     mode: 'light',
@@ -37,8 +52,28 @@ export const appTheme = createTheme({
   },
   typography: {
     fontFamily: 'Roboto',
+    /** Add subText font size breakpoints */
+    subText: {
+      [`@media${responsiveBreakpoints.mobile}`]: {
+        fontSize: globalConfiguration.mobile.fontSizes.Sub,
+      },
+      [`@media${responsiveBreakpoints.tablet}`]: {
+        fontSize: globalConfiguration.tablet.fontSizes.Sub,
+      },
+      [`@media${responsiveBreakpoints.desktop}`]: {
+        fontSize: globalConfiguration.desktop.fontSizes.Sub,
+      },
+    },
   },
   components: {
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          /** Add subText variant */
+          subText: 'p',
+        },
+      },
+    },
     MuiFormHelperText: {
       styleOverrides: {
         root: {
