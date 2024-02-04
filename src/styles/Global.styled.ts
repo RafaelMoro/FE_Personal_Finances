@@ -93,7 +93,6 @@ export const FlexContainer = styled.div`
 // **** Buttons
 
 export const PrimaryButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.primary};
   color: ${AppColors.white};
 
@@ -108,7 +107,6 @@ export const PrimaryButton = styled(Button)`
 `;
 
 export const SecondaryButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.white};
   color: ${AppColors.primary};
   border: .1rem solid ${AppColors.primary};
@@ -120,7 +118,6 @@ export const SecondaryButton = styled(Button)`
 `;
 
 export const CancelButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.negative};
   color: ${AppColors.white};
 
@@ -131,7 +128,6 @@ export const CancelButton = styled(Button)`
 `;
 
 export const ConfirmButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.positive};
   color: ${AppColors.white};
 
