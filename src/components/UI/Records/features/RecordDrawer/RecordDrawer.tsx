@@ -43,7 +43,7 @@ const RecordDrawer = ({
         </IconButton>
       </DrawerCloseBox>
       <DrawerTitleContainer>
-        <RecordDrawerTitle>{shortName}</RecordDrawerTitle>
+        <RecordDrawerTitle variant="h4" align="center">{shortName}</RecordDrawerTitle>
         <IconButton onClick={handleEditRecord}>
           <EditIcon />
         </IconButton>

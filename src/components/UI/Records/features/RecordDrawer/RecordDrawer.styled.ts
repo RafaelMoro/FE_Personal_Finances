@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Table, Typography } from '@mui/material';
 
 import {
-  AppColors, ParagraphTitle,
+  AppColors,
 } from '../../../../../styles';
 import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
@@ -33,8 +33,7 @@ export const DrawerCloseBox = styled.div`
   justify-self: end;
 `;
 
-export const RecordDrawerTitle = styled(ParagraphTitle)`
-  text-align: center;
+export const RecordDrawerTitle = styled(Typography)`
   grid-column: 1 / 3;
 `;
 
