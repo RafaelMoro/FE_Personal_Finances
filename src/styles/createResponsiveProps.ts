@@ -1,4 +1,4 @@
-import { globalConfiguration, ResponsiveBreakpoints } from './GlobalConfigObjects';
+import { globalConfiguration, responsiveBreakpoints } from './GlobalConfigObjects';
 import { FontSizes } from './interface';
 
 type FontWeight = 'normal' | 'bold' | '500';
@@ -25,14 +25,14 @@ export function createResponsiveProps({ fontSize = 'P', fontWeight = 'normal', i
   return `
     font-weight: ${fontWeight};
 
-    @media ${ResponsiveBreakpoints.mobile} {
+    @media ${responsiveBreakpoints.mobile} {
       font-size: ${globalConfiguration.mobile.fontSizes[fontSize]} ${importantProperty};
     }
 
-    @media ${ResponsiveBreakpoints.tablet} {
+    @media ${responsiveBreakpoints.tablet} {
       font-size: ${globalConfiguration.tablet.fontSizes[fontSize]} ${importantProperty};
     }
-    @media ${ResponsiveBreakpoints.desktop} {
+    @media ${responsiveBreakpoints.desktop} {
       font-size: ${globalConfiguration.desktop.fontSizes[fontSize]} ${importantProperty};
     }
   `;

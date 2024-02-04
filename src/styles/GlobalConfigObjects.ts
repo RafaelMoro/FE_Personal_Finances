@@ -91,7 +91,7 @@ export const AllBackgroundColors: BackgroundColors [] = [
   { name: 'Purple', color: '#A020F0' },
 ];
 
-export const ResponsiveBreakpoints = {
+export const responsiveBreakpoints = {
   mobile: '(max-width: 599.95px)',
   tablet: '(min-width: 600px) and (max-width: 899.95px)',
   desktop: '(min-width: 900px)',
