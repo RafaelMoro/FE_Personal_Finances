@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Drawer } from '@mui/material';
+import { Drawer, Typography } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 import dayjs from 'dayjs';
@@ -25,7 +25,7 @@ import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
-  ParagraphTitle, InputForm, InputAdornment,
+  InputForm, InputAdornment,
   FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
 import { CloseIcon } from '../../../Icons';
@@ -240,12 +240,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           <ToggleButton value="income">Income</ToggleButton>
         </ToggleButtonGroup>
       ) }
-      <ParagraphTitle align="center">
+      <Typography variant="h3" align="center">
         {' '}
         { action }
         {' '}
         { typeOfRecord }
-      </ParagraphTitle>
+      </Typography>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
