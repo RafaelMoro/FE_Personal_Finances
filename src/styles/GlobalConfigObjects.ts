@@ -106,6 +106,7 @@ export const globalConfiguration: GlobalConfiguration = {
       H4: '1.7rem',
       H5: '1.6rem',
       P: '1.6rem',
+      Sub: '1.4rem',
     },
   },
   tablet: {
@@ -116,6 +117,7 @@ export const globalConfiguration: GlobalConfiguration = {
       H4: '2rem',
       H5: '1.8rem',
       P: '1.6rem',
+      Sub: '1.4rem',
     },
   },
   desktop: {
@@ -126,6 +128,7 @@ export const globalConfiguration: GlobalConfiguration = {
       H4: '2.4rem',
       H5: '2rem',
       P: '1.8rem',
+      Sub: '1.5rem',
     },
   },
 };

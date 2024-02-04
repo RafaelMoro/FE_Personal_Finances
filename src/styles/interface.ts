@@ -4,6 +4,7 @@ export interface FontSizes {
   H3: string,
   H4: string,
   H5: string,
+  Sub: string;
   P: string,
 }
 export interface GlobalConfiguration {
