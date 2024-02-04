@@ -91,6 +91,18 @@ appTheme.typography.h4 = {
   },
 };
 
+appTheme.typography.h5 = {
+  [appTheme.breakpoints.down('sm')]: {
+    fontSize: globalConfiguration.mobile.fontSizes.H5,
+  },
+  [appTheme.breakpoints.between('sm', 'md')]: {
+    fontSize: globalConfiguration.tablet.fontSizes.H5,
+  },
+  [appTheme.breakpoints.up('md')]: {
+    fontSize: globalConfiguration.desktop.fontSizes.H5,
+  },
+};
+
 appTheme.typography.body1 = {
   [appTheme.breakpoints.down('sm')]: {
     fontSize: globalConfiguration.mobile.fontSizes.P,
