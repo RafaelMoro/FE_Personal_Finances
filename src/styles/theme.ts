@@ -42,14 +42,15 @@ export const appTheme = createTheme({
     MuiFormHelperText: {
       styleOverrides: {
         root: {
+          /** Override the fontsize breakpoints of the helper text that is shown when an input has a error validation */
           [`@media${responsiveBreakpoints.mobile}`]: {
-            fontSize: globalConfiguration.mobile.fontSizes.P,
+            fontSize: globalConfiguration.mobile.fontSizes.Sub,
           },
           [`@media${responsiveBreakpoints.tablet}`]: {
-            fontSize: globalConfiguration.tablet.fontSizes.P,
+            fontSize: globalConfiguration.tablet.fontSizes.Sub,
           },
           [`@media${responsiveBreakpoints.desktop}`]: {
-            fontSize: globalConfiguration.desktop.fontSizes.P,
+            fontSize: globalConfiguration.desktop.fontSizes.Sub,
           },
         },
       },
