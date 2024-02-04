@@ -1,11 +1,11 @@
-import { Dialog } from '@mui/material';
+import { Dialog, Typography } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { Switch } from 'formik-mui';
 
 import { IndebtedPeopleFormSchema } from '../../../../../validationsSchemas/records.schema';
 import { FormContainer } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  ParagraphTitle, PrimaryButton, InputForm, InputAdornment,
+  PrimaryButton, InputForm, InputAdornment,
   FormControlLabel, TransparentButton, FlexContainer,
 } from '../../../../../styles';
 import { IndebtedPeople } from '../../../../../globalInterface';
@@ -53,11 +53,11 @@ const AddIndebtedPerson = ({
     <Dialog onClose={onClose} open={open}>
       <Container>
         <FlexContainer justifyContent="space-between">
-          <ParagraphTitle>
+          <Typography variant="h4">
             { (modifyAction) ? 'Modify' : 'Add' }
             {' '}
             Person
-          </ParagraphTitle>
+          </Typography>
           <TransparentButton onClick={onClose}>
             <CloseIcon />
           </TransparentButton>
