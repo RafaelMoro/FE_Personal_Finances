@@ -23,11 +23,11 @@ export const AnchorButtonForm = styled(AnchorButton)`
   }
 `;
 
-export const CancelButtonForm = styled(CancelButton)`
+export const CancelButtonForm = styled(CancelButton, { shouldForwardProp: (props) => props !== 'minWidth' })`
   min-width: ${({ minWidth }: ButtonPanelProps) => minWidth}rem;
 `;
 
-export const PrimaryButtonForm = styled(PrimaryButton)`
+export const PrimaryButtonForm = styled(PrimaryButton, { shouldForwardProp: (props) => props !== 'minWidth' })`
   min-width: ${({ minWidth }: ButtonPanelProps) => minWidth}rem;
   order: 1;
 
