@@ -49,13 +49,6 @@ export const GlobalStyles = css`
     z-index: 1;
   }
 
-  // DateTimePicker css classes - calendar open.
-  .MuiPickersCalendarHeader-switchViewIcon,
-  .css-1vooibu-MuiSvgIcon-root {
-    width: 3rem !important;
-    height: 3rem !important;
-  }
-
   // Table pagination of select expenses of the select and sort table MUI
   .MuiTablePagination-selectIcon {
     width: 2rem !important;
