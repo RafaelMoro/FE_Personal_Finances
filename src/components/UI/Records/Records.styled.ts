@@ -8,7 +8,7 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, ParagraphTitle,
+  AppColors,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -35,7 +35,7 @@ export const ListItemRecord = styled(ListItem)`
   }
 `;
 
-export const RecordTitle = styled(ParagraphTitle)`
+export const RecordTitle = styled(Typography)`
   grid-column: 1 / 3;
 
   @media(min-width: 480px) {

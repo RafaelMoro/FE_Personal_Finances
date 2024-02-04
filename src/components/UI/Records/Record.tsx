@@ -84,7 +84,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     return (
       <>
         <ListItemRecord onClick={showLongView}>
-          <RecordTitle align="center">{ shortName }</RecordTitle>
+          <RecordTitle variant="h5" align="center">{ shortName }</RecordTitle>
           { amountShown }
           <RecordDate>{ fullDate }</RecordDate>
           <RecordTime>{ formattedTime }</RecordTime>
@@ -155,7 +155,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   return (
     <>
       <ListItemRecord onClick={showLongView}>
-        <RecordTitle align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
+        <RecordTitle variant="h5" align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
         { amountShown }
         <Typography variant="body2">{ fullDate }</Typography>
         <Typography variant="body2">{ formattedTime }</Typography>
