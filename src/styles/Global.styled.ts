@@ -236,6 +236,10 @@ export const Chip = styled(ChipMUI, { shouldForwardProp: (props) => props !== 'c
   max-width: 15rem;
   color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
+
+  & .MuiChip-label {
+    ${createResponsiveProps({ fontSize: 'Sub' })}
+  }
 `;
 
 export const MobileChip = styled(Chip)`
