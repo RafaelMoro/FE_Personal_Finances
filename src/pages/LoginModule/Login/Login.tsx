@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
+import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
@@ -17,6 +18,7 @@ import {
 import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
 
 const Login = () => {
+  useSyncLoginInfo();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
   } = useLogin();
