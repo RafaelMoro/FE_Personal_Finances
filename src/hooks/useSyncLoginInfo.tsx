@@ -44,7 +44,8 @@ const useSyncLoginInfo = () => {
         dispatch(setRecordToBeModified(localStorageInfo?.recordToBeEdited));
       }
     }
-  }, [dispatch, location.pathname, navigate, signOut, userReduxState.userInfo]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 };
 
 export { useSyncLoginInfo };
