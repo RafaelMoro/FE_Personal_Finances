@@ -17,6 +17,7 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
+import { ActionButtonPanel } from '../../../../templates';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
@@ -40,7 +41,7 @@ import {
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
-import { ActionButtonPanel } from '../../../../templates';
+import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
@@ -198,6 +199,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         const recordId = recordToBeEdited?._id ?? '';
         const previousAmount = recordToBeEdited?.amount ?? 0;
         const userIdRecord = recordToBeEdited?.userId ?? '';
+        resetLocalStorageWithUserOnly();
         editExpense({
           values: newValues, recordId, amountTouched, previousAmount, userId: userIdRecord,
         });
@@ -215,6 +217,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+      resetLocalStorageWithUserOnly();
       editIncome({
         values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
       });
