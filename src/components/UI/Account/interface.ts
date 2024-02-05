@@ -24,8 +24,7 @@ export interface ModifyAccountValues extends Omit<Account, '_id' | '__v'> {
 
 // backgroundColor and color are string because in the Account component, the
 // background color and color are transformed using the global config object.
-export interface IAccountDynamicStylesProps {
-  backgroundColor: string;
+export interface AccountDynamicStylesProps {
   color: string;
   selected: boolean;
 }

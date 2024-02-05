@@ -2,17 +2,22 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Typography } from '@mui/material';
 
-import { IAccountDynamicStylesProps } from './interface';
+import { AccountDynamicStylesProps } from './interface';
 import { AppColors } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import { FormContainer } from '../../../styles/LoginModule.styled';
 
 const accountDynamicStyles = ({
-  color, backgroundColor, selected,
-}: IAccountDynamicStylesProps) => css`
-  background-color: ${backgroundColor};
-  color: ${color ?? AppColors.black};
+  color, selected,
+}: AccountDynamicStylesProps) => css`
+  border: .1rem solid ${color ?? AppColors.black};
   ${selected && 'opacity: 1;'}
+`;
+
+const selectedDynamicStyles = ({
+  backgroundColor,
+}: { backgroundColor: string }) => css`
+  border: .1rem solid ${backgroundColor ?? AppColors.black};
 `;
 
 const AccountContainerBasicStyles = styled.article`
@@ -67,7 +72,7 @@ export const AccountIconsContainer = styled.div`
 
 export const SelectedTextBox = styled.div`
   padding: .5rem;
-  border: .2rem solid ${AppColors.white};
+  ${selectedDynamicStyles}
   border-radius: 1rem;
   display: flex;
   justify-content: center;
