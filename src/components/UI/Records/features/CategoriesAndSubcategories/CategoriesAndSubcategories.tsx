@@ -31,7 +31,7 @@ const CategoriesAndSubcategories = ({
 }: CategoriesAndSubcategoriesProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.userInfo);
-  const { bearerToken } = user as User;
+  const bearerToken = user?.bearerToken;
   const categoriesState = useAppSelector((state) => state.categories);
   const { updateGlobalNotification } = useNotification();
   const onlyCategories = useMemo(() => (categoriesState.categories ?? []).map((item) => item.categoryName), [categoriesState.categories]);
