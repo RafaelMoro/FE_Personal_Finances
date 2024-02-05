@@ -5,6 +5,7 @@ import { ViewAccounts } from '../../components/UI/Account';
 import { Notification, RecordList, SpeedDial } from '../../components/UI';
 import { Header } from '../../components/templates/Header';
 import { useBackToTopButton } from '../../hooks/useBackToTopButton';
+import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
 import { BackToTopButton } from '../../components/UI/BackToTopButton';
 import {
   DashboardContainer, RecordsBox,
@@ -17,6 +18,7 @@ const Dashboard = () => {
   const {
     globalNotification, toggleGlobalNotification,
   } = useNotification();
+  useSyncLoginInfo();
   const { visible, scrollToTop } = useBackToTopButton();
 
   const { dashboardActions, accountActions } = useDashboardActions({
