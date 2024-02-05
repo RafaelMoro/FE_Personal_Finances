@@ -9,7 +9,7 @@ import { useNotification } from './useNotification';
 import { saveInfoToLocalStorage } from '../utils';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
-  loginUser, toggleNavigateDashboardFlag, signOff,
+  loginUser, disableNavigateDashboardFlag, signOff,
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
@@ -58,7 +58,7 @@ const useLogin = () => {
     if (userReduxState.navigateToDashboard) {
       // After navigating to the dashboard, disable the flag to avoid re-render.
       navigate(DASHBOARD_ROUTE);
-      dispatch(toggleNavigateDashboardFlag());
+      dispatch(disableNavigateDashboardFlag());
     }
   }, [dispatch, navigate, userReduxState.navigateToDashboard]);
 

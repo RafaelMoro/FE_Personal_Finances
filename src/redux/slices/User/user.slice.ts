@@ -31,8 +31,8 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: userInitialState,
   reducers: {
-    toggleNavigateDashboardFlag: (state) => {
-      state.navigateToDashboard = !state.navigateToDashboard;
+    disableNavigateDashboardFlag: (state) => {
+      state.navigateToDashboard = false;
     },
     signOff: (state) => {
       state.userInfo = null;
@@ -81,7 +81,7 @@ export const userSlice = createSlice({
 });
 
 export const {
-  toggleNavigateDashboardFlag, signOff, signOn, resetSuccessOnAction,
+  disableNavigateDashboardFlag, signOff, signOn, resetSuccessOnAction,
 } = userSlice.actions;
 
 export default userSlice.reducer;
