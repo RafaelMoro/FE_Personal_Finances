@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import jwtDecode from 'jwt-decode';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useLogin } from './useLogin';
-import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
+import { CountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { getLocalStorageInfo } from '../utils';
 import { signOn } from '../redux/slices/User/user.slice';
+import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
@@ -23,13 +23,9 @@ const useSyncLoginInfo = () => {
       }
 
       const user = localStorageInfo?.user;
-      const jwtDecoded: JWT = jwtDecode(user?.accessToken);
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      if (jwtDecoded && Date.now() >= jwtDecoded?.exp * 1000) {
-        signOut();
-        return;
-      }
-      dispatch(signOn(user));
+      const accessToken = user?.accessToken;
+      const isExpiredAccessToken = verifyJwtExpiration(accessToken, signOut);
+      if (!isExpiredAccessToken) dispatch(signOn(user));
     }
   }, [dispatch, signOut, userReduxState.userInfo]);
 };
