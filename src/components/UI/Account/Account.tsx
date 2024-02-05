@@ -5,6 +5,7 @@ import { AccountComponentProps } from './interface';
 import {
   AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
 } from './Account.styled';
+import { AppColors } from '../../../styles';
 
 const Account = ({
   account,
@@ -18,8 +19,8 @@ const Account = ({
 
   return (
     <AccountContainerColoroued
-      backgroundColor={backgroundColorUI.color}
-      color={colorUI.color}
+      backgroundColor={AppColors.black}
+      color={AppColors.white}
       selected={selected}
       onClick={selectAccountOnClick}
     >

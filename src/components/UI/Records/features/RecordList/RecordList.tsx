@@ -37,8 +37,8 @@ const RecordList = () => {
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const accountId = selectedAccount?._id ?? 'Account ID not found';
 
-  const backgroundColor = selectedAccount?.backgroundColorUI?.color ?? AppColors.bgColorGrey;
-  const color = selectedAccount?.colorUI?.color ?? AppColors.black;
+  // const backgroundColor = selectedAccount?.backgroundColorUI?.color ?? AppColors.bgColorGrey;
+  // const color = selectedAccount?.colorUI?.color ?? AppColors.black;
 
   useEffect(() => {
     // Fetch if user, accounts exists and current month records are null
@@ -82,8 +82,8 @@ const RecordList = () => {
   return (
     <List>
       <MonthRecords
-        backgroundColor={backgroundColor}
-        color={color}
+        backgroundColor={AppColors.black}
+        color={AppColors.white}
         openedAccordeon
         titleMonthAccordeon={`Current month: ${completeCurrentMonth}`}
         totalExpense={totalRecords.currentMonth.expenseTotal}
@@ -99,8 +99,8 @@ const RecordList = () => {
         )}
       />
       <MonthRecords
-        backgroundColor={backgroundColor}
-        color={color}
+        backgroundColor={AppColors.black}
+        color={AppColors.white}
         openedAccordeon={false}
         titleMonthAccordeon={`Last month: ${completeLastMonth}`}
         totalExpense={totalRecords.lastMonth.expenseTotal}
