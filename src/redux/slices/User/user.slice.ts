@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { postRequest, updateLocalStorage } from '../../../utils';
+import { postRequest, addToLocalStorage } from '../../../utils';
 import { LoginValues } from '../../../pages/LoginModule/Login/interface';
 import { User } from '../../../globalInterface';
 import { LOGIN_POST_ROUTE } from '../../../pages/LoginModule/Login/constants';
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
       const { accessToken, user: { email } } = action.payload.data;
       const bearerToken = { Authorization: `Bearer ${accessToken}` };
       const user: User = { accessToken, email, bearerToken };
-      updateLocalStorage(
+      addToLocalStorage(
         {
           user,
         },

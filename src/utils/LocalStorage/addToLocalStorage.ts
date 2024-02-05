@@ -1,7 +1,7 @@
 import { getLocalStorageInfo } from './getLocalStorageInfo';
 import { saveInfoToLocalStorage } from './saveInfoToLocalStorage';
 
-export function updateLocalStorage(newInfo: object) {
+export function addToLocalStorage(newInfo: object) {
   const localStorageInfo = getLocalStorageInfo();
   const newLocalStorage = {
     ...localStorageInfo,

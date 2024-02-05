@@ -4,8 +4,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
-import { CountOnMeLocalStorage } from '../../../../../utils/LocalStorage/interface';
-import { getLocalStorageInfo, updateLocalStorage } from '../../../../../utils';
+import { addToLocalStorage } from '../../../../../utils';
 import { DeleteIcon, CloseIcon, EditIcon } from '../../../Icons';
 import {
   RecordDrawerContainer, RecordDrawerTitle,
@@ -35,8 +34,7 @@ const RecordDrawer = ({
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
     // Update local storage
-    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
-    updateLocalStorage({ ...localStorageInfo, recordToBeEdited: record });
+    addToLocalStorage({ recordToBeEdited: record });
     navigate(EDIT_RECORD_ROUTE);
   };
 
