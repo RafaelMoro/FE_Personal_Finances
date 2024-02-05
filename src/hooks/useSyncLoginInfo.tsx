@@ -6,8 +6,9 @@ import { useLogin } from './useLogin';
 import { CountOnMeLocalStorage } from '../utils/LocalStorage/interface';
 import { getLocalStorageInfo } from '../utils';
 import { signOn } from '../redux/slices/User/user.slice';
+import { setRecordToBeModified } from '../redux/slices/Records/records.slice';
 import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
+import { DASHBOARD_ROUTE, EDIT_RECORD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
@@ -32,6 +33,11 @@ const useSyncLoginInfo = () => {
 
       if (!isExpiredAccessToken) dispatch(signOn(user));
       if (location.pathname === LOGIN_ROUTE) navigate(DASHBOARD_ROUTE);
+
+      /** Update recordToBeEdited on redux if we got the record in local storage */
+      if (location.pathname === EDIT_RECORD_ROUTE && localStorageInfo?.recordToBeEdited) {
+        dispatch(setRecordToBeModified(localStorageInfo?.recordToBeEdited));
+      }
     }
   }, [dispatch, location.pathname, navigate, signOut, userReduxState.userInfo]);
 };
