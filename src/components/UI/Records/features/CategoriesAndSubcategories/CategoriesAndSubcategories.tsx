@@ -9,7 +9,7 @@ import {
 } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
-import { Category, User } from '../../../../../globalInterface';
+import { Category } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { useNotification } from '../../../../../hooks/useNotification';
