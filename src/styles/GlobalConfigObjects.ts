@@ -6,12 +6,12 @@ import { GlobalConfiguration, BackgroundColors, TextColors } from './interface';
 */
 
 export const AppColors = {
-  primary: '#B16841',
-  primaryDark: '#C08667',
-  primaryLight: '#7B482D',
-  secondary: '#592418',
-  secondaryLight: '#7A4F46',
-  secondaryDark: '#3E1910',
+  primary: '#592418',
+  primaryDark: '#3E1910',
+  primaryLight: '#7A4F46',
+  secondary: '#B16841',
+  secondaryLight: '#C08667',
+  secondaryDark: '#7B482D',
   white: '#fbfbfb',
   black: '#1D1305',
   positive: '#2e8625',
