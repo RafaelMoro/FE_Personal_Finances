@@ -57,7 +57,7 @@ export const GlobalStyles = css`
 
   // Style to override the years when selected other year and years are listed.
   & .MuiPickersYear-yearButton {
-    ${createResponsiveProps({ fontSize: 'P' })}
+    ${createResponsiveProps({ fontSize: 'P', important: true })}
   }
 
   // Table pagination of select expenses of the select and sort table MUI
