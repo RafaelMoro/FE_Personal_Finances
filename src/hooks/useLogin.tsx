@@ -1,17 +1,15 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 import { AxiosError } from 'axios';
 
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
-import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
-import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
+import { saveInfoToLocalStorage } from '../utils';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
-  loginUser, toggleNavigateDashboardFlag, signOff, signOn,
+  loginUser, toggleNavigateDashboardFlag, signOff,
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
@@ -54,28 +52,6 @@ const useLogin = () => {
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
   };
-
-  // Sync local storage with user Info redux state.
-  useEffect(() => {
-    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
-    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
-
-    if (!IsEmptyLocalStorage) {
-      // Check if token has expired
-      const { user } = localStorageInfo;
-
-      const jwtDecoded: JWT = jwtDecode(user?.accessToken);
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      if (jwtDecoded && Date.now() >= jwtDecoded?.exp * 1000) {
-        signOut();
-        return;
-      }
-
-      if (!userReduxState.userInfo) dispatch(signOn(user));
-      navigate(DASHBOARD_ROUTE);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
 
   // After having a success login, the flag of navigate to dashboard will be enabled.
   useEffect(() => {
