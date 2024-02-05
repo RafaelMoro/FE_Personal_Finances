@@ -9,7 +9,6 @@ import { RecordExpense, RecordIncome } from '../../Records.styled';
 import { ShowTotalContianer } from '../Features.styled';
 
 interface MonthRecordsProps {
-  backgroundColor: string;
   color: string;
   openedAccordeon: boolean;
   titleMonthAccordeon: string;
@@ -26,12 +25,11 @@ interface MonthRecordsProps {
 }
 
 const MonthRecords = ({
-  backgroundColor, color, openedAccordeon, titleMonthAccordeon, accountId,
+  color, openedAccordeon, titleMonthAccordeon, accountId,
   records, loading, error, onEmptyCb, onLoadingCb, onErrorCb, totalExpense, totalIncome,
   onClickCb = () => {},
 }: MonthRecordsProps) => (
   <MonthAccordeon
-    backgroundColor={backgroundColor}
     color={color}
     opened={openedAccordeon}
     title={titleMonthAccordeon}
@@ -60,7 +58,7 @@ const MonthRecords = ({
             <div key={record._id}>
               { (index === 0) && (<Divider />) }
               <Record
-                backgroundColor={backgroundColor}
+                backgroundColor={color}
                 record={record}
               />
               <Divider />

@@ -87,6 +87,5 @@ export interface SelectMonthYearValues {
 }
 
 export interface ListExpandableContainerProps {
-  backgroundColor: string;
   color: string;
 }

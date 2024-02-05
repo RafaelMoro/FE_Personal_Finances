@@ -272,13 +272,12 @@ export const SelectExpensesContainer = styled.div`
 
 // Month Records
 
-export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'backgroundColor' && props !== 'color' })`
+export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'color' })`
   display: flex;
   justify-content: space-between;
   padding: 1.5rem 1rem;
-  border: .1rem solid ${AppColors.white};
+  border: .1rem solid  ${({ color }: ListExpandableContainerProps) => color};
   border-radius: 1rem;
-  background-color: ${({ backgroundColor }: ListExpandableContainerProps) => backgroundColor};
   color: ${({ color }: ListExpandableContainerProps) => color};
 
   &:hover {

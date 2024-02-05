@@ -9,14 +9,13 @@ interface MonthAccordeonProps {
   opened?: boolean;
   children: ReactNode;
   title: string;
-  backgroundColor: string;
   color: string;
   accountId: string;
   onClickCallback?: () => Promise<void> | void;
 }
 
 const MonthAccordeon = ({
-  opened = false, children, title, backgroundColor, color, onClickCallback = () => {}, accountId,
+  opened = false, children, title, color, onClickCallback = () => {}, accountId,
 }: MonthAccordeonProps) => {
   const [openCollapse, setOpenCollapse] = useState<boolean>(opened);
   const iconSize = { fontSize: '2.5rem' };
@@ -43,7 +42,7 @@ const MonthAccordeon = ({
 
   return (
     <>
-      <ListExpandableContainer backgroundColor={backgroundColor} color={color} onClick={handleClick}>
+      <ListExpandableContainer color={color} onClick={handleClick}>
         <Typography>{title}</Typography>
         {openCollapse ? <ExpandLess sx={iconSize} /> : <ExpandMore sx={iconSize} />}
       </ListExpandableContainer>
