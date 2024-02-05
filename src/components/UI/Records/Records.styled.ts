@@ -256,13 +256,6 @@ export const List = styled(ListMUI)`
 
 export const MonthRecordBox = styled.div`
   height: 100%;
-
-  @media(min-width: 1024px) {
-    max-height: 80rem;
-    overflow-y: scroll;
-    overscroll-behavior-y: contain;
-    scroll-snap-type: y proximity;
-  }
 `;
 
 // Show expenses
