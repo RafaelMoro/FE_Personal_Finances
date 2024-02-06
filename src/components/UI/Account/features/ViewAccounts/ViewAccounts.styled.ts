@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { PrimaryButton, SecondaryButton } from '../../../../../styles';
+import { PrimaryButton, SecondaryButton, responsiveBreakpoints } from '../../../../../styles';
 import { ViewAccountsStylesProps } from './interface';
 
 export const AccountSectionBasicStyles = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
@@ -12,7 +12,7 @@ export const AccountSectionBasicStyles = styled('aside', { shouldForwardProp: (p
   justify-content: center;
   row-gap: 1rem;
 
-  @media (min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     height: 100vh;
     grid-template-columns: 21rem 1fr;
     grid-auto-rows: 14rem;
@@ -38,7 +38,7 @@ export const AccountSectionLoading = styled.article`
   display: grid;
   place-items: center;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     overflow-x: scroll;
     overscroll-behavior-x: contain;
     scroll-snap-type: x proximity;
@@ -48,7 +48,7 @@ export const AccountSectionLoading = styled.article`
     grid-auto-columns: 25rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 2 / 3;
     overflow-x: unset;
     grid-auto-flow: row;
