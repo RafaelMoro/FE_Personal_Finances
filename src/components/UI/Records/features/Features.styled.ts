@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Toolbar, Typography } from '@mui/material';
 
 import {
-  AppColors, TableCell,
+  AppColors, TableCell, responsiveBreakpoints,
 } from '../../../../styles';
 
 /** SelectExpenses */
@@ -14,11 +14,11 @@ export const SelectExpensesContainer = styled.div`
   width: 100%;
   min-width: 32rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     min-width: 48rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     min-width: 70rem;
   }
 `;
@@ -37,11 +37,11 @@ export const LoadingExpensesContainer = styled.div`
   place-items: center;
   padding-top: 3rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     min-width: 48rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     min-width: 70rem;
   }
 `;
@@ -49,7 +49,7 @@ export const LoadingExpensesContainer = styled.div`
 export const ExpensesNotFoundContainer = styled.div`
   padding-top: 3rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-width: 77rem;
   }
 `;
@@ -67,7 +67,7 @@ export const SelectMonthYearBox = styled.div`
   gap: 2rem;
   padding: 0 1rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     flex-direction: row;
     justify-content: center;
     gap: 5rem;
