@@ -94,6 +94,7 @@ export const AllBackgroundColors: BackgroundColors [] = [
 export const responsiveBreakpoints = {
   mobile: '(max-width: 599.95px)',
   tablet: '(min-width: 600px) and (max-width: 899.95px)',
+  tabletAndDesktop: '(min-width: 600px)',
   desktop: '(min-width: 900px)',
 };
 
