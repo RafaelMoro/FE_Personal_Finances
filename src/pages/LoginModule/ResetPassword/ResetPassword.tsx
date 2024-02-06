@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
@@ -19,6 +19,7 @@ import { LoadingSpinner } from '../../../components/UI/LoadingSpinner';
 import { TickMark } from '../../../components/UI/Icons';
 import { resetPasswordThunkFn } from '../../../redux/slices/User/actions/resetPassword';
 import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
+import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
 
 const NOTIFICATION_TITLE = 'Password reset successfully';
 const NOTIFICATION_DESCRIPTION = 'You may login with your new password.';
@@ -41,6 +42,9 @@ const ResetPassword = (): ReactElement => {
   const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
   const userSuccessOnAction = useAppSelector((state) => state.user.successOnAction);
   const { pathname } = location;
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (values: ResetPasswordFormValues) => {
     try {
@@ -96,16 +100,22 @@ const ResetPassword = (): ReactElement => {
                 <Field
                   component={InputForm}
                   name="password"
-                  type="password"
+                  type={(showPassword) ? 'text' : 'password'}
                   variant="standard"
                   label="New Password"
+                  InputProps={{
+                    endAdornment: <TogglePasswordAdornment showPassword={showPassword} toggleShowPassword={toggleShowPassword} />,
+                  }}
                 />
                 <Field
                   component={InputForm}
                   name="confirmPassword"
-                  type="password"
+                  type={(showPassword) ? 'text' : 'password'}
                   variant="standard"
                   label="Confirm Password"
+                  InputProps={{
+                    endAdornment: <TogglePasswordAdornment showPassword={showPassword} toggleShowPassword={toggleShowPassword} />,
+                  }}
                 />
                 <PrimaryButton variant="contained" onClick={submitForm} size="medium">
                   { (userLoadingOnAction && !userSuccessOnAction) && (<LoadingSpinner />) }
