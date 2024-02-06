@@ -2,9 +2,9 @@ import { ReactElement } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
+import { AxiosError } from 'axios';
 import { Notification } from '../../../components/UI';
-import { ResetPasswordValues } from './interface';
-import { postRequest } from '../../../utils/PostRequest.ts';
+import { ResetPasswordFormValues, ResetPasswordValues } from './interface';
 import { RESET_PASSWORD_POST_ROUTE } from './constants';
 import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../../RoutesConstants';
 import { useNotification } from '../../../hooks/useNotification';
@@ -13,7 +13,12 @@ import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
 } from '../../../styles/LoginModule.styled';
 import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
-import { PrimaryButton, InputForm } from '../../../styles';
+import { PrimaryButton, InputForm, AppColors } from '../../../styles';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { LoadingSpinner } from '../../../components/UI/LoadingSpinner';
+import { TickMark } from '../../../components/UI/Icons';
+import { resetPasswordThunkFn } from '../../../redux/slices/User/actions/resetPassword';
+import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 
 const NOTIFICATION_TITLE = 'Password reset successfully';
 const NOTIFICATION_DESCRIPTION = 'You may login with your new password.';
@@ -32,15 +37,27 @@ const ResetPassword = (): ReactElement => {
   });
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
+  const userSuccessOnAction = useAppSelector((state) => state.user.successOnAction);
   const { pathname } = location;
 
-  const handleSubmit = async (values: ResetPasswordValues) => {
-    const { password } = values;
-    const valuesRequest = { password };
-    const completeRoute = RESET_PASSWORD_POST_ROUTE + pathname;
-    const responseResetPasswordRequest = await postRequest(valuesRequest, completeRoute);
+  const handleSubmit = async (values: ResetPasswordFormValues) => {
+    try {
+      const { password } = values;
+      const valuesRequest: ResetPasswordValues = { password };
+      const completeRoute = RESET_PASSWORD_POST_ROUTE + pathname;
+      await dispatch(resetPasswordThunkFn({ values: valuesRequest, route: completeRoute }));
 
-    if (responseResetPasswordRequest?.error) {
+      toggleShowNotification();
+      setTimeout(() => {
+        dispatch(resetSuccessOnAction());
+        navigate(LOGIN_ROUTE);
+      }, 5000);
+    } catch (err) {
+      const errorCatched = err as AxiosError;
+      // eslint-disable-next-line no-console
+      console.error('Error while submitting reset Password: ', errorCatched);
       updateTitle(NOTIFICATION_ERROR_TITLE);
       updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
       updateStatus(NOTIFICATION_ERROR_STATUS);
@@ -48,11 +65,6 @@ const ResetPassword = (): ReactElement => {
       toggleShowNotification();
       setTimeout(() => {
         navigate(FORGOT_PASSWORD_ROUTE);
-      }, 5000);
-    } else {
-      toggleShowNotification();
-      setTimeout(() => {
-        navigate(LOGIN_ROUTE);
       }, 5000);
     }
   };
@@ -95,7 +107,11 @@ const ResetPassword = (): ReactElement => {
                   variant="standard"
                   label="Confirm Password"
                 />
-                <PrimaryButton variant="contained" onClick={submitForm} size="medium">Reset Password</PrimaryButton>
+                <PrimaryButton variant="contained" onClick={submitForm} size="medium">
+                  { (userLoadingOnAction && !userSuccessOnAction) && (<LoadingSpinner />) }
+                  { (!userLoadingOnAction && userSuccessOnAction) && (<TickMark fillColor={AppColors.white} />) }
+                  { (!userLoadingOnAction && !userSuccessOnAction) && 'Reset Password' }
+                </PrimaryButton>
               </FormContainer>
             )}
           </Formik>

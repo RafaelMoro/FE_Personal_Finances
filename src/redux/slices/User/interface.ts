@@ -1,4 +1,5 @@
 import { GeneralResponse, User } from '../../../globalInterface';
+import { ResetPasswordValues } from '../../../pages/LoginModule/ResetPassword/interface';
 
 export interface UserInitialState {
   userInfo: null | User;
@@ -27,4 +28,9 @@ export interface LoginData {
 
 export interface LoginResponse extends Omit<GeneralResponse, 'data'> {
   data: LoginData;
+}
+
+export interface ResetPasswordThunkProps {
+  values: ResetPasswordValues;
+  route: string
 }

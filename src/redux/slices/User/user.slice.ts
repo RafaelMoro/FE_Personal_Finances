@@ -6,6 +6,7 @@ import { User } from '../../../globalInterface';
 import { LOGIN_POST_ROUTE } from '../../../pages/LoginModule/Login/constants';
 import { LoginResponse, UserInitialState } from './interface';
 import { forgotPasswordFulfilled, forgotPasswordPending, forgotPasswordRejected } from './actions/forgotPassword';
+import { resetPasswordFulfilled, resetPasswordPending, resetPasswordRejected } from './actions/resetPassword';
 
 const userInitialState: UserInitialState = {
   userInfo: null,
@@ -77,6 +78,10 @@ export const userSlice = createSlice({
     forgotPasswordPending(builder);
     forgotPasswordFulfilled(builder);
     forgotPasswordRejected(builder);
+
+    resetPasswordPending(builder);
+    resetPasswordFulfilled(builder);
+    resetPasswordRejected(builder);
   },
 });
 
