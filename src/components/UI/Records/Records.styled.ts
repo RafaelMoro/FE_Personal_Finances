@@ -105,7 +105,7 @@ export const RecordSubtitleText = styled(Typography)`
 export const RecordCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media ${responsiveBreakpoints.tablet} {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 2 / 3;
   }
 
@@ -117,7 +117,7 @@ export const RecordCategory = styled(Typography)`
 export const RecordSubCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media ${responsiveBreakpoints.tablet} {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 3 / 4;
   }
 
