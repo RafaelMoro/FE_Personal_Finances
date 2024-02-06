@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { responsiveBreakpoints } from '../../../../../styles';
 
 export const NotRecordsFoundPicture = styled.picture`
   display: flex;
@@ -9,7 +10,7 @@ export const NotRecordsFoundPicture = styled.picture`
     height: 20.6rem;
     object-fit: contain;
 
-    @media(min-width: 1024px) {
+    @media ${responsiveBreakpoints.desktop} {
       width: 45.7rem;
       height: 30.7rem;
     }

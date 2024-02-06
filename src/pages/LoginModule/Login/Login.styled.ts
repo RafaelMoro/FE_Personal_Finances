@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { CardActions, Typography } from '@mui/material';
 
 import {
-  InputForm, Anchor,
+  InputForm, Anchor, responsiveBreakpoints,
 } from '../../../styles';
 
 export const Main = styled.main`
@@ -25,7 +25,8 @@ export const LogoContainer = styled.div`
 export const LoginCard = styled.div`
   min-width: 27.5rem;
   align-self: start;
-  @media (min-width: 480px) {
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-height: 45rem;
     width: 45rem;
     padding: 3rem;

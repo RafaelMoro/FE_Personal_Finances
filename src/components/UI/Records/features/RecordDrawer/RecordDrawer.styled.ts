@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { Table, Typography } from '@mui/material';
 
 import {
-  AppColors,
+  AppColors, responsiveBreakpoints,
 } from '../../../../../styles';
 import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
@@ -15,7 +15,7 @@ export const RecordDrawerContainer = styled.div`
   gap: 1rem;
   row-gap: 2rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-width: 47rem;
   }
 `;

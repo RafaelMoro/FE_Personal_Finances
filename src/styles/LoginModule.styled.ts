@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
 import { Typography } from '@mui/material';
+import { responsiveBreakpoints } from './GlobalConfigObjects';
 
 /*
 * Here are all emotion components that may be re-used in the Login module
@@ -20,7 +21,7 @@ export const MainContainer = styled.article`
   gap: 5rem;
   grid-template-rows: 10% 20% 60%;
 
-  @media (min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     max-width: 50rem;
     height: 70%;
   }

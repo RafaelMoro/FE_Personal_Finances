@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { responsiveBreakpoints } from '../../../styles';
 
 export const HeaderContainer = styled.header`
   padding: 2rem;
@@ -8,7 +9,7 @@ export const HeaderContainer = styled.header`
   box-shadow: 0 .2rem .4rem rgba(0, 0, 0, 0.2);
   margin-bottom: 2rem;
 
-  @media (min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 1 / 3;
   }
 `;
