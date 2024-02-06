@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
 import { Notification } from '../../../components/UI';
-import { IResetPasswordValues } from './interface';
+import { ResetPasswordValues } from './interface';
 import { postRequest } from '../../../utils/PostRequest.ts';
 import { RESET_PASSWORD_POST_ROUTE } from './constants';
 import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../../RoutesConstants';
@@ -34,7 +34,7 @@ const ResetPassword = (): ReactElement => {
   const navigate = useNavigate();
   const { pathname } = location;
 
-  const handleSubmit = async (values: IResetPasswordValues) => {
+  const handleSubmit = async (values: ResetPasswordValues) => {
     const { password } = values;
     const valuesRequest = { password };
     const completeRoute = RESET_PASSWORD_POST_ROUTE + pathname;
