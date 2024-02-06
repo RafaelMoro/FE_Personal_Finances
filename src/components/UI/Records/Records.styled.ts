@@ -8,7 +8,7 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors,
+  AppColors, responsiveBreakpoints,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -24,12 +24,12 @@ export const ListItemRecord = styled(ListItem)`
     background-color: rgba(0, 0, 0, 0.04);
   }
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-template-columns: 50% 25% 25%;
     column-gap: 1rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-template-columns: 60% 20% 20%;
     column-gap: 0;
   }
@@ -38,35 +38,35 @@ export const ListItemRecord = styled(ListItem)`
 export const RecordTitle = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 4;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     text-align: start;
     grid-column: 1 / 2;
   }
 `;
 
 export const RecordDate = styled(Typography)`
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 2 / 3;
     text-align: start;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 1 / 2;
     grid-column: 2 / 3;
   }
 `;
 
 export const RecordTime = styled(Typography)`
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 3 / 4;
     text-align: start;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 1 / 2;
     grid-column: 3 / 4;
   }
@@ -77,11 +77,11 @@ export const RecordPrice = styled(Typography)`
   text-align: center;
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 2;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     text-align: start;
   }
 `;
@@ -97,7 +97,7 @@ export const RecordExpense = styled(RecordPrice)`
 export const RecordSubtitleText = styled(Typography)`
   text-align: center;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     text-align: start;
   }
 `;
@@ -105,11 +105,11 @@ export const RecordSubtitleText = styled(Typography)`
 export const RecordCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 2 / 3;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 2 / 3;
   }
 `;
@@ -117,11 +117,11 @@ export const RecordCategory = styled(Typography)`
 export const RecordSubCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 3 / 4;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 2 / 3;
   }
 `;
@@ -129,7 +129,7 @@ export const RecordSubCategory = styled(Typography)`
 export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 1 / 2;
   }
 `;
@@ -139,12 +139,12 @@ export const RecordStatusContainer = styled.div`
   display: grid;
   place-items: center;
 
-  @media (min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-row: 5 / 6;
     grid-column: 1 / 2;
   }
 
-  @media (min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 4 / 5;
     grid-column: 2 / 4;
   }
@@ -171,7 +171,7 @@ export const StatusWhiteCircle = styled.div`
 export const RecordText = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 1 / 2;
   }
 `;
@@ -182,7 +182,7 @@ export const ChipContainer = styled.div`
   display: grid;
   gap: 1rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop}{
     grid-template-columns: 1fr;
     grid-auto-rows: minmax(3.2rem, auto);
   }
@@ -191,12 +191,12 @@ export const ChipContainer = styled.div`
 export const BudgetChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     grid-column: 2 / 3;
     grid-row: 4 / 5;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
   }
@@ -204,12 +204,12 @@ export const BudgetChipContainer = styled(ChipContainer)`
 export const TagsChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     grid-column: 3 / 4;
     grid-row: 4 / 5;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 3 / 4;
     grid-row: 3 / 4;
   }
