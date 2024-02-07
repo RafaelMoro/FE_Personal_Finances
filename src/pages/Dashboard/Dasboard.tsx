@@ -11,6 +11,7 @@ import {
   DashboardContainer, RecordsBox,
 } from './Dashboard.styled';
 import { useResizeWindow } from '../../hooks/useResizeWindow';
+import { useLogin } from '../../hooks/useLogin';
 
 const Dashboard = () => {
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
@@ -18,8 +19,11 @@ const Dashboard = () => {
   const {
     globalNotification, toggleGlobalNotification,
   } = useNotification();
-  useSyncLoginInfo();
   const { visible, scrollToTop } = useBackToTopButton();
+  const { isEmptyLocalStorage } = useSyncLoginInfo();
+  const { signOut } = useLogin();
+
+  if (isEmptyLocalStorage) signOut();
 
   const { dashboardActions, accountActions } = useDashboardActions({
     // Set it as true if accountsUI array has more than 1 item.
