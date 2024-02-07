@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import {
-  AnchorButton, CancelButton, PrimaryButton, responsiveBreakpoints,
+  AnchorButton, CancelButton, PrimaryButton, SecondaryButton, responsiveBreakpoints,
 } from '../../../styles';
 import { ButtonPanelProps } from './interface';
 
@@ -16,7 +16,7 @@ export const ButtonContainer = styled.div`
   }
 `;
 
-export const AnchorButtonForm = styled(AnchorButton)`
+export const AnchorCancelButton = styled(AnchorButton)`
   display: flex;
   order: 2;
 
@@ -25,7 +25,20 @@ export const AnchorButtonForm = styled(AnchorButton)`
   }
 `;
 
+export const AnchorSubmitButton = styled(AnchorButton)`
+  display: flex;
+  order: 1;
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    order: 2;
+  }
+`;
+
 export const CancelButtonForm = styled(CancelButton, { shouldForwardProp: (props) => props !== 'minWidth' })`
+  min-width: ${({ minWidth }: ButtonPanelProps) => minWidth}rem;
+`;
+
+export const SecondaryButtonForm = styled(SecondaryButton, { shouldForwardProp: (props) => props !== 'minWidth' })`
   min-width: ${({ minWidth }: ButtonPanelProps) => minWidth}rem;
 `;
 

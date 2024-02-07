@@ -1,24 +1,59 @@
 import { ActionButtonPanelProps } from './interface';
 import { LoadingSpinner } from '../../UI/LoadingSpinner';
 import {
-  ButtonContainer, AnchorButtonForm, CancelButtonForm, PrimaryButtonForm,
+  ButtonContainer, AnchorCancelButton, CancelButtonForm, PrimaryButtonForm, AnchorSubmitButton, SecondaryButtonForm,
 } from './ActionButtonPanel.styled';
 import { TickMark } from '../../UI/Icons';
 import { AppColors } from '../../../styles';
+import { DASHBOARD_ROUTE } from '../../../pages/RoutesConstants';
 
 const ActionButtonPanel = ({
-  route, minWidthNumber, buttonText, success, loading, submitForm,
-}: ActionButtonPanelProps) => (
-  <ButtonContainer>
-    <AnchorButtonForm to={route}>
-      <CancelButtonForm minWidth={minWidthNumber} variant="contained" size="medium">Cancel</CancelButtonForm>
-    </AnchorButtonForm>
-    <PrimaryButtonForm minWidth={minWidthNumber} variant="contained" onClick={submitForm} size="medium">
-      { (loading && !success) && (<LoadingSpinner />) }
-      { (!loading && success) && (<TickMark fillColor={AppColors.white} />) }
-      { (!loading && !success) && buttonText }
-    </PrimaryButtonForm>
-  </ButtonContainer>
-);
+  routeCancelButton = DASHBOARD_ROUTE,
+  routeSubmitButton = DASHBOARD_ROUTE,
+  minWidthNumber,
+  submitButtonText,
+  submitForm = () => {},
+  success = false,
+  loading = false,
+  useSecondaryButton = false,
+  cancelButton = 'Link',
+  cancelButtonText = 'Cancel',
+  cancelButtonCallback = () => {},
+  submitButton = 'Button',
+}: ActionButtonPanelProps) => {
+  const CancelButton = useSecondaryButton ? SecondaryButtonForm : CancelButtonForm;
+
+  return (
+    <ButtonContainer>
+      { (cancelButton === 'Link') && (
+      <AnchorCancelButton to={routeCancelButton}>
+        <CancelButton minWidth={minWidthNumber} variant="contained" size="medium">{cancelButtonText}</CancelButton>
+      </AnchorCancelButton>
+      ) }
+      { (cancelButton === 'Button') && (
+      <CancelButton
+        minWidth={minWidthNumber}
+        variant="contained"
+        onClick={cancelButtonCallback}
+        size="medium"
+      >
+          {cancelButtonText}
+      </CancelButton>
+      ) }
+      { (submitButton === 'Button') && (
+      <PrimaryButtonForm minWidth={minWidthNumber} variant="contained" onClick={submitForm} size="medium">
+        { (loading && !success) && (<LoadingSpinner />) }
+        { (!loading && success) && (<TickMark fillColor={AppColors.white} />) }
+        { (!loading && !success) && submitButtonText }
+      </PrimaryButtonForm>
+      ) }
+      { (submitButton === 'Link') && (
+      <AnchorSubmitButton to={routeSubmitButton}>
+        <PrimaryButtonForm minWidth={minWidthNumber} variant="contained" size="medium">{submitButtonText}</PrimaryButtonForm>
+      </AnchorSubmitButton>
+      ) }
+    </ButtonContainer>
+  );
+};
 
 export { ActionButtonPanel };
