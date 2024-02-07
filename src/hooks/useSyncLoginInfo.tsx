@@ -1,51 +1,65 @@
-import { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useLogin } from './useLogin';
 import { CountOnMeLocalStorage } from '../utils/LocalStorage/interface';
-import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
+import { getLocalStorageInfo } from '../utils';
 import { signOn } from '../redux/slices/User/user.slice';
-import { setRecordToBeModified } from '../redux/slices/Records/records.slice';
 import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
-import { DASHBOARD_ROUTE, EDIT_RECORD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
+import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
+import { AnyRecord } from '../globalInterface';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
+  const [recordToBeEdited, setRecordtoBeEdited] = useState<null | AnyRecord>(null);
+  const [isEmptyLocalStorage, setIsEmptyLocalStorage] = useState<boolean>(false);
+  const [hasSignedOn, setHasSignedOn] = useState<boolean>(false);
+
+  const navigateToDashboard = () => navigate(DASHBOARD_ROUTE);
+
+  const getDataFromLocalStorage = () => {
+    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
+    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
+
+    if (IsEmptyLocalStorage) {
+      setIsEmptyLocalStorage(true);
+      return null;
+    }
+    return {
+      user: localStorageInfo.user,
+      recordToBeEdited: localStorageInfo?.recordToBeEdited,
+    };
+  };
 
   useEffect(() => {
     if (!userReduxState.userInfo) {
-      const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
-      const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
+      const data = getDataFromLocalStorage();
+      if (!data) return;
 
-      if (IsEmptyLocalStorage) {
-        signOut();
-        return;
-      }
-
-      const user = localStorageInfo?.user;
-      const accessToken = user?.accessToken;
+      const { user, recordToBeEdited: dataRecordToBeEdited } = data;
+      const { accessToken } = user;
       const isExpiredAccessToken = verifyJwtExpiration(accessToken, signOut);
 
-      if (!isExpiredAccessToken) dispatch(signOn(user));
-      if (location.pathname === LOGIN_ROUTE) navigate(DASHBOARD_ROUTE);
-      if (location.pathname === DASHBOARD_ROUTE && localStorageInfo?.recordToBeEdited) {
-        // Reset record to be edited in local storage
-        const { recordToBeEdited, ...restOfLocalStorage } = localStorageInfo;
-        saveInfoToLocalStorage(restOfLocalStorage);
+      if (!isExpiredAccessToken) {
+        dispatch(signOn(user));
+        setHasSignedOn(true);
       }
 
-      /** Update recordToBeEdited on redux if we got the record in local storage */
-      if (location.pathname === EDIT_RECORD_ROUTE && localStorageInfo?.recordToBeEdited) {
-        dispatch(setRecordToBeModified(localStorageInfo?.recordToBeEdited));
-      }
+      if (dataRecordToBeEdited) setRecordtoBeEdited(dataRecordToBeEdited);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  return {
+    isEmptyLocalStorage,
+    hasSignedOn,
+    recordToBeEdited,
+    navigateToDashboard,
+  };
 };
 
 export { useSyncLoginInfo };
