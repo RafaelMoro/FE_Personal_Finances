@@ -341,9 +341,9 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               </>
             ) }
             <ActionButtonPanel
-              route={DASHBOARD_ROUTE}
+              routeCancelButton={DASHBOARD_ROUTE}
               minWidthNumber="18"
-              buttonText={buttonText}
+              submitButtonText={buttonText}
               loading={loadingOnAction}
               success={false}
               submitForm={submitForm}

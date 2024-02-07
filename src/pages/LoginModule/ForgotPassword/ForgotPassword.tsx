@@ -108,9 +108,9 @@ const ForgotPassword = (): ReactElement => {
                   label="Email"
                 />
                 <ActionButtonPanel
-                  route={LOGIN_ROUTE}
+                  routeCancelButton={LOGIN_ROUTE}
                   minWidthNumber="10.5"
-                  buttonText="Enviar"
+                  submitButtonText="Send"
                   loading={userLoadingOnAction}
                   success={userSuccessOnAction}
                   submitForm={submitForm}
