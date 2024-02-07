@@ -37,8 +37,8 @@ const useLogin = () => {
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
   const {
-    toggleShowNotification, notificationInfo,
-    updateDescription, notification,
+    toggleShowNotification, notificationInfo, updateTitle,
+    updateDescription, updateStatus, notification,
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
@@ -91,6 +91,9 @@ const useLogin = () => {
   return {
     handleSubmit,
     handleShowNotification: toggleShowNotification,
+    updateTitle,
+    updateDescription,
+    updateStatus,
     signOut,
     notificationInfo,
     notification,
