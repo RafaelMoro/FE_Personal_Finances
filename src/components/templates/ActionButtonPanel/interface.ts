@@ -1,10 +1,18 @@
+export type ClickableElement = 'Button' | 'Link';
+
 export interface ActionButtonPanelProps {
-  route: string;
   minWidthNumber: string;
-  buttonText: string;
-  loading: boolean;
-  success: boolean;
-  submitForm: () => void;
+  submitButtonText: string;
+  submitForm?: () => void;
+  routeCancelButton?: string;
+  routeSubmitButton?: string;
+  useSecondaryButton?: boolean;
+  loading?: boolean;
+  success?: boolean;
+  cancelButton?: ClickableElement;
+  cancelButtonText?: string;
+  cancelButtonCallback?: () => void;
+  submitButton?: ClickableElement;
 }
 
 export interface ButtonPanelProps {
