@@ -2,7 +2,7 @@ import { CardContent } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
@@ -15,15 +15,33 @@ import {
   Main, LoginCard, LogoContainer, LoginCardActions,
   FormLoginTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
+import {
+  PrimaryButton, SecondaryButton, AnchorButton,
+} from '../../../styles';
+import { SystemStateEnum } from '../../../enums';
 
 const Login = () => {
-  useSyncLoginInfo();
+  const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
+    updateTitle, updateDescription, updateStatus,
   } = useLogin();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
+
+  useEffect(() => {
+    if (hasSignedOn) {
+      // Show user a notification and let him go to the dashboard.
+      updateTitle("Oops! Looks like you've signed in already.");
+      updateDescription('Redirecting you into the dashboard.');
+      updateStatus(SystemStateEnum.Info);
+      handleShowNotification();
+      setTimeout(() => {
+        navigateToDashboard();
+      }, 4000);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasSignedOn]);
 
   return (
     <>
