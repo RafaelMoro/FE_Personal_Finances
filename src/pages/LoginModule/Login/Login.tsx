@@ -18,27 +18,18 @@ import {
 import {
   PrimaryButton, SecondaryButton, AnchorButton,
 } from '../../../styles';
-import { SystemStateEnum } from '../../../enums';
 
 const Login = () => {
   const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
-    updateTitle, updateDescription, updateStatus,
   } = useLogin();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     if (hasSignedOn) {
-      // Show user a notification and let him go to the dashboard.
-      updateTitle("Oops! Looks like you've signed in already.");
-      updateDescription('Redirecting you into the dashboard.');
-      updateStatus(SystemStateEnum.Info);
-      handleShowNotification();
-      setTimeout(() => {
-        navigateToDashboard();
-      }, 4000);
+      navigateToDashboard();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasSignedOn]);
