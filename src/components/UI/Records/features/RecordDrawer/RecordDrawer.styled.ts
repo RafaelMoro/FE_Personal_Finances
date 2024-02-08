@@ -61,7 +61,6 @@ export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !
 export const DrawerChipContainer = styled(ChipContainer)`
   grid-template-columns: repeat(5, 1fr);
   position: relative;
-  border: 0.1rem solid ${AppColors.bgColorGrey};
   padding: 1.5rem;
   border-radius: 1rem;
 

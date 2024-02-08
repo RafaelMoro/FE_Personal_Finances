@@ -17,7 +17,6 @@ import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { RecordSubtitleText } from '../../Records.styled';
 import { useAppDispatch } from '../../../../../redux/hooks';
 import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 
@@ -61,18 +60,20 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <DrawerChipContainer afterContent="Budgets">
-        { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
-        { budgets.length > 0 && budgets.map((budget, index) => (
-          <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" chipColor={chipColor} />
-        ))}
-      </DrawerChipContainer>
-      <DrawerChipContainer afterContent="Tags">
-        { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
-        { tag.length > 0 && tag.map((item, index) => (
-          <Chip key={`${index + 1}-${item}`} label={item} variant="outlined" chipColor={chipColor} />
-        ))}
-      </DrawerChipContainer>
+      { (budgets.length > 0 && (
+        <DrawerChipContainer afterContent="Budgets">
+          { (budgets.map((budget, index) => (
+            <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" chipColor={chipColor} />
+          ))) }
+        </DrawerChipContainer>
+      )) }
+      { (tag.length > 0) && (
+        <DrawerChipContainer afterContent="Tags">
+          { (tag.map((individualTag, index) => (
+            <Chip key={`${index + 1}-${individualTag}`} label={individualTag} variant="outlined" chipColor={chipColor} />
+          ))) }
+        </DrawerChipContainer>
+      ) }
       <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (indebtedPeople.length > 0) && (
       <ShowIndebtedPeople indebtedPeople={indebtedPeople} inRecordDrawer />
