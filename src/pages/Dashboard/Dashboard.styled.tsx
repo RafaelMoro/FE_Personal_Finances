@@ -3,14 +3,13 @@ import { RecordBoxProps } from './interface';
 import { responsiveBreakpoints } from '../../styles';
 
 export const DashboardContainer = styled.div`
-  height: 100vh;
   position: relative;
+  max-width: 155rem;
+  margin: 0 auto;
 
   @media ${responsiveBreakpoints.desktop} {
     display: grid;
     grid-template-columns: 30rem 1fr;
-    max-width: 155rem;
-    margin: 0 auto;
   }
 `;
 
