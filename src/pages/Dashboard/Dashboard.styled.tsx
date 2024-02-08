@@ -4,6 +4,7 @@ import { responsiveBreakpoints } from '../../styles';
 
 export const DashboardContainer = styled.div`
   position: relative;
+  height: 88vh;
   max-width: 155rem;
   margin: 0 auto;
 
