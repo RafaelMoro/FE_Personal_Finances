@@ -9,7 +9,8 @@ export const DashboardContainer = styled.div`
   @media ${responsiveBreakpoints.desktop} {
     display: grid;
     grid-template-columns: 30rem 1fr;
-    grid-template-rows: 11.3rem 1fr;
+    max-width: 155rem;
+    margin: 0 auto;
   }
 `;
 

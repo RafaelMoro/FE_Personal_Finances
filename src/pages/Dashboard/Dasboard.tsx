@@ -36,26 +36,28 @@ const Dashboard = () => {
   useResizeWindow();
 
   return (
-    <DashboardContainer>
-      {globalNotification.showNotification && (
-        <Notification
-          title={globalNotification.title}
-          description={globalNotification.description}
-          status={globalNotification.status}
-          close={toggleGlobalNotification}
-        />
-      )}
+    <>
       <Header />
-      <ViewAccounts hide={noAccountsCreated} accountsActions={accountActions} />
-      <RecordsBox noAccountsCreated={noAccountsCreated}>
-        <RecordList />
-      </RecordsBox>
-      <SpeedDial
-        actions={dashboardActions}
-        ariaLabelDescription="SpeedDial Accounts and Records actions"
-      />
-      { (visible) && (<BackToTopButton scrollToTop={scrollToTop} />) }
-    </DashboardContainer>
+      <DashboardContainer>
+        {globalNotification.showNotification && (
+          <Notification
+            title={globalNotification.title}
+            description={globalNotification.description}
+            status={globalNotification.status}
+            close={toggleGlobalNotification}
+          />
+        )}
+        <ViewAccounts hide={noAccountsCreated} accountsActions={accountActions} />
+        <RecordsBox noAccountsCreated={noAccountsCreated}>
+          <RecordList />
+        </RecordsBox>
+        <SpeedDial
+          actions={dashboardActions}
+          ariaLabelDescription="SpeedDial Accounts and Records actions"
+        />
+        { (visible) && (<BackToTopButton scrollToTop={scrollToTop} />) }
+      </DashboardContainer>
+    </>
   );
 };
 
