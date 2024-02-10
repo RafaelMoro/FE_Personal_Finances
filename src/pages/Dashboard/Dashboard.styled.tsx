@@ -29,5 +29,6 @@ export const RecordsBox = styled('main', { shouldForwardProp: (props) => props !
     ${({ noAccountsCreated }: RecordBoxProps) => (noAccountsCreated && 'grid-column: 1 / 3;')}
     overflow-y: scroll;
     overscroll-behavior-y: contain;
+    padding-bottom: 8rem;
   }
 `;
