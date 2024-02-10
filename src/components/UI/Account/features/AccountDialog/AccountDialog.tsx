@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
+import { useMemo } from 'react';
 import {
   Dialog, IconButton,
 } from '@mui/material';
@@ -14,21 +16,22 @@ import { createAccountThunkFn, modifyAccountThunkFn } from '../../../../../redux
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
-  CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues,
+  CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
 } from '../../interface';
 import { SelectInput } from '../../../SelectInput';
 import { CloseIcon } from '../../../Icons';
 import {
-  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer,
+  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer, InputAdornment,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
+import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 
-const initialValuesCreateAccount: CreateAccount = {
+const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
   accountType: 'Debit',
-  amount: 0,
+  amount: '',
   backgroundColor: 'White',
   color: 'Black',
 };
@@ -49,11 +52,23 @@ const AccountDialog = ({
   const { updateGlobalNotification } = useNotification();
   const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
   const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
-  const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : account as AccountUI;
 
-  const createAccount = async (values: CreateAccount) => {
+  // Transforming amount from account to string;
+  const accountToBeModified = useMemo(() => {
+    const amount = account?.amount ?? 0;
+    const amountString = String(amount);
+    const newAccount: ModifyAccountInitialValues = { ...account as AccountUI, amount: amountString };
+    return newAccount;
+  }, [account]);
+
+  const initialValues = accountAction === 'Create' ? initialValuesCreateAccount : accountToBeModified;
+
+  const createAccount = async (values: CreateAccountInitialValues) => {
     try {
-      const createAccountThunkProps: CreateAccountThunkProps = { values, bearerToken };
+      // Transform amount to number as it comes as string.
+      const amount = Number(values.amount);
+      const newAccount: CreateAccount = { ...values, amount };
+      const createAccountThunkProps: CreateAccountThunkProps = { values: newAccount, bearerToken };
       await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
 
       dispatch(resetAllRecords());
@@ -86,9 +101,10 @@ const AccountDialog = ({
     try {
       // Excluding version, accountUI props and changing _id for accountId
       const {
-        __v: version, sub, selected, backgroundColorUI, colorUI, amountFormatted, _id: accountId, ...rest
+        __v: version, sub, selected, backgroundColorUI, colorUI, amountFormatted, amount, _id: accountId, ...rest
       } = values;
-      const accountModifiedValues: ModifyAccountValues = { ...rest, accountId };
+      const amountNumber = Number(amount ?? '0');
+      const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
       const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };
       await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
 
@@ -117,6 +133,8 @@ const AccountDialog = ({
 
   const handleSubmit = accountAction === 'Create' ? createAccount : modifyAccount;
 
+  const startAdornment = <InputAdornment position="start">$</InputAdornment>;
+
   return (
     <Dialog onClose={onClose} open={open}>
       <>
@@ -144,9 +162,13 @@ const AccountDialog = ({
               <Field
                 component={InputForm}
                 name="amount"
-                type="number"
+                type="text"
                 variant="standard"
                 label="Account Amount"
+                InputProps={{
+                  startAdornment,
+                  inputComponent: NumericFormatCustom as any,
+                }}
               />
               <SelectInput
                 labelId="select-account-type"

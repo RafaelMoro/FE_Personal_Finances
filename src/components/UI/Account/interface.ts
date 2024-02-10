@@ -17,7 +17,18 @@ export interface AccountComponentProps {
   selectAccountOnClick: () => void;
 }
 
-export type CreateAccount = Omit<Account, '_id' | '__v'>;
+export interface CreateAccountInitialValues extends Omit<Account, '_id' | '__v' | 'amount'> {
+  amount: string;
+}
+
+export interface CreateAccount extends Omit<Account, '_id' | '__v' | 'amount'> {
+  amount: number;
+}
+
+export interface ModifyAccountInitialValues extends Omit<AccountUI, 'amount'> {
+  amount: string;
+}
+
 export interface ModifyAccountValues extends Omit<Account, '_id' | '__v'> {
   accountId: string;
 }
