@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { WindowSizeValues } from '../aliasType';
 
 /**
  * To use this hook, use the component: BackToTopButton.
@@ -6,11 +7,19 @@ import { useState, useEffect } from 'react';
  * Pass down the function scrollToTopto the component.
 */
 
-const useBackToTopButton = () => {
+interface UseBackToTopButtonProps {
+  windowSize: WindowSizeValues;
+}
+
+const useBackToTopButton = ({ windowSize }: UseBackToTopButtonProps) => {
   const [visible, setVisible] = useState(false);
+  const recordBoxDiv = document.querySelector('#record-box') ?? document.documentElement;
+  const isDesktop = windowSize === 'Desktop';
 
   const toggleVisible = () => {
-    const scrolled = document.documentElement.scrollTop;
+    const scrolled = isDesktop
+      ? recordBoxDiv.scrollTop
+      : document.documentElement.scrollTop;
     if (scrolled > 300) {
       setVisible(true);
     } else if (scrolled <= 300) {
@@ -19,14 +28,29 @@ const useBackToTopButton = () => {
   };
 
   useEffect(() => {
+    if (isDesktop) {
+      recordBoxDiv.addEventListener('scroll', toggleVisible);
+    }
     window.addEventListener('scroll', toggleVisible);
 
     return () => {
+      if (isDesktop) {
+        recordBoxDiv.removeEventListener('scroll', toggleVisible);
+      }
       window.removeEventListener('scroll', toggleVisible);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToTop = () => {
+    if (windowSize === 'Desktop') {
+      recordBoxDiv.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      return;
+    }
+
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
