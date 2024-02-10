@@ -13,13 +13,12 @@ import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
 } from '../../../styles/LoginModule.styled';
 import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
-import { PrimaryButton, InputForm, AppColors } from '../../../styles';
+import { InputForm } from '../../../styles';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { LoadingSpinner } from '../../../components/UI/LoadingSpinner';
-import { TickMark } from '../../../components/UI/Icons';
 import { resetPasswordThunkFn } from '../../../redux/slices/User/actions/resetPassword';
 import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
+import { ActionButtonPanel } from '../../../components/templates';
 
 const NOTIFICATION_TITLE = 'Password reset successfully';
 const NOTIFICATION_DESCRIPTION = 'You may login with your new password.';
@@ -117,11 +116,14 @@ const ResetPassword = (): ReactElement => {
                     endAdornment: <TogglePasswordAdornment showPassword={showPassword} toggleShowPassword={toggleShowPassword} />,
                   }}
                 />
-                <PrimaryButton variant="contained" onClick={submitForm} size="medium">
-                  { (userLoadingOnAction && !userSuccessOnAction) && (<LoadingSpinner />) }
-                  { (!userLoadingOnAction && userSuccessOnAction) && (<TickMark fillColor={AppColors.white} />) }
-                  { (!userLoadingOnAction && !userSuccessOnAction) && 'Reset Password' }
-                </PrimaryButton>
+                <ActionButtonPanel
+                  minWidthNumber="19"
+                  submitButtonText="Reset Password"
+                  submitForm={submitForm}
+                  routeCancelButton={LOGIN_ROUTE}
+                  success={userSuccessOnAction}
+                  loading={userLoadingOnAction}
+                />
               </FormContainer>
             )}
           </Formik>
