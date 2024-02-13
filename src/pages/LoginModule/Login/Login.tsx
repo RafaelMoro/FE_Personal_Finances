@@ -20,19 +20,19 @@ import {
 } from '../../../styles';
 
 const Login = () => {
-  const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
+  // const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
   } = useLogin();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
-  useEffect(() => {
-    if (hasSignedOn) {
-      navigateToDashboard();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hasSignedOn]);
+  // useEffect(() => {
+  //   if (hasSignedOn) {
+  //     navigateToDashboard();
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [hasSignedOn]);
 
   return (
     <>
