@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
@@ -7,9 +5,9 @@ import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { addToLocalStorage, saveInfoToLocalStorage } from '../utils';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import {
-  disableNavigateDashboardFlag, signOff,
+  signOff, signOn,
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
@@ -41,7 +39,6 @@ const useLogin = () => {
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userReduxState = useAppSelector((state) => state.user);
   const {
     toggleShowNotification, notificationInfo, updateTitle,
     updateDescription, updateStatus, notification,
@@ -59,23 +56,17 @@ const useLogin = () => {
     navigate(LOGIN_ROUTE);
   };
 
-  // After having a success login, the flag of navigate to dashboard will be enabled.
-  // useEffect(() => {
-  //   if (userReduxState.navigateToDashboard) {
-  //     // After navigating to the dashboard, disable the flag to avoid re-render.
-  //     navigate(DASHBOARD_ROUTE);
-  //   }
-  // }, [dispatch, navigate, userReduxState.navigateToDashboard]);
-
   const handleSubmit = async (values: LoginValues) => {
     try {
       const user = await loginMutation({ values }).unwrap();
+      dispatch(signOn(user));
       addToLocalStorage(user);
       setTimeout(() => {
         navigate(DASHBOARD_ROUTE);
       }, 3000);
     } catch (err) {
       const error = err as GeneralError;
+      // eslint-disable-next-line no-console
       console.error('Error while logging in:', error);
       const message = error?.data?.error?.message;
       if (message === UNAUTHORIZED_ERROR) {
