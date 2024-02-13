@@ -7,7 +7,7 @@ export const POST_METHOD = 'POST';
 /** Errors */
 export const NETWORK_CATCH_ERROR = 'Network Error';
 export const NETWORK_ERROR_MESSAGE = 'There is a network error. Please check you are connected to Internet.';
-export const UNAUTHORIZED_ERROR = 'Request failed with status code 401';
+export const UNAUTHORIZED_ERROR = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
 export const ERROR_TITLE_GENERAL = 'Error';
 export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
