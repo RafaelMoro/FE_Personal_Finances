@@ -1,7 +1,9 @@
-import { AnyRecord, OldUser } from '../../globalInterface';
+import { AnyRecord, User } from '../../globalInterface';
 
 export interface CountOnMeLocalStorage {
-  user: OldUser;
+  bearerToken: string
+  accessToken: string
+  user: User;
   recordToBeEdited: AnyRecord;
 }
 
