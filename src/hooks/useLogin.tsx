@@ -71,6 +71,9 @@ const useLogin = () => {
     try {
       const user = await loginMutation({ values }).unwrap();
       addToLocalStorage(user);
+      setTimeout(() => {
+        navigate(DASHBOARD_ROUTE);
+      }, 3000);
     } catch (err) {
       const error = err as GeneralError;
       console.error('Error while logging in:', error);
@@ -97,6 +100,8 @@ const useLogin = () => {
   };
 
   return {
+    loginSuccess: isSuccess,
+    loginLoading: isLoading,
     handleSubmit,
     handleShowNotification: toggleShowNotification,
     updateTitle,
