@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { CardActions, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import {
   InputForm, Anchor, responsiveBreakpoints,
@@ -55,9 +55,4 @@ export const LoginInput = styled(InputForm)`
 export const ForgotPasswordLink = styled(Anchor)`
   display: block;
   padding: 2rem 0;
-`;
-
-export const LoginCardActions = styled(CardActions)`
-  display: flex;
-  justify-content: space-between;
 `;

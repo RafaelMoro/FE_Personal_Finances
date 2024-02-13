@@ -10,19 +10,16 @@ import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
-import { BrandLogoName } from '../../../components/templates';
+import { ActionButtonPanel, BrandLogoName } from '../../../components/templates';
 import {
-  Main, LoginCard, LogoContainer, LoginCardActions,
+  Main, LoginCard, LogoContainer,
   FormLoginTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import {
-  PrimaryButton, SecondaryButton, AnchorButton,
-} from '../../../styles';
 
 const Login = () => {
   // const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
   const {
-    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
+    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter, loginSuccess, loginLoading,
   } = useLogin();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
@@ -85,12 +82,16 @@ const Login = () => {
                   />
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
-                <LoginCardActions>
-                  <AnchorButton to={REGISTER_ROUTE}>
-                    <SecondaryButton variant="contained" size="medium">Register</SecondaryButton>
-                  </AnchorButton>
-                  <PrimaryButton variant="contained" onClick={submitForm} size="medium">Login</PrimaryButton>
-                </LoginCardActions>
+                <ActionButtonPanel
+                  minWidthNumber="12"
+                  submitButtonText="Login"
+                  submitForm={submitForm}
+                  cancelButtonText="Register"
+                  routeCancelButton={REGISTER_ROUTE}
+                  useSecondaryButton
+                  success={loginSuccess}
+                  loading={loginLoading}
+                />
               </Form>
             )}
           </Formik>
