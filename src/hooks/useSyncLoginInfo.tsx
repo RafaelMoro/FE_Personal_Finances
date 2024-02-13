@@ -29,8 +29,10 @@ const useSyncLoginInfo = () => {
       setIsEmptyLocalStorage(true);
       return null;
     }
+
+    const { accessToken, bearerToken, user } = localStorageInfo;
     return {
-      user: localStorageInfo.user,
+      user: { accessToken, bearerToken, user },
       recordToBeEdited: localStorageInfo?.recordToBeEdited,
     };
   };
