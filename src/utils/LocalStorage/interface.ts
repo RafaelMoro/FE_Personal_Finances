@@ -1,7 +1,7 @@
-import { AnyRecord, User } from '../../globalInterface';
+import { AnyRecord, OldUser } from '../../globalInterface';
 
 export interface CountOnMeLocalStorage {
-  user: User;
+  user: OldUser;
   recordToBeEdited: AnyRecord;
 }
 

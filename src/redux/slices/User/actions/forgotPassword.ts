@@ -5,12 +5,12 @@ import { FORGOT_PASSWORD_POST_ROUTE } from '../../../../pages/LoginModule/Forgot
 import { GeneralResponse } from '../../../../globalInterface';
 import { ForgotPasswordValues } from '../../../../pages/LoginModule/ForgotPassword/interface';
 import { UserInitialState } from '../interface';
-import { BACKEND_URI } from '../../../../constants';
+import { BACKEND_ENV_URI } from '../../../../constants';
 
 export const forgotPasswordThunkFn = createAsyncThunk(
   'user/forgotPassword',
   async (values: ForgotPasswordValues) => {
-    const standardResponse = await axios.post<GeneralResponse>(`${BACKEND_URI}/${FORGOT_PASSWORD_POST_ROUTE}`, values);
+    const standardResponse = await axios.post<GeneralResponse>(`${BACKEND_ENV_URI}/${FORGOT_PASSWORD_POST_ROUTE}`, values);
     return standardResponse?.data;
   },
 );

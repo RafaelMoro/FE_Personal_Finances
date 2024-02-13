@@ -1,8 +1,8 @@
-import { GeneralResponse, User } from '../../../globalInterface';
+import { GeneralResponse, OldUser } from '../../../globalInterface';
 import { ResetPasswordValues } from '../../../pages/LoginModule/ResetPassword/interface';
 
 export interface UserInitialState {
-  userInfo: null | User;
+  userInfo: null | OldUser;
   loading: boolean;
   loadingOnAction: boolean;
   successOnAction: boolean;

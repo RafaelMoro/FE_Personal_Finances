@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { postRequest, addToLocalStorage } from '../../../utils';
 import { LoginValues } from '../../../pages/LoginModule/Login/interface';
-import { User } from '../../../globalInterface';
+import { OldUser } from '../../../globalInterface';
 import { LOGIN_POST_ROUTE } from '../../../pages/LoginModule/Login/constants';
 import { LoginResponse, UserInitialState } from './interface';
 import { forgotPasswordFulfilled, forgotPasswordPending, forgotPasswordRejected } from './actions/forgotPassword';
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
 
       const { accessToken, user: { email } } = action.payload.data;
       const bearerToken = { Authorization: `Bearer ${accessToken}` };
-      const user: User = { accessToken, email, bearerToken };
+      const user: OldUser = { accessToken, email, bearerToken };
       addToLocalStorage(
         {
           user,

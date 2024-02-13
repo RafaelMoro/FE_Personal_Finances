@@ -1,10 +1,26 @@
-import { AxiosRequestHeaders, AxiosResponse } from 'axios';
+import { AxiosRequestHeaders } from 'axios';
+import { SerializedError } from '@reduxjs/toolkit';
 import { SystemStateEnum } from '../enums';
 
-export interface User {
+// @TODO Delete this interface. Used with axios.
+export interface OldUser {
   accessToken: string;
   email: string;
+  // @TODO Delete type AxiosRequestHeaders
   bearerToken: AxiosRequestHeaders;
+}
+
+export interface UserInfo {
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  email: string;
+}
+
+export interface User {
+  user: UserInfo;
+  bearerToken: string;
+  accessToken: string;
 }
 
 export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
@@ -29,12 +45,17 @@ export const MONTHS = [
 ] as const;
 export type CompleteMonthsType = typeof MONTHS[number];
 
-export interface GeneralResponse extends AxiosResponse {
-  version: string;
-  success: boolean;
+export interface GeneralResponse {
+  data: object | null;
+  error: null | SerializedError;
   message: null | string;
-  data: unknown | null;
-  error: null | never;
+  success: boolean;
+  version: string;
+}
+
+export interface GeneralError {
+  data: GeneralResponse;
+  status: number
 }
 
 export interface Account {
