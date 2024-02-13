@@ -2,6 +2,7 @@ import { GeneralResponse, OldUser } from '../../../globalInterface';
 import { ResetPasswordValues } from '../../../pages/LoginModule/ResetPassword/interface';
 
 export interface UserInitialState {
+  // @TODO Delete OldUser and Add User
   userInfo: null | OldUser;
   loading: boolean;
   loadingOnAction: boolean;
