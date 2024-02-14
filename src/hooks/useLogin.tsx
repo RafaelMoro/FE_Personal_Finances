@@ -13,7 +13,7 @@ import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/ac
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
 import { resetRecordsAndTotal } from '../redux/slices/Records/records.slice';
 import { useLoginMutation } from '../redux/budgetMaster.api';
-import { LOGIN_FIXED_CACHED_KEY } from '../redux/fixedCachedKeys';
+import { LOGIN_FIXED_CACHED_KEY } from '../redux/constants';
 import { GeneralError } from '../globalInterface';
 
 const NOTIFICATION_TITLE = 'Error';
