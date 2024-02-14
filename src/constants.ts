@@ -22,6 +22,9 @@ export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
 export const ERROR_INCORRECT_MAIL_DESC = 'Verify that your email is correct or create an account.';
 
+/** Success Login Module */
+export const SUCCESS_PASSWORD_RESET_TITLE = 'Password reset successfully';
+export const SUCCESS_PASSWORD_RESET_DESC = 'You may login with your new password.';
 export const SUCCESS_FORGOT_PASSWORD_TITLE = 'Email Sent.';
 export const SUCCESS_FORGOT_PASSWORD_DESC = 'Kindly check your email inbox and follow the instructions. Redirecting to sign in page';
 

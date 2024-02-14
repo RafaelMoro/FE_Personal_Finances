@@ -2,41 +2,38 @@ import { ReactElement, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Formik, Field } from 'formik';
 
-import { AxiosError } from 'axios';
-import { Notification } from '../../../components/UI';
-import { ResetPasswordFormValues, ResetPasswordValues } from './interface';
+import {
+  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, JWT_EXPIRED_CATCH_ERROR, SUCCESS_PASSWORD_RESET_DESC,
+  SUCCESS_PASSWORD_RESET_TITLE, TOKEN_EXPIRED_DESC, TOKEN_EXPIRED_TITLE,
+} from '../../../constants';
 import { RESET_PASSWORD_POST_ROUTE } from './constants';
-import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE } from '../../RoutesConstants';
-import { useNotification } from '../../../hooks/useNotification';
+import { LOGIN_ROUTE, FORGOT_PASSWORD_ROUTE, DASHBOARD_ROUTE } from '../../RoutesConstants';
+
+import { ResetPasswordFormValues, ResetPasswordValues } from './interface';
+import { GeneralError } from '../../../globalInterface';
 import { SystemStateEnum } from '../../../enums';
+import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
+import { useNotification } from '../../../hooks/useNotification';
+import { useResetPasswordMutation } from '../../../redux/slices/User/actions/resetPassword';
+
+import { Notification } from '../../../components/UI';
 import {
   Main, MainContainer, FormTitle, FormDescription, FormContainer,
 } from '../../../styles/LoginModule.styled';
-import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
-import { InputForm } from '../../../styles';
-import { useAppDispatch } from '../../../redux/hooks';
-import { resetPasswordThunkFn } from '../../../redux/slices/User/actions/resetPassword';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
 import { ActionButtonPanel } from '../../../components/templates';
-
-const NOTIFICATION_TITLE = 'Password reset successfully';
-const NOTIFICATION_DESCRIPTION = 'You may login with your new password.';
-const NOTIFICATION_STATUS = SystemStateEnum.Success;
-
-const NOTIFICATION_ERROR_TITLE = 'Error';
-const NOTIFICATION_ERROR_DESCRIPTION = 'An error ocurred. Please try again re-sending the email to reset your password.';
-const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Error;
+import { InputForm } from '../../../styles';
 
 const ResetPassword = (): ReactElement => {
   const {
     notification, toggleShowNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus,
   } = useNotification({
-    title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
+    title: SUCCESS_PASSWORD_RESET_TITLE, description: SUCCESS_PASSWORD_RESET_DESC, status: SystemStateEnum.Success,
   });
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const [resetPasswordMutation, { isLoading, isSuccess }] = useResetPasswordMutation();
   const { pathname } = location;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -47,25 +44,34 @@ const ResetPassword = (): ReactElement => {
       const { password } = values;
       const valuesRequest: ResetPasswordValues = { password };
       const completeRoute = RESET_PASSWORD_POST_ROUTE + pathname;
-      await dispatch(resetPasswordThunkFn({ values: valuesRequest, route: completeRoute }));
+      await resetPasswordMutation({ values: valuesRequest, route: completeRoute }).unwrap();
 
       toggleShowNotification();
       setTimeout(() => {
-        // dispatch(resetSuccessOnAction());
         navigate(LOGIN_ROUTE);
       }, 5000);
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      // eslint-disable-next-line no-console
-      console.error('Error while submitting reset Password: ', errorCatched);
-      updateTitle(NOTIFICATION_ERROR_TITLE);
-      updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
-      updateStatus(NOTIFICATION_ERROR_STATUS);
+      const error = err as GeneralError;
+      const message = error?.data?.error?.message;
+      if (message === JWT_EXPIRED_CATCH_ERROR) {
+        updateTitle(TOKEN_EXPIRED_TITLE);
+        updateDescription(TOKEN_EXPIRED_DESC);
+        updateStatus(SystemStateEnum.Error);
+
+        setTimeout(() => {
+          navigate(FORGOT_PASSWORD_ROUTE);
+        }, 5000);
+      } else {
+        updateTitle(ERROR_TITLE_GENERAL);
+        updateDescription(ERROR_MESSAGE_GENERAL);
+        updateStatus(SystemStateEnum.Error);
+
+        setTimeout(() => {
+          navigate(DASHBOARD_ROUTE);
+        }, 5000);
+      }
 
       toggleShowNotification();
-      setTimeout(() => {
-        navigate(FORGOT_PASSWORD_ROUTE);
-      }, 5000);
     }
   };
 
@@ -118,8 +124,8 @@ const ResetPassword = (): ReactElement => {
                   submitButtonText="Reset Password"
                   submitForm={submitForm}
                   routeCancelButton={LOGIN_ROUTE}
-                  success
-                  loading
+                  success={isSuccess}
+                  loading={isLoading}
                 />
               </FormContainer>
             )}
