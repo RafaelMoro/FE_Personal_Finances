@@ -31,7 +31,9 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const accountsUI = accountsState?.accounts;
   const selectedAccount = accountsState?.accountSelected;
   const bearerToken = user.userInfo?.bearerToken as string;
-  const { currentData, isSuccess } = useFetchAccountsQuery(bearerToken);
+  const {
+    currentData, isSuccess, isLoading, isError,
+  } = useFetchAccountsQuery(bearerToken);
   const { month, year } = useDate();
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
@@ -90,7 +92,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     // dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
   };
 
-  if (accountsState.loading) {
+  if (isLoading) {
     return (
       <AccountSectionLoading>
         <AccountLoading />
@@ -104,7 +106,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     );
   }
 
-  if (accountsState.error) {
+  if (isError) {
     return (
       <AccountSectionError>
         <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />
