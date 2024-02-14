@@ -11,8 +11,8 @@ export const UNAUTHORIZED_ERROR = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
 export const ERROR_TITLE_GENERAL = 'Error';
 export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
+export const ERROR_USER_NOT_FOUND = 'User not found.';
 export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
-export const ERROR_INCORRECT_MAIL_TITLE = 'Incorrect Email.';
 export const ERROR_INCORRECT_MAIL_DESC = 'Verify that your email is correct or create an account.';
 
 export const SUCCESS_FORGOT_PASSWORD_TITLE = 'Email Sent.';
