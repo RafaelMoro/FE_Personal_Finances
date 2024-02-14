@@ -15,12 +15,7 @@ export const accountsApiSlice = budgetMasterApi.injectEndpoints({
       transformResponse: (response: FetchAccountsResponse) => {
         const accountsFetched = response?.data?.accounts;
         const transformedAccounts = formatAccounts({ accounts: accountsFetched });
-        const [firstAccount] = transformedAccounts;
-        const newState = {
-          accounts: transformedAccounts,
-          accountSelected: firstAccount,
-        };
-        return newState;
+        return transformedAccounts;
       },
     }),
   }),

@@ -54,8 +54,9 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   useEffect(() => {
     // Fetch only if we have user info and if we haven't fetched accounts before.
     if (currentData && isSuccess) {
-      dispatch(updateAccounts(currentData.accounts));
-      dispatch(updateSelectedAccount(currentData.accountSelected));
+      dispatch(updateAccounts(currentData));
+      const [firstAccount] = currentData;
+      dispatch(updateSelectedAccount(firstAccount));
     }
   }, [bearerToken, currentData, dispatch, isSuccess]);
 
