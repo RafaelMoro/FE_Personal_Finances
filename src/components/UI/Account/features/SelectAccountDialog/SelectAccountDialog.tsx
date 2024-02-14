@@ -1,15 +1,13 @@
 import {
   Dialog, List, ListItem as ListAccount, Divider,
 } from '@mui/material';
-import { AxiosRequestHeaders } from 'axios';
 
 import { GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE } from '../../../Records/constants';
 import { AccountUI } from '../../interface';
 import { AccountDialogProps } from './interface';
 import { useDate } from '../../../../../hooks/useDate';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchCurrentMonthRecords';
-import { updateSelectedAccount, updateAccountsWithNewSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { updateSelectedAccount, updateAccounts } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { ListAccountSelected, ListItemButtonContainer } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
 
@@ -20,7 +18,7 @@ const SelectAccountDialog = ({
   const accountsReduxState = useAppSelector((state) => state.accounts);
   const accountsUI = accountsReduxState?.accounts;
   const user = useAppSelector((state) => state.user);
-  const bearerToken = user.userInfo?.bearerToken as AxiosRequestHeaders;
+  const bearerToken = user.userInfo?.bearerToken as string;
   const { month, year } = useDate();
 
   const handleAccountClick = (accountId: string) => {
@@ -37,11 +35,11 @@ const SelectAccountDialog = ({
           selected: false,
         };
       });
-      dispatch(updateAccountsWithNewSelectedAccount(newAccounts));
+      dispatch(updateAccounts(newAccounts));
 
       // Fetch records of selected account
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-      dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
+      // dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
 
       onClose();
     }

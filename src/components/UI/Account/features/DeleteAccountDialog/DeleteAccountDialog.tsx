@@ -26,14 +26,14 @@ const DeleteAccountDialog = ({
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
   const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+  const bearerToken = userReduxState.userInfo?.bearerToken as string;
 
   const { updateGlobalNotification } = useNotification();
 
   const handleSubmit = async () => {
     try {
-      const deleteAccountThunkProps: DeleteAccountThunkProps = { values: { accountId }, bearerToken };
-      await dispatch(deleteAccount(deleteAccountThunkProps)).unwrap();
+      // const deleteAccountThunkProps: DeleteAccountThunkProps = { values: { accountId }, bearerToken };
+      // await dispatch(deleteAccount(deleteAccountThunkProps)).unwrap();
 
       // Show success notification
       updateGlobalNotification({

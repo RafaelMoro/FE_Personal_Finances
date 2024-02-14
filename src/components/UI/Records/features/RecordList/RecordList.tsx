@@ -31,7 +31,7 @@ const RecordList = () => {
   const user = useAppSelector((state) => state.user.userInfo);
   const recordsState = useAppSelector((state) => state.records);
   const { allRecords, totalRecords } = recordsState;
-  const bearerToken = user?.bearerToken as AxiosRequestHeaders;
+  // const bearerToken = user?.bearerToken as string;
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
@@ -39,18 +39,18 @@ const RecordList = () => {
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
 
-  useEffect(() => {
-    // Fetch if user, accounts exists and current month records are null
-    if (user && accounts && !recordsState.allRecords.currentMonth) {
-      const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-      dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
-    }
-  }, [accountId, accounts, bearerToken, dispatch, month, recordsState.allRecords.currentMonth, selectedAccount, user, year]);
+  // useEffect(() => {
+  //   // Fetch if user, accounts exists and current month records are null
+  //   if (user && accounts && !recordsState.allRecords.currentMonth) {
+  //     const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
+  //     dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
+  //   }
+  // }, [accountId, accounts, bearerToken, dispatch, month, recordsState.allRecords.currentMonth, selectedAccount, user, year]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
       const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
-      await dispatch(fetchLastMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken })).unwrap();
+      // await dispatch(fetchLastMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken })).unwrap();
     } catch (err) {
       console.error(`Error ocurred while fetching last month records: ${err}`);
     }

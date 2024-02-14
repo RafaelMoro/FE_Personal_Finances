@@ -39,7 +39,7 @@ const CategoriesAndSubcategories = ({
   useEffect(() => {
     if (user && bearerToken && !categoriesState.categories) {
       try {
-        dispatch(fetchCategories({ bearerToken, categoryToBeEdited })).unwrap();
+        // dispatch(fetchCategories({ bearerToken, categoryToBeEdited })).unwrap();
       } catch (err) {
         const errorCatched = err as AxiosError;
         updateGlobalNotification({

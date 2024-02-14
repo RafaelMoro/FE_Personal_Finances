@@ -45,7 +45,7 @@ const AccountDialog = ({
   const dispatch = useAppDispatch();
   const userReduxState = useAppSelector((state) => state.user);
   const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+  const bearerToken = userReduxState.userInfo?.bearerToken as string;
 
   // Copying constant because it is readyonly
   const typeAccounts = [...TYPE_OF_ACCOUNTS];
@@ -68,8 +68,8 @@ const AccountDialog = ({
       // Transform amount to number as it comes as string.
       const amount = Number(values.amount);
       const newAccount: CreateAccount = { ...values, amount };
-      const createAccountThunkProps: CreateAccountThunkProps = { values: newAccount, bearerToken };
-      await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
+      // const createAccountThunkProps: CreateAccountThunkProps = { values: newAccount, bearerToken };
+      // await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
 
       dispatch(resetAllRecords());
 
@@ -105,8 +105,8 @@ const AccountDialog = ({
       } = values;
       const amountNumber = Number(amount ?? '0');
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
-      const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };
-      await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
+      // const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };
+      // await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
 
       // Show success notification
       updateGlobalNotification({

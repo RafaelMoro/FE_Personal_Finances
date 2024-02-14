@@ -44,7 +44,7 @@ const useRecords = ({
   const allRecords = useAppSelector((state) => state.records.allRecords);
   const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+  const bearerToken = userReduxState.userInfo?.bearerToken as string;
   const { month: currentMonth, lastMonth } = useDate();
 
   const showErrorNotification = ({ errorMessage, action, goToDashboard = false }: ShowErrorNotificationProps) => {
@@ -78,7 +78,7 @@ const useRecords = ({
         : { accountId, amount: amountToUpdate + amount };
 
       const payload: UpdateAmountPayload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
-      await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
+      // await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
       const errorCatched = err as AxiosError;
@@ -102,7 +102,7 @@ const useRecords = ({
         ? { accountId, amount: amountResultExpense }
         : { accountId, amount: amountResultIncome };
 
-      await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
+      // await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
       const errorCatched = err as AxiosError;
@@ -142,9 +142,9 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await dispatch(createExpenseThunkFn({
-        values, bearerToken, isLastMonth, isCurrentMonth,
-      })).unwrap();
+      // await dispatch(createExpenseThunkFn({
+      //   values, bearerToken, isLastMonth, isCurrentMonth,
+      // })).unwrap();
 
       // Update the amount of the account.
       const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true });
@@ -204,9 +204,9 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await dispatch(editExpenseThunkFn({
-        values: newValues, bearerToken, isLastMonth, isCurrentMonth,
-      })).unwrap();
+      // await dispatch(editExpenseThunkFn({
+      //   values: newValues, bearerToken, isLastMonth, isCurrentMonth,
+      // })).unwrap();
 
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
@@ -267,9 +267,9 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await dispatch(createIncomeThunkFn({
-        values, bearerToken, isLastMonth, isCurrentMonth,
-      })).unwrap();
+      // await dispatch(createIncomeThunkFn({
+      //   values, bearerToken, isLastMonth, isCurrentMonth,
+      // })).unwrap();
 
       // Update the amount of the account.
       const updateAmount = await updateAmountAccount({ amount, isExpense: false });
@@ -328,9 +328,9 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await dispatch(editIncomeThunkFn({
-        values: newValues, bearerToken, isLastMonth, isCurrentMonth,
-      })).unwrap();
+      // await dispatch(editIncomeThunkFn({
+      //   values: newValues, bearerToken, isLastMonth, isCurrentMonth,
+      // })).unwrap();
 
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
@@ -367,9 +367,9 @@ const useRecords = ({
           isPaid: false,
         }));
 
-        await dispatch(updateRelatedExpenses({
-          payload, bearerToken, isLastMonth, isCurrentMonth,
-        })).unwrap();
+        // await dispatch(updateRelatedExpenses({
+        //   payload, bearerToken, isLastMonth, isCurrentMonth,
+        // })).unwrap();
       }
 
       // Show success notification
@@ -408,9 +408,9 @@ const useRecords = ({
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
-      await dispatch(deleteRecordsThunkFn({
-        values: valuesDeleteRecord, route, bearerToken, isCurrentMonth, isLastMonth,
-      })).unwrap();
+      // await dispatch(deleteRecordsThunkFn({
+      //   values: valuesDeleteRecord, route, bearerToken, isCurrentMonth, isLastMonth,
+      // })).unwrap();
 
       // Update Amount of the account.
       const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
