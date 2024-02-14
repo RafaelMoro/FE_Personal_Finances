@@ -6,13 +6,6 @@ import { updateAmountAccountFulfilled, updateAmountAccountPending, updateAmountA
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
   accountSelected: null,
-  loading: false,
-  error: false,
-  errorMessage: '',
-  // These loading and error states are launched on create, delete or update account.
-  loadingOnAction: false,
-  errorOnAction: false,
-  errorMessageOnAction: '',
 };
 
 export const accountsSlice = createSlice({
