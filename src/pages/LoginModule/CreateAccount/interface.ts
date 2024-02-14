@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface ICreateAccountValues {
+export interface CreateUserValues {
   email: string;
   password: string;
   confirmPassword: string;
@@ -8,6 +8,8 @@ export interface ICreateAccountValues {
   lastName: string;
   middleName?: string;
 }
+
+export interface CreateUserValuesMutation extends Omit<CreateUserValues, 'confirmPassword'> {}
 
 export interface PersonalInfoFormValues {
   firstName: string;
@@ -33,17 +35,17 @@ export interface IUserAndPasswordProps {
   direction: number;
 }
 
-export interface ILoadingCreateAccount {
+export interface LoadingCreateAccountProps {
   counterView: number;
   direction: number;
 }
 
-export interface IErrorCreateAccount {
+export interface ErrorCreateAccountProps {
   error: string;
   resetCounterView: () => void;
 }
 
-export interface ICreateAccountResult {
+export interface CreateAccountResultProps {
   direction: number;
   counterView: number;
   isError: boolean;
