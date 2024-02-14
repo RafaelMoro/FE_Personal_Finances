@@ -3,7 +3,7 @@ import {
   CheckCircleOutlineOutlined,
 } from '@mui/icons-material';
 
-import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
+import { ErrorCreateAccountProps, CreateAccountResultProps, LoadingCreateAccountProps } from './interface';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
 import { Error } from '../../../components/UI';
 import { HorizontalLoader } from '../../../components/UI/HorizontalLoader';
@@ -17,7 +17,7 @@ const {
   positive,
 } = AppColors;
 
-const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount) => {
+const LoadingCreateAccount = ({ counterView, direction }: LoadingCreateAccountProps) => {
   if (counterView !== 2) return null;
   return (
     <AnimateBox direction={direction}>
@@ -39,7 +39,7 @@ const SuccessCreateAccount = () => (
   </MessageContainer>
 );
 
-const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) => (
+const ErrorCreateAccount = ({ error, resetCounterView }: ErrorCreateAccountProps) => (
   <Error description={error}>
     <AnchorContainer>
       <AnchorButton to={LOGIN_ROUTE}>
@@ -52,7 +52,7 @@ const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) =>
 
 const CreateAccountResult = ({
   isError, onError, onSuccess, direction, counterView,
-}: ICreateAccountResult) => {
+}: CreateAccountResultProps) => {
   if (counterView !== 3) return null;
   return (
     <AnimateBox direction={direction}>
