@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unstable-nested-components */
 /* eslint-disable no-console */
 import { useEffect } from 'react';
-import { AxiosRequestHeaders } from 'axios';
 
 import { Error } from '../../../Error';
 import {
@@ -17,8 +16,7 @@ import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import { HorizontalLoader } from '../../../HorizontalLoader';
-import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchCurrentMonthRecords';
-import { fetchLastMonthRecords } from '../../../../../redux/slices/Records/actions/fetchLastMonthRecords';
+import { useFetchRecordsByMonthYearQuery } from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -31,11 +29,15 @@ const RecordList = () => {
   const user = useAppSelector((state) => state.user.userInfo);
   const recordsState = useAppSelector((state) => state.records);
   const { allRecords, totalRecords } = recordsState;
-  // const bearerToken = user?.bearerToken as string;
+  const bearerToken = user?.bearerToken as string;
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const accountId = selectedAccount?._id ?? 'Account ID not found';
+
+  const recordsRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
+  const response = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken });
+  console.log('response', response);
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
 
