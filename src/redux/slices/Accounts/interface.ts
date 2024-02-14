@@ -35,9 +35,9 @@ export interface UpdateAmountPayload {
   amount: number;
 }
 
-export interface UpdateAmountAccountThunkProps {
+export interface UpdateAmountAccountMutationProps {
   payload: UpdateAmountPayload
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
 export interface FetchAccountsResponse extends Omit<GeneralResponse, 'data'> {
