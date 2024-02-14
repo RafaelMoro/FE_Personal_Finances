@@ -17,7 +17,6 @@ import {
 import { SystemStateEnum } from '../../enums';
 import { useNotification } from '../useNotification';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { updateAmountAccountThunkFn } from '../../redux/slices/Accounts/actions/updateAmountAccount';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
@@ -32,13 +31,15 @@ import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expens
 import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
+import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
 }: UseRecordsProps) => {
-  const { updateGlobalNotification } = useNotification({});
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { updateGlobalNotification } = useNotification({});
+  const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -78,7 +79,7 @@ const useRecords = ({
         : { accountId, amount: amountToUpdate + amount };
 
       const payload: UpdateAmountPayload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
-      // await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
+      await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
       const errorCatched = err as AxiosError;
@@ -102,7 +103,7 @@ const useRecords = ({
         ? { accountId, amount: amountResultExpense }
         : { accountId, amount: amountResultIncome };
 
-      // await dispatch(updateAmountAccountThunkFn({ payload, bearerToken })).unwrap();
+      await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
       const errorCatched = err as AxiosError;
