@@ -4,14 +4,6 @@ import { ResetPasswordValues } from '../../../pages/LoginModule/ResetPassword/in
 export interface UserInitialState {
   // @TODO Delete OldUser and Add User
   userInfo: null | OldUser;
-  loading: boolean;
-  loadingOnAction: boolean;
-  successOnAction: boolean;
-  error: boolean;
-  errorOnAction: boolean;
-  errorMessage: string | unknown | string[];
-  errorMessageOnAction: string | unknown;
-  navigateToDashboard: boolean;
 }
 
 export interface UserResponseLogin {

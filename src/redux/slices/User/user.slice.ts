@@ -4,14 +4,6 @@ import { UserInitialState } from './interface';
 
 const userInitialState: UserInitialState = {
   userInfo: null,
-  loading: false,
-  loadingOnAction: false,
-  successOnAction: false,
-  error: false,
-  errorOnAction: false,
-  errorMessage: '',
-  errorMessageOnAction: '',
-  navigateToDashboard: false,
 };
 
 export const userSlice = createSlice({
@@ -24,14 +16,11 @@ export const userSlice = createSlice({
     signOn: (state, action) => {
       state.userInfo = action.payload;
     },
-    resetSuccessOnAction: (state) => {
-      state.successOnAction = false;
-    },
   },
 });
 
 export const {
-  signOff, signOn, resetSuccessOnAction,
+  signOff, signOn,
 } = userSlice.actions;
 
 export default userSlice.reducer;
