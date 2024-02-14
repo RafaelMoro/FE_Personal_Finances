@@ -2,16 +2,16 @@
 import {
   Dialog,
 } from '@mui/material';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { AxiosError } from 'axios';
 
 import { useNotification } from '../../../../../hooks/useNotification';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { SystemStateEnum } from '../../../../../enums';
 import { DeleteAccountDialogProps } from './interface';
 import { CloseIcon } from '../../../Icons';
-import { DeleteAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
+import { DeleteAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { deleteAccount } from '../../../../../redux/slices/Accounts/actions';
+import { useDeleteAccountMutation } from '../../../../../redux/slices/Accounts/actions';
 import {
   AccountDialogContainer, DeleteAccountIconButton, DeleteAccountTitle, DialogParagraph, DialogParagraphWarning,
 } from './DeleteAccountDialog.styled';
@@ -24,6 +24,7 @@ const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
   const dispatch = useAppDispatch();
+  const [deleteAccountMutation] = useDeleteAccountMutation();
   const userReduxState = useAppSelector((state) => state.user);
   const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -32,7 +33,8 @@ const DeleteAccountDialog = ({
 
   const handleSubmit = async () => {
     try {
-      // const deleteAccountThunkProps: DeleteAccountThunkProps = { values: { accountId }, bearerToken };
+      const deleteAccountMutationProps: DeleteAccountMutationProps = { values: { accountId }, bearerToken };
+      await deleteAccountMutation(deleteAccountMutationProps);
       // await dispatch(deleteAccount(deleteAccountThunkProps)).unwrap();
 
       // Show success notification
