@@ -9,7 +9,7 @@ import { useNotification } from '../../../hooks/useNotification';
 import { useForgotPasswordMutation } from '../../../redux/slices/User/actions/forgotPassword';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
 import {
-  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, ERROR_USER_NOT_FOUND, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
+  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, USER_NOT_FOUND_CATCH_ERROR, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
 } from '../../../constants';
 import { GeneralError } from '../../../globalInterface';
 import { ForgotPasswordValues } from './interface';
@@ -58,7 +58,7 @@ const ForgotPassword = (): ReactElement => {
     } catch (err) {
       const error = err as GeneralError;
       const message = error?.data?.error?.message;
-      if (message === ERROR_USER_NOT_FOUND) {
+      if (message === USER_NOT_FOUND_CATCH_ERROR) {
         toggleUserNotFound();
         updateTitle('Oops!');
         updateDescription("We don't have any email associated to an account.");
