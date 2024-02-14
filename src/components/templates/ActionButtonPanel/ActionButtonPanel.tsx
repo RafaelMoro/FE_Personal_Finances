@@ -10,6 +10,7 @@ import { DASHBOARD_ROUTE } from '../../../pages/RoutesConstants';
 const ActionButtonPanel = ({
   routeCancelButton = DASHBOARD_ROUTE,
   routeSubmitButton = DASHBOARD_ROUTE,
+  disableCancelButton = false,
   minWidthNumber,
   submitButtonText,
   submitForm = () => {},
@@ -27,7 +28,7 @@ const ActionButtonPanel = ({
     <ButtonContainer>
       { (cancelButton === 'Link') && (
       <AnchorCancelButton to={routeCancelButton}>
-        <CancelButton minWidth={minWidthNumber} variant="contained" size="medium">{cancelButtonText}</CancelButton>
+        <CancelButton disabled={disableCancelButton} minWidth={minWidthNumber} variant="contained" size="medium">{cancelButtonText}</CancelButton>
       </AnchorCancelButton>
       ) }
       { (cancelButton === 'Button') && (
@@ -36,6 +37,7 @@ const ActionButtonPanel = ({
         variant="contained"
         onClick={cancelButtonCallback}
         size="medium"
+        disabled={disableCancelButton}
       >
           {cancelButtonText}
       </CancelButton>

@@ -5,6 +5,7 @@ export interface ActionButtonPanelProps {
   submitButtonText: string;
   submitForm?: () => void;
   routeCancelButton?: string;
+  disableCancelButton?: boolean;
   routeSubmitButton?: string;
   useSecondaryButton?: boolean;
   loading?: boolean;
