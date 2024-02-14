@@ -21,14 +21,14 @@ export interface DeleteAccountValues {
   accountId: string;
 }
 
-export interface DeleteAccountThunkProps {
+export interface DeleteAccountMutationProps {
   values: DeleteAccountValues;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
-export interface CreateAccountThunkProps {
+export interface CreateAccountMutationProps {
   values: CreateAccount;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
 export interface ModifyAccountThunkProps {
