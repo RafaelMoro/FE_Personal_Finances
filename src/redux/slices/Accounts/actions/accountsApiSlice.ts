@@ -1,10 +1,12 @@
 import { DELETE_ACCOUNT_ROUTE, POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
 import { GET_ACCOUNTS_ROUTE } from '../../../../components/UI/Account/features/ViewAccounts/constants';
-import { DELETE_METHOD, POST_METHOD } from '../../../../constants';
+import { DELETE_METHOD, POST_METHOD, PUT_METHOD } from '../../../../constants';
 import { formatAccounts } from '../../../../utils';
 import { budgetMasterApi } from '../../../budgetMaster.api';
 import { ACCOUNT_TAG } from '../../../constants';
-import { CreateAccountMutationProps, DeleteAccountMutationProps, FetchAccountsResponse } from '../interface';
+import {
+  CreateAccountMutationProps, DeleteAccountMutationProps, FetchAccountsResponse, ModifyAccountMutationProps,
+} from '../interface';
 
 export const accountsApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,6 +37,18 @@ export const accountsApiSlice = budgetMasterApi.injectEndpoints({
       invalidatesTags: [ACCOUNT_TAG],
     }),
 
+    modifyAccount: builder.mutation({
+      query: ({ values, bearerToken }: ModifyAccountMutationProps) => ({
+        url: POST_PUT_ACCOUNT_ROUTE,
+        method: PUT_METHOD,
+        body: values,
+        headers: {
+          Authorization: bearerToken,
+        },
+      }),
+      invalidatesTags: [ACCOUNT_TAG],
+    }),
+
     deleteAccount: builder.mutation({
       query: ({ values, bearerToken }: DeleteAccountMutationProps) => ({
         url: DELETE_ACCOUNT_ROUTE,
@@ -49,4 +63,6 @@ export const accountsApiSlice = budgetMasterApi.injectEndpoints({
   }),
 });
 
-export const { useFetchAccountsQuery, useCreateAccountMutation, useDeleteAccountMutation } = accountsApiSlice;
+export const {
+  useFetchAccountsQuery, useCreateAccountMutation, useDeleteAccountMutation, useModifyAccountMutation,
+} = accountsApiSlice;

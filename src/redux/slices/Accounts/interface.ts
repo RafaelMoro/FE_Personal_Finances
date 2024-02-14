@@ -31,9 +31,9 @@ export interface CreateAccountMutationProps {
   bearerToken: string;
 }
 
-export interface ModifyAccountThunkProps {
+export interface ModifyAccountMutationProps {
   values: ModifyAccountValues;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
 export interface UpdateAmountPayload {
