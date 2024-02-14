@@ -3,6 +3,7 @@ import { Category } from './globalInterface';
 export const BACKEND_ENV_URI = process.env.REACT_APP_BACKEND_URI;
 export const BACKEND_LOCAL_URI = 'http://localhost:6006/';
 export const POST_METHOD = 'POST';
+export const DELETE_METHOD = 'DELETE';
 
 /** Errors */
 export const NETWORK_CATCH_ERROR = 'Network Error';
