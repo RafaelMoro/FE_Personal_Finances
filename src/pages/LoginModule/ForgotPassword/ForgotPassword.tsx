@@ -1,20 +1,21 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Formik, Field,
 } from 'formik';
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
-import { AxiosError } from 'axios';
 import { useNotification } from '../../../hooks/useNotification';
+import { useForgotPasswordMutation } from '../../../redux/slices/User/actions/forgotPassword';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
 import {
-  ERROR_INCORRECT_MAIL_TITLE,
-  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
+  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, ERROR_USER_NOT_FOUND, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
 } from '../../../constants';
+import { GeneralError } from '../../../globalInterface';
 import { ForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
+import { ActionButtonPanel } from '../../../components/templates';
 import { Notification } from '../../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
@@ -22,18 +23,11 @@ import {
 import {
   InputForm, SecondaryButton,
 } from '../../../styles';
-import { ActionButtonPanel } from '../../../components/templates';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { forgotPasswordThunkFn } from '../../../redux/slices/User/actions/forgotPassword';
-import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 
 const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contained" size="medium">Create Account</SecondaryButton>;
 
 const ForgotPassword = (): ReactElement => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
-  const userSuccessOnAction = useAppSelector((state) => state.user.successOnAction);
   const {
     showNotification, hideNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus, notification,
@@ -42,12 +36,16 @@ const ForgotPassword = (): ReactElement => {
     description: SUCCESS_FORGOT_PASSWORD_DESC,
     status: SystemStateEnum.Success,
   });
+  const [forgotPasswordMutation, { isLoading, isSuccess }] = useForgotPasswordMutation();
+  const [userNotFound, setUserNotFound] = useState<boolean>(false);
+  const toggleUserNotFound = () => setUserNotFound(!userNotFound);
 
   const handleSubmit = async (values: ForgotPasswordValues) => {
     try {
-      await dispatch(forgotPasswordThunkFn(values)).unwrap();
+      await forgotPasswordMutation({ values }).unwrap();
 
-      if (notificationInfo.current.title === ERROR_INCORRECT_MAIL_TITLE) {
+      // Reset notification title, description and status.
+      if (notificationInfo.current.title !== SUCCESS_FORGOT_PASSWORD_TITLE) {
         updateTitle(SUCCESS_FORGOT_PASSWORD_TITLE);
         updateDescription(SUCCESS_FORGOT_PASSWORD_DESC);
         updateStatus(SystemStateEnum.Success);
@@ -55,13 +53,20 @@ const ForgotPassword = (): ReactElement => {
 
       showNotification();
       setTimeout(() => {
-        dispatch(resetSuccessOnAction());
         navigate(LOGIN_ROUTE);
       }, 5000);
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      // eslint-disable-next-line no-console
-      console.error('Error while submitting forgot Password: ', errorCatched);
+      const error = err as GeneralError;
+      const message = error?.data?.error?.message;
+      if (message === ERROR_USER_NOT_FOUND) {
+        toggleUserNotFound();
+        updateTitle('Oops!');
+        updateDescription("We don't have any email associated to an account.");
+        updateStatus(SystemStateEnum.Info);
+        showNotification();
+        return;
+      }
+
       updateTitle(ERROR_TITLE_GENERAL);
       updateDescription(ERROR_MESSAGE_GENERAL);
       updateStatus(SystemStateEnum.Error);
@@ -79,7 +84,7 @@ const ForgotPassword = (): ReactElement => {
         status={notificationInfo.current.status}
         close={hideNotification}
         UIElement={
-          notificationInfo.current.status === SystemStateEnum.Error
+          userNotFound
             ? createAccountButton
             : null
         }
@@ -111,8 +116,8 @@ const ForgotPassword = (): ReactElement => {
                   routeCancelButton={LOGIN_ROUTE}
                   minWidthNumber="10.5"
                   submitButtonText="Send"
-                  loading={userLoadingOnAction}
-                  success={userSuccessOnAction}
+                  loading={isLoading}
+                  success={isSuccess}
                   submitForm={submitForm}
                 />
               </FormContainer>
