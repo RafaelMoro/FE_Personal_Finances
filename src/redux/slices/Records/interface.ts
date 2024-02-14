@@ -19,6 +19,11 @@ export interface RecordsInitialState {
   errorMessageOnAction: string | unknown;
 }
 
+export interface GetRecordByMonthAndYearProps {
+  route: string;
+  bearerToken: string;
+}
+
 export interface UpdateTotalExpenseIncomePayload {
   newAmount: string;
   recordAgeCategory: RecordAgeCategory;
