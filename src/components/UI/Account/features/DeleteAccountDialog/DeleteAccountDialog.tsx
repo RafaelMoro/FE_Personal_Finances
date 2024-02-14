@@ -2,7 +2,6 @@
 import {
   Dialog,
 } from '@mui/material';
-import { AxiosError } from 'axios';
 
 import { useNotification } from '../../../../../hooks/useNotification';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
@@ -10,7 +9,7 @@ import { SystemStateEnum } from '../../../../../enums';
 import { DeleteAccountDialogProps } from './interface';
 import { CloseIcon } from '../../../Icons';
 import { DeleteAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { useDeleteAccountMutation } from '../../../../../redux/slices/Accounts/actions';
 import {
   AccountDialogContainer, DeleteAccountIconButton, DeleteAccountTitle, DialogParagraph, DialogParagraphWarning,
@@ -23,10 +22,8 @@ import { LoadingSpinner } from '../../../LoadingSpinner';
 const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
-  const dispatch = useAppDispatch();
-  const [deleteAccountMutation] = useDeleteAccountMutation();
+  const [deleteAccountMutation, { isLoading }] = useDeleteAccountMutation();
   const userReduxState = useAppSelector((state) => state.user);
-  const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
 
   const { updateGlobalNotification } = useNotification();
@@ -35,7 +32,6 @@ const DeleteAccountDialog = ({
     try {
       const deleteAccountMutationProps: DeleteAccountMutationProps = { values: { accountId }, bearerToken };
       await deleteAccountMutation(deleteAccountMutationProps);
-      // await dispatch(deleteAccount(deleteAccountThunkProps)).unwrap();
 
       // Show success notification
       updateGlobalNotification({
@@ -45,11 +41,6 @@ const DeleteAccountDialog = ({
       });
       onClose();
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      console.group();
-      console.error('Error on deleting account');
-      console.error(errorCatched);
-      console.groupEnd();
       updateGlobalNotification({
         newTitle: `Error deleting ${accountName}`,
         newDescription: ERROR_MESSAGE_GENERAL,
@@ -75,7 +66,7 @@ const DeleteAccountDialog = ({
         </DialogParagraph>
         <SecondaryButton variant="contained" size="medium" onClick={onClose}>Go Back</SecondaryButton>
         <CancelButton variant="contained" onClick={handleSubmit} size="medium">
-          { (loadingOnAction) ? (<LoadingSpinner />) : 'Delete Account' }
+          { (isLoading) ? (<LoadingSpinner />) : 'Delete Account' }
         </CancelButton>
       </AccountDialogContainer>
     </Dialog>
