@@ -11,7 +11,7 @@ import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { CreateAccountMutationProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
+import { CreateAccountMutationProps, ModifyAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
@@ -26,7 +26,7 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
-import { useCreateAccountMutation } from '../../../../../redux/slices/Accounts/actions';
+import { useCreateAccountMutation, useModifyAccountMutation } from '../../../../../redux/slices/Accounts/actions';
 
 const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
@@ -43,6 +43,7 @@ const AccountDialog = ({
   account,
 }: AccountDialogProps) => {
   const dispatch = useAppDispatch();
+  const [modifyAccountMutation] = useModifyAccountMutation();
   const userReduxState = useAppSelector((state) => state.user);
   const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -100,7 +101,8 @@ const AccountDialog = ({
       } = values;
       const amountNumber = Number(amount ?? '0');
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
-      // const modifyAccountThunkProps: ModifyAccountThunkProps = { values: accountModifiedValues, bearerToken };
+      const modifyAccountMutationProps: ModifyAccountMutationProps = { values: accountModifiedValues, bearerToken };
+      await modifyAccountMutation(modifyAccountMutationProps);
       // await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
 
       // Show success notification
