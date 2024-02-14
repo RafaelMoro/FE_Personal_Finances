@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { AccountsInitialState } from './interface';
-import { updateAmountAccountFulfilled, updateAmountAccountPending, updateAmountAccountRejected } from './actions/updateAmountAccount';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
@@ -24,11 +23,6 @@ export const accountsSlice = createSlice({
     resetSelectedAccount: (state) => {
       state.accountSelected = null;
     },
-  },
-  extraReducers: (builder) => {
-    updateAmountAccountFulfilled(builder);
-    updateAmountAccountPending(builder);
-    updateAmountAccountRejected(builder);
   },
 });
 
