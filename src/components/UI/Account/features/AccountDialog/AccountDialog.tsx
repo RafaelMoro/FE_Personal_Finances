@@ -5,14 +5,13 @@ import {
   Dialog, IconButton,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { AxiosError } from 'axios';
 
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { CreateAccountThunkProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
-import { createAccountThunkFn, modifyAccountThunkFn } from '../../../../../redux/slices/Accounts/actions';
+import { CreateAccountMutationProps, ModifyAccountThunkProps } from '../../../../../redux/slices/Accounts/interface';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
@@ -27,6 +26,7 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
+import { useCreateAccountMutation } from '../../../../../redux/slices/Accounts/actions';
 
 const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
@@ -46,6 +46,7 @@ const AccountDialog = ({
   const userReduxState = useAppSelector((state) => state.user);
   const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
+  const [createAccountMutation] = useCreateAccountMutation();
 
   // Copying constant because it is readyonly
   const typeAccounts = [...TYPE_OF_ACCOUNTS];
@@ -68,10 +69,10 @@ const AccountDialog = ({
       // Transform amount to number as it comes as string.
       const amount = Number(values.amount);
       const newAccount: CreateAccount = { ...values, amount };
-      // const createAccountThunkProps: CreateAccountThunkProps = { values: newAccount, bearerToken };
-      // await dispatch(createAccountThunkFn(createAccountThunkProps)).unwrap();
+      const createAccountMutationProps: CreateAccountMutationProps = { values: newAccount, bearerToken };
+      await createAccountMutation(createAccountMutationProps).unwrap();
 
-      dispatch(resetAllRecords());
+      // dispatch(resetAllRecords());
 
       // Show success notification
       updateGlobalNotification({
@@ -81,12 +82,6 @@ const AccountDialog = ({
       });
       onClose();
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      console.group();
-      console.error('Error on creating account');
-      console.error(errorCatched);
-      console.groupEnd();
-
       updateGlobalNotification({
         newTitle: 'Create Account: Error',
         newDescription: ERROR_MESSAGE_GENERAL,
