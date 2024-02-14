@@ -2,7 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AccountsInitialState } from './interface';
 import {
-  fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected,
   createAccountFulfilled, createAccountPending, createAccountRejected,
   deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected,
   modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected,
@@ -25,7 +24,7 @@ export const accountsSlice = createSlice({
   name: 'accounts',
   initialState: accountsInitialState,
   reducers: {
-    updateAccountsWithNewSelectedAccount: (state, action) => {
+    updateAccounts: (state, action) => {
       state.accounts = action.payload;
     },
     updateSelectedAccount: (state, action) => {
@@ -39,10 +38,6 @@ export const accountsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    fetchAccountsPending(builder);
-    fetchAccountsFullfilled(builder);
-    fetchAccountsRejected(builder);
-
     deleteAccountPending(builder);
     deleteAccountFullfilled(builder);
     deleteAccountRejected(builder);
@@ -62,7 +57,7 @@ export const accountsSlice = createSlice({
 });
 
 export const {
-  updateAccountsWithNewSelectedAccount, updateSelectedAccount, resetAccounts, resetSelectedAccount,
+  updateAccounts, updateSelectedAccount, resetAccounts, resetSelectedAccount,
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;
