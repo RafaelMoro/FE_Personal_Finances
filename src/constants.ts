@@ -7,6 +7,7 @@ export const POST_METHOD = 'POST';
 /** Errors */
 export const NETWORK_CATCH_ERROR = 'Network Error';
 export const JWT_EXPIRED_CATCH_ERROR = 'jwt expired';
+export const ERROR_CATCH_USER_CREATED = 'Try with other email.';
 
 export const ERROR_TITLE_GENERAL = 'Error';
 export const ERROR_MESSAGE_GENERAL = 'Oops! Something went wrong. Try again later.';
@@ -18,6 +19,7 @@ export const TOKEN_EXPIRED_TITLE = 'Your token to reset your password has expire
 export const TOKEN_EXPIRED_DESC = 'Redirecting you to forgot password to try again.';
 export const UNAUTHORIZED_ERROR = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
+export const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try with a different email.';
 
 export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
 export const ERROR_INCORRECT_MAIL_DESC = 'Verify that your email is correct or create an account.';
