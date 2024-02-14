@@ -118,6 +118,7 @@ const ForgotPassword = (): ReactElement => {
                   submitButtonText="Send"
                   loading={isLoading}
                   success={isSuccess}
+                  disableCancelButton={(isLoading || isSuccess)}
                   submitForm={submitForm}
                 />
               </FormContainer>
