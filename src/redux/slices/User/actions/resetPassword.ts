@@ -1,29 +1,16 @@
-/* eslint-disable no-param-reassign */
-import { ActionReducerMapBuilder, createAsyncThunk } from '@reduxjs/toolkit';
-import { postRequest } from '../../../../utils';
-import { ResetPasswordThunkProps, UserInitialState } from '../interface';
+import { POST_METHOD } from '../../../../constants';
+import { budgetMasterApi } from '../../../budgetMaster.api';
 
-export const resetPasswordThunkFn = createAsyncThunk(
-  'user/resetPassword',
-  async ({ values, route }: ResetPasswordThunkProps) => {
-    const standardResponse = await postRequest(values, route);
-    return standardResponse?.data;
-  },
-);
-
-export const resetPasswordPending = (
-  builder: ActionReducerMapBuilder<UserInitialState>,
-) => builder.addCase(resetPasswordThunkFn.pending, (state) => {
-
-  // Reset previous error status if it occurred
+export const resetPasswordApiSlice = budgetMasterApi.injectEndpoints({
+  endpoints: (builder) => ({
+    resetPassword: builder.mutation({
+      query: ({ values, route }) => ({
+        url: route,
+        method: POST_METHOD,
+        body: values,
+      }),
+    }),
+  }),
 });
 
-export const resetPasswordFulfilled = (
-  builder: ActionReducerMapBuilder<UserInitialState>,
-) => builder.addCase(resetPasswordThunkFn.fulfilled, (state) => {
-});
-
-export const resetPasswordRejected = (
-  builder: ActionReducerMapBuilder<UserInitialState>,
-) => builder.addCase(resetPasswordThunkFn.rejected, (state, action) => {
-});
+export const { useResetPasswordMutation } = resetPasswordApiSlice;
