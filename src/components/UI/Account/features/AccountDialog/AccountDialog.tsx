@@ -1,16 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-console */
 import { useMemo } from 'react';
 import {
   Dialog, IconButton,
 } from '@mui/material';
 import { Field, Formik } from 'formik';
-import { AxiosError } from 'axios';
 
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { CreateAccountMutationProps, ModifyAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
@@ -23,7 +21,6 @@ import {
   DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer, InputAdornment,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
-import { resetAllRecords } from '../../../../../redux/slices/Records/records.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { useCreateAccountMutation, useModifyAccountMutation } from '../../../../../redux/slices/Accounts/actions';
@@ -35,6 +32,7 @@ const initialValuesCreateAccount: CreateAccountInitialValues = {
   backgroundColor: 'White',
   color: 'Black',
 };
+const startAdornment = <InputAdornment position="start">$</InputAdornment>;
 
 const AccountDialog = ({
   open,
@@ -42,16 +40,14 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
-  const dispatch = useAppDispatch();
-  const [modifyAccountMutation] = useModifyAccountMutation();
+  const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
+  const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
+  const { updateGlobalNotification } = useNotification();
   const userReduxState = useAppSelector((state) => state.user);
-  const loadingOnAction = useAppSelector((state) => state.accounts.loadingOnAction);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
-  const [createAccountMutation] = useCreateAccountMutation();
 
   // Copying constant because it is readyonly
   const typeAccounts = [...TYPE_OF_ACCOUNTS];
-  const { updateGlobalNotification } = useNotification();
   const titleModal = accountAction === 'Create' ? 'Create Account:' : 'Modify Account:';
   const buttonModalText = accountAction === 'Create' ? 'Create Account' : 'Modify Account';
 
@@ -68,12 +64,10 @@ const AccountDialog = ({
   const createAccount = async (values: CreateAccountInitialValues) => {
     try {
       // Transform amount to number as it comes as string.
-      const amount = Number(values.amount);
-      const newAccount: CreateAccount = { ...values, amount };
-      const createAccountMutationProps: CreateAccountMutationProps = { values: newAccount, bearerToken };
+      const amountNumber = Number(values.amount);
+      const createAccountValues: CreateAccount = { ...values, amount: amountNumber };
+      const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
       await createAccountMutation(createAccountMutationProps).unwrap();
-
-      // dispatch(resetAllRecords());
 
       // Show success notification
       updateGlobalNotification({
@@ -92,7 +86,6 @@ const AccountDialog = ({
     }
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const modifyAccount = async (values: any) => {
     try {
       // Excluding version, accountUI props and changing _id for accountId
@@ -103,7 +96,6 @@ const AccountDialog = ({
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
       const modifyAccountMutationProps: ModifyAccountMutationProps = { values: accountModifiedValues, bearerToken };
       await modifyAccountMutation(modifyAccountMutationProps);
-      // await dispatch(modifyAccountThunkFn(modifyAccountThunkProps)).unwrap();
 
       // Show success notification
       updateGlobalNotification({
@@ -113,12 +105,6 @@ const AccountDialog = ({
       });
       onClose();
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      console.group();
-      console.error('Error on modifying account');
-      console.error(errorCatched);
-      console.groupEnd();
-
       updateGlobalNotification({
         newTitle: 'Modify Account: Error',
         newDescription: ERROR_MESSAGE_GENERAL,
@@ -129,8 +115,6 @@ const AccountDialog = ({
   };
 
   const handleSubmit = accountAction === 'Create' ? createAccount : modifyAccount;
-
-  const startAdornment = <InputAdornment position="start">$</InputAdornment>;
 
   return (
     <Dialog onClose={onClose} open={open}>
@@ -191,7 +175,7 @@ const AccountDialog = ({
                 colorOptions={AllTextColors}
               />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">
-                { (loadingOnAction) ? (<LoadingSpinner />) : buttonModalText }
+                { (isLoadingCreateAccount || isLoadingModifyAccount) ? (<LoadingSpinner />) : buttonModalText }
               </PrimaryButton>
             </AccountDialogFormContainer>
           )}
