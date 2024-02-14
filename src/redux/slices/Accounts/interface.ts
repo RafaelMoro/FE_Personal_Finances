@@ -5,12 +5,6 @@ import { Account, GeneralResponse } from '../../../globalInterface';
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
   accountSelected: AccountUI | null;
-  loading: boolean;
-  error: boolean;
-  errorMessage: string | unknown;
-  loadingOnAction: boolean;
-  errorOnAction: boolean;
-  errorMessageOnAction: string | unknown;
 }
 
 export interface FetchAccountsValues {
