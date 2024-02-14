@@ -17,7 +17,6 @@ export const budgetMasterApi = createApi({
         method: POST_METHOD,
         body: values,
       }),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       transformResponse: (response: LoginResponse) => {
         const { data } = response;
         const {
