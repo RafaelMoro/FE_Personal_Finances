@@ -14,9 +14,8 @@ import {
 } from '../../../styles/LoginModule.styled';
 import { ResetPasswordSchema } from '../../../validationsSchemas/login.schema';
 import { InputForm } from '../../../styles';
-import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch } from '../../../redux/hooks';
 import { resetPasswordThunkFn } from '../../../redux/slices/User/actions/resetPassword';
-import { resetSuccessOnAction } from '../../../redux/slices/User/user.slice';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
 import { ActionButtonPanel } from '../../../components/templates';
 
@@ -38,8 +37,6 @@ const ResetPassword = (): ReactElement => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userLoadingOnAction = useAppSelector((state) => state.user.loadingOnAction);
-  const userSuccessOnAction = useAppSelector((state) => state.user.successOnAction);
   const { pathname } = location;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -54,7 +51,7 @@ const ResetPassword = (): ReactElement => {
 
       toggleShowNotification();
       setTimeout(() => {
-        dispatch(resetSuccessOnAction());
+        // dispatch(resetSuccessOnAction());
         navigate(LOGIN_ROUTE);
       }, 5000);
     } catch (err) {
@@ -121,8 +118,8 @@ const ResetPassword = (): ReactElement => {
                   submitButtonText="Reset Password"
                   submitForm={submitForm}
                   routeCancelButton={LOGIN_ROUTE}
-                  success={userSuccessOnAction}
-                  loading={userLoadingOnAction}
+                  success
+                  loading
                 />
               </FormContainer>
             )}
