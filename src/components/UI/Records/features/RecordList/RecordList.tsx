@@ -20,7 +20,7 @@ import {
   useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
 } from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
 import { resetRecordsAndTotal, updateTotalExpensesIncomes } from '../../../../../redux/slices/Records/records.slice';
-import { formatNumberToCurrency } from '../../../../../utils';
+import { sumTotalRecords } from '../../../../../utils/sumTotalRecords';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -53,26 +53,17 @@ const RecordList = () => {
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
 
   useEffect(() => {
-    if (isSuccessThisMonthRecs) {
+    if (isSuccessThisMonthRecs && responseFetchRecords?.records) {
+      const { records } = responseFetchRecords;
       if (responseFetchRecords?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
         dispatch(resetRecordsAndTotal());
         return;
       }
 
-      let expenseTotalCounter = 0;
-      let incomeTotalCounter = 0;
-      responseFetchRecords?.records.forEach((record) => {
-        if (record.isPaid !== undefined) {
-          expenseTotalCounter += record.amount;
-          return;
-        }
-        incomeTotalCounter += record.amount;
-      });
-      const expenseTotal = formatNumberToCurrency(expenseTotalCounter);
-      const incomeTotal = formatNumberToCurrency(incomeTotalCounter);
+      const { expenseTotal, incomeTotal } = sumTotalRecords(records);
       dispatch(updateTotalExpensesIncomes({ expenseTotalCounter: expenseTotal, incomeTotalCounter: incomeTotal }));
     }
-  }, [dispatch, isSuccessThisMonthRecs, responseFetchRecords?.message, responseFetchRecords?.records]);
+  }, [dispatch, isSuccessThisMonthRecs, responseFetchRecords, responseFetchRecords?.message, responseFetchRecords?.records]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
