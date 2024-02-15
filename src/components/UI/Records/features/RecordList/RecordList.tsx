@@ -52,6 +52,7 @@ const RecordList = () => {
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
 
+  /** Update total balance of expenses and incomes after fetch of current month records */
   useEffect(() => {
     if (isSuccessThisMonthRecs && responseFetchRecords?.records) {
       const { records } = responseFetchRecords;
@@ -69,6 +70,7 @@ const RecordList = () => {
     try {
       const recordsLastMonthRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
       const response = await fetchLastMonthRecordsMutation({ route: recordsLastMonthRoute, bearerToken }).unwrap();
+      // Update total balance of expenses and incomes after fetch of last month records
       if (response && response?.records) {
         const { records } = response;
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
