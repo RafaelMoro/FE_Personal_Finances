@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { Error } from '../../../Error';
 import {
-  GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE,
+  GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { AppColors, FlexContainer } from '../../../../../styles';
@@ -16,7 +16,11 @@ import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import { HorizontalLoader } from '../../../HorizontalLoader';
-import { useFetchRecordsByMonthYearQuery } from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
+import {
+  useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
+} from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
+import { resetRecordsAndTotal, updateTotalExpensesIncomes } from '../../../../../redux/slices/Records/records.slice';
+import { formatNumberToCurrency } from '../../../../../utils';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -28,7 +32,7 @@ const RecordList = () => {
   } = useDate();
   const user = useAppSelector((state) => state.user.userInfo);
   const recordsState = useAppSelector((state) => state.records);
-  const { allRecords, totalRecords } = recordsState;
+  const { totalRecords } = recordsState;
   const bearerToken = user?.bearerToken as string;
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
@@ -36,29 +40,50 @@ const RecordList = () => {
   const accountId = selectedAccount?._id ?? 'Account ID not found';
 
   const recordsRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-  const response = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken });
-  console.log('response', response);
+
+  const {
+    isLoading: isLoadingThisMonthRecs, isError: isErrorThisMonthRecs,
+    currentData: responseFetchRecords, isSuccess: isSuccessThisMonthRecs,
+  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken });
+
+  const [fetchLastMonthRecordsMutation, {
+    isLoading: isLoadingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
+  }] = useLazyFetchRecordsByMonthYearQuery();
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
 
-  // useEffect(() => {
-  //   // Fetch if user, accounts exists and current month records are null
-  //   if (user && accounts && !recordsState.allRecords.currentMonth) {
-  //     const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-  //     dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
-  //   }
-  // }, [accountId, accounts, bearerToken, dispatch, month, recordsState.allRecords.currentMonth, selectedAccount, user, year]);
+  useEffect(() => {
+    if (isSuccessThisMonthRecs) {
+      if (responseFetchRecords?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
+        dispatch(resetRecordsAndTotal());
+        return;
+      }
+
+      let expenseTotalCounter = 0;
+      let incomeTotalCounter = 0;
+      responseFetchRecords?.records.forEach((record) => {
+        if (record.isPaid !== undefined) {
+          expenseTotalCounter += record.amount;
+          return;
+        }
+        incomeTotalCounter += record.amount;
+      });
+      const expenseTotal = formatNumberToCurrency(expenseTotalCounter);
+      const incomeTotal = formatNumberToCurrency(incomeTotalCounter);
+      dispatch(updateTotalExpensesIncomes({ expenseTotalCounter: expenseTotal, incomeTotalCounter: incomeTotal }));
+    }
+  }, [dispatch, isSuccessThisMonthRecs, responseFetchRecords?.message, responseFetchRecords?.records]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
-      const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
-      // await dispatch(fetchLastMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken })).unwrap();
+      const recordsLastMonthRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
+      await fetchLastMonthRecordsMutation({ route: recordsLastMonthRoute, bearerToken }).unwrap();
     } catch (err) {
       console.error(`Error ocurred while fetching last month records: ${err}`);
     }
   };
 
-  if (recordsState.loading) {
+  if (isLoadingThisMonthRecs) {
     return (
       <FlexContainer justifyContent="center" alignItems="center">
         <HorizontalLoader />
@@ -66,15 +91,15 @@ const RecordList = () => {
     );
   }
 
-  if (!recordsState.loading && accounts && accounts.length === 0) {
+  if (!isLoadingThisMonthRecs && accounts && accounts.length === 0) {
     return (
       <NoAccountsFound />
     );
   }
 
-  if ((allRecords.currentMonth && allRecords.lastMonth)
-  && (allRecords.currentMonth.length === 0 && allRecords.lastMonth.length === 0)
-  && (selectedAccount && !recordsState.loading)) {
+  if ((responseFetchRecords && responseLastMonthRecs)
+  && (responseFetchRecords.records.length === 0 && responseLastMonthRecs.records.length === 0)
+  && (selectedAccount && !isLoadingLastMonthRecs)) {
     return (
       <NoRecordsFound />
     );
@@ -89,9 +114,9 @@ const RecordList = () => {
         totalExpense={totalRecords.currentMonth.expenseTotal}
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
-        records={allRecords.currentMonth ?? []}
-        loading={recordsState.loading}
-        error={recordsState.error}
+        records={responseFetchRecords?.records ?? []}
+        loading={isLoadingThisMonthRecs}
+        error={isErrorThisMonthRecs}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
@@ -106,9 +131,9 @@ const RecordList = () => {
         totalIncome={totalRecords.lastMonth.incomeTotal}
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
-        records={allRecords.lastMonth ?? []}
-        loading={recordsState.loadingOnAction}
-        error={recordsState.errorOnAction}
+        records={responseLastMonthRecs?.records ?? []}
+        loading={isLoadingLastMonthRecs}
+        error={isErrorLastMonthRecs}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (
