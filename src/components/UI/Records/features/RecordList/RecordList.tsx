@@ -61,14 +61,23 @@ const RecordList = () => {
       }
 
       const { expenseTotal, incomeTotal } = sumTotalRecords(records);
-      dispatch(updateTotalExpensesIncomes({ expenseTotalCounter: expenseTotal, incomeTotalCounter: incomeTotal }));
+      dispatch(updateTotalExpensesIncomes({ expenseTotalCounter: expenseTotal, incomeTotalCounter: incomeTotal, period: 'CurrentMonth' }));
     }
   }, [dispatch, isSuccessThisMonthRecs, responseFetchRecords, responseFetchRecords?.message, responseFetchRecords?.records]);
 
   const handleFetchLastMonthRecords = async () => {
     try {
       const recordsLastMonthRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
-      await fetchLastMonthRecordsMutation({ route: recordsLastMonthRoute, bearerToken }).unwrap();
+      const response = await fetchLastMonthRecordsMutation({ route: recordsLastMonthRoute, bearerToken }).unwrap();
+      if (response && response?.records) {
+        const { records } = response;
+        if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
+          dispatch(resetRecordsAndTotal());
+          return;
+        }
+        const { expenseTotal, incomeTotal } = sumTotalRecords(records);
+        dispatch(updateTotalExpensesIncomes({ expenseTotalCounter: expenseTotal, incomeTotalCounter: incomeTotal, period: 'LastMonth' }));
+      }
     } catch (err) {
       console.error(`Error ocurred while fetching last month records: ${err}`);
     }
