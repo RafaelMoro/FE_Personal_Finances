@@ -2,6 +2,7 @@
 /* eslint-disable no-console */
 import { useEffect } from 'react';
 
+import { Typography } from '@mui/material';
 import { Error } from '../../../Error';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
@@ -31,6 +32,7 @@ const RecordList = () => {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
   const user = useAppSelector((state) => state.user.userInfo);
+  const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;
   const bearerToken = user?.bearerToken as string;
@@ -85,10 +87,27 @@ const RecordList = () => {
     }
   };
 
+  if (accountsFetchStatus === 'isUninitialized') {
+    return (
+      <Typography>Waiting on the load of accounts...</Typography>
+    );
+  }
+
+  if (accountsFetchStatus === 'loading') {
+    return (
+      <Typography>Loading accounts...</Typography>
+    );
+  }
+
   if (isLoadingThisMonthRecs) {
     return (
       <FlexContainer justifyContent="center" alignItems="center">
         <HorizontalLoader />
+        <Typography>
+          Loading records of
+          {' '}
+          {selectedAccount?.title}
+        </Typography>
       </FlexContainer>
     );
   }
