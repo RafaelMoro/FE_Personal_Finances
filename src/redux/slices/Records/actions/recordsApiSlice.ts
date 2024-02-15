@@ -2,7 +2,7 @@ import { IncomeAndExpensesResponse } from '../../../../components/UI/Records/int
 import { budgetMasterApi } from '../../../budgetMaster.api';
 import { GetRecordByMonthAndYearProps } from '../interface';
 
-export const fetchRecordsApiSlice = budgetMasterApi.injectEndpoints({
+export const recordsApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
     fetchRecordsByMonthYear: builder.query({
       query: ({ route, bearerToken }: GetRecordByMonthAndYearProps) => ({
@@ -21,4 +21,4 @@ export const fetchRecordsApiSlice = budgetMasterApi.injectEndpoints({
   }),
 });
 
-export const { useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery } = fetchRecordsApiSlice;
+export const { useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery } = recordsApiSlice;

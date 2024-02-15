@@ -18,7 +18,7 @@ import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
 import {
   useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
-} from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
+} from '../../../../../redux/slices/Records/actions/recordsApiSlice';
 import { resetRecordsAndTotal, updateTotalExpensesIncomes } from '../../../../../redux/slices/Records/records.slice';
 import { sumTotalRecords } from '../../../../../utils/sumTotalRecords';
 
