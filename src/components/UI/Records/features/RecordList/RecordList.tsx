@@ -37,14 +37,14 @@ const RecordList = () => {
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
-  const accountId = selectedAccount?._id ?? 'Account ID not found';
+  const accountId = selectedAccount?._id ?? '';
 
   const recordsRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
 
   const {
     isLoading: isLoadingThisMonthRecs, isError: isErrorThisMonthRecs,
     currentData: responseFetchRecords, isSuccess: isSuccessThisMonthRecs,
-  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: !bearerToken });
+  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: (!bearerToken || !accountId) });
 
   const [fetchLastMonthRecordsMutation, {
     isLoading: isLoadingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
