@@ -2,21 +2,20 @@
 /* eslint-disable no-console */
 import { useEffect } from 'react';
 
-import { Typography } from '@mui/material';
 import { Error } from '../../../Error';
 import {
   GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
 } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { AppColors, FlexContainer } from '../../../../../styles';
+import { AppColors } from '../../../../../styles';
 import { List } from '../../Records.styled';
 import { useDate } from '../../../../../hooks/useDate';
+import { LoadingStatus } from '../LoadingStatus';
 import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
-import { HorizontalLoader } from '../../../HorizontalLoader';
 import {
   useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
 } from '../../../../../redux/slices/Records/actions/fetchRecordsApiSlice';
@@ -89,26 +88,19 @@ const RecordList = () => {
 
   if (accountsFetchStatus === 'isUninitialized') {
     return (
-      <Typography>Waiting on the load of accounts...</Typography>
+      <LoadingStatus text="Waiting on the load of accounts..." />
     );
   }
 
   if (accountsFetchStatus === 'loading') {
     return (
-      <Typography>Loading accounts...</Typography>
+      <LoadingStatus text="Loading accounts...." />
     );
   }
 
   if (isLoadingThisMonthRecs) {
     return (
-      <FlexContainer justifyContent="center" alignItems="center">
-        <HorizontalLoader />
-        <Typography>
-          Loading records of
-          {' '}
-          {selectedAccount?.title}
-        </Typography>
-      </FlexContainer>
+      <LoadingStatus text={`Loading records of the account ${selectedAccount?.title}`} />
     );
   }
 
