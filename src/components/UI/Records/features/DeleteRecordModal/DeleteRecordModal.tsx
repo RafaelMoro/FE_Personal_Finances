@@ -3,7 +3,6 @@ import { CancelButton, SecondaryButton } from '../../../../../styles';
 import { DeleteRecordContainer, DeleteRecordTitle, DeleteRecordWarn } from './DeleteRecordModal.styled';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { AnyRecord } from '../../../../../globalInterface';
-import { useAppSelector } from '../../../../../redux/hooks';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 
 interface DeleteRecordModalProps {
@@ -17,9 +16,8 @@ interface DeleteRecordModalProps {
 const DeleteRecordModal = ({
   open, onClose, record, isExpense, closeDrawer,
 }: DeleteRecordModalProps) => {
-  const loadingOnAction = useAppSelector((state) => state.records.loadingOnAction);
   const { shortName: recordName } = record;
-  const { deleteRecord } = useRecords({
+  const { deleteRecord, loadingDeleteRecord } = useRecords({
     recordToBeDeleted: record, deleteRecordExpense: isExpense, closeDeleteRecordModalCb: onClose, closeDrawer,
   });
 
@@ -36,7 +34,7 @@ const DeleteRecordModal = ({
         </DeleteRecordTitle>
         <DeleteRecordWarn>You cannot reverse this action.</DeleteRecordWarn>
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <CancelButton onClick={deleteRecord}>{ (loadingOnAction) ? (<LoadingSpinner />) : 'Delete' }</CancelButton>
+        <CancelButton onClick={deleteRecord}>{ (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }</CancelButton>
       </DeleteRecordContainer>
     </Dialog>
   );

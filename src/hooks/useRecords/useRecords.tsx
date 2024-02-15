@@ -40,7 +40,7 @@ const useRecords = ({
   const dispatch = useAppDispatch();
   const { updateGlobalNotification } = useNotification({});
   const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
-  const [deleteRecordMutation] = useDeleteRecordMutation();
+  const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -441,6 +441,7 @@ const useRecords = ({
     createIncome,
     editIncome,
     deleteRecord,
+    loadingDeleteRecord,
   };
 };
 
