@@ -104,6 +104,7 @@ const RecordList = () => {
     );
   }
 
+  //  @TODO: Show it under the month accordeon
   if ((responseFetchRecords && responseLastMonthRecs)
   && (responseFetchRecords.records.length === 0 && responseLastMonthRecs.records.length === 0)
   && (selectedAccount && !isFetchingLastMonthRecs)) {
