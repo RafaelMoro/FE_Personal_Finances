@@ -68,9 +68,10 @@ export interface DeleteRecordProps {
   recordId: string;
 }
 
-export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface DeleteRecordMutationProps {
   values: DeleteRecordProps;
   route: string;
+  bearerToken: string;
 }
 
 export interface DeleteExpenseThunkResponse extends Omit<RecordOperationThunkResponse, 'response'> {
