@@ -12,7 +12,9 @@ export const fetchRecordsApiSlice = budgetMasterApi.injectEndpoints({
         },
       }),
       transformResponse: (response: IncomeAndExpensesResponse) => {
-        const { data: { records }, message } = response;
+        const { data, message } = response;
+        // records could be null, setting an empty array if it's null
+        const records = data?.records ?? [];
         return { records, message };
       },
     }),
