@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { useNavigate } from 'react-router-dom';
-import { AxiosError, AxiosRequestHeaders } from 'axios';
+import { AxiosError } from 'axios';
 
 import { formatDateToString, formatNumberToCurrency } from '../../utils';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
@@ -28,10 +28,10 @@ import {
 import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
 import { editIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/editIncome';
 import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expenses/updateRelatedExpenses';
-import { deleteRecordsThunkFn } from '../../redux/slices/Records/actions/deleteRecords';
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
+import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -40,6 +40,7 @@ const useRecords = ({
   const dispatch = useAppDispatch();
   const { updateGlobalNotification } = useNotification({});
   const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
+  const [deleteRecordMutation] = useDeleteRecordMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -397,21 +398,11 @@ const useRecords = ({
   const deleteRecord = async () => {
     try {
       const amountOfRecord = recordToBeDeleted?.amount as number;
-      const dateString = recordToBeDeleted?.date as Date;
-      const date = new Date(dateString);
-
-      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
-      const { monthFormatted } = formatDateToString(date);
-      const isLastMonth = lastMonth === monthFormatted;
-      const isCurrentMonth = currentMonth === monthFormatted;
       const recordId = recordToBeDeleted?._id as string;
-
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
-      // await dispatch(deleteRecordsThunkFn({
-      //   values: valuesDeleteRecord, route, bearerToken, isCurrentMonth, isLastMonth,
-      // })).unwrap();
+      await deleteRecordMutation({ values: valuesDeleteRecord, route, bearerToken });
 
       // Update Amount of the account.
       const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
