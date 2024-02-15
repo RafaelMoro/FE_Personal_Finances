@@ -43,12 +43,12 @@ const RecordList = () => {
   const recordsRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
 
   const {
-    isLoading: isLoadingThisMonthRecs, isError: isErrorThisMonthRecs,
+    isError: isErrorThisMonthRecs, isFetching: isFetchingThisMonthRecs,
     currentData: responseFetchRecords, isSuccess: isSuccessThisMonthRecs,
   } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: (!bearerToken || !accountId) });
 
   const [fetchLastMonthRecordsMutation, {
-    isLoading: isLoadingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
+    isFetching: isFetchingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
   }] = useLazyFetchRecordsByMonthYearQuery();
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
@@ -98,13 +98,7 @@ const RecordList = () => {
     );
   }
 
-  if (isLoadingThisMonthRecs) {
-    return (
-      <LoadingStatus text={`Loading records of the account ${selectedAccount?.title}`} />
-    );
-  }
-
-  if (!isLoadingThisMonthRecs && accounts && accounts.length === 0) {
+  if (!isFetchingThisMonthRecs && accounts && accounts.length === 0) {
     return (
       <NoAccountsFound />
     );
@@ -112,7 +106,7 @@ const RecordList = () => {
 
   if ((responseFetchRecords && responseLastMonthRecs)
   && (responseFetchRecords.records.length === 0 && responseLastMonthRecs.records.length === 0)
-  && (selectedAccount && !isLoadingLastMonthRecs)) {
+  && (selectedAccount && !isFetchingLastMonthRecs)) {
     return (
       <NoRecordsFound />
     );
@@ -128,7 +122,7 @@ const RecordList = () => {
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
         records={responseFetchRecords?.records ?? []}
-        loading={isLoadingThisMonthRecs}
+        loading={isFetchingThisMonthRecs}
         error={isErrorThisMonthRecs}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
@@ -145,7 +139,7 @@ const RecordList = () => {
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
         records={responseLastMonthRecs?.records ?? []}
-        loading={isLoadingLastMonthRecs}
+        loading={isFetchingLastMonthRecs}
         error={isErrorLastMonthRecs}
         onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
