@@ -33,7 +33,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const bearerToken = user.userInfo?.bearerToken as string;
   const {
     currentData, isSuccess, isLoading, isError,
-  } = useFetchAccountsQuery(bearerToken);
+  } = useFetchAccountsQuery(bearerToken, { skip: !bearerToken });
   const { month, year } = useDate();
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);

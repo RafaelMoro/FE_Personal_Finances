@@ -44,7 +44,7 @@ const RecordList = () => {
   const {
     isLoading: isLoadingThisMonthRecs, isError: isErrorThisMonthRecs,
     currentData: responseFetchRecords, isSuccess: isSuccessThisMonthRecs,
-  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken });
+  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: !bearerToken });
 
   const [fetchLastMonthRecordsMutation, {
     isLoading: isLoadingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
