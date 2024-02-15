@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { AccountsInitialState } from './interface';
+import { AccountsInitialState, UpdateAccountsStatusProps } from './interface';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
   accountSelected: null,
+  accountsFetchStatus: 'isUninitialized',
 };
 
 export const accountsSlice = createSlice({
@@ -13,6 +14,14 @@ export const accountsSlice = createSlice({
   reducers: {
     updateAccounts: (state, action) => {
       state.accounts = action.payload;
+    },
+    updateAccountsStatus: (state, action: UpdateAccountsStatusProps) => {
+      if (action.payload.status === 'loading') {
+        state.accountsFetchStatus = 'loading';
+        return;
+      }
+
+      state.accountsFetchStatus = 'success';
     },
     updateSelectedAccount: (state, action) => {
       state.accountSelected = action.payload;
@@ -27,7 +36,7 @@ export const accountsSlice = createSlice({
 });
 
 export const {
-  updateAccounts, updateSelectedAccount, resetAccounts, resetSelectedAccount,
+  updateAccounts, updateSelectedAccount, resetAccounts, resetSelectedAccount, updateAccountsStatus,
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;

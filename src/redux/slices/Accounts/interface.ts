@@ -1,9 +1,20 @@
 import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
 import { Account, GeneralResponse } from '../../../globalInterface';
 
+type AccountsState = 'isUninitialized' | 'loading' | 'success';
+
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
   accountSelected: AccountUI | null;
+  accountsFetchStatus: AccountsState;
+}
+
+interface UpdateAccountsStatusPayload {
+  status: AccountsState;
+}
+export interface UpdateAccountsStatusProps {
+  payload: UpdateAccountsStatusPayload;
+  type: string;
 }
 
 export interface DeleteAccountValues {
