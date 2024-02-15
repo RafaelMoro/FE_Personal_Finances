@@ -1,6 +1,8 @@
 import { IncomeAndExpensesResponse } from '../../../../components/UI/Records/interface';
+import { DELETE_METHOD } from '../../../../constants';
 import { budgetMasterApi } from '../../../budgetMaster.api';
-import { GetRecordByMonthAndYearProps } from '../interface';
+import { RECORD_TAG } from '../../../constants';
+import { DeleteRecordMutationProps, GetRecordByMonthAndYearProps } from '../interface';
 
 export const recordsApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +13,7 @@ export const recordsApiSlice = budgetMasterApi.injectEndpoints({
           Authorization: bearerToken,
         },
       }),
+      providesTags: [RECORD_TAG],
       transformResponse: (response: IncomeAndExpensesResponse) => {
         const { data, message } = response;
         // records could be null, setting an empty array if it's null
@@ -18,7 +21,21 @@ export const recordsApiSlice = budgetMasterApi.injectEndpoints({
         return { records, message };
       },
     }),
+    deleteRecord: builder.mutation({
+      query: ({ values, route, bearerToken }: DeleteRecordMutationProps) => ({
+        url: route,
+        method: DELETE_METHOD,
+        body: values,
+        headers: {
+          Authorization: bearerToken,
+        },
+      }),
+      invalidatesTags: [RECORD_TAG],
+    }),
   }),
 });
 
-export const { useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery } = recordsApiSlice;
+export const {
+  useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
+  useDeleteRecordMutation,
+} = recordsApiSlice;
