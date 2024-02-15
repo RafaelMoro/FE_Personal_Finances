@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { ZERO_CURRENCY } from '../../../constants';
-import { RecordsInitialState, UpdateTotalExpenseIncomeAction } from './interface';
+import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpenseIncomeAction } from './interface';
 import {
   fetchCurrentMonthRecordsFullfilled, fetchCurrentMonthRecordsPending, fetchCurrentMonthRecordsRejected,
 } from './actions/fetchCurrentMonthRecords';
@@ -64,6 +64,10 @@ export const recordsSlice = createSlice({
       state.allRecords.lastMonth = [];
       state.allRecords.olderRecords = [];
     },
+    updateTotalExpensesIncomes: (state, action: UpdateTotalExpenseAndIncomeProps) => {
+      state.totalRecords.currentMonth.expenseTotal = action.payload.expenseTotalCounter;
+      state.totalRecords.currentMonth.incomeTotal = action.payload.incomeTotalCounter;
+    },
     updateTotalExpense: (state, action: UpdateTotalExpenseIncomeAction) => {
       const { recordAgeCategory, newAmount } = action.payload;
       if (recordAgeCategory === 'Current Month') {
@@ -118,6 +122,7 @@ export const recordsSlice = createSlice({
 
 export const {
   resetRecordsAndTotal, setRecordToBeModified, updateTotalExpense, updateTotalIncome, resetAllRecords,
+  updateTotalExpensesIncomes,
 } = recordsSlice.actions;
 
 export default recordsSlice.reducer;
