@@ -29,6 +29,16 @@ export interface UpdateTotalExpenseIncomePayload {
   recordAgeCategory: RecordAgeCategory;
 }
 
+interface UpdateTotalExpenseAndIncomePayload {
+  expenseTotalCounter: string;
+  incomeTotalCounter: string
+}
+
+export interface UpdateTotalExpenseAndIncomeProps {
+  payload: UpdateTotalExpenseAndIncomePayload;
+  type: string;
+}
+
 export interface UpdateTotalExpenseIncomeAction {
   payload: UpdateTotalExpenseIncomePayload;
   type: string;
