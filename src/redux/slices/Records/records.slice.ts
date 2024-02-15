@@ -65,8 +65,14 @@ export const recordsSlice = createSlice({
       state.allRecords.olderRecords = [];
     },
     updateTotalExpensesIncomes: (state, action: UpdateTotalExpenseAndIncomeProps) => {
-      state.totalRecords.currentMonth.expenseTotal = action.payload.expenseTotalCounter;
-      state.totalRecords.currentMonth.incomeTotal = action.payload.incomeTotalCounter;
+      if (action.payload.period === 'CurrentMonth') {
+        state.totalRecords.currentMonth.expenseTotal = action.payload.expenseTotalCounter;
+        state.totalRecords.currentMonth.incomeTotal = action.payload.incomeTotalCounter;
+        return;
+      }
+
+      state.totalRecords.lastMonth.expenseTotal = action.payload.expenseTotalCounter;
+      state.totalRecords.lastMonth.incomeTotal = action.payload.incomeTotalCounter;
     },
     updateTotalExpense: (state, action: UpdateTotalExpenseIncomeAction) => {
       const { recordAgeCategory, newAmount } = action.payload;

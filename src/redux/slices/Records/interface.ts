@@ -29,9 +29,12 @@ export interface UpdateTotalExpenseIncomePayload {
   recordAgeCategory: RecordAgeCategory;
 }
 
+type PeriodRecord = 'CurrentMonth' | 'LastMonth';
+
 interface UpdateTotalExpenseAndIncomePayload {
   expenseTotalCounter: string;
   incomeTotalCounter: string
+  period: PeriodRecord;
 }
 
 export interface UpdateTotalExpenseAndIncomeProps {
