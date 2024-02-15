@@ -5,7 +5,7 @@ import { ViewAccountsProps } from './interface';
 import { AccountUI } from '../../interface';
 import { useDate } from '../../../../../hooks/useDate';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { updateAccountsStatus, updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
@@ -52,6 +52,15 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
   } = accountsActions;
+
+  useEffect(() => {
+    if (isLoading) {
+      dispatch(updateAccountsStatus({ status: 'loading' }));
+    }
+    if (isSuccess) {
+      dispatch(updateAccountsStatus({ status: 'success' }));
+    }
+  }, [dispatch, isLoading, isSuccess]);
 
   useEffect(() => {
     // Fetch only if we have user info and if we haven't fetched accounts before.
