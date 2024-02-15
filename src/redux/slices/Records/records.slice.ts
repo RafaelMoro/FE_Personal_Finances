@@ -2,7 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ZERO_CURRENCY } from '../../../constants';
 import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpenseIncomeAction } from './interface';
-import { fetchLastMonthRecordsFullfilled, fetchLastMonthRecordsPending, fetchLastMonthRecordsRejected } from './actions/fetchLastMonthRecords';
 import {
   createExpenseFulfilled, createExpensePending, createExpenseRejected,
   createIncomeFulfilled, createIncomePending, createIncomeRejected,
@@ -89,10 +88,6 @@ export const recordsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    fetchLastMonthRecordsFullfilled(builder);
-    fetchLastMonthRecordsPending(builder);
-    fetchLastMonthRecordsRejected(builder);
-
     createExpenseFulfilled(builder);
     createExpensePending(builder);
     createExpenseRejected(builder);
