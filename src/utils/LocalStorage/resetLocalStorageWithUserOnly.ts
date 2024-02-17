@@ -4,6 +4,6 @@ import { saveInfoToLocalStorage } from './saveInfoToLocalStorage';
 
 export function resetLocalStorageWithUserOnly() {
   const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
-  const { user } = localStorageInfo;
-  saveInfoToLocalStorage({ user });
+  const { user, bearerToken, accessToken } = localStorageInfo;
+  saveInfoToLocalStorage({ user, bearerToken, accessToken });
 }
