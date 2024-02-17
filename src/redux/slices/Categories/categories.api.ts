@@ -1,4 +1,5 @@
 import { GET_CATEGORIES } from '../../../components/UI/Records/constants';
+import { CategoriesResponse } from '../../../components/UI/Records/interface';
 import { budgetMasterApi } from '../../budgetMaster.api';
 import { FetchCategoriesQueryProps } from './interface';
 
@@ -11,8 +12,7 @@ export const categoriesApiSlice = budgetMasterApi.injectEndpoints({
           Authorization: bearerToken,
         },
       }),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      transformResponse: (response: any) => response.data?.categories,
+      transformResponse: (response: CategoriesResponse) => response.data?.categories,
     }),
   }),
 });
