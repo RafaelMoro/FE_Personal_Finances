@@ -28,7 +28,7 @@ const SelectExpenses = ({
     month, completeMonth, year, years, updateYear, updateMonth, updateCompleteMonth,
   } = useDate();
   const {
-    expenses, noExpensesFound, error, loading,
+    expenses, noExpensesFound, loading, isError,
   } = useAllExpenses({ month, year });
 
   const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
@@ -45,7 +45,7 @@ const SelectExpenses = ({
           <CloseIcon />
         </IconButton>
       </CloseDrawerContainer>
-      { (error === 'No error found') && (
+      { (!isError) && (
         <SelectMonthYear
           updateMonthYear={updateMonthAndYear}
           completeMonth={completeMonth}
@@ -53,14 +53,14 @@ const SelectExpenses = ({
           yearsArray={years}
         />
       ) }
-      { (error !== 'No error found') && (
+      { (isError) && (
         <SelectExpensesContainer>
           <Error description={ERROR_MESSAGE_GENERAL} />
         </SelectExpensesContainer>
       ) }
       { (loading) && (
       <LoadingExpensesContainer>
-        <Typography>Loading expenses...</Typography>
+        <Typography variant="body2">Loading expenses...</Typography>
         <HorizontalLoader />
       </LoadingExpensesContainer>
       ) }
