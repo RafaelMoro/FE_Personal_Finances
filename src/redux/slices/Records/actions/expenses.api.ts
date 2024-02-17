@@ -1,5 +1,5 @@
 import { EXPENSE_ROUTE } from '../../../../components/UI/Records/constants';
-import { POST_METHOD } from '../../../../constants';
+import { POST_METHOD, PUT_METHOD } from '../../../../constants';
 import { budgetMasterApi } from '../../../budgetMaster.api';
 import { RECORD_TAG } from '../../../constants';
 import { CreateExpenseMutationProps } from '../interface';
@@ -17,7 +17,19 @@ export const expensesApiSlice = budgetMasterApi.injectEndpoints({
       }),
       invalidatesTags: [RECORD_TAG],
     }),
+
+    editExpense: builder.mutation({
+      query: ({ values, bearerToken }) => ({
+        url: EXPENSE_ROUTE,
+        method: PUT_METHOD,
+        body: values,
+        headers: {
+          Authorization: bearerToken,
+        },
+      }),
+      invalidatesTags: [RECORD_TAG],
+    }),
   }),
 });
 
-export const { useCreateExpenseMutation } = expensesApiSlice;
+export const { useCreateExpenseMutation, useEditExpenseMutation } = expensesApiSlice;
