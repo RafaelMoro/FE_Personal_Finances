@@ -1,7 +1,6 @@
 import {
   useEffect, useMemo,
 } from 'react';
-import { AxiosError } from 'axios';
 import { Typography } from '@mui/material';
 
 import {
@@ -14,9 +13,9 @@ import { SystemStateEnum } from '../../../../../enums';
 import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { fetchCategories } from '../../../../../redux/slices/Categories/actions/fetchCategories';
-import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
+import { isCategorySelected, setAllCategories, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
+import { useFetchCategoriesQuery } from '../../../../../redux/slices/Categories/categories.api';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -31,28 +30,37 @@ const CategoriesAndSubcategories = ({
 }: CategoriesAndSubcategoriesProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.userInfo);
-  const bearerToken = user?.bearerToken;
+  const bearerToken = user?.bearerToken as string;
   const categoriesState = useAppSelector((state) => state.categories);
   const { updateGlobalNotification } = useNotification();
   const onlyCategories = useMemo(() => (categoriesState.categories ?? []).map((item) => item.categoryName), [categoriesState.categories]);
+  const {
+    currentData, isSuccess, isError, isFetching,
+  } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
 
   useEffect(() => {
-    if (user && bearerToken && !categoriesState.categories) {
-      try {
-        // dispatch(fetchCategories({ bearerToken, categoryToBeEdited })).unwrap();
-      } catch (err) {
-        const errorCatched = err as AxiosError;
-        updateGlobalNotification({
-          newTitle: 'Error',
-          newDescription: ERROR_MESSAGE_FETCH_CATEGORIES,
-          newStatus: SystemStateEnum.Error,
-        });
-        // eslint-disable-next-line no-console
-        console.error('Error while fetching categories', errorCatched.message);
-      }
+    if (currentData && isSuccess) {
+      dispatch(setAllCategories(currentData));
+    }
+  }, [currentData, dispatch, isSuccess]);
+
+  useEffect(() => {
+    if (categoryToBeEdited) {
+      dispatch(updateCurrentCategory(categoryToBeEdited));
+      dispatch(isCategorySelected());
+    }
+  }, [categoryToBeEdited, dispatch]);
+
+  useEffect(() => {
+    if (isError) {
+      updateGlobalNotification({
+        newTitle: 'Error',
+        newDescription: ERROR_MESSAGE_FETCH_CATEGORIES,
+        newStatus: SystemStateEnum.Error,
+      });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, bearerToken, categoriesState.categories]);
+  }, [isError]);
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
@@ -64,7 +72,7 @@ const CategoriesAndSubcategories = ({
     }
   };
 
-  if (categoriesState.loading) {
+  if (isFetching) {
     return (
       <>
         <SelectInput
