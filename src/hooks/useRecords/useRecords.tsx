@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { useNavigate } from 'react-router-dom';
-import { AxiosError } from 'axios';
 
 import { formatDateToString, formatNumberToCurrency } from '../../utils';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
@@ -33,6 +32,7 @@ import {
   useUpdatePaidMultipleExpensesMutation,
 } from '../../redux/slices/Records/actions/expenses.api';
 import { useCreateIncomeMutation, useEditIncomeMutation } from '../../redux/slices/Records/incomes.api';
+import { GeneralError } from '../../globalInterface';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -89,14 +89,13 @@ const useRecords = ({
       await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
-      const errorCatched = err as AxiosError;
+      const errorCatched = err as GeneralError;
       showErrorNotification({
         errorMessage: 'Error while updating the amount fo the account',
         action: 'Create',
         goToDashboard: true,
       });
-      console.error(`Error while updating the account: ${errorCatched?.message}`);
-      return errorCatched?.message;
+      return errorCatched?.data.message;
     }
   }
 
@@ -113,14 +112,13 @@ const useRecords = ({
       await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
-      const errorCatched = err as AxiosError;
+      const errorCatched = err as GeneralError;
       showErrorNotification({
         errorMessage: 'Error while updating the amount fo the account',
         action: 'Create',
         goToDashboard: true,
       });
-      console.error(`Error while updating the account: ${errorCatched?.message}`);
-      return errorCatched?.message;
+      return errorCatched.data.message;
     }
   };
 
@@ -186,7 +184,6 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Create',
@@ -247,14 +244,11 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Edit',
         goToDashboard: true,
       });
-      console.error('Error while creating expense', errorCatched.message);
     }
   };
 
@@ -303,7 +297,6 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Create',
@@ -375,14 +368,11 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      const errorCatched = err as AxiosError;
-      // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Edit',
         goToDashboard: true,
       });
-      console.error('Error while creating income', errorCatched.message);
     }
   };
 
@@ -413,7 +403,6 @@ const useRecords = ({
       closeDeleteRecordModalCb();
       closeDrawer();
     } catch (err) {
-      const errorCatched = err as AxiosError;
       closeDeleteRecordModalCb();
       closeDrawer();
       // Show notification error
@@ -422,7 +411,6 @@ const useRecords = ({
         action: 'Delete',
         goToDashboard: true,
       });
-      console.error('Error while deleting expense', errorCatched.message);
     }
   };
 
