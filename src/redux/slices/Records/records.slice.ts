@@ -2,15 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ZERO_CURRENCY } from '../../../constants';
 import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpenseIncomeAction } from './interface';
-import {
-  createExpenseFulfilled, createExpensePending, createExpenseRejected,
-  createIncomeFulfilled, createIncomePending, createIncomeRejected,
-  editExpenseFulfilled, editExpensePending, editExpenseRejected,
-  editIncomeFulfilled, editIncomePending, editIncomeRejected,
-  updateRelatedExpensesFulfilled,
-  updateRelatedExpensesPending,
-  updateRelatedExpensesRejected,
-} from './actions';
 
 const recordsInitialState: RecordsInitialState = {
   loading: false,
@@ -85,27 +76,6 @@ export const recordsSlice = createSlice({
       }
       state.totalRecords.lastMonth.incomeTotal = newAmount;
     },
-  },
-  extraReducers: (builder) => {
-    createExpenseFulfilled(builder);
-    createExpensePending(builder);
-    createExpenseRejected(builder);
-
-    createIncomeFulfilled(builder);
-    createIncomePending(builder);
-    createIncomeRejected(builder);
-
-    editExpenseFulfilled(builder);
-    editExpensePending(builder);
-    editExpenseRejected(builder);
-
-    editIncomeFulfilled(builder);
-    editIncomePending(builder);
-    editIncomeRejected(builder);
-
-    updateRelatedExpensesFulfilled(builder);
-    updateRelatedExpensesPending(builder);
-    updateRelatedExpensesRejected(builder);
   },
 });
 
