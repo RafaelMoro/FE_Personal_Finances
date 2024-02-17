@@ -1,37 +1,40 @@
 /* eslint-disable no-console */
 import { useNavigate } from 'react-router-dom';
 
-import { formatDateToString, formatNumberToCurrency } from '../../utils';
+import { formatDateToString, formatNumberToCurrency, formatCurrencyToNumber } from '../../utils';
+import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
+
+import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { useDate } from '../useDate';
+import { GeneralError } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
   UpdateTotalCurrencyProps,
 } from './interface';
-import { SystemStateEnum } from '../../enums';
-import { useNotification } from '../useNotification';
-import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
-import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import {
   DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues, UpdateTotalExpenseIncomePayload,
 } from '../../redux/slices/Records/interface';
-import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
-import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
-import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
-import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
+
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useDate } from '../useDate';
+import { useNotification } from '../useNotification';
 import {
+  updateTotalExpense,
+  updateTotalIncome,
+  useDeleteRecordMutation,
   useCreateExpenseMutation,
   useEditExpenseMutation,
   useUpdatePaidMultipleExpensesMutation,
-} from '../../redux/slices/Records/actions/expenses.api';
-import { useCreateIncomeMutation, useEditIncomeMutation } from '../../redux/slices/Records/incomes.api';
-import { GeneralError } from '../../globalInterface';
+  useCreateIncomeMutation,
+  useEditIncomeMutation,
+} from '../../redux/slices/Records';
+import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
