@@ -19,19 +19,15 @@ import { useNotification } from '../useNotification';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
-import { createExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/createExpense';
 import { ERROR_MESSAGE_GENERAL } from '../../constants';
-import { createIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/createIncome';
 import {
   DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues, UpdateTotalExpenseIncomePayload,
 } from '../../redux/slices/Records/interface';
-import { editExpenseThunkFn } from '../../redux/slices/Records/actions/Expenses/editExpense';
-import { editIncomeThunkFn } from '../../redux/slices/Records/actions/Incomes/editIncome';
-import { updateRelatedExpenses } from '../../redux/slices/Records/actions/Expenses/updateRelatedExpenses';
 import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Records/records.slice';
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
+import { useCreateExpenseMutation } from '../../redux/slices/Records/actions/expenses.api';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -41,6 +37,7 @@ const useRecords = ({
   const { updateGlobalNotification } = useNotification({});
   const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
+  const [createExpenseMutation] = useCreateExpenseMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -144,6 +141,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
+      await createExpenseMutation({ values, bearerToken }).unwrap();
       // await dispatch(createExpenseThunkFn({
       //   values, bearerToken, isLastMonth, isCurrentMonth,
       // })).unwrap();
