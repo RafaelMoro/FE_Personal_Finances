@@ -8,3 +8,4 @@ export * from './formatAccounts';
 export * from './handleResizeWindow';
 export * from './SymmetricDifferenceExpensesRelated';
 export * from './FormatCurrencyToNumber/formatCurrencyToNumber';
+export * from './sumTotalRecords';
