@@ -1,14 +1,5 @@
-import { AxiosRequestHeaders } from 'axios';
 import { SerializedError } from '@reduxjs/toolkit';
 import { SystemStateEnum } from '../enums';
-
-// @TODO Delete this interface. Used with axios.
-export interface OldUser {
-  accessToken: string;
-  email: string;
-  // @TODO Delete type AxiosRequestHeaders
-  bearerToken: AxiosRequestHeaders;
-}
 
 export interface UserInfo {
   firstName: string;
