@@ -45,8 +45,21 @@ import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
-    createExpense, createIncome, editExpense, editIncome,
+    createExpense,
+    createIncome,
+    editExpense,
+    editIncome,
+    isLoadingCreateExpense,
+    isLoadingCreateIncome,
+    isLoadingEditExpense,
+    isLoadingEditIncome,
+    isSucessCreateExpense,
+    isSucessCreateIncome,
+    isSucessEditExpense,
+    isSucessEditIncome,
   } = useRecords({});
+  const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome || isLoadingEditExpense || isLoadingEditIncome;
+  const successMutation = isSucessCreateExpense || isSucessCreateIncome || isSucessEditExpense || isSucessEditIncome;
   const {
     modal: indebtedPersonModal,
     openModal,
@@ -62,7 +75,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   } = useIndebtedPeople();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
-  const loadingOnAction = useAppSelector((state) => state.records.loadingOnAction);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
 
   const action: string = edit ? 'Edit' : 'Create';
@@ -344,8 +356,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               routeCancelButton={DASHBOARD_ROUTE}
               minWidthNumber="18"
               submitButtonText={buttonText}
-              loading={loadingOnAction}
-              success={false}
+              loading={loadingMutation}
+              success={successMutation}
               submitForm={submitForm}
             />
           </FormContainer>

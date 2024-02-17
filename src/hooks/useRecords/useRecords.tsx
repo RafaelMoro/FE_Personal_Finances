@@ -18,7 +18,6 @@ import { useNotification } from '../useNotification';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
-import { ERROR_MESSAGE_GENERAL } from '../../constants';
 import {
   DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues, UpdateTotalExpenseIncomePayload,
 } from '../../redux/slices/Records/interface';
@@ -42,10 +41,10 @@ const useRecords = ({
   const { updateGlobalNotification } = useNotification({});
   const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
-  const [createExpenseMutation] = useCreateExpenseMutation();
-  const [createIncomeMutation] = useCreateIncomeMutation();
-  const [editExpenseMutation] = useEditExpenseMutation();
-  const [editIncomeMutation] = useEditIncomeMutation();
+  const [createExpenseMutation, { isLoading: isLoadingCreateExpense, isSuccess: isSucessCreateExpense }] = useCreateExpenseMutation();
+  const [createIncomeMutation, { isLoading: isLoadingCreateIncome, isSuccess: isSucessCreateIncome }] = useCreateIncomeMutation();
+  const [editExpenseMutation, { isLoading: isLoadingEditExpense, isSuccess: isSucessEditExpense }] = useEditExpenseMutation();
+  const [editIncomeMutation, { isLoading: isLoadingEditIncome, isSuccess: isSucessEditIncome }] = useEditIncomeMutation();
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
@@ -426,6 +425,14 @@ const useRecords = ({
     editIncome,
     deleteRecord,
     loadingDeleteRecord,
+    isLoadingCreateExpense,
+    isLoadingCreateIncome,
+    isLoadingEditExpense,
+    isLoadingEditIncome,
+    isSucessCreateExpense,
+    isSucessCreateIncome,
+    isSucessEditExpense,
+    isSucessEditIncome,
   };
 };
 
