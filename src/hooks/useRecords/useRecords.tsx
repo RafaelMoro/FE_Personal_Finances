@@ -142,9 +142,6 @@ const useRecords = ({
       const isCurrentMonth = currentMonth === monthFormatted;
 
       await createExpenseMutation({ values, bearerToken }).unwrap();
-      // await dispatch(createExpenseThunkFn({
-      //   values, bearerToken, isLastMonth, isCurrentMonth,
-      // })).unwrap();
 
       // Update the amount of the account.
       const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true });
