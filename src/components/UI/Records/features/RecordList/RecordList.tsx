@@ -3,24 +3,27 @@
 import { useEffect } from 'react';
 
 import { Error } from '../../../Error';
-import {
-  GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
-} from '../../constants';
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { AppColors } from '../../../../../styles';
-import { List } from '../../Records.styled';
-import { useDate } from '../../../../../hooks/useDate';
 import { LoadingStatus } from '../LoadingStatus';
 import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
 import { NoAccountsFound } from '../../../Account/features/NoAccountsFound';
+
+import { sumTotalRecords } from '../../../../../utils';
 import {
-  useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
-} from '../../../../../redux/slices/Records/actions/recordsApiSlice';
-import { resetRecordsAndTotal, updateTotalExpensesIncomes } from '../../../../../redux/slices/Records/records.slice';
-import { sumTotalRecords } from '../../../../../utils/sumTotalRecords';
+  GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE, NO_EXPENSES_OR_INCOMES_FOUND,
+} from '../../constants';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
+import { useDate } from '../../../../../hooks/useDate';
+import {
+  useFetchRecordsByMonthYearQuery,
+  useLazyFetchRecordsByMonthYearQuery,
+  resetRecordsAndTotal,
+  updateTotalExpensesIncomes,
+} from '../../../../../redux/slices/Records';
+import { AppColors } from '../../../../../styles';
+import { List } from '../../Records.styled';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
