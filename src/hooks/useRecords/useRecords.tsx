@@ -27,7 +27,7 @@ import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Record
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
-import { useCreateExpenseMutation } from '../../redux/slices/Records/actions/expenses.api';
+import { useCreateExpenseMutation, useEditExpenseMutation } from '../../redux/slices/Records/actions/expenses.api';
 import { useCreateIncomeMutation } from '../../redux/slices/Records/incomes.api';
 
 const useRecords = ({
@@ -40,6 +40,7 @@ const useRecords = ({
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
   const [createExpenseMutation] = useCreateExpenseMutation();
   const [createIncomeMutation] = useCreateIncomeMutation();
+  const [editExpenseMutation] = useEditExpenseMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -201,10 +202,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      // await dispatch(editExpenseThunkFn({
-      //   values: newValues, bearerToken, isLastMonth, isCurrentMonth,
-      // })).unwrap();
-
+      await editExpenseMutation({ values: newValues, bearerToken });
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
         // If there's an error while updating the account, return
