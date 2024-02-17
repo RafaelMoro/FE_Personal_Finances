@@ -1,9 +1,8 @@
-import { AxiosRequestHeaders } from 'axios';
 import {
   RecordOperationResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
-  AllRecords, AnyRecord, Expense, RecordsTotal,
+  AllRecords, AnyRecord, Expense, GeneralResponse, RecordsTotal,
 } from '../../../globalInterface';
 import { RecordAgeCategory } from '../../../aliasType';
 
@@ -22,6 +21,12 @@ export interface RecordsInitialState {
 export interface GetRecordByMonthAndYearProps {
   route: string;
   bearerToken: string;
+}
+
+export interface GetExpensesResponse extends Omit<GeneralResponse, 'data'> {
+  data: {
+    records: Expense[];
+  };
 }
 
 export interface UpdateTotalExpenseIncomePayload {

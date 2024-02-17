@@ -2,10 +2,25 @@ import { EXPENSE_ROUTE, UPDATE_MULTIPLE_EXPENSES } from '../../../../components/
 import { POST_METHOD, PUT_METHOD } from '../../../../constants';
 import { budgetMasterApi } from '../../../budgetMaster.api';
 import { RECORD_TAG } from '../../../constants';
-import { CreateExpenseMutationProps } from '../interface';
+import { CreateExpenseMutationProps, GetExpensesResponse } from '../interface';
 
 export const expensesApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
+    /** Query used to get all expenses to be related to an account */
+    getExpenses: builder.query({
+      query: ({ route, bearerToken }) => ({
+        url: route,
+        headers: {
+          Authorization: bearerToken,
+        },
+      }),
+      transformResponse: (response: GetExpensesResponse) => {
+        const { message, data } = response;
+        const records = data?.records ?? null;
+        return { records, message };
+      },
+    }),
+
     createExpense: builder.mutation({
       query: ({ values, bearerToken }: CreateExpenseMutationProps) => ({
         url: EXPENSE_ROUTE,
@@ -43,4 +58,9 @@ export const expensesApiSlice = budgetMasterApi.injectEndpoints({
   }),
 });
 
-export const { useCreateExpenseMutation, useEditExpenseMutation, useUpdatePaidMultipleExpensesMutation } = expensesApiSlice;
+export const {
+  useGetExpensesQuery,
+  useCreateExpenseMutation,
+  useEditExpenseMutation,
+  useUpdatePaidMultipleExpensesMutation,
+} = expensesApiSlice;
