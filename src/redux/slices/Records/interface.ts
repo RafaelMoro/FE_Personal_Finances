@@ -47,11 +47,9 @@ export interface UpdateTotalExpenseIncomeAction {
   type: string;
 }
 
-export interface CreateExpenseThunkProps {
+export interface CreateExpenseMutationProps {
   values: CreateExpenseValues;
-  bearerToken: AxiosRequestHeaders;
-  isLastMonth?: boolean;
-  isCurrentMonth?: boolean;
+  bearerToken: string;
 }
 
 export interface RecordOperationThunkResponse {
@@ -60,7 +58,7 @@ export interface RecordOperationThunkResponse {
   isCurrentMonth?: boolean;
 }
 
-export interface CreateIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface CreateIncomeThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: CreateIncomeValues;
 }
 
@@ -89,15 +87,15 @@ export interface EditIncomeValues extends CreateIncomeValues {
   userId: string;
 }
 
-export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface EditExpenseThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: EditExpenseValues;
 }
 
-export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface EditIncomeThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: EditIncomeValues;
 }
 
-export interface UpdateRelatedExpenses extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface UpdateRelatedExpenses extends Omit<CreateExpenseMutationProps, 'values'> {
   payload: UpdateRelatedExpensesValues[];
 }
 
