@@ -28,6 +28,7 @@ import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/forma
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
 import { useCreateExpenseMutation } from '../../redux/slices/Records/actions/expenses.api';
+import { useCreateIncomeMutation } from '../../redux/slices/Records/incomes.api';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -38,6 +39,7 @@ const useRecords = ({
   const [updateAmountAccountMutation] = useModifyAmountAccountMutation();
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
   const [createExpenseMutation] = useCreateExpenseMutation();
+  const [createIncomeMutation] = useCreateIncomeMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -177,14 +179,12 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      const errorCatched = err as AxiosError;
       // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Create',
         goToDashboard: true,
       });
-      console.error('Error while creating expense', errorCatched.message);
     }
   };
 
@@ -264,9 +264,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      // await dispatch(createIncomeThunkFn({
-      //   values, bearerToken, isLastMonth, isCurrentMonth,
-      // })).unwrap();
+      await createIncomeMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
       const updateAmount = await updateAmountAccount({ amount, isExpense: false });
@@ -301,14 +299,12 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
-      const errorCatched = err as AxiosError;
       // Show notification error
       showErrorNotification({
         errorMessage: ERROR_MESSAGE_GENERAL,
         action: 'Create',
         goToDashboard: true,
       });
-      console.error('Error while creating expense', errorCatched.message);
     }
   };
 
