@@ -184,8 +184,9 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
+      const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: ERROR_MESSAGE_GENERAL,
+        errorMessage: errorCatched?.data.message ?? '',
         action: 'Create',
         goToDashboard: true,
       });
@@ -244,8 +245,9 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
+      const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: ERROR_MESSAGE_GENERAL,
+        errorMessage: errorCatched?.data.message ?? '',
         action: 'Edit',
         goToDashboard: true,
       });
@@ -297,8 +299,9 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
+      const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: ERROR_MESSAGE_GENERAL,
+        errorMessage: errorCatched?.data.message ?? '',
         action: 'Create',
         goToDashboard: true,
       });
@@ -368,8 +371,9 @@ const useRecords = ({
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
     } catch (err) {
+      const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: ERROR_MESSAGE_GENERAL,
+        errorMessage: errorCatched?.data.message ?? '',
         action: 'Edit',
         goToDashboard: true,
       });
@@ -403,11 +407,12 @@ const useRecords = ({
       closeDeleteRecordModalCb();
       closeDrawer();
     } catch (err) {
+      const errorCatched = err as GeneralError;
       closeDeleteRecordModalCb();
       closeDrawer();
       // Show notification error
       showErrorNotification({
-        errorMessage: ERROR_MESSAGE_GENERAL,
+        errorMessage: errorCatched?.data.message ?? '',
         action: 'Delete',
         goToDashboard: true,
       });
