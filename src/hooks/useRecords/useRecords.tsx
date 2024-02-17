@@ -27,8 +27,12 @@ import { updateTotalExpense, updateTotalIncome } from '../../redux/slices/Record
 import { formatCurrencyToNumber } from '../../utils/FormatCurrencyToNumber/formatCurrencyToNumber';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { useDeleteRecordMutation } from '../../redux/slices/Records/actions/recordsApiSlice';
-import { useCreateExpenseMutation, useEditExpenseMutation } from '../../redux/slices/Records/actions/expenses.api';
-import { useCreateIncomeMutation } from '../../redux/slices/Records/incomes.api';
+import {
+  useCreateExpenseMutation,
+  useEditExpenseMutation,
+  useUpdatePaidMultipleExpensesMutation,
+} from '../../redux/slices/Records/actions/expenses.api';
+import { useCreateIncomeMutation, useEditIncomeMutation } from '../../redux/slices/Records/incomes.api';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -41,6 +45,8 @@ const useRecords = ({
   const [createExpenseMutation] = useCreateExpenseMutation();
   const [createIncomeMutation] = useCreateIncomeMutation();
   const [editExpenseMutation] = useEditExpenseMutation();
+  const [editIncomeMutation] = useEditIncomeMutation();
+  const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const allRecords = useAppSelector((state) => state.records.allRecords);
@@ -319,9 +325,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      // await dispatch(editIncomeThunkFn({
-      //   values: newValues, bearerToken, isLastMonth, isCurrentMonth,
-      // })).unwrap();
+      await editIncomeMutation({ values: newValues, bearerToken }).unwrap();
 
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
@@ -358,9 +362,7 @@ const useRecords = ({
           isPaid: false,
         }));
 
-        // await dispatch(updateRelatedExpenses({
-        //   payload, bearerToken, isLastMonth, isCurrentMonth,
-        // })).unwrap();
+        await updatePaidMultipleExpensesMutation({ values: payload, bearerToken });
       }
 
       // Show success notification
