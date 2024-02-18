@@ -5,11 +5,6 @@ import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpen
 
 const recordsInitialState: RecordsInitialState = {
   recordToBeModified: null,
-  allRecords: {
-    currentMonth: null,
-    lastMonth: null,
-    olderRecords: null,
-  },
   totalRecords: {
     currentMonth: {
       expenseTotal: ZERO_CURRENCY,
@@ -29,20 +24,11 @@ export const recordsSlice = createSlice({
     setRecordToBeModified: (state, action) => {
       state.recordToBeModified = action.payload;
     },
-    resetRecordsAndTotal: (state) => {
-      state.allRecords.currentMonth = [];
-      state.allRecords.lastMonth = [];
-      state.allRecords.olderRecords = [];
-
+    resetTotalBalanceRecords: (state) => {
       state.totalRecords.currentMonth.expenseTotal = ZERO_CURRENCY;
       state.totalRecords.currentMonth.incomeTotal = ZERO_CURRENCY;
       state.totalRecords.lastMonth.expenseTotal = ZERO_CURRENCY;
       state.totalRecords.lastMonth.incomeTotal = ZERO_CURRENCY;
-    },
-    resetAllRecords: (state) => {
-      state.allRecords.currentMonth = [];
-      state.allRecords.lastMonth = [];
-      state.allRecords.olderRecords = [];
     },
     updateTotalExpensesIncomes: (state, action: UpdateTotalExpenseAndIncomeProps) => {
       if (action.payload.period === 'CurrentMonth') {
@@ -74,7 +60,7 @@ export const recordsSlice = createSlice({
 });
 
 export const {
-  resetRecordsAndTotal, setRecordToBeModified, updateTotalExpense, updateTotalIncome, resetAllRecords,
+  resetTotalBalanceRecords, setRecordToBeModified, updateTotalExpense, updateTotalIncome,
   updateTotalExpensesIncomes,
 } = recordsSlice.actions;
 

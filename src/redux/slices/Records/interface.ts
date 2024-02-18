@@ -2,12 +2,11 @@ import {
   RecordOperationResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
-  AllRecords, AnyRecord, Expense, GeneralResponse, RecordsTotal,
+  AnyRecord, Expense, GeneralResponse, RecordsTotal,
 } from '../../../globalInterface';
 import { RecordAgeCategory } from '../../../aliasType';
 
 export interface RecordsInitialState {
-  allRecords: AllRecords;
   totalRecords: RecordsTotal;
   recordToBeModified: AnyRecord | null;
 }

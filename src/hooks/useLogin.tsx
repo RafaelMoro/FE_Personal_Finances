@@ -11,7 +11,7 @@ import {
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
-import { resetRecordsAndTotal } from '../redux/slices/Records/records.slice';
+import { resetTotalBalanceRecords } from '../redux/slices/Records/records.slice';
 import { useLoginMutation } from '../redux/budgetMaster.api';
 import { LOGIN_FIXED_CACHED_KEY } from '../redux/constants';
 import { GeneralError } from '../globalInterface';
@@ -51,7 +51,7 @@ const useLogin = () => {
     dispatch(signOff());
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
-    dispatch(resetRecordsAndTotal());
+    dispatch(resetTotalBalanceRecords());
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
   };

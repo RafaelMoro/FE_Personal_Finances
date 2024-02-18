@@ -52,7 +52,6 @@ const useRecords = ({
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
-  const allRecords = useAppSelector((state) => state.records.allRecords);
   const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -163,7 +162,7 @@ const useRecords = ({
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
       // Update amount of total records
-      if (!!allRecords.currentMonth && isCurrentMonth) {
+      if (isCurrentMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.currentMonth.expenseTotal,
           newAmount: amount,
@@ -172,7 +171,7 @@ const useRecords = ({
         dispatch(updateTotalExpense(payload));
       }
 
-      if (!!allRecords.lastMonth && isLastMonth) {
+      if (isLastMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.lastMonth.expenseTotal,
           newAmount: amount,
@@ -220,7 +219,7 @@ const useRecords = ({
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
 
-      if (!!allRecords.currentMonth && isCurrentMonth) {
+      if (isCurrentMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.currentMonth.expenseTotal,
           newAmount: amount,
@@ -231,7 +230,7 @@ const useRecords = ({
         dispatch(updateTotalExpense(payload));
       }
 
-      if (!!allRecords.lastMonth && isLastMonth) {
+      if (isLastMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.lastMonth.expenseTotal,
           newAmount: amount,
@@ -279,7 +278,7 @@ const useRecords = ({
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
       // Update amount of total records
-      if (allRecords.currentMonth && isCurrentMonth) {
+      if (isCurrentMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.currentMonth.incomeTotal,
           newAmount: amount,
@@ -287,7 +286,7 @@ const useRecords = ({
         });
         dispatch(updateTotalIncome(payload));
       }
-      if (allRecords.lastMonth && isLastMonth) {
+      if (isLastMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.lastMonth.incomeTotal,
           newAmount: amount,
@@ -337,7 +336,7 @@ const useRecords = ({
       }
 
       // Update amount of total records
-      if (allRecords.currentMonth && isCurrentMonth) {
+      if (isCurrentMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.currentMonth.incomeTotal,
           newAmount: amount,
@@ -347,7 +346,7 @@ const useRecords = ({
         });
         dispatch(updateTotalIncome(payload));
       }
-      if (allRecords.lastMonth && isLastMonth) {
+      if (isLastMonth) {
         const payload = updateTotalCurrency({
           currentTotal: totalRecords.lastMonth.incomeTotal,
           newAmount: amount,

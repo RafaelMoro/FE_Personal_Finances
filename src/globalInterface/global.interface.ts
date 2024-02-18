@@ -140,12 +140,6 @@ export interface RecordsTotal {
   lastMonth: MonthTotal;
 }
 
-export interface AllRecords {
-  currentMonth: AnyRecord[] | null;
-  lastMonth: AnyRecord[] | null;
-  olderRecords: AnyRecord[] | null;
-}
-
 export interface GlobalNotification {
   title: string;
   description: string;

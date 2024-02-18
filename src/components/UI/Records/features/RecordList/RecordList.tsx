@@ -19,7 +19,7 @@ import { useDate } from '../../../../../hooks/useDate';
 import {
   useFetchRecordsByMonthYearQuery,
   useLazyFetchRecordsByMonthYearQuery,
-  resetRecordsAndTotal,
+  resetTotalBalanceRecords,
   updateTotalExpensesIncomes,
 } from '../../../../../redux/slices/Records';
 import { AppColors } from '../../../../../styles';
@@ -61,7 +61,7 @@ const RecordList = () => {
     if (isSuccessThisMonthRecs && responseFetchRecords?.records) {
       const { records } = responseFetchRecords;
       if (responseFetchRecords?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
-        dispatch(resetRecordsAndTotal());
+        dispatch(resetTotalBalanceRecords());
         return;
       }
 
@@ -78,7 +78,7 @@ const RecordList = () => {
       if (response && response?.records) {
         const { records } = response;
         if (response?.message === NO_EXPENSES_OR_INCOMES_FOUND) {
-          dispatch(resetRecordsAndTotal());
+          dispatch(resetTotalBalanceRecords());
           return;
         }
         const { expenseTotal, incomeTotal } = sumTotalRecords(records);
