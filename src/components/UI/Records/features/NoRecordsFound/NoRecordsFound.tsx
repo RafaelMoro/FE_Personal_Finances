@@ -17,8 +17,8 @@ const NoRecordsFound = () => {
         <source srcSet={noRecordsFoundImgWebp} type="image/webp" />
         <img src={noRecordsFoundImgPng} alt="No Records Found" />
       </NotRecordsFoundPicture>
-      <Typography align="center">
-        You have not created records for this account yet.
+      <Typography align="center" variant="body2">
+        You have not created records for this month.
       </Typography>
       <PrimaryButton onClick={navigateToCreateRecord}>Create Record</PrimaryButton>
     </NoRecordsFoundContainer>
