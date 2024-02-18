@@ -21,20 +21,20 @@ const records: AnyRecord[] = [
     indebtedPeople: [
       {
         name: 'Beto',
-        amount: 30,
-        amountPaid: 0,
+        amount: '30',
+        amountPaid: '0',
         isPaid: false,
       },
       {
         name: 'George',
-        amount: 70,
-        amountPaid: 50,
+        amount: '70',
+        amountPaid: '50',
         isPaid: false,
       },
       {
         name: 'Dad',
-        amount: 150,
-        amountPaid: 150,
+        amount: '150',
+        amountPaid: '150',
         isPaid: true,
       },
     ],
