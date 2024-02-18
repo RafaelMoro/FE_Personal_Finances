@@ -30,6 +30,10 @@ export const recordsSlice = createSlice({
       state.totalRecords.lastMonth.expenseTotal = ZERO_CURRENCY;
       state.totalRecords.lastMonth.incomeTotal = ZERO_CURRENCY;
     },
+    resetLastMonthBalance: (state) => {
+      state.totalRecords.lastMonth.expenseTotal = ZERO_CURRENCY;
+      state.totalRecords.lastMonth.incomeTotal = ZERO_CURRENCY;
+    },
     updateTotalExpensesIncomes: (state, action: UpdateTotalExpenseAndIncomeProps) => {
       if (action.payload.period === 'CurrentMonth') {
         state.totalRecords.currentMonth.expenseTotal = action.payload.expenseTotalCounter;
@@ -60,8 +64,8 @@ export const recordsSlice = createSlice({
 });
 
 export const {
-  resetTotalBalanceRecords, setRecordToBeModified, updateTotalExpense, updateTotalIncome,
-  updateTotalExpensesIncomes,
+  resetTotalBalanceRecords, resetLastMonthBalance, setRecordToBeModified,
+  updateTotalExpense, updateTotalIncome, updateTotalExpensesIncomes,
 } = recordsSlice.actions;
 
 export default recordsSlice.reducer;
