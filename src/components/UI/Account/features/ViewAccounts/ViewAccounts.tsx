@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE } from '../../../Records/constants';
 import { ViewAccountsProps } from './interface';
 import { AccountUI } from '../../interface';
-import { useDate } from '../../../../../hooks/useDate';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { updateAccountsStatus, updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
@@ -31,10 +29,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const accountsUI = accountsState?.accounts;
   const selectedAccount = accountsState?.accountSelected;
   const bearerToken = user.userInfo?.bearerToken as string;
-  const {
-    currentData, isSuccess, isLoading, isError,
-  } = useFetchAccountsQuery(bearerToken, { skip: !bearerToken });
-  const { month, year } = useDate();
+  const { isLoading, isError } = useFetchAccountsQuery(bearerToken, { skip: !bearerToken });
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
 
@@ -52,24 +47,6 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
   } = accountsActions;
-
-  useEffect(() => {
-    if (isLoading) {
-      dispatch(updateAccountsStatus({ status: 'loading' }));
-    }
-    if (isSuccess) {
-      dispatch(updateAccountsStatus({ status: 'success' }));
-    }
-  }, [dispatch, isLoading, isSuccess]);
-
-  useEffect(() => {
-    // Fetch only if we have user info and if we haven't fetched accounts before.
-    if (currentData && isSuccess) {
-      dispatch(updateAccounts(currentData));
-      const [firstAccount] = currentData;
-      dispatch(updateSelectedAccount(firstAccount));
-    }
-  }, [bearerToken, currentData, dispatch, isSuccess]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
@@ -95,10 +72,6 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
       return { ...account, selected: false };
     });
     dispatch(updateAccounts(newAccountsUI));
-
-    // Fetch records of selected account
-    const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-    // dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
   };
 
   if (isLoading) {
