@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { AccountsInitialState, UpdateAccountsStatusProps } from './interface';
 import { formatNumberToCurrency } from '../../../utils';
+import { accountsApiSlice } from './actions';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
   accountSelected: null,
+  // This flag will let know records if they can fetch and give feedback to the user
   accountsFetchStatus: 'isUninitialized',
 };
 
@@ -54,6 +56,20 @@ export const accountsSlice = createSlice({
     resetSelectedAccount: (state) => {
       state.accountSelected = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(isAnyOf(accountsApiSlice.endpoints.fetchAccounts.matchPending), (state) => {
+      state.accountsFetchStatus = 'loading';
+    });
+
+    builder.addMatcher(isAnyOf(accountsApiSlice.endpoints.fetchAccounts.matchFulfilled), (state, action) => {
+      state.accounts = action.payload;
+      const [firstAccount] = action.payload;
+      state.accountSelected = firstAccount;
+
+      // Update account status
+      state.accountsFetchStatus = 'success';
+    });
   },
 });
 
