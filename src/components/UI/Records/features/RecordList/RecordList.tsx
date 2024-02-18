@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 
 import { Error } from '../../../Error';
 import { LoadingStatus } from '../LoadingStatus';
-import { NoRecordsFoundOnMonth } from '../NoRecordsFoundOnMonth';
 import { ShowMultipleRecordLoader } from '../ShowMultipleRecordLoaders';
 import { MonthRecords } from '../MonthRecords';
 import { NoRecordsFound } from '../NoRecordsFound';
@@ -108,15 +107,6 @@ const RecordList = () => {
     );
   }
 
-  //  @TODO: Show it under the month accordeon
-  if ((responseFetchRecords && responseLastMonthRecs)
-  && (responseFetchRecords.records.length === 0 && responseLastMonthRecs.records.length === 0)
-  && (selectedAccount && !isFetchingLastMonthRecs)) {
-    return (
-      <NoRecordsFound />
-    );
-  }
-
   return (
     <List>
       <MonthRecords
@@ -129,7 +119,7 @@ const RecordList = () => {
         records={responseFetchRecords?.records ?? []}
         loading={isFetchingThisMonthRecs}
         error={isErrorThisMonthRecs}
-        onEmptyCb={() => <NoRecordsFoundOnMonth month={completeCurrentMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onEmptyCb={() => <NoRecordsFound />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
           <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="current-month" />
@@ -146,7 +136,7 @@ const RecordList = () => {
         records={responseLastMonthRecs?.records ?? []}
         loading={isFetchingLastMonthRecs}
         error={isErrorLastMonthRecs}
-        onEmptyCb={() => <NoRecordsFoundOnMonth month={completeLastMonth} accountTitle={selectedAccount?.title ?? ''} />}
+        onEmptyCb={() => <NoRecordsFound />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (
           <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="last-month" />
