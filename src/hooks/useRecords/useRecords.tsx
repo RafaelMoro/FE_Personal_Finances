@@ -35,6 +35,7 @@ import {
   useEditIncomeMutation,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
+import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -88,7 +89,11 @@ const useRecords = ({
         : { accountId, amount: amountToUpdate + amount };
 
       const payload: UpdateAmountPayload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
-      await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
+      const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
+
+      // dispatch update amount account
+      dispatch(updateAmountSelectedAccount(amountFetched));
+
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
       const errorCatched = err as GeneralError;
