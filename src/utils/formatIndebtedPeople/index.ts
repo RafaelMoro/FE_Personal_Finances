@@ -3,7 +3,7 @@ import { formatNumberToCurrency } from '../FormatNumberToCurrency';
 
 export const formatIndebtedPeople = (indebtedPeople: IndebtedPeople[]): IndebtedPeopleTable[] => indebtedPeople.map((person) => ({
   ...person,
-  amount: formatNumberToCurrency(person.amount),
-  amountPaid: formatNumberToCurrency(person.amountPaid),
-  restingDebt: formatNumberToCurrency(person.amount - person.amountPaid),
+  amount: formatNumberToCurrency(Number(person.amount)),
+  amountPaid: formatNumberToCurrency(Number(person.amountPaid)),
+  restingDebt: formatNumberToCurrency(Number(person.amount) - Number(person.amountPaid)),
 }));
