@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import {
-  indebtedName, tagOrBudgetValidation, indebtedAmount, indebtedIsPaid, stringRequired,
+  indebtedName, tagOrBudgetValidation, indebtedIsPaid, stringRequired,
 } from './validations';
 
 export const TagOrBudgetSchema = (name: string) => Yup.object({
@@ -9,8 +9,8 @@ export const TagOrBudgetSchema = (name: string) => Yup.object({
 
 export const IndebtedPeopleFormSchema = Yup.object({
   name: indebtedName,
-  amount: indebtedAmount(true),
-  amountPaid: indebtedAmount(),
+  amount: stringRequired('Amount field is required'),
+  amountPaid: stringRequired('Amount Paid field is required'),
   isPaid: indebtedIsPaid,
 });
 
