@@ -49,7 +49,6 @@ export const accountsApiSlice = budgetMasterApi.injectEndpoints({
       invalidatesTags: [ACCOUNT_TAG],
     }),
 
-    // @TODO Think if this mutation should not invalidate the tag to avoid a refetch and instead change the amount of the selected account
     modifyAmountAccount: builder.mutation({
       query: ({ payload, bearerToken }: UpdateAmountAccountMutationProps) => ({
         url: POST_PUT_ACCOUNT_ROUTE,
@@ -59,7 +58,6 @@ export const accountsApiSlice = budgetMasterApi.injectEndpoints({
           Authorization: bearerToken,
         },
       }),
-      invalidatesTags: [ACCOUNT_TAG],
     }),
 
     deleteAccount: builder.mutation({
