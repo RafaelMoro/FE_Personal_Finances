@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { useNavigate } from 'react-router-dom';
 
-import { formatDateToString, formatNumberToCurrency, formatCurrencyToNumber } from '../../utils';
+import { formatDateToString, formatValueToCurrency, formatCurrencyToNumber } from '../../utils';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
@@ -143,7 +143,7 @@ const useRecords = ({
     } else {
       totalUpdated = currentTotalNumber + newAmount;
     }
-    const newTotalCurrency = formatNumberToCurrency(totalUpdated);
+    const newTotalCurrency = formatValueToCurrency(totalUpdated);
     const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
     return payload;
   };

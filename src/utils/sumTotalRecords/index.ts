@@ -1,5 +1,5 @@
 import { AnyRecord } from '../../globalInterface';
-import { formatNumberToCurrency } from '../FormatNumberToCurrency';
+import { formatValueToCurrency } from '../FormatNumberToCurrency';
 
 export const sumTotalRecords = (records: AnyRecord[]) => {
   let expenseTotalCounter = 0;
@@ -12,8 +12,8 @@ export const sumTotalRecords = (records: AnyRecord[]) => {
     incomeTotalCounter += record.amount;
   });
 
-  const expenseTotal = formatNumberToCurrency(expenseTotalCounter);
-  const incomeTotal = formatNumberToCurrency(incomeTotalCounter);
+  const expenseTotal = formatValueToCurrency(expenseTotalCounter);
+  const incomeTotal = formatValueToCurrency(incomeTotalCounter);
 
   return {
     expenseTotal,

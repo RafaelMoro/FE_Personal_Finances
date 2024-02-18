@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { AccountsInitialState, UpdateAccountsStatusProps } from './interface';
-import { formatNumberToCurrency } from '../../../utils';
+import { formatValueToCurrency } from '../../../utils';
 import { accountsApiSlice } from './actions';
 
 const accountsInitialState: AccountsInitialState = {
@@ -28,7 +28,7 @@ export const accountsSlice = createSlice({
     },
     updateAmountSelectedAccount: (state, action) => {
       const amountNumber = action.payload;
-      const amountFormatted = formatNumberToCurrency(amountNumber);
+      const amountFormatted = formatValueToCurrency(amountNumber);
 
       // Update the amount of the selected account
       if (state.accountSelected) {
