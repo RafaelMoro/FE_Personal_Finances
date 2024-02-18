@@ -63,8 +63,8 @@ export interface Account {
 export interface IndebtedPeople {
   _id?: string;
   name: string;
-  amount: number;
-  amountPaid: number;
+  amount: string;
+  amountPaid: string;
   isPaid: boolean;
 }
 
