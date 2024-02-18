@@ -4,12 +4,6 @@ import { ZERO_CURRENCY } from '../../../constants';
 import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpenseIncomeAction } from './interface';
 
 const recordsInitialState: RecordsInitialState = {
-  loading: false,
-  error: false,
-  errorMessage: '',
-  loadingOnAction: false,
-  errorOnAction: false,
-  errorMessageOnAction: '',
   recordToBeModified: null,
   allRecords: {
     currentMonth: null,

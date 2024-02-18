@@ -10,12 +10,6 @@ export interface RecordsInitialState {
   allRecords: AllRecords;
   totalRecords: RecordsTotal;
   recordToBeModified: AnyRecord | null;
-  loading: boolean;
-  loadingOnAction: boolean;
-  errorOnAction: boolean;
-  error: boolean;
-  errorMessage: string | unknown;
-  errorMessageOnAction: string | unknown;
 }
 
 export interface GetRecordByMonthAndYearProps {
