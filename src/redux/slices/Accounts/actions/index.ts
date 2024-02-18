@@ -1,1 +1,1 @@
-export * from './accountsApiSlice';
+export * from './accounts.api';
