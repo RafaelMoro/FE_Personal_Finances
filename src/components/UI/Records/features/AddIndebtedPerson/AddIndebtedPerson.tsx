@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Dialog, Typography } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { Switch } from 'formik-mui';
@@ -12,19 +13,20 @@ import { IndebtedPeople } from '../../../../../globalInterface';
 import { AddIndebtedPersonProps } from './interface';
 import { Container } from './AddIndebtedPeople.styled';
 import { CloseIcon } from '../../../Icons';
+import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 
 const AddIndebtedPerson = ({
   open, onClose, addPerson, indebtedPeople = [], indebtedPerson, modifyAction, updatePerson,
 }: AddIndebtedPersonProps) => {
   const initialValues = modifyAction ? {
-    name: indebtedPerson?.name as string,
-    amount: indebtedPerson?.amount as number,
-    amountPaid: indebtedPerson?.amountPaid as number,
-    isPaid: indebtedPerson?.isPaid as boolean,
+    name: indebtedPerson?.name ?? '',
+    amount: indebtedPerson?.amount ?? '',
+    amountPaid: indebtedPerson?.amountPaid ?? '',
+    isPaid: indebtedPerson?.isPaid ?? false,
   } : {
     name: '',
-    amount: 0,
-    amountPaid: 0,
+    amount: '',
+    amountPaid: '',
     isPaid: false,
   };
 
@@ -81,21 +83,23 @@ const AddIndebtedPerson = ({
               <Field
                 component={InputForm}
                 name="amount"
-                type="number"
+                type="string"
                 variant="standard"
                 label="Amount"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  inputComponent: NumericFormatCustom as any,
                 }}
               />
               <Field
                 component={InputForm}
                 name="amountPaid"
-                type="number"
+                type="string"
                 variant="standard"
                 label="Amount Paid"
                 InputProps={{
                   startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                  inputComponent: NumericFormatCustom as any,
                 }}
               />
               <FormControlLabel
