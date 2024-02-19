@@ -31,6 +31,7 @@ const Dashboard = () => {
     // Set it as true if accountsUI array is empty
     hideAddRecord: (accountsUI && accountsUI.length === 0),
   });
+  const { handleOpenCreateAccount } = accountActions;
 
   const noAccountsCreated = accountsUI && accountsUI.length === 0;
   useResizeWindow();
@@ -49,7 +50,7 @@ const Dashboard = () => {
         )}
         <ViewAccounts hide={noAccountsCreated} accountsActions={accountActions} />
         <RecordsBox id="record-box" noAccountsCreated={noAccountsCreated}>
-          <RecordList />
+          <RecordList handleOpenCreateAccount={handleOpenCreateAccount} />
         </RecordsBox>
         <SpeedDial
           actions={dashboardActions}

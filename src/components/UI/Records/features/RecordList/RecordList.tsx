@@ -28,7 +28,11 @@ import { List } from '../../Records.styled';
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 
-const RecordList = () => {
+interface RecordListProps {
+  handleOpenCreateAccount: () => void;
+}
+
+const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   const dispatch = useAppDispatch();
   const {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
@@ -103,7 +107,7 @@ const RecordList = () => {
 
   if (!isFetchingThisMonthRecs && accounts && accounts.length === 0) {
     return (
-      <NoAccountsFound />
+      <NoAccountsFound handleOpenCreateAccount={handleOpenCreateAccount} />
     );
   }
 
