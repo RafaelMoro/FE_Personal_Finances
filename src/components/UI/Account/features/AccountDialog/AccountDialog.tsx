@@ -29,7 +29,7 @@ const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
   accountType: 'Debit',
   amount: '',
-  backgroundColor: 'White',
+  backgroundColor: 'Dark Orange',
   color: 'Black',
 };
 const startAdornment = <InputAdornment position="start">$</InputAdornment>;
