@@ -34,7 +34,7 @@ const NOTIFICATION_STATUS = SystemStateEnum.Error;
 */
 
 const useLogin = () => {
-  const [loginMutation, { isLoading, isSuccess }] = useLoginMutation({
+  const [loginMutation, { isLoading, isSuccess, reset: resetLoginIn }] = useLoginMutation({
     fixedCacheKey: LOGIN_FIXED_CACHED_KEY,
   });
   const navigate = useNavigate();
@@ -54,6 +54,7 @@ const useLogin = () => {
     dispatch(resetTotalBalanceRecords());
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
+    resetLoginIn();
   };
 
   const handleSubmit = async (values: LoginValues) => {
