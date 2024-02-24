@@ -281,7 +281,7 @@ export const ListExpandableContainer = styled(ListItemButton, { shouldForwardPro
   color: ${({ color }: ListExpandableContainerProps) => color};
 
   &:hover {
-    background-color: ${AppColors.bgColorGrey};
+    background-color: rgba(0, 0, 0, 0.04);
     color: ${AppColors.black};
   }
 `;
