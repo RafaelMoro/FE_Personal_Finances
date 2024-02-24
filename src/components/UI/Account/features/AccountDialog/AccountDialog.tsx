@@ -64,7 +64,7 @@ const AccountDialog = ({
     try {
       // Transform amount to number as it comes as string.
       const amountNumber = Number(values.amount);
-      const createAccountValues: CreateAccount = { ...values, amount: amountNumber };
+      const createAccountValues: CreateAccount = { ...values, amount: amountNumber, color: 'black' };
       const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
       await createAccountMutation(createAccountMutationProps).unwrap();
 

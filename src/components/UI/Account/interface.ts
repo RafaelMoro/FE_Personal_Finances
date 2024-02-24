@@ -21,7 +21,7 @@ export interface CreateAccountInitialValues extends Omit<Account, '_id' | '__v' 
   amount: string;
 }
 
-export interface CreateAccount extends Omit<Account, '_id' | '__v' | 'amount' | 'color'> {
+export interface CreateAccount extends Omit<Account, '_id' | '__v' | 'amount'> {
   amount: number;
 }
 
