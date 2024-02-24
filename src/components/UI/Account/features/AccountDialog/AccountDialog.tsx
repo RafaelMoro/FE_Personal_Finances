@@ -64,6 +64,7 @@ const AccountDialog = ({
     try {
       // Transform amount to number as it comes as string.
       const amountNumber = Number(values.amount);
+      // Leaving default color black as the prop is still needed to create an account.
       const createAccountValues: CreateAccount = { ...values, amount: amountNumber, color: 'black' };
       const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
       await createAccountMutation(createAccountMutationProps).unwrap();
