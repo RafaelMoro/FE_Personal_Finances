@@ -18,7 +18,7 @@ import {
 import { SelectInput } from '../../../SelectInput';
 import { CloseIcon } from '../../../Icons';
 import {
-  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, AllTextColors, FlexContainer, InputAdornment,
+  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, FlexContainer, InputAdornment,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { LoadingSpinner } from '../../../LoadingSpinner';
@@ -30,7 +30,6 @@ const initialValuesCreateAccount: CreateAccountInitialValues = {
   accountType: 'Debit',
   amount: '',
   backgroundColor: 'Dark Orange',
-  color: 'Black',
 };
 const startAdornment = <InputAdornment position="start">$</InputAdornment>;
 
@@ -160,19 +159,11 @@ const AccountDialog = ({
               />
               <SelectInput
                 labelId="select-background-color"
-                labelName="Background Color:"
+                labelName="Color:"
                 fieldName="backgroundColor"
                 stringOptions={[]}
                 colorOptions={AllBackgroundColors}
                 selectInputColors
-              />
-              <SelectInput
-                selectInputColors
-                labelId="select-color"
-                labelName="Text Color:"
-                fieldName="color"
-                stringOptions={[]}
-                colorOptions={AllTextColors}
               />
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">
                 { (isLoadingCreateAccount || isLoadingModifyAccount) ? (<LoadingSpinner />) : buttonModalText }
