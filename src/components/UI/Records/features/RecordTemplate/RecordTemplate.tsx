@@ -303,7 +303,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               rows={5}
               name="description"
               variant="standard"
-              label="Description"
+              label="Description (Optional)"
             />
             <CategoriesAndSubcategories
               errorCategory={errors.category}
@@ -313,8 +313,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               categoryToBeEdited={categoryToBeEdited}
             />
             <AddChipContainer>
-              <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
-              <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
+              <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
+              <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
             </AddChipContainer>
             { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
@@ -322,7 +322,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   <Field
                     type="checkbox"
                     checked={values.isPaid}
-                    label="Transaction paid"
+                    label="Transaction paid (Optional)"
                     name="isPaid"
                     component={Switch}
                   />
