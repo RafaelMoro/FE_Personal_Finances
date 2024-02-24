@@ -3,9 +3,12 @@ import {
   indebtedName, tagOrBudgetValidation, indebtedIsPaid, stringRequired,
 } from './validations';
 
-export const TagOrBudgetSchema = (name: string) => Yup.object({
-  [name]: tagOrBudgetValidation,
-});
+export const TagOrBudgetSchema = (name: string) => {
+  const capitalizeName = name.charAt(0).toUpperCase() + name.slice(1);
+  return Yup.object({
+    [name]: tagOrBudgetValidation(`${capitalizeName} cannot be added empty.`),
+  });
+};
 
 export const IndebtedPeopleFormSchema = Yup.object({
   name: indebtedName,
