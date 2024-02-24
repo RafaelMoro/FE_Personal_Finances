@@ -285,3 +285,8 @@ export const ListExpandableContainer = styled(ListItemButton, { shouldForwardPro
     color: ${AppColors.black};
   }
 `;
+
+// Show Expenses
+export const InstructionsAddExpense = styled(Typography)`
+  text-wrap: balance;
+`;
