@@ -119,12 +119,12 @@ const AccountDialog = ({
   return (
     <Dialog onClose={onClose} open={open}>
       <>
-        <FlexContainer justifyContent="end" padding="1rem">
+        <FlexContainer justifyContent="spaceBetween" alignItems="center" padding="1rem">
+          <DialogTitle>{ titleModal }</DialogTitle>
           <IconButton onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </FlexContainer>
-        <DialogTitle>{ titleModal }</DialogTitle>
         <Formik
           initialValues={initialValues}
           validationSchema={CreateAccountSchema}
