@@ -358,6 +358,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               submitButtonText={buttonText}
               loading={loadingMutation}
               success={successMutation}
+              disableSubmitButton={loadingMutation || successMutation}
               submitForm={submitForm}
             />
           </FormContainer>
