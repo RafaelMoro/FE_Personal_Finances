@@ -12,8 +12,8 @@ import {
 } from '../../../styles';
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
-  RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime,
+  RecordIncome, RecordStatusContainer, RecordDescription,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, PaymentStatusChip,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -93,10 +93,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <RecordStatus isPaid={isPaid ?? true}>
-              <StatusWhiteCircle />
-              <Typography>{status}</Typography>
-            </RecordStatus>
+            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
           </RecordStatusContainer>
           ) }
           <BudgetChipContainer>
@@ -198,10 +195,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         ) }
         { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <RecordStatus isPaid={isPaid ?? true}>
-              <StatusWhiteCircle />
-              <Typography>{status}</Typography>
-            </RecordStatus>
+            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
           </RecordStatusContainer>
         ) }
       </ListItemRecord>

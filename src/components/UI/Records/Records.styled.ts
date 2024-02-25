@@ -4,11 +4,11 @@ import {
 } from '@mui/material';
 
 import {
-  ListExpandableContainerProps, RecordStatusProps,
+  ListExpandableContainerProps, PaymentStatusChipProps,
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, responsiveBreakpoints,
+  AppColors, Chip, responsiveBreakpoints,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -150,24 +150,6 @@ export const RecordStatusContainer = styled.div`
   }
 `;
 
-export const RecordStatus = styled.div`
-  padding: 1rem;
-  background-color: ${({ isPaid }: RecordStatusProps) => (isPaid ? AppColors.positive : AppColors.grey)};
-  color: white;
-  border-radius: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const StatusWhiteCircle = styled.div`
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: white;
-  padding-right: .5rem;
-`;
-
 export const RecordText = styled(Typography)`
   grid-column: 1 / 3;
 
@@ -237,6 +219,10 @@ export const RecordSkeletonHolder = styled.div`
   background-color: ${AppColors.grey};
   border-radius: 1rem;
   ${blinkAnimation}
+`;
+
+export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'isPaid' })`
+  ${({ isPaid }: PaymentStatusChipProps) => isPaid && `color: ${AppColors.white};`}
 `;
 
 // Record List
