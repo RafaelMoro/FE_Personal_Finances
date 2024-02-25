@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import {
-  AnchorButton, CancelButton, PrimaryButton, SecondaryButton, responsiveBreakpoints,
+  AnchorButton, AppColors, CancelButton, PrimaryButton, SecondaryButton, responsiveBreakpoints,
 } from '../../../styles';
 import { ButtonPanelProps } from './interface';
 
@@ -48,5 +48,11 @@ export const PrimaryButtonForm = styled(PrimaryButton, { shouldForwardProp: (pro
 
   @media ${responsiveBreakpoints.tabletAndDesktop} {
     order: 2;
+  }
+
+  &.Mui-disabled, &:disabled {
+    background-color: ${AppColors.primary};
+    color: ${AppColors.white};
+    opacity: 0.7;
   }
 `;

@@ -11,6 +11,7 @@ const ActionButtonPanel = ({
   routeCancelButton = DASHBOARD_ROUTE,
   routeSubmitButton = DASHBOARD_ROUTE,
   disableCancelButton = false,
+  disableSubmitButton = false,
   minWidthNumber,
   submitButtonText,
   submitForm = () => {},
@@ -43,7 +44,7 @@ const ActionButtonPanel = ({
       </CancelButton>
       ) }
       { (submitButton === 'Button') && (
-      <PrimaryButtonForm minWidth={minWidthNumber} variant="contained" onClick={submitForm} size="medium">
+      <PrimaryButtonForm disabled={disableSubmitButton} minWidth={minWidthNumber} variant="contained" onClick={submitForm} size="medium">
         { (loading && !success) && (<LoadingSpinner />) }
         { (!loading && success) && (<TickMark fillColor={AppColors.white} />) }
         { (!loading && !success) && submitButtonText }
