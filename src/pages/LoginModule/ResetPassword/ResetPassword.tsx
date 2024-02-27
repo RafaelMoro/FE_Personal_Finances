@@ -124,6 +124,7 @@ const ResetPassword = (): ReactElement => {
                   submitButtonText="Reset Password"
                   submitForm={submitForm}
                   routeCancelButton={LOGIN_ROUTE}
+                  disableSubmitButton={isSuccess || isLoading}
                   success={isSuccess}
                   loading={isLoading}
                 />
