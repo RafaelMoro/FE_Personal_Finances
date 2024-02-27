@@ -49,9 +49,14 @@ export const AccountSectionLoading = styled.article`
   }
 
   @media ${responsiveBreakpoints.desktop} {
-    grid-row: 2 / 3;
+    height: 100%;
     overflow-x: unset;
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+    scroll-snap-type: y proximity;
     grid-auto-flow: row;
+    grid-auto-rows: 20rem;
+    padding: 0 1rem;
   }
 `;
 

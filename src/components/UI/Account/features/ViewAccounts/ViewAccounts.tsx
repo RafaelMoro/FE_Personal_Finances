@@ -82,6 +82,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
           <>
             <AccountLoading />
             <AccountLoading />
+            <AccountLoading />
           </>
         ) }
       </AccountSectionLoading>
