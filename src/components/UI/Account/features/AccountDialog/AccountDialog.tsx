@@ -41,6 +41,7 @@ const AccountDialog = ({
 }: AccountDialogProps) => {
   const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
   const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
+  const disableSubmitButton = isLoadingCreateAccount || isLoadingModifyAccount;
   const { updateGlobalNotification } = useNotification();
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -166,7 +167,7 @@ const AccountDialog = ({
                 colorOptions={AllBackgroundColors}
                 selectInputColors
               />
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">
+              <PrimaryButton disabled={disableSubmitButton} variant="contained" onClick={submitForm} size="medium">
                 { (isLoadingCreateAccount || isLoadingModifyAccount) ? (<LoadingSpinner />) : buttonModalText }
               </PrimaryButton>
             </AccountDialogFormContainer>

@@ -95,7 +95,8 @@ export const PrimaryButton = styled(Button)`
   background-color: ${AppColors.primary};
   color: ${AppColors.white};
 
-  :disabled {
+  &:disabled, &.Mui-disabled {
+    background-color: ${AppColors.primary};
     color: ${AppColors.white};
     opacity: 0.7;
   }
