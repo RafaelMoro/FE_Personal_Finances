@@ -15,6 +15,7 @@ import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
   UpdateTotalCurrencyProps,
+  Actions,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -58,9 +59,14 @@ const useRecords = ({
   const { month: currentMonth, lastMonth } = useDate();
 
   const showErrorNotification = ({ errorMessage, action, goToDashboard = false }: ShowErrorNotificationProps) => {
+    const actions: Actions = {
+      create: 'creating',
+      edit: 'editing',
+    };
+    const verb = actions[action.toLowerCase() as keyof typeof actions];
     updateGlobalNotification({
-      newTitle: `${action} Record: Error`,
-      newDescription: 'Oops! An error ocurred. Try again later.',
+      newTitle: 'Error',
+      newDescription: `Oops! An error ocurred while ${verb} the record. Try again later.`,
       newStatus: SystemStateEnum.Error,
     });
     console.error(`Error while submitting ${action} record: ${errorMessage}`);
@@ -216,7 +222,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await editExpenseMutation({ values: newValues, bearerToken });
+      await editExpenseMutation({ values: newValues, bearerToken }).unwrap();
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
         // If there's an error while updating the account, return
