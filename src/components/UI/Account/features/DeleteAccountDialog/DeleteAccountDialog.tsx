@@ -65,7 +65,7 @@ const DeleteAccountDialog = ({
           ?
         </DialogParagraph>
         <SecondaryButton variant="contained" size="medium" onClick={onClose}>Go Back</SecondaryButton>
-        <CancelButton variant="contained" onClick={handleSubmit} size="medium">
+        <CancelButton disabled={isLoading} variant="contained" onClick={handleSubmit} size="medium">
           { (isLoading) ? (<LoadingSpinner />) : 'Delete Account' }
         </CancelButton>
       </AccountDialogContainer>

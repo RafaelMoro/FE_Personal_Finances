@@ -121,6 +121,12 @@ export const CancelButton = styled(Button)`
   background-color: ${AppColors.negative};
   color: ${AppColors.white};
 
+  &:disabled, &.Mui-disabled {
+    background-color: ${AppColors.negativeDark};
+    color: ${AppColors.white};
+    opacity: 0.7;
+  }
+
   &:hover {
     background-color: ${AppColors.negativeDark};
     color: ${AppColors.white};
