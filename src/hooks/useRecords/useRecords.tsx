@@ -196,7 +196,7 @@ const useRecords = ({
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: errorCatched?.data.message ?? '',
+        errorMessage: errorCatched?.data?.message ?? '',
         action: 'Create',
         goToDashboard: true,
       });
@@ -257,7 +257,7 @@ const useRecords = ({
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: errorCatched?.data.message ?? '',
+        errorMessage: errorCatched?.data?.message ?? '',
         action: 'Edit',
         goToDashboard: true,
       });
@@ -311,7 +311,7 @@ const useRecords = ({
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: errorCatched?.data.message ?? '',
+        errorMessage: errorCatched?.data?.message ?? '',
         action: 'Create',
         goToDashboard: true,
       });
@@ -383,7 +383,7 @@ const useRecords = ({
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
-        errorMessage: errorCatched?.data.message ?? '',
+        errorMessage: errorCatched?.data?.message ?? '',
         action: 'Edit',
         goToDashboard: true,
       });
