@@ -19,7 +19,7 @@ const Dashboard = () => {
   const {
     globalNotification, toggleGlobalNotification,
   } = useNotification();
-  const { visible, scrollToTop } = useBackToTopButton({ windowSize });
+  const { visible, scrollToTop, toggleVisibleDesktop } = useBackToTopButton({ windowSize });
   const { isEmptyLocalStorage } = useSyncLoginInfo();
   const { signOut } = useLogin();
 
@@ -49,7 +49,7 @@ const Dashboard = () => {
           />
         )}
         <ViewAccounts hide={noAccountsCreated} accountsActions={accountActions} />
-        <RecordsBox id="record-box" noAccountsCreated={noAccountsCreated}>
+        <RecordsBox id="record-box" onScroll={toggleVisibleDesktop} noAccountsCreated={noAccountsCreated}>
           <RecordList handleOpenCreateAccount={handleOpenCreateAccount} />
         </RecordsBox>
         <SpeedDial

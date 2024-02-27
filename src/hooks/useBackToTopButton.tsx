@@ -17,9 +17,16 @@ const useBackToTopButton = ({ windowSize }: UseBackToTopButtonProps) => {
   const isDesktop = windowSize === 'Desktop';
 
   const toggleVisible = () => {
-    const scrolled = isDesktop
-      ? recordBoxDiv.scrollTop
-      : document.documentElement.scrollTop;
+    const scrolled = document.documentElement.scrollTop;
+    if (scrolled > 300) {
+      setVisible(true);
+    } else if (scrolled <= 300) {
+      setVisible(false);
+    }
+  };
+
+  const toggleVisibleDesktop = (div: React.UIEvent<HTMLElement, UIEvent>) => {
+    const scrolled = (div.target as HTMLElement).scrollTop;
     if (scrolled > 300) {
       setVisible(true);
     } else if (scrolled <= 300) {
@@ -28,22 +35,16 @@ const useBackToTopButton = ({ windowSize }: UseBackToTopButtonProps) => {
   };
 
   useEffect(() => {
-    if (isDesktop) {
-      recordBoxDiv.addEventListener('scroll', toggleVisible);
-    }
     window.addEventListener('scroll', toggleVisible);
 
     return () => {
-      if (isDesktop) {
-        recordBoxDiv.removeEventListener('scroll', toggleVisible);
-      }
       window.removeEventListener('scroll', toggleVisible);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const scrollToTop = () => {
-    if (windowSize === 'Desktop') {
+    if (isDesktop) {
       recordBoxDiv.scrollTo({
         top: 0,
         behavior: 'smooth',
@@ -60,6 +61,7 @@ const useBackToTopButton = ({ windowSize }: UseBackToTopButtonProps) => {
   return {
     visible,
     toggleVisible,
+    toggleVisibleDesktop,
     scrollToTop,
   };
 };
