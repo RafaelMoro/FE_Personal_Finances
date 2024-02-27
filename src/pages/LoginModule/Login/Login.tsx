@@ -91,6 +91,7 @@ const Login = () => {
                   useSecondaryButton
                   success={loginSuccess}
                   loading={loginLoading}
+                  disableSubmitButton={loginSuccess || loginLoading}
                 />
               </Form>
             )}
