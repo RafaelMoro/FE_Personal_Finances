@@ -34,7 +34,7 @@ const DeleteRecordModal = ({
         </DeleteRecordTitle>
         <DeleteRecordWarn>You cannot reverse this action.</DeleteRecordWarn>
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <CancelButton onClick={deleteRecord}>{ (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }</CancelButton>
+        <CancelButton disabled={loadingDeleteRecord} onClick={deleteRecord}>{ (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }</CancelButton>
       </DeleteRecordContainer>
     </Dialog>
   );
