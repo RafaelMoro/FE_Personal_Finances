@@ -1,7 +1,10 @@
-import { User } from '../../globalInterface';
+import { AnyRecord, User } from '../../globalInterface';
 
 export interface CountOnMeLocalStorage {
+  bearerToken: string
+  accessToken: string
   user: User;
+  recordToBeEdited: AnyRecord;
 }
 
 export interface JWT {

@@ -1,15 +1,14 @@
 import { ReactElement } from 'react';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { AnyRecord } from '../../../../../globalInterface';
 import { MonthAccordeon } from '../MonthAccordeon';
 import { ShowRecords } from '../ShowRecords';
 import { Record } from '../../Record';
-import { FlexContainer, Paragraph } from '../../../../../styles';
+import { FlexContainer } from '../../../../../styles';
 import { RecordExpense, RecordIncome } from '../../Records.styled';
 import { ShowTotalContianer } from '../Features.styled';
 
 interface MonthRecordsProps {
-  backgroundColor: string;
   color: string;
   openedAccordeon: boolean;
   titleMonthAccordeon: string;
@@ -26,12 +25,11 @@ interface MonthRecordsProps {
 }
 
 const MonthRecords = ({
-  backgroundColor, color, openedAccordeon, titleMonthAccordeon, accountId,
+  color, openedAccordeon, titleMonthAccordeon, accountId,
   records, loading, error, onEmptyCb, onLoadingCb, onErrorCb, totalExpense, totalIncome,
   onClickCb = () => {},
 }: MonthRecordsProps) => (
   <MonthAccordeon
-    backgroundColor={backgroundColor}
     color={color}
     opened={openedAccordeon}
     title={titleMonthAccordeon}
@@ -40,11 +38,11 @@ const MonthRecords = ({
   >
     <ShowTotalContianer>
       <FlexContainer gap="1">
-        <Paragraph>Total Expense: </Paragraph>
+        <Typography>Total Expense: </Typography>
         <RecordExpense>{totalExpense}</RecordExpense>
       </FlexContainer>
       <FlexContainer gap="1">
-        <Paragraph>Total Income: </Paragraph>
+        <Typography>Total Income: </Typography>
         <RecordIncome>{totalIncome}</RecordIncome>
       </FlexContainer>
     </ShowTotalContianer>
@@ -60,7 +58,7 @@ const MonthRecords = ({
             <div key={record._id}>
               { (index === 0) && (<Divider />) }
               <Record
-                backgroundColor={backgroundColor}
+                backgroundColor={color}
                 record={record}
               />
               <Divider />

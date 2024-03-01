@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Formik, Field,
@@ -6,25 +6,23 @@ import {
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace';
 
 import { useNotification } from '../../../hooks/useNotification';
-import { FORGOT_PASSWORD_POST_ROUTE } from './constants';
+import { useForgotPasswordMutation } from '../../../redux/slices/User/actions/forgotPassword';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
-import { IForgotPasswordValues } from './interface';
+import {
+  ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, USER_NOT_FOUND_CATCH_ERROR, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
+} from '../../../constants';
+import { GeneralError } from '../../../globalInterface';
+import { ForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
-import { postRequest } from '../../../utils/PostRequest.ts';
+import { ActionButtonPanel } from '../../../components/templates';
 import { Notification } from '../../../components/UI';
 import {
   Main, FormTitle, FormDescription, FormContainer, MainContainer,
 } from '../../../styles/LoginModule.styled';
-import { InputForm, PrimaryButton, SecondaryButton } from '../../../styles';
-
-const NOTIFICATION_TITLE = 'Email Sent';
-const NOTIFICATION_DESCRIPTION = 'Kindly check your email inbox and follow the instructions.';
-const NOTIFICATION_STATUS = SystemStateEnum.Success;
-
-const NOTIFICATION_ERROR_TITLE = 'Incorrect Email.';
-const NOTIFICATION_ERROR_DESCRIPTION = 'Verify that your email is correct or create an account';
-const NOTIFICATION_ERROR_STATUS = SystemStateEnum.Info;
+import {
+  InputForm, SecondaryButton,
+} from '../../../styles';
 
 const createAccountButton: EmotionJSX.Element = <SecondaryButton variant="contained" size="medium">Create Account</SecondaryButton>;
 
@@ -34,32 +32,47 @@ const ForgotPassword = (): ReactElement => {
     showNotification, hideNotification, notificationInfo,
     updateTitle, updateDescription, updateStatus, notification,
   } = useNotification({
-    title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
+    title: SUCCESS_FORGOT_PASSWORD_TITLE,
+    description: SUCCESS_FORGOT_PASSWORD_DESC,
+    status: SystemStateEnum.Success,
   });
+  const [forgotPasswordMutation, { isLoading, isSuccess }] = useForgotPasswordMutation();
+  const [userNotFound, setUserNotFound] = useState<boolean>(false);
+  const toggleUserNotFound = () => setUserNotFound(!userNotFound);
 
-  const handleSubmit = async (values: IForgotPasswordValues) => {
-    const responseForgotPasswordRequest = await postRequest(values, FORGOT_PASSWORD_POST_ROUTE);
+  const handleSubmit = async (values: ForgotPasswordValues) => {
+    try {
+      await forgotPasswordMutation({ values }).unwrap();
 
-    if (responseForgotPasswordRequest?.error) {
-      updateTitle(NOTIFICATION_ERROR_TITLE);
-      updateDescription(NOTIFICATION_ERROR_DESCRIPTION);
-      updateStatus(NOTIFICATION_ERROR_STATUS);
+      // Reset notification title, description and status.
+      if (notificationInfo.current.title !== SUCCESS_FORGOT_PASSWORD_TITLE) {
+        updateTitle(SUCCESS_FORGOT_PASSWORD_TITLE);
+        updateDescription(SUCCESS_FORGOT_PASSWORD_DESC);
+        updateStatus(SystemStateEnum.Success);
+      }
 
       showNotification();
-      return;
-    }
+      setTimeout(() => {
+        navigate(LOGIN_ROUTE);
+      }, 5000);
+    } catch (err) {
+      const error = err as GeneralError;
+      const message = error?.data?.error?.message;
+      if (message === USER_NOT_FOUND_CATCH_ERROR) {
+        toggleUserNotFound();
+        updateTitle('Oops!');
+        updateDescription("We don't have any email associated to an account.");
+        updateStatus(SystemStateEnum.Info);
+        showNotification();
+        return;
+      }
 
-    // Update notification info in case the last notification was error.
-    if (notificationInfo.current.title === NOTIFICATION_ERROR_TITLE) {
-      updateTitle(NOTIFICATION_TITLE);
-      updateDescription(NOTIFICATION_DESCRIPTION);
-      updateStatus(NOTIFICATION_STATUS);
-    }
+      updateTitle(ERROR_TITLE_GENERAL);
+      updateDescription(ERROR_MESSAGE_GENERAL);
+      updateStatus(SystemStateEnum.Error);
 
-    showNotification();
-    setTimeout(() => {
-      navigate(LOGIN_ROUTE);
-    }, 5000);
+      showNotification();
+    }
   };
 
   return (
@@ -71,7 +84,7 @@ const ForgotPassword = (): ReactElement => {
         status={notificationInfo.current.status}
         close={hideNotification}
         UIElement={
-          notificationInfo.current.status === NOTIFICATION_ERROR_STATUS
+          userNotFound
             ? createAccountButton
             : null
         }
@@ -79,7 +92,7 @@ const ForgotPassword = (): ReactElement => {
       )}
       <Main>
         <MainContainer>
-          <FormTitle>Forgot password</FormTitle>
+          <FormTitle variant="h1">Forgot password</FormTitle>
           <FormDescription>
             Please enter your email and
             we will send you the instructions to reset your password.
@@ -99,7 +112,15 @@ const ForgotPassword = (): ReactElement => {
                   variant="standard"
                   label="Email"
                 />
-                <PrimaryButton variant="contained" onClick={submitForm} size="medium">Change my password</PrimaryButton>
+                <ActionButtonPanel
+                  routeCancelButton={LOGIN_ROUTE}
+                  minWidthNumber="10.5"
+                  submitButtonText="Send"
+                  loading={isLoading}
+                  success={isSuccess}
+                  disableSubmitButton={(isLoading || isSuccess)}
+                  submitForm={submitForm}
+                />
               </FormContainer>
             )}
           </Formik>

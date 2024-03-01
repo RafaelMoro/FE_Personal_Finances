@@ -1,21 +1,24 @@
 import * as Yup from 'yup';
 import {
-  indebtedName, tagOrBudgetValidation, indebtedAmount, indebtedIsPaid, stringRequired,
+  indebtedName, tagOrBudgetValidation, indebtedIsPaid, stringRequired,
 } from './validations';
 
-export const TagOrBudgetSchema = (name: string) => Yup.object({
-  [name]: tagOrBudgetValidation,
-});
+export const TagOrBudgetSchema = (name: string) => {
+  const capitalizeName = name.charAt(0).toUpperCase() + name.slice(1);
+  return Yup.object({
+    [name]: tagOrBudgetValidation(`${capitalizeName} cannot be added empty.`),
+  });
+};
 
 export const IndebtedPeopleFormSchema = Yup.object({
   name: indebtedName,
-  amount: indebtedAmount(true),
-  amountPaid: indebtedAmount(),
+  amount: stringRequired('Amount is required'),
+  amountPaid: stringRequired('Amount Paid is required'),
   isPaid: indebtedIsPaid,
 });
 
 export const CreateRecordSchema = Yup.object({
-  shortName: stringRequired('Short name is required'),
+  shortName: stringRequired('Short description is required'),
   category: stringRequired('Category is required'),
   subCategory: stringRequired('Subcategory is required'),
   amount: stringRequired('Amount is required'),

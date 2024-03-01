@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import {
-  ListItem, ListItemButton, List as ListMUI,
+  ListItem, ListItemButton, List as ListMUI, Typography,
 } from '@mui/material';
 
 import {
-  ListExpandableContainerProps, RecordStatusProps,
+  ListExpandableContainerProps, PaymentStatusChipProps,
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Paragraph, Sub, ParagraphTitle,
+  AppColors, Chip, responsiveBreakpoints,
 } from '../../../styles';
 
 export const ListItemRecord = styled(ListItem)`
@@ -24,78 +24,64 @@ export const ListItemRecord = styled(ListItem)`
     background-color: rgba(0, 0, 0, 0.04);
   }
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-template-columns: 50% 25% 25%;
     column-gap: 1rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-template-columns: 60% 20% 20%;
     column-gap: 0;
   }
 `;
 
-export const RecordTitle = styled(ParagraphTitle)`
+export const RecordTitle = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 4;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     text-align: start;
     grid-column: 1 / 2;
   }
 `;
 
-export const RecordSub = styled(Sub)`
-  opacity: 0.7;
-  text-align: center;
-
-  @media(min-width: 480px) {
-    text-align: start;
-  }
-`;
-
-export const RecordDateTime = styled(Sub)`
-  opacity: 0.7;
-  text-align: center;
-`;
-
-export const RecordDate = styled(RecordDateTime)`
-  @media(min-width: 480px) {
+export const RecordDate = styled(Typography)`
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 2 / 3;
     text-align: start;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 1 / 2;
     grid-column: 2 / 3;
   }
 `;
 
-export const RecordTime = styled(RecordDateTime)`
-  @media(min-width: 480px) {
+export const RecordTime = styled(Typography)`
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 3 / 4;
     text-align: start;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 1 / 2;
     grid-column: 3 / 4;
   }
 `;
 
-export const RecordPrice = styled(Paragraph)`
+export const RecordPrice = styled(Typography)`
   font-weight: 500;
   text-align: center;
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 2;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     text-align: start;
   }
 `;
@@ -108,45 +94,42 @@ export const RecordExpense = styled(RecordPrice)`
   color: ${AppColors.negative};
 `;
 
-export const RecordSubtitleText = styled(Paragraph)`
-  color: ${AppColors.subtitleColor};
+export const RecordSubtitleText = styled(Typography)`
   text-align: center;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     text-align: start;
   }
 `;
 
-export const RecordCategory = styled(Sub)`
-  opacity: 0.7;
+export const RecordCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 2 / 3;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 2 / 3;
   }
 `;
 
-export const RecordSubCategory = styled(Sub)`
-  opacity: 0.7;
+export const RecordSubCategory = styled(Typography)`
   grid-column: 2 / 4;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 3 / 4;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 2 / 3;
   }
 `;
 
-export const RecordDescription = styled(Paragraph)`
+export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 1 / 2;
   }
 `;
@@ -156,39 +139,21 @@ export const RecordStatusContainer = styled.div`
   display: grid;
   place-items: center;
 
-  @media (min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     grid-row: 5 / 6;
     grid-column: 1 / 2;
   }
 
-  @media (min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-row: 4 / 5;
     grid-column: 2 / 4;
   }
 `;
 
-export const RecordStatus = styled.div`
-  padding: 1rem;
-  background-color: ${({ isPaid }: RecordStatusProps) => (isPaid ? AppColors.positive : AppColors.grey)};
-  color: white;
-  border-radius: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const StatusWhiteCircle = styled.div`
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background-color: white;
-  padding-right: .5rem;
-`;
-
-export const RecordText = styled(Paragraph)`
+export const RecordText = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 1 / 2;
   }
 `;
@@ -199,8 +164,8 @@ export const ChipContainer = styled.div`
   display: grid;
   gap: 1rem;
 
-  @media(min-width: 480px) {
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  @media ${responsiveBreakpoints.tabletAndDesktop}{
+    grid-template-columns: 1fr;
     grid-auto-rows: minmax(3.2rem, auto);
   }
 `;
@@ -208,12 +173,12 @@ export const ChipContainer = styled.div`
 export const BudgetChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     grid-column: 2 / 3;
     grid-row: 4 / 5;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 2 / 3;
     grid-row: 3 / 4;
   }
@@ -221,12 +186,12 @@ export const BudgetChipContainer = styled(ChipContainer)`
 export const TagsChipContainer = styled(ChipContainer)`
   grid-row: 5 / 6;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     grid-column: 3 / 4;
     grid-row: 4 / 5;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     grid-column: 3 / 4;
     grid-row: 3 / 4;
   }
@@ -256,6 +221,10 @@ export const RecordSkeletonHolder = styled.div`
   ${blinkAnimation}
 `;
 
+export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'isPaid' })`
+  ${({ isPaid }: PaymentStatusChipProps) => isPaid && `color: ${AppColors.white};`}
+`;
+
 // Record List
 
 export const LoaderContainer = styled.div`
@@ -273,27 +242,6 @@ export const List = styled(ListMUI)`
 
 export const MonthRecordBox = styled.div`
   height: 100%;
-
-  @media(min-width: 1024px) {
-    max-height: 80rem;
-    overflow-y: scroll;
-    overscroll-behavior-y: contain;
-    scroll-snap-type: y proximity;
-  }
-`;
-
-// Categories and subcategories
-
-export const RecordLoaderContainer = styled.div`
-  margin: 0 auto;
-`;
-
-export const LoadingCategoriesContainer = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-content: center;
-  gap: 2rem;
 `;
 
 // Show expenses
@@ -310,17 +258,21 @@ export const SelectExpensesContainer = styled.div`
 
 // Month Records
 
-export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'backgroundColor' && props !== 'color' })`
+export const ListExpandableContainer = styled(ListItemButton, { shouldForwardProp: (props) => props !== 'color' })`
   display: flex;
   justify-content: space-between;
   padding: 1.5rem 1rem;
-  border: .1rem solid ${AppColors.white};
+  border: .1rem solid  ${({ color }: ListExpandableContainerProps) => color};
   border-radius: 1rem;
-  background-color: ${({ backgroundColor }: ListExpandableContainerProps) => backgroundColor};
   color: ${({ color }: ListExpandableContainerProps) => color};
 
   &:hover {
-    background-color: ${AppColors.bgColorGrey};
+    background-color: rgba(0, 0, 0, 0.04);
     color: ${AppColors.black};
   }
+`;
+
+// Show Expenses
+export const InstructionsAddExpense = styled(Typography)`
+  text-wrap: balance;
 `;

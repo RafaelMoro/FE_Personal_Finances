@@ -1,14 +1,9 @@
 import { useEffect, useState } from 'react';
-import { AxiosRequestHeaders } from 'axios';
 
-import { GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE } from '../../../Records/constants';
 import { ViewAccountsProps } from './interface';
 import { AccountUI } from '../../interface';
-import { useDate } from '../../../../../hooks/useDate';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { updateAccountsWithNewSelectedAccount, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
-import { fetchCurrentMonthRecords } from '../../../../../redux/slices/Records/actions/fetchCurrentMonthRecords';
-import { fetchAccounts } from '../../../../../redux/slices/Accounts/actions';
+import { updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { Error } from '../../../Error';
 import { Account } from '../../Account';
 import { AccountLoading } from '../AccountLoading';
@@ -21,19 +16,20 @@ import {
   AccountSectionError, AccountSectionLoading, AccountSectionTablet, AccountSlider,
   AccountSectionDesktop,
 } from './ViewAccounts.styled';
+import { useFetchAccountsQuery } from '../../../../../redux/slices/Accounts/actions';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 
 const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const dispatch = useAppDispatch();
-  const accounts = useAppSelector((state) => state.accounts);
+  const accountsState = useAppSelector((state) => state.accounts);
   const user = useAppSelector((state) => state.user);
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
-  const accountsUI = accounts?.accounts;
-  const selectedAccount = accounts?.accountSelected;
-  const bearerToken = user.userInfo?.bearerToken as AxiosRequestHeaders;
-  const { month, year } = useDate();
+  const accountsUI = accountsState?.accounts;
+  const selectedAccount = accountsState?.accountSelected;
+  const bearerToken = user.userInfo?.bearerToken as string;
+  const { isLoading, isError } = useFetchAccountsQuery(bearerToken, { skip: !bearerToken });
 
   const [showAddAccount, setShowAddAccount] = useState<boolean>(false);
 
@@ -51,14 +47,6 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     handleCloseDeleteAccount,
     handleOpenDeleteAccount,
   } = accountsActions;
-
-  useEffect(() => {
-    // Fetch only if we have user info and if we haven't fetched accounts before.
-    if (user.userInfo && !accounts.accounts) {
-      // If we got an error after fetching the first time, don't keep trying to fetch.
-      if (!accounts.error) dispatch(fetchAccounts({ bearerToken }));
-    }
-  }, [accounts, bearerToken, dispatch, user.userInfo]);
 
   useEffect(() => {
     // If the only account is deleted, show AddAccount
@@ -83,19 +71,16 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
       }
       return { ...account, selected: false };
     });
-    dispatch(updateAccountsWithNewSelectedAccount(newAccountsUI));
-
-    // Fetch records of selected account
-    const expensesFullRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${month}/${year}`;
-    dispatch(fetchCurrentMonthRecords({ recordsFullRoute: expensesFullRoute, bearerToken }));
+    dispatch(updateAccounts(newAccountsUI));
   };
 
-  if (accounts.loading) {
+  if (isLoading) {
     return (
       <AccountSectionLoading>
         <AccountLoading />
         { (windowSize !== 'Mobile') && (
           <>
+            <AccountLoading />
             <AccountLoading />
             <AccountLoading />
           </>
@@ -104,7 +89,7 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
     );
   }
 
-  if (accounts.error) {
+  if (isError) {
     return (
       <AccountSectionError>
         <Error title={ERROR_TITLE} description={ERROR_DESCRIPTION} />

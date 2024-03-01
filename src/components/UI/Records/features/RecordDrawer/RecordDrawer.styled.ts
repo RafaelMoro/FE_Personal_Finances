@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { Table } from '@mui/material';
+import { Table, Typography } from '@mui/material';
 
 import {
-  AppColors, Paragraph, ParagraphTitle, Sub,
+  AppColors, responsiveBreakpoints,
 } from '../../../../../styles';
-import { ChipContainer, RecordDateTime, RecordSubtitleText } from '../../Records.styled';
+import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
 
 export const RecordDrawerContainer = styled.div`
@@ -15,7 +15,7 @@ export const RecordDrawerContainer = styled.div`
   gap: 1rem;
   row-gap: 2rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-width: 47rem;
   }
 `;
@@ -33,30 +33,19 @@ export const DrawerCloseBox = styled.div`
   justify-self: end;
 `;
 
-export const RecordDrawerTitle = styled(ParagraphTitle)`
-  text-align: center;
+export const RecordDrawerTitle = styled(Typography)`
   grid-column: 1 / 3;
-`;
-
-export const RecordDrawerDatetime = styled(RecordDateTime)`
-  text-align: start;
-`;
-
-export const RecordDrawerText = styled(Sub)`
-  opacity: 0.7;
 `;
 
 export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
 `;
 
-export const TableTitle = styled(Paragraph, { shouldForwardProp: (props) => props !== 'isGrid' })`
+export const TableTitle = styled(Typography, { shouldForwardProp: (props) => props !== 'isGrid' })`
   ${({ isGrid = false }: RecordTableProps) => (isGrid && 'grid-column: 1 / 3;')}
-  text-align: center;
 `;
 
-export const TableNote = styled(Sub)`
-  color: ${AppColors.subtitleColor};
+export const TableNote = styled(Typography)`
   text-align: justify;
 `;
 
@@ -72,7 +61,6 @@ export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !
 export const DrawerChipContainer = styled(ChipContainer)`
   grid-template-columns: repeat(5, 1fr);
   position: relative;
-  border: 0.1rem solid ${AppColors.bgColorGrey};
   padding: 1.5rem;
   border-radius: 1rem;
 

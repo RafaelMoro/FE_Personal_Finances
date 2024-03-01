@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
 import { LogoImageContainerProps } from './interface';
-import { AppColors, Heading1, ParagraphTitle } from '../../../styles';
+import { AppColors } from '../../../styles';
 
 export const LogoImageContainer = styled.picture`
   display: block;
@@ -12,12 +13,7 @@ export const LogoImageContainer = styled.picture`
   }
 `;
 
-export const LogoTitleLogin = styled(Heading1)`
-  font-family: 'Russo One', sans-serif;
-  color: ${AppColors.primary};
-`;
-
-export const LogoTitleHeader = styled(ParagraphTitle)`
+export const LogoTitleLogin = styled(Typography)`
   font-family: 'Russo One', sans-serif;
   color: ${AppColors.primary};
 `;

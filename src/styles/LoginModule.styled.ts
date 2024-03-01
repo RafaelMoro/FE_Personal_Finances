@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
-import { Heading1, Paragraph } from './Global.styled';
+import { Typography } from '@mui/material';
+import { responsiveBreakpoints } from './GlobalConfigObjects';
 
 /*
 * Here are all emotion components that may be re-used in the Login module
@@ -20,17 +21,17 @@ export const MainContainer = styled.article`
   gap: 5rem;
   grid-template-rows: 10% 20% 60%;
 
-  @media (min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     max-width: 50rem;
     height: 70%;
   }
 `;
 
-export const FormTitle = styled(Heading1)`
+export const FormTitle = styled(Typography)`
   place-self: center;
 `;
 
-export const FormDescription = styled(Paragraph)`
+export const FormDescription = styled(Typography)`
   padding-left: 1rem;
   justify-self: center;
 `;

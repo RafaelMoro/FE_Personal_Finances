@@ -13,12 +13,13 @@ import {
   InputAdornment as InputAdornmentMUI,
   FormControlLabel as FormControlLabelMUI,
   ToggleButton as ToggleButtonMui,
+  Typography,
 } from '@mui/material';
 import { DateTimePicker as DateTimePickerMUI } from '@mui/x-date-pickers';
 import { TextField } from 'formik-mui';
 import { Link } from 'react-router-dom';
 
-import { FlexContainerProps, ParagraphProps, ChipProps } from './interface';
+import { FlexContainerProps, ChipProps } from './interface';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 import { dynamicPadding } from './DynamicStyles.styled';
@@ -47,45 +48,22 @@ export const GlobalStyles = css`
     position: relative;
     z-index: 1;
   }
-  .MuiFormHelperText-root {
-    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
-  }
-  .MuiTableCell-root {
+
+  // Calendar Header
+  // Style for the week days span from M to S
+  .MuiDayCalendar-header .MuiDayCalendar-weekDayLabel {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
 
-  // Chip delete svg
-  .MuiChip-deleteIcon {
-    color: ${AppColors.primary} !important;
-  }
-
-  // DateTimePicker css classes - calendar open.
-  .MuiPickersCalendarHeader-label{
-    ${createResponsiveProps({ fontSize: 'P' })}
-  }
-  &.MuiDayCalendar-weekDayLabel,
-  &.MuiPickersDay-root,
-  .css-1e6y48t-MuiButtonBase-root-MuiButton-root,
-  .css-1e3wlyl-MuiButtonBase-root-MuiMenuItem-root-MuiMultiSectionDigitalClockSection-item {
+  // Style to override the years when selected other year and years are listed.
+  & .MuiPickersYear-yearButton {
     ${createResponsiveProps({ fontSize: 'P', important: true })}
-  }
-  .MuiPickersCalendarHeader-switchViewIcon,
-  .css-1vooibu-MuiSvgIcon-root {
-    width: 3rem !important;
-    height: 3rem !important;
   }
 
   // Table pagination of select expenses of the select and sort table MUI
   .MuiTablePagination-selectIcon {
     width: 2rem !important;
     height: 2rem !important;
-  }
-
-  &.MuiTablePagination-selectLabel,
-  &.MuiTablePagination-displayedRows,
-  &.MuiTablePagination-select,
-  &.MuiTablePagination-menuItem {
-    ${createResponsiveProps({ fontSize: 'Sub', important: true })}
   }
 
   [class*='MuiInputBase-root-MuiTablePagination-select']{
@@ -114,11 +92,11 @@ export const FlexContainer = styled.div`
 // **** Buttons
 
 export const PrimaryButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.primary};
   color: ${AppColors.white};
 
-  :disabled {
+  &:disabled, &.Mui-disabled {
+    background-color: ${AppColors.primary};
     color: ${AppColors.white};
     opacity: 0.7;
   }
@@ -129,7 +107,6 @@ export const PrimaryButton = styled(Button)`
 `;
 
 export const SecondaryButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.white};
   color: ${AppColors.primary};
   border: .1rem solid ${AppColors.primary};
@@ -141,23 +118,27 @@ export const SecondaryButton = styled(Button)`
 `;
 
 export const CancelButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.negative};
   color: ${AppColors.white};
 
+  &:disabled, &.Mui-disabled {
+    background-color: ${AppColors.negativeDark};
+    color: ${AppColors.white};
+    opacity: 0.7;
+  }
+
   &:hover {
-    background-color: ${AppColors.negativeDarker};
+    background-color: ${AppColors.negativeDark};
     color: ${AppColors.white};
   }
 `;
 
 export const ConfirmButton = styled(Button)`
-  ${createResponsiveProps({ fontSize: 'P' })}
   background-color: ${AppColors.positive};
   color: ${AppColors.white};
 
   &:hover {
-    background-color: ${AppColors.positiveDarker};
+    background-color: ${AppColors.positiveDark};
     color: ${AppColors.white};
   }
 `;
@@ -166,41 +147,9 @@ export const TransparentButton = styled(Button)`
   color: inherit;
 `;
 
-// **** Headings
-
-export const Heading1 = styled.h1`
-  ${createResponsiveProps({ fontSize: 'H1', fontWeight: 'bold' })}
-`;
-
-export const Heading2 = styled.h2`
-  ${createResponsiveProps({ fontSize: 'H2', fontWeight: 'bold' })}
-`;
-
-export const Heading3 = styled.h3`
-  ${createResponsiveProps({ fontSize: 'H3' })}
-`;
-
-export const Heading4 = styled.h4`
-  ${createResponsiveProps({ fontSize: 'H4' })}
-`;
-
 // **** Paragraphs
 
-export const ParagraphTitle = styled.p`
-  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
-  ${createResponsiveProps({ fontSize: 'H4', fontWeight: '500' })}
-`;
-
-export const Sub = styled.p`
-  ${createResponsiveProps({ fontSize: 'Sub' })}
-`;
-
-export const Paragraph = styled.p`
-  text-align: ${(props: ParagraphProps) => props.align ?? 'start'};
-  ${createResponsiveProps({ fontSize: 'P' })}
-`;
-
-export const ErrorParagraphValidation = styled(Paragraph)`
+export const ErrorParagraphValidation = styled(Typography)`
   color: ${AppColors.validationError};
 `;
 
@@ -265,6 +214,9 @@ export const DateTimePicker = styled(DateTimePickerMUI)`
   label {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
+  & .MuiTypography-root .MuiDayCalendar-weekDayLabel {
+    ${createResponsiveProps({ fontSize: 'P' })}
+  }
   fieldset {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
@@ -288,10 +240,11 @@ export const MenuItem = styled(MenuItemMUI)`
 `;
 
 export const Chip = styled(ChipMUI, { shouldForwardProp: (props) => props !== 'chipColor' })`
+  max-width: 15rem;
   color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
   border-color: ${({ chipColor }: ChipProps) => (chipColor ?? AppColors.primary)};
 
-  span {
+  & .MuiChip-label {
     ${createResponsiveProps({ fontSize: 'Sub' })}
   }
 `;

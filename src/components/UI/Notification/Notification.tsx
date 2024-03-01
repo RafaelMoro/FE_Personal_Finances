@@ -37,7 +37,7 @@ const Notification = ({
         <IconStatusContainer>
           { SystemStateIcons[status] }
         </IconStatusContainer>
-        <NotificationTitle>{title}</NotificationTitle>
+        <NotificationTitle variant="h3">{title}</NotificationTitle>
         <NotificationDescription>{description}</NotificationDescription>
         { UIElement && (
           <NotificationUIElementContainer>

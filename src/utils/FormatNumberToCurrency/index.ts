@@ -24,7 +24,8 @@ const usDollar = Intl.NumberFormat('en-US', {
 * It returns the number formatted.
 */
 
-export const formatNumberToCurrency = (amount: number, currency: CurrencyOptions = 'USD'): string => {
-  if (currency === 'MXN') return mexicanPeso.format(amount);
-  return usDollar.format(amount);
+export const formatValueToCurrency = (amount: number | string, currency: CurrencyOptions = 'USD'): string => {
+  const transformedAmount = typeof amount === 'number' ? amount : Number(amount);
+  if (currency === 'MXN') return mexicanPeso.format(transformedAmount);
+  return usDollar.format(transformedAmount);
 };

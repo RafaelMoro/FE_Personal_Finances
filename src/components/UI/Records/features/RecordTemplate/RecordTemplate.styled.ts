@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
 import { ToggleButtonGroup as ToggleButtonGroupMUI } from '@mui/material';
-import { AnchorButton, AppColors, SecondaryButton } from '../../../../../styles';
+import {
+  AnchorButton, AppColors, SecondaryButton,
+} from '../../../../../styles';
 
 export const RecordTemplateMain = styled.main`
   display: grid;
@@ -26,8 +28,8 @@ export const FormContainer = styled(Form)`
   gap: 2rem;
 `;
 
-export const AddButton = styled(SecondaryButton)`
-  min-width: 15rem;
+export const SecondaryButtonForm = styled(SecondaryButton)`
+  min-width: 18rem;
 `;
 
 export const AddChipContainer = styled.div`

@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
 import {
-  AddButton, ChipsContainer, ChipForm, AddChipButtonContainer,
+  ChipsContainer, ChipForm, AddChipButtonContainer, SecondaryButtonForm,
 } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  InputForm, Chip,
+  InputForm, Chip, FlexContainer,
 } from '../../../../../styles';
+import { RecordSubtitleText } from '../../Records.styled';
 
 const AddChip = ({
   name, label, action, chipsData = [], updateData,
@@ -46,9 +47,9 @@ const AddChip = ({
   return (
     <ChipForm>
       { (chips.length === 0) && (
-        <ChipsContainer>
-          <Chip label={`No ${name}s added`} variant="outlined" color="primary" />
-        </ChipsContainer>
+        <FlexContainer justifyContent="center">
+          <RecordSubtitleText variant="body2">{`No ${name}s added`}</RecordSubtitleText>
+        </FlexContainer>
       ) }
       { (chips.length > 0) && (
         <ChipsContainer>
@@ -82,11 +83,11 @@ const AddChip = ({
               />
             </div>
             <AddChipButtonContainer>
-              <AddButton variant="contained" onClick={submitForm} size="medium">
+              <SecondaryButtonForm variant="contained" onClick={submitForm} size="medium">
                 Add
                 {' '}
                 {action}
-              </AddButton>
+              </SecondaryButtonForm>
             </AddChipButtonContainer>
           </>
         )}

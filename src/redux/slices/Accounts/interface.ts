@@ -1,39 +1,39 @@
-import { AxiosRequestHeaders } from 'axios';
 import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
 import { Account, GeneralResponse } from '../../../globalInterface';
+
+type AccountsState = 'isUninitialized' | 'loading' | 'success';
 
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
   accountSelected: AccountUI | null;
-  loading: boolean;
-  error: boolean;
-  errorMessage: string | unknown;
-  loadingOnAction: boolean;
-  errorOnAction: boolean;
-  errorMessageOnAction: string | unknown;
+  accountsFetchStatus: AccountsState;
 }
 
-export interface FetchAccountsValues {
-  bearerToken: AxiosRequestHeaders;
+interface UpdateAccountsStatusPayload {
+  status: AccountsState;
+}
+export interface UpdateAccountsStatusProps {
+  payload: UpdateAccountsStatusPayload;
+  type: string;
 }
 
 export interface DeleteAccountValues {
   accountId: string;
 }
 
-export interface DeleteAccountThunkProps {
+export interface DeleteAccountMutationProps {
   values: DeleteAccountValues;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
-export interface CreateAccountThunkProps {
+export interface CreateAccountMutationProps {
   values: CreateAccount;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
-export interface ModifyAccountThunkProps {
+export interface ModifyAccountMutationProps {
   values: ModifyAccountValues;
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
 export interface UpdateAmountPayload {
@@ -41,29 +41,13 @@ export interface UpdateAmountPayload {
   amount: number;
 }
 
-export interface UpdateAmountAccountThunkProps {
+export interface UpdateAmountAccountMutationProps {
   payload: UpdateAmountPayload
-  bearerToken: AxiosRequestHeaders;
+  bearerToken: string;
 }
 
 export interface FetchAccountsResponse extends Omit<GeneralResponse, 'data'> {
   data: {
     accounts: Account[]
   };
-}
-
-export interface SingleAccountResponse extends Omit<GeneralResponse, 'data'> {
-  data: {
-    account: Account;
-  };
-}
-
-export interface DeleteAccountData {
-  accountDeleted: Account;
-  numberExpensesDeleted: number;
-  numberIncomesDeleted: number;
-}
-
-export interface DeleteAccountResponse extends Omit<GeneralResponse, 'data'> {
-  data: DeleteAccountData;
 }

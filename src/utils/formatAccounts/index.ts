@@ -1,7 +1,7 @@
 import { AccountUI } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { findColor } from '../FindColor';
-import { formatNumberToCurrency } from '../FormatNumberToCurrency';
+import { formatValueToCurrency } from '../FormatNumberToCurrency';
 
 interface FormatAccountsProps {
   accounts: Account [];
@@ -16,7 +16,7 @@ export const formatAccounts = ({
       if (account._id === selectedAccountId) {
         return {
           ...account,
-          amountFormatted: formatNumberToCurrency(account.amount),
+          amountFormatted: formatValueToCurrency(account.amount),
           selected: true,
           backgroundColorUI: findColor({
             colorName: account.backgroundColor,
@@ -28,7 +28,7 @@ export const formatAccounts = ({
       }
       return {
         ...account,
-        amountFormatted: formatNumberToCurrency(account.amount),
+        amountFormatted: formatValueToCurrency(account.amount),
         selected: false,
         backgroundColorUI: findColor({
           colorName: account.backgroundColor,
@@ -46,7 +46,7 @@ export const formatAccounts = ({
     if (index === 0) {
       return {
         ...rest,
-        amountFormatted: formatNumberToCurrency(account.amount),
+        amountFormatted: formatValueToCurrency(account.amount),
         selected: true,
         backgroundColorUI: findColor({
           colorName: account.backgroundColor,
@@ -59,7 +59,7 @@ export const formatAccounts = ({
 
     return {
       ...rest,
-      amountFormatted: formatNumberToCurrency(account.amount),
+      amountFormatted: formatValueToCurrency(account.amount),
       selected: false,
       backgroundColorUI: findColor({
         colorName: account.backgroundColor,

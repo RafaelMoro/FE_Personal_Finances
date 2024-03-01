@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { Toolbar } from '@mui/material';
+import { Toolbar, Typography } from '@mui/material';
 
 import {
-  AppColors, Paragraph, Sub, TableCell,
+  AppColors, TableCell, responsiveBreakpoints,
 } from '../../../../styles';
 
 /** SelectExpenses */
@@ -14,11 +14,11 @@ export const SelectExpensesContainer = styled.div`
   width: 100%;
   min-width: 32rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet}{
     min-width: 48rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     min-width: 70rem;
   }
 `;
@@ -37,11 +37,11 @@ export const LoadingExpensesContainer = styled.div`
   place-items: center;
   padding-top: 3rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tablet} {
     min-width: 48rem;
   }
 
-  @media(min-width: 1024px) {
+  @media ${responsiveBreakpoints.desktop} {
     min-width: 70rem;
   }
 `;
@@ -49,13 +49,9 @@ export const LoadingExpensesContainer = styled.div`
 export const ExpensesNotFoundContainer = styled.div`
   padding-top: 3rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-width: 77rem;
   }
-`;
-
-export const SideNoteSelectExpense = styled(Sub)`
-  color: ${AppColors.subtitleColor};
 `;
 
 export const SelectExpensesToolbar = styled(Toolbar)`
@@ -71,7 +67,7 @@ export const SelectMonthYearBox = styled.div`
   gap: 2rem;
   padding: 0 1rem;
 
-  @media(min-width: 480px) {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     flex-direction: row;
     justify-content: center;
     gap: 5rem;
@@ -109,7 +105,7 @@ export const NameCell = styled(TableCell)`
   gap: 1rem;
 `;
 
-export const IndebtedPeopleName = styled(Paragraph)`
+export const IndebtedPeopleName = styled(Typography)`
   padding: 1rem 0;
   text-align: center;
 `;
@@ -118,7 +114,7 @@ export const IconsCell = styled(TableCell)`
   display: flex;
 `;
 
-export const IndebtedPersonName = styled(Paragraph)`
+export const IndebtedPersonName = styled(Typography)`
   grid-column: 1 / 3;
   text-align: center;
 `;

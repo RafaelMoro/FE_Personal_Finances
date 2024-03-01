@@ -1,21 +1,20 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
-import { AxiosError } from 'axios';
 
 import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
-import { CountOnMeLocalStorage, JWT } from '../utils/LocalStorage/interface';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
-import { getLocalStorageInfo, saveInfoToLocalStorage } from '../utils';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { addToLocalStorage, saveInfoToLocalStorage } from '../utils';
+import { useAppDispatch } from '../redux/hooks';
 import {
-  loginUser, toggleNavigateDashboardFlag, signOff, signOn,
+  signOff, signOn,
 } from '../redux/slices/User/user.slice';
 import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
-import { resetRecordsAndTotal } from '../redux/slices/Records/records.slice';
+import { resetTotalBalanceRecords } from '../redux/slices/Records/records.slice';
+import { useLoginMutation } from '../redux/budgetMaster.api';
+import { LOGIN_FIXED_CACHED_KEY } from '../redux/constants';
+import { GeneralError } from '../globalInterface';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -35,12 +34,14 @@ const NOTIFICATION_STATUS = SystemStateEnum.Error;
 */
 
 const useLogin = () => {
+  const [loginMutation, { isLoading, isSuccess, reset: resetLoginIn }] = useLoginMutation({
+    fixedCacheKey: LOGIN_FIXED_CACHED_KEY,
+  });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userReduxState = useAppSelector((state) => state.user);
   const {
-    toggleShowNotification, notificationInfo,
-    updateDescription, notification,
+    toggleShowNotification, notificationInfo, updateTitle,
+    updateDescription, updateStatus, notification,
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
@@ -50,53 +51,31 @@ const useLogin = () => {
     dispatch(signOff());
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
-    dispatch(resetRecordsAndTotal());
+    dispatch(resetTotalBalanceRecords());
     saveInfoToLocalStorage({});
     navigate(LOGIN_ROUTE);
+    resetLoginIn();
   };
-
-  // Sync local storage with user Info redux state.
-  useEffect(() => {
-    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
-    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
-
-    if (!IsEmptyLocalStorage) {
-      // Check if token has expired
-      const { user } = localStorageInfo;
-
-      const jwtDecoded: JWT = jwtDecode(user?.accessToken);
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      if (jwtDecoded && Date.now() >= jwtDecoded?.exp * 1000) {
-        signOut();
-        return;
-      }
-
-      if (!userReduxState.userInfo) dispatch(signOn(user));
-      navigate(DASHBOARD_ROUTE);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
-
-  // After having a success login, the flag of navigate to dashboard will be enabled.
-  useEffect(() => {
-    if (userReduxState.navigateToDashboard) {
-      // After navigating to the dashboard, disable the flag to avoid re-render.
-      navigate(DASHBOARD_ROUTE);
-      dispatch(toggleNavigateDashboardFlag());
-    }
-  }, [dispatch, navigate, userReduxState.navigateToDashboard]);
 
   const handleSubmit = async (values: LoginValues) => {
     try {
-      await dispatch(loginUser(values)).unwrap();
+      const user = await loginMutation({ values }).unwrap();
+      dispatch(signOn(user));
+      addToLocalStorage(user);
+      setTimeout(() => {
+        navigate(DASHBOARD_ROUTE);
+      }, 3000);
     } catch (err) {
-      // Catches if the action returns an axios error that could be error 401 unauthorized
-      const errorCatched = err as AxiosError;
-      if (errorCatched?.message === UNAUTHORIZED_ERROR) {
+      const error = err as GeneralError;
+      // eslint-disable-next-line no-console
+      console.error('Error while logging in:', error);
+      const message = error?.data?.error?.message;
+      if (message === UNAUTHORIZED_ERROR) {
         updateDescription(ERROR_MESSAGE_UNAUTHORIZED);
         toggleShowNotification();
         return;
       }
+
       updateDescription(ERROR_MESSAGE_GENERAL);
       toggleShowNotification();
     }
@@ -113,8 +92,13 @@ const useLogin = () => {
   };
 
   return {
+    loginSuccess: isSuccess,
+    loginLoading: isLoading,
     handleSubmit,
     handleShowNotification: toggleShowNotification,
+    updateTitle,
+    updateDescription,
+    updateStatus,
     signOut,
     notificationInfo,
     notification,

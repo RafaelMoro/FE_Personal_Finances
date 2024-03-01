@@ -1,8 +1,7 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 
 import { EditIcon, DeleteIcon } from '../Icons';
 import { AccountComponentProps } from './interface';
-import { Paragraph } from '../../../styles';
 import {
   AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
 } from './Account.styled';
@@ -14,30 +13,29 @@ const Account = ({
   openDeleteAccountModal,
 }: AccountComponentProps) => {
   const {
-    _id: accountId, title, backgroundColorUI, colorUI, accountType, selected, amountFormatted,
+    _id: accountId, title, backgroundColorUI, accountType, selected, amountFormatted,
   } = account;
 
   return (
     <AccountContainerColoroued
-      backgroundColor={backgroundColorUI.color}
-      color={colorUI.color}
+      color={backgroundColorUI.color}
       selected={selected}
       onClick={selectAccountOnClick}
     >
-      <AccountTitle>{ title }</AccountTitle>
-      <Paragraph>{ amountFormatted }</Paragraph>
+      <AccountTitle variant="h4">{ title }</AccountTitle>
+      <Typography>{ amountFormatted }</Typography>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
-          <EditIcon fillColor={colorUI.color} />
+          <EditIcon fillColor={backgroundColorUI.color} />
         </IconButton>
         <IconButton onClick={() => openDeleteAccountModal(accountId, title)}>
-          <DeleteIcon fillColor={colorUI.color} />
+          <DeleteIcon fillColor={backgroundColorUI.color} />
         </IconButton>
       </AccountIconsContainer>
-      <Paragraph>{ accountType }</Paragraph>
+      <Typography>{ accountType }</Typography>
       { (selected) && (
-        <SelectedTextBox>
-          <Paragraph>Selected</Paragraph>
+        <SelectedTextBox backgroundColor={backgroundColorUI.color}>
+          <Typography>Selected</Typography>
         </SelectedTextBox>
       ) }
     </AccountContainerColoroued>

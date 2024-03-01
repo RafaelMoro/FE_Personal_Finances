@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Drawer,
+  Drawer, Typography,
 } from '@mui/material';
 
 import { RecordProps } from './interface';
@@ -8,12 +8,12 @@ import { useAppSelector } from '../../../redux/hooks';
 import { RecordDrawer } from './features/RecordDrawer';
 import { DeleteRecordModal } from './features/DeleteRecordModal';
 import {
-  Chip, Paragraph,
+  Chip,
 } from '../../../styles';
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
-  RecordIncome, RecordStatusContainer, RecordDescription, RecordStatus, StatusWhiteCircle,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, RecordSub,
+  RecordIncome, RecordStatusContainer, RecordDescription,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, PaymentStatusChip,
 } from './Records.styled';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -84,7 +84,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     return (
       <>
         <ListItemRecord onClick={showLongView}>
-          <RecordTitle align="center">{ shortName }</RecordTitle>
+          <RecordTitle variant="h5" align="center">{ shortName }</RecordTitle>
           { amountShown }
           <RecordDate>{ fullDate }</RecordDate>
           <RecordTime>{ formattedTime }</RecordTime>
@@ -93,26 +93,23 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <RecordStatus isPaid={isPaid ?? true}>
-              <StatusWhiteCircle />
-              <Paragraph>{status}</Paragraph>
-            </RecordStatus>
+            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
           </RecordStatusContainer>
           ) }
           <BudgetChipContainer>
-            { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
+            { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
               <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
             ))}
           </BudgetChipContainer>
           <TagsChipContainer>
-            { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
+            { tag.length === 0 && (<RecordSubtitleText variant="body2">No tags</RecordSubtitleText>) }
             { tag.length > 0 && tag.map((item) => (
               <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
             ))}
           </TagsChipContainer>
           { (indebtedPeople.length > 0 && !openLongView) && (
-            <RecordSubtitleText>
+            <RecordSubtitleText variant="body2">
               People involved:
               {' '}
               {
@@ -121,7 +118,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             </RecordSubtitleText>
           ) }
           { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-            <RecordSubtitleText>
+            <RecordSubtitleText variant="body2">
               Records Paid:
               {' '}
               { expensesPaid.length }
@@ -155,12 +152,12 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   return (
     <>
       <ListItemRecord onClick={showLongView}>
-        <RecordTitle align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
+        <RecordTitle variant="h5" align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
         { amountShown }
-        <RecordDate>{ fullDate }</RecordDate>
-        <RecordTime>{ formattedTime }</RecordTime>
-        <RecordSub>{ category.categoryName }</RecordSub>
-        <RecordSub>{ subCategory }</RecordSub>
+        <Typography variant="body2">{ fullDate }</Typography>
+        <Typography variant="body2">{ formattedTime }</Typography>
+        <Typography variant="body2">{ category.categoryName }</Typography>
+        <Typography variant="body2">{ subCategory }</Typography>
         <BudgetChipContainer>
           { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (
@@ -198,10 +195,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         ) }
         { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <RecordStatus isPaid={isPaid ?? true}>
-              <StatusWhiteCircle />
-              <Paragraph>{status}</Paragraph>
-            </RecordStatus>
+            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
           </RecordStatusContainer>
         ) }
       </ListItemRecord>

@@ -1,5 +1,5 @@
 import {
-  TableHead, TableRow, TableBody, TablePagination,
+  TableHead, TableRow, TableBody, TablePagination, Typography,
 } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -8,6 +8,7 @@ import { RecordTable, TableTitle } from '../RecordDrawer/RecordDrawer.styled';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
 import { TableCell } from '../../../../../styles';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
+import { InstructionsAddExpense } from '../../Records.styled';
 
 interface ShowExpensesProps {
   expenses: ExpensePaid[];
@@ -31,11 +32,16 @@ const ShowExpenses = ({ expenses = [], usePagination = false, isGrid = false }: 
   const expensesArray = usePagination ? visibleRows : expenses;
 
   if (expenses.length === 0) {
-    return null;
+    return (
+      <InstructionsAddExpense variant="body2" align="center">
+        Note: You can link expenses to this payment to know what
+        transactions has been paid. To do so, click on &quot; Add Expense &quot;.
+      </InstructionsAddExpense>
+    );
   }
   return (
     <>
-      <TableTitle isGrid={isGrid}>Expenses Selected: </TableTitle>
+      <TableTitle align="center" isGrid={isGrid}>Expenses Selected: </TableTitle>
       <RecordTable isGrid={isGrid}>
         <TableHead>
           <TableRow>

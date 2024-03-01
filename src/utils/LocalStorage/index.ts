@@ -1,3 +1,4 @@
 export { getLocalStorageInfo } from './getLocalStorageInfo';
 export { saveInfoToLocalStorage } from './saveInfoToLocalStorage';
-export { updateLocalStorage } from './updateLocalStorage';
+export { addToLocalStorage } from './addToLocalStorage';
+export { resetLocalStorageWithUserOnly } from './resetLocalStorageWithUserOnly';

@@ -17,15 +17,25 @@ export interface AccountComponentProps {
   selectAccountOnClick: () => void;
 }
 
-export type CreateAccount = Omit<Account, '_id' | '__v'>;
+export interface CreateAccountInitialValues extends Omit<Account, '_id' | '__v' | 'amount' | 'color'> {
+  amount: string;
+}
+
+export interface CreateAccount extends Omit<Account, '_id' | '__v' | 'amount'> {
+  amount: number;
+}
+
+export interface ModifyAccountInitialValues extends Omit<AccountUI, 'amount'> {
+  amount: string;
+}
+
 export interface ModifyAccountValues extends Omit<Account, '_id' | '__v'> {
   accountId: string;
 }
 
 // backgroundColor and color are string because in the Account component, the
 // background color and color are transformed using the global config object.
-export interface IAccountDynamicStylesProps {
-  backgroundColor: string;
+export interface AccountDynamicStylesProps {
   color: string;
   selected: boolean;
 }

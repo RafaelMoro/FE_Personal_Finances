@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { IconButton } from '@mui/material';
-import { AppColors } from '../../../styles';
+import { AppColors, responsiveBreakpoints } from '../../../styles';
 
 export const IconButtonBackToTop = styled(IconButton)`
   background-color: ${AppColors.white};
@@ -12,5 +12,10 @@ export const IconButtonBackToTop = styled(IconButton)`
   &:hover {
     background-color: ${AppColors.white};
     border: 1px solid ${AppColors.grey};
+  }
+
+  @media ${responsiveBreakpoints.desktop} {
+    position: absolute;
+    left: 31.1rem;
   }
 `;

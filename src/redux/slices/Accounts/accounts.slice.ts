@@ -1,32 +1,51 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
-import { AccountsInitialState } from './interface';
-import {
-  fetchAccountsFullfilled, fetchAccountsPending, fetchAccountsRejected,
-  createAccountFulfilled, createAccountPending, createAccountRejected,
-  deleteAccountFullfilled, deleteAccountPending, deleteAccountRejected,
-  modifyAccountFulfilled, modifyAccountPending, modifyAccountRejected,
-} from './actions';
-import { updateAmountAccountFulfilled, updateAmountAccountPending, updateAmountAccountRejected } from './actions/updateAmountAccount';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { AccountsInitialState, UpdateAccountsStatusProps } from './interface';
+import { formatValueToCurrency } from '../../../utils';
+import { accountsApiSlice } from './actions';
 
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
   accountSelected: null,
-  loading: false,
-  error: false,
-  errorMessage: '',
-  // These loading and error states are launched on create, delete or update account.
-  loadingOnAction: false,
-  errorOnAction: false,
-  errorMessageOnAction: '',
+  // This flag will let know records if they can fetch and give feedback to the user
+  accountsFetchStatus: 'isUninitialized',
 };
 
 export const accountsSlice = createSlice({
   name: 'accounts',
   initialState: accountsInitialState,
   reducers: {
-    updateAccountsWithNewSelectedAccount: (state, action) => {
+    updateAccounts: (state, action) => {
       state.accounts = action.payload;
+    },
+    updateAccountsStatus: (state, action: UpdateAccountsStatusProps) => {
+      if (action.payload.status === 'loading') {
+        state.accountsFetchStatus = 'loading';
+        return;
+      }
+
+      state.accountsFetchStatus = 'success';
+    },
+    updateAmountSelectedAccount: (state, action) => {
+      const amountNumber = action.payload;
+      const amountFormatted = formatValueToCurrency(amountNumber);
+
+      // Update the amount of the selected account
+      if (state.accountSelected) {
+        state.accountSelected.amount = amountNumber;
+        state.accountSelected.amountFormatted = amountFormatted;
+      }
+
+      // Update the account in the accounts state
+      if (state.accounts && state.accountSelected) {
+        const accountsUpdated = state.accounts.map((account) => {
+          if (account._id === state.accountSelected?._id) {
+            return { ...account, amount: amountNumber, amountFormatted };
+          }
+          return account;
+        });
+        state.accounts = accountsUpdated;
+      }
     },
     updateSelectedAccount: (state, action) => {
       state.accountSelected = action.payload;
@@ -39,30 +58,24 @@ export const accountsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    fetchAccountsPending(builder);
-    fetchAccountsFullfilled(builder);
-    fetchAccountsRejected(builder);
+    builder.addMatcher(isAnyOf(accountsApiSlice.endpoints.fetchAccounts.matchPending), (state) => {
+      state.accountsFetchStatus = 'loading';
+    });
 
-    deleteAccountPending(builder);
-    deleteAccountFullfilled(builder);
-    deleteAccountRejected(builder);
+    builder.addMatcher(isAnyOf(accountsApiSlice.endpoints.fetchAccounts.matchFulfilled), (state, action) => {
+      state.accounts = action.payload;
+      const [firstAccount] = action.payload;
+      state.accountSelected = firstAccount;
 
-    createAccountPending(builder);
-    createAccountFulfilled(builder);
-    createAccountRejected(builder);
-
-    modifyAccountPending(builder);
-    modifyAccountFulfilled(builder);
-    modifyAccountRejected(builder);
-
-    updateAmountAccountFulfilled(builder);
-    updateAmountAccountPending(builder);
-    updateAmountAccountRejected(builder);
+      // Update account status
+      state.accountsFetchStatus = 'success';
+    });
   },
 });
 
 export const {
-  updateAccountsWithNewSelectedAccount, updateSelectedAccount, resetAccounts, resetSelectedAccount,
+  updateAccounts, updateSelectedAccount, resetAccounts,
+  resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount,
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;

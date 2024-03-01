@@ -1,59 +1,22 @@
-import { useEffect, useState } from 'react';
-import { AxiosRequestHeaders, AxiosError } from 'axios';
-
-import { GetRequest } from '../../utils';
 import { GET_EXPENSES } from '../../components/UI/Records/constants';
-import { UseAllExpensesProps, GetExpensesNotPaidResponse } from './interface';
-import { ExpensePaid } from '../../globalInterface';
+import { UseAllExpensesProps } from './interface';
 import { useAppSelector } from '../../redux/hooks';
+import { useGetExpensesQuery } from '../../redux/slices/Records/actions/expenses.api';
 
 const useAllExpenses = ({ month, year }: UseAllExpensesProps) => {
   const userReduxState = useAppSelector((state) => state.user);
-  const bearerToken = userReduxState.userInfo?.bearerToken as AxiosRequestHeaders;
+  const bearerToken = userReduxState.userInfo?.bearerToken as string;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const selectedAccountId = selectedAccount?._id;
+  const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
 
-  const [noExpensesFound, setNoExpensesFound] = useState<boolean>(false);
-  const [error, setError] = useState<string>('No error found');
-  const [loading, setLoading] = useState<boolean>(true);
-  const [expenses, setExpenses] = useState<ExpensePaid []>([]);
-
-  /** Note: Not using redux as I need the expenses in react state rather than redux state (not globally). */
-  useEffect(() => {
-    const getExpenses = async () => {
-      try {
-        // set loading to true if it was false.
-        setLoading(true);
-        const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
-        const response: GetExpensesNotPaidResponse = await GetRequest(fullRoute, bearerToken);
-
-        if (response.data?.records) {
-          // set it as false if it was previously true.
-          setNoExpensesFound(false);
-          setExpenses(response.data?.records);
-          setLoading(false);
-          return;
-        }
-
-        // The response returned = No expense found with that account id
-        setNoExpensesFound(true);
-        setExpenses([]);
-        setLoading(false);
-      } catch (errorCatched) {
-        // catch error
-        const newError = errorCatched as AxiosError;
-        setError(newError.message);
-        setLoading(false);
-      }
-    };
-    if (!!userReduxState && bearerToken) getExpenses();
-  }, [bearerToken, month, selectedAccountId, userReduxState, year]);
+  const { isFetching, isError, currentData } = useGetExpensesQuery({ route: fullRoute, bearerToken }, { skip: (!bearerToken || !selectedAccountId) });
 
   return {
-    expenses,
-    noExpensesFound,
-    error,
-    loading,
+    expenses: currentData?.records ?? [],
+    noExpensesFound: currentData?.message === 'No expenses found.',
+    isError,
+    loading: isFetching,
   };
 };
 

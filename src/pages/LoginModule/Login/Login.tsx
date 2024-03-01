@@ -2,22 +2,34 @@ import { CardContent } from '@mui/material';
 import {
   Formik, Form, Field,
 } from 'formik';
+import { useEffect, useState } from 'react';
 
 import { REGISTER_ROUTE } from '../../RoutesConstants';
 import { useLogin } from '../../../hooks/useLogin';
+import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
-import { BrandLogoName } from '../../../components/templates/BrandLogoName';
+import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
+import { ActionButtonPanel, BrandLogoName } from '../../../components/templates';
 import {
-  Main, LoginCard, LogoContainer, LoginCardActions,
-  FormTitle, FormInstructions, LoginInput, ForgotPasswordLink,
+  Main, LoginCard, LogoContainer,
+  FormLoginTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
-import { PrimaryButton, SecondaryButton, AnchorButton } from '../../../styles';
 
 const Login = () => {
+  const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
   const {
-    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter,
+    handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter, loginSuccess, loginLoading,
   } = useLogin();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const toggleShowPassword = () => setShowPassword(!showPassword);
+
+  useEffect(() => {
+    if (hasSignedOn) {
+      navigateToDashboard();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasSignedOn]);
 
   return (
     <>
@@ -47,7 +59,7 @@ const Login = () => {
                 }}
               >
                 <CardContent>
-                  <FormTitle>Welcome back</FormTitle>
+                  <FormLoginTitle variant="h2">Welcome back</FormLoginTitle>
                   <FormInstructions>Enter your credentials to enter your account.</FormInstructions>
                   <Field
                     component={LoginInput}
@@ -60,19 +72,27 @@ const Login = () => {
                   <Field
                     component={LoginInput}
                     name="password"
-                    type="password"
+                    type={(showPassword) ? 'text' : 'password'}
                     variant="standard"
                     fullWidth
                     label="Password"
+                    InputProps={{
+                      endAdornment: <TogglePasswordAdornment showPassword={showPassword} toggleShowPassword={toggleShowPassword} />,
+                    }}
                   />
                   <ForgotPasswordLink to="/forgot-password">Do you forgot your password? </ForgotPasswordLink>
                 </CardContent>
-                <LoginCardActions>
-                  <AnchorButton to={REGISTER_ROUTE}>
-                    <SecondaryButton variant="contained" size="medium">Register</SecondaryButton>
-                  </AnchorButton>
-                  <PrimaryButton variant="contained" onClick={submitForm} size="medium">Login</PrimaryButton>
-                </LoginCardActions>
+                <ActionButtonPanel
+                  minWidthNumber="12"
+                  submitButtonText="Login"
+                  submitForm={submitForm}
+                  cancelButtonText="Register"
+                  routeCancelButton={REGISTER_ROUTE}
+                  useSecondaryButton
+                  success={loginSuccess}
+                  loading={loginLoading}
+                  disableSubmitButton={loginSuccess || loginLoading}
+                />
               </Form>
             )}
           </Formik>

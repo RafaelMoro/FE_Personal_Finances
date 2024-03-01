@@ -1,4 +1,4 @@
-import { GlobalConfiguration, ResponsiveBreakpoints } from './GlobalConfigObjects';
+import { globalConfiguration, responsiveBreakpoints } from './GlobalConfigObjects';
 import { FontSizes } from './interface';
 
 type FontWeight = 'normal' | 'bold' | '500';
@@ -12,7 +12,7 @@ interface ICreateResponsivePropsParameters {
 /*
 ** This function sets font size and font weight responsively with media queries
 ** It recieves an object of configuration:
-**  fontSize: string that are keys of fontSize interface: H1, H2, H3, P, Sub
+**  fontSize: string that are keys of fontSize interface: H1, H2, H3, P
 **  fontWeight: string using type FontWeight that accepts: normal | bold
 **  important: boolean that sets if the css property should be "!important"
 
@@ -23,14 +23,17 @@ interface ICreateResponsivePropsParameters {
 export function createResponsiveProps({ fontSize = 'P', fontWeight = 'normal', important = false }: ICreateResponsivePropsParameters) {
   const importantProperty = important ? '!important' : '';
   return `
-    font-size: ${GlobalConfiguration.mobile.fontSizes[fontSize]} ${importantProperty};
     font-weight: ${fontWeight};
 
-    @media (min-width: ${ResponsiveBreakpoints.tablet}) {
-      font-size: ${GlobalConfiguration.tablet.fontSizes[fontSize]} ${importantProperty};
+    @media ${responsiveBreakpoints.mobile} {
+      font-size: ${globalConfiguration.mobile.fontSizes[fontSize]} ${importantProperty};
     }
-    @media (min-width: ${ResponsiveBreakpoints.desktop}) {
-      font-size: ${GlobalConfiguration.desktop.fontSizes[fontSize]} ${importantProperty};
+
+    @media ${responsiveBreakpoints.tablet} {
+      font-size: ${globalConfiguration.tablet.fontSizes[fontSize]} ${importantProperty};
+    }
+    @media ${responsiveBreakpoints.desktop} {
+      font-size: ${globalConfiguration.desktop.fontSizes[fontSize]} ${importantProperty};
     }
   `;
 }

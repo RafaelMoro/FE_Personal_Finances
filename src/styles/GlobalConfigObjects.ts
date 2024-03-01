@@ -1,4 +1,4 @@
-import { IGlobalConfiguration, BackgroundColors, TextColors } from './interface';
+import { GlobalConfiguration, BackgroundColors, TextColors } from './interface';
 
 /*
 * This file saves colors, breakpoints for responsive web design, font sizes
@@ -6,18 +6,26 @@ import { IGlobalConfiguration, BackgroundColors, TextColors } from './interface'
 */
 
 export const AppColors = {
-  primary: '#FE955E',
-  primaryDark: '#E44323',
-  primaryLight: '#FFE2B4',
-  secondary: '#EAB765',
+  primary: '#B16841',
+  primaryDark: '#C08667',
+  primaryLight: '#7B482D',
+  secondary: '#592418',
+  secondaryLight: '#7A4F46',
+  secondaryDark: '#3E1910',
   white: '#fbfbfb',
   black: '#1D1305',
   positive: '#2e8625',
-  positiveDarker: '#317c77',
+  positiveDark: '#205D19',
+  positiveLight: '#579E50',
   negative: '#bd4a0e',
-  negativeDarker: '#a13f0d',
-  info: '#1ea7fd',
-  warning: '#d9f117',
+  negativeDark: '#843309',
+  negativeLight: '#CA6E3E',
+  info: '#0288d1',
+  infoDark: '#01579b',
+  infoLight: '#03a9f4',
+  warning: '#ed6c02',
+  warningLight: '#F08934',
+  warningDark: '#A54B01',
   bgColorLight: '#F5EFE5',
   bgColorDark: '#66440D',
   bgColorGrey: '#dbcaca',
@@ -83,18 +91,21 @@ export const AllBackgroundColors: BackgroundColors [] = [
   { name: 'Purple', color: '#A020F0' },
 ];
 
-export const ResponsiveBreakpoints = {
-  tablet: '480px',
-  desktop: '1024px',
+export const responsiveBreakpoints = {
+  mobile: '(max-width: 599.95px)',
+  tablet: '(min-width: 600px) and (max-width: 899.95px)',
+  tabletAndDesktop: '(min-width: 600px)',
+  desktop: '(min-width: 900px)',
 };
 
-export const GlobalConfiguration: IGlobalConfiguration = {
+export const globalConfiguration: GlobalConfiguration = {
   mobile: {
     fontSizes: {
       H1: '2.2rem',
       H2: '2rem',
       H3: '1.7rem',
       H4: '1.7rem',
+      H5: '1.6rem',
       P: '1.6rem',
       Sub: '1.4rem',
     },
@@ -105,8 +116,9 @@ export const GlobalConfiguration: IGlobalConfiguration = {
       H2: '2.2rem',
       H3: '2rem',
       H4: '2rem',
+      H5: '1.8rem',
       P: '1.6rem',
-      Sub: '1.5rem',
+      Sub: '1.4rem',
     },
   },
   desktop: {
@@ -115,8 +127,9 @@ export const GlobalConfiguration: IGlobalConfiguration = {
       H2: '2.8rem',
       H3: '2.4rem',
       H4: '2.4rem',
+      H5: '2rem',
       P: '1.8rem',
-      Sub: '1.6rem',
+      Sub: '1.5rem',
     },
   },
 };

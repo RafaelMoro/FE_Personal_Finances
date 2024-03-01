@@ -27,12 +27,12 @@ const ShowIndebtedPeople = ({
   return (
     <>
       { (!inRecordDrawer) && (
-        <TableNote>
+        <TableNote variant="body2">
           Note: If you are going to buy something with someone else, you may add how many does this person will owe you on this section.
           If so, click on &quot; Add Person &quot;
         </TableNote>
       ) }
-      <TableTitle isGrid={inRecordDrawer}>
+      <TableTitle align="center" isGrid={inRecordDrawer}>
         People related to this transaction:
         {' '}
         {indebtedPeople.length}

@@ -1,28 +1,29 @@
+import { Typography } from '@mui/material';
 import {
   CheckCircleOutlineOutlined,
 } from '@mui/icons-material';
 
-import { IErrorCreateAccount, ICreateAccountResult, ILoadingCreateAccount } from './interface';
+import { ErrorCreateAccountProps, CreateAccountResultProps, LoadingCreateAccountProps } from './interface';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
-import {
-  AppColors, Paragraph, AnchorButton, PrimaryButton, SecondaryButton,
-} from '../../../styles';
 import { Error } from '../../../components/UI';
+import { HorizontalLoader } from '../../../components/UI/HorizontalLoader';
 import { AnimateBox } from '../../../animations';
 import { LoaderContainer, MessageContainer, AnchorContainer } from '../../../styles/LoginModule.styled';
-import { Loader } from '../../../animations/Loader';
+import {
+  AppColors, AnchorButton, PrimaryButton, SecondaryButton,
+} from '../../../styles';
 
 const {
   positive,
 } = AppColors;
 
-const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount) => {
+const LoadingCreateAccount = ({ counterView, direction }: LoadingCreateAccountProps) => {
   if (counterView !== 2) return null;
   return (
     <AnimateBox direction={direction}>
       <LoaderContainer>
-        <Loader />
-        <Paragraph>Your account is being created. Please wait...</Paragraph>
+        <HorizontalLoader />
+        <Typography>Your account is being created. Please wait...</Typography>
       </LoaderContainer>
     </AnimateBox>
   );
@@ -31,14 +32,14 @@ const LoadingCreateAccount = ({ counterView, direction }: ILoadingCreateAccount)
 const SuccessCreateAccount = () => (
   <MessageContainer>
     <CheckCircleOutlineOutlined sx={{ fontSize: '4.5rem', fill: positive }} />
-    <Paragraph>Your account has being created.</Paragraph>
+    <Typography>Your account has being created.</Typography>
     <AnchorButton padding="6rem 0 0 0" to={LOGIN_ROUTE}>
       <PrimaryButton variant="contained" size="medium">Go to Login</PrimaryButton>
     </AnchorButton>
   </MessageContainer>
 );
 
-const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) => (
+const ErrorCreateAccount = ({ error, resetCounterView }: ErrorCreateAccountProps) => (
   <Error description={error}>
     <AnchorContainer>
       <AnchorButton to={LOGIN_ROUTE}>
@@ -51,7 +52,7 @@ const ErrorCreateAccount = ({ error, resetCounterView }: IErrorCreateAccount) =>
 
 const CreateAccountResult = ({
   isError, onError, onSuccess, direction, counterView,
-}: ICreateAccountResult) => {
+}: CreateAccountResultProps) => {
   if (counterView !== 3) return null;
   return (
     <AnimateBox direction={direction}>

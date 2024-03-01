@@ -1,10 +1,17 @@
-import { AxiosRequestHeaders } from 'axios';
+import { SerializedError } from '@reduxjs/toolkit';
 import { SystemStateEnum } from '../enums';
 
-export interface User {
-  accessToken: string;
+export interface UserInfo {
+  firstName: string;
+  middleName: string;
+  lastName: string;
   email: string;
-  bearerToken: AxiosRequestHeaders;
+}
+
+export interface User {
+  user: UserInfo;
+  bearerToken: string;
+  accessToken: string;
 }
 
 export const TYPE_OF_ACCOUNTS = ['Credit', 'Debit', 'Food Voucher', 'Restaurant Voucher', 'Savings'] as const;
@@ -30,11 +37,16 @@ export const MONTHS = [
 export type CompleteMonthsType = typeof MONTHS[number];
 
 export interface GeneralResponse {
-  version: string;
-  success: boolean;
+  data: object | null;
+  error: null | SerializedError;
   message: null | string;
-  data: unknown | null;
-  error: null | never;
+  success: boolean;
+  version: string;
+}
+
+export interface GeneralError {
+  data: GeneralResponse;
+  status: number
 }
 
 export interface Account {
@@ -51,8 +63,8 @@ export interface Account {
 export interface IndebtedPeople {
   _id?: string;
   name: string;
-  amount: number;
-  amountPaid: number;
+  amount: string;
+  amountPaid: string;
   isPaid: boolean;
 }
 
@@ -126,12 +138,6 @@ export interface MonthTotal {
 export interface RecordsTotal {
   currentMonth: MonthTotal;
   lastMonth: MonthTotal;
-}
-
-export interface AllRecords {
-  currentMonth: AnyRecord[] | null;
-  lastMonth: AnyRecord[] | null;
-  olderRecords: AnyRecord[] | null;
 }
 
 export interface GlobalNotification {

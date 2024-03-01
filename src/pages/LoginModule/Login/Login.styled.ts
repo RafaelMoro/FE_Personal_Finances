@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { CardActions } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import {
-  AppColors, InputForm, Paragraph, Anchor, Heading2,
+  InputForm, Anchor, responsiveBreakpoints,
 } from '../../../styles';
 
 export const Main = styled.main`
@@ -25,7 +25,8 @@ export const LogoContainer = styled.div`
 export const LoginCard = styled.div`
   min-width: 27.5rem;
   align-self: start;
-  @media (min-width: 480px) {
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-height: 45rem;
     width: 45rem;
     padding: 3rem;
@@ -38,13 +39,12 @@ export const LoginCard = styled.div`
   }
 `;
 
-export const FormTitle = styled(Heading2)`
+export const FormLoginTitle = styled(Typography)`
   text-align: center;
   margin-bottom: 2rem;
 `;
 
-export const FormInstructions = styled(Paragraph)`
-  color: ${AppColors.subtitleColor};
+export const FormInstructions = styled(Typography)`
   margin-bottom: 1rem;
 `;
 
@@ -55,9 +55,4 @@ export const LoginInput = styled(InputForm)`
 export const ForgotPasswordLink = styled(Anchor)`
   display: block;
   padding: 2rem 0;
-`;
-
-export const LoginCardActions = styled(CardActions)`
-  display: flex;
-  justify-content: space-between;
 `;

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Drawer } from '@mui/material';
+import { Drawer, Typography } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 import dayjs from 'dayjs';
@@ -17,6 +17,7 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
+import { ActionButtonPanel } from '../../../../templates';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
@@ -25,26 +26,40 @@ import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
-  ParagraphTitle, InputForm, PrimaryButton, InputAdornment,
-  CancelButton, AnchorButton, FlexContainer, FormControlLabel,
-  SecondaryButton, ToggleButton,
+  InputForm, InputAdornment,
+  FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
 import { CloseIcon } from '../../../Icons';
 
 /** Styles */
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup, ShowIndebtedPeopleContainer,
+  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
+  ShowIndebtedPeopleContainer, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
+import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
-    createExpense, createIncome, editExpense, editIncome,
+    createExpense,
+    createIncome,
+    editExpense,
+    editIncome,
+    isLoadingCreateExpense,
+    isLoadingCreateIncome,
+    isLoadingEditExpense,
+    isLoadingEditIncome,
+    isSucessCreateExpense,
+    isSucessCreateIncome,
+    isSucessEditExpense,
+    isSucessEditIncome,
   } = useRecords({});
+  const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome || isLoadingEditExpense || isLoadingEditIncome;
+  const successMutation = isSucessCreateExpense || isSucessCreateIncome || isSucessEditExpense || isSucessEditIncome;
   const {
     modal: indebtedPersonModal,
     openModal,
@@ -60,19 +75,14 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   } = useIndebtedPeople();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
-  const categoryToBeEdited = recordToBeEdited?.category ?? null;
+  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
 
   const action: string = edit ? 'Edit' : 'Create';
-  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
-  const isExpense = typeOfRecord === 'expense';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
-  const startAdornment = isExpense
-    ? <InputAdornment position="start">- $</InputAdornment>
-    : <InputAdornment position="start">+ $</InputAdornment>;
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
-  const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -88,6 +98,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     budgets: [],
     tag: [],
   });
+
+  const isExpense = typeOfRecord === 'expense';
+  const startAdornment = isExpense
+    ? <InputAdornment position="start">- $</InputAdornment>
+    : <InputAdornment position="start">+ $</InputAdornment>;
+  const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
+  const buttonText = `${action} record`;
 
   // Update edit data to the initial values
   useEffect(() => {
@@ -194,6 +211,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         const recordId = recordToBeEdited?._id ?? '';
         const previousAmount = recordToBeEdited?.amount ?? 0;
         const userIdRecord = recordToBeEdited?.userId ?? '';
+        resetLocalStorageWithUserOnly();
         editExpense({
           values: newValues, recordId, amountTouched, previousAmount, userId: userIdRecord,
         });
@@ -211,6 +229,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+      resetLocalStorageWithUserOnly();
       editIncome({
         values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
       });
@@ -236,12 +255,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           <ToggleButton value="income">Income</ToggleButton>
         </ToggleButtonGroup>
       ) }
-      <ParagraphTitle align="center">
+      <Typography variant="h3" align="center">
         {' '}
         { action }
         {' '}
         { typeOfRecord }
-      </ParagraphTitle>
+      </Typography>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
@@ -284,7 +303,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               rows={5}
               name="description"
               variant="standard"
-              label="Description"
+              label="Description (Optional)"
             />
             <CategoriesAndSubcategories
               errorCategory={errors.category}
@@ -294,8 +313,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               categoryToBeEdited={categoryToBeEdited}
             />
             <AddChipContainer>
-              <AddChip name="tag" label="Tag" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
-              <AddChip name="budget" label="Budget" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
+              <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
+              <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
             </AddChipContainer>
             { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
@@ -303,7 +322,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   <Field
                     type="checkbox"
                     checked={values.isPaid}
-                    label="Transaction paid"
+                    label="Transaction paid (Optional)"
                     name="isPaid"
                     component={Switch}
                   />
@@ -319,7 +338,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   modifyIndebtedPerson={fetchPersonToModify}
                 />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButton>
+                  <SecondaryButtonForm variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButtonForm>
                 </FlexContainer>
               </ShowIndebtedPeopleContainer>
             ) }
@@ -327,20 +346,21 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <>
                 <ShowExpenses usePagination expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
-                  <SecondaryButton variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">{showExpenseText}</SecondaryButton>
+                  <SecondaryButtonForm variant="contained" onClick={() => toggleShowExpenses(values)} size="medium">
+                    {showExpenseText}
+                  </SecondaryButtonForm>
                 </FlexContainer>
               </>
             ) }
-            <FlexContainer justifyContent="space-between">
-              <AnchorButton to={DASHBOARD_ROUTE}>
-                <CancelButton variant="contained" size="medium">Cancel</CancelButton>
-              </AnchorButton>
-              <PrimaryButton variant="contained" onClick={submitForm} size="medium">
-                { action }
-                {' '}
-                Record
-              </PrimaryButton>
-            </FlexContainer>
+            <ActionButtonPanel
+              routeCancelButton={DASHBOARD_ROUTE}
+              minWidthNumber="18"
+              submitButtonText={buttonText}
+              loading={loadingMutation}
+              success={successMutation}
+              disableSubmitButton={loadingMutation || successMutation}
+              submitForm={submitForm}
+            />
           </FormContainer>
         )}
       </Formik>

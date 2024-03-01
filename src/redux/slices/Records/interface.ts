@@ -1,22 +1,25 @@
-import { AxiosRequestHeaders } from 'axios';
 import {
   RecordOperationResponse, CreateExpenseValues, CreateIncomeValues, DeleteRecordResponse,
 } from '../../../components/UI/Records/interface';
 import {
-  AllRecords, AnyRecord, Expense, RecordsTotal,
+  AnyRecord, Expense, GeneralResponse, RecordsTotal,
 } from '../../../globalInterface';
 import { RecordAgeCategory } from '../../../aliasType';
 
 export interface RecordsInitialState {
-  allRecords: AllRecords;
   totalRecords: RecordsTotal;
   recordToBeModified: AnyRecord | null;
-  loading: boolean;
-  loadingOnAction: boolean;
-  errorOnAction: boolean;
-  error: boolean;
-  errorMessage: string | unknown;
-  errorMessageOnAction: string | unknown;
+}
+
+export interface GetRecordByMonthAndYearProps {
+  route: string;
+  bearerToken: string;
+}
+
+export interface GetExpensesResponse extends Omit<GeneralResponse, 'data'> {
+  data: {
+    records: Expense[];
+  };
 }
 
 export interface UpdateTotalExpenseIncomePayload {
@@ -24,16 +27,27 @@ export interface UpdateTotalExpenseIncomePayload {
   recordAgeCategory: RecordAgeCategory;
 }
 
+type PeriodRecord = 'CurrentMonth' | 'LastMonth';
+
+interface UpdateTotalExpenseAndIncomePayload {
+  expenseTotalCounter: string;
+  incomeTotalCounter: string
+  period: PeriodRecord;
+}
+
+export interface UpdateTotalExpenseAndIncomeProps {
+  payload: UpdateTotalExpenseAndIncomePayload;
+  type: string;
+}
+
 export interface UpdateTotalExpenseIncomeAction {
   payload: UpdateTotalExpenseIncomePayload;
   type: string;
 }
 
-export interface CreateExpenseThunkProps {
+export interface CreateExpenseMutationProps {
   values: CreateExpenseValues;
-  bearerToken: AxiosRequestHeaders;
-  isLastMonth?: boolean;
-  isCurrentMonth?: boolean;
+  bearerToken: string;
 }
 
 export interface RecordOperationThunkResponse {
@@ -42,7 +56,7 @@ export interface RecordOperationThunkResponse {
   isCurrentMonth?: boolean;
 }
 
-export interface CreateIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface CreateIncomeThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: CreateIncomeValues;
 }
 
@@ -50,9 +64,10 @@ export interface DeleteRecordProps {
   recordId: string;
 }
 
-export interface DeleteRecordThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface DeleteRecordMutationProps {
   values: DeleteRecordProps;
   route: string;
+  bearerToken: string;
 }
 
 export interface DeleteExpenseThunkResponse extends Omit<RecordOperationThunkResponse, 'response'> {
@@ -70,15 +85,15 @@ export interface EditIncomeValues extends CreateIncomeValues {
   userId: string;
 }
 
-export interface EditExpenseThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface EditExpenseThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: EditExpenseValues;
 }
 
-export interface EditIncomeThunkProps extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface EditIncomeThunkProps extends Omit<CreateExpenseMutationProps, 'values'> {
   values: EditIncomeValues;
 }
 
-export interface UpdateRelatedExpenses extends Omit<CreateExpenseThunkProps, 'values'> {
+export interface UpdateRelatedExpenses extends Omit<CreateExpenseMutationProps, 'values'> {
   payload: UpdateRelatedExpensesValues[];
 }
 

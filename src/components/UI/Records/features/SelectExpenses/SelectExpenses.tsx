@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { useDate } from '../../../../../hooks/useDate';
@@ -9,9 +9,8 @@ import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalIn
 import { SelectMonthYear } from './SelectMonthYear';
 import { Error } from '../../../Error';
 import { CloseIcon } from '../../../Icons';
-import { Loader } from '../../../../../animations/Loader';
+import { HorizontalLoader } from '../../../HorizontalLoader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
-import { Paragraph } from '../../../../../styles';
 import {
   CloseDrawerContainer, ExpensesNotFoundContainer, LoadingExpensesContainer, SelectExpensesContainer,
 } from '../Features.styled';
@@ -29,7 +28,7 @@ const SelectExpenses = ({
     month, completeMonth, year, years, updateYear, updateMonth, updateCompleteMonth,
   } = useDate();
   const {
-    expenses, noExpensesFound, error, loading,
+    expenses, noExpensesFound, loading, isError,
   } = useAllExpenses({ month, year });
 
   const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
@@ -46,7 +45,7 @@ const SelectExpenses = ({
           <CloseIcon />
         </IconButton>
       </CloseDrawerContainer>
-      { (error === 'No error found') && (
+      { (!isError) && (
         <SelectMonthYear
           updateMonthYear={updateMonthAndYear}
           completeMonth={completeMonth}
@@ -54,20 +53,20 @@ const SelectExpenses = ({
           yearsArray={years}
         />
       ) }
-      { (error !== 'No error found') && (
+      { (isError) && (
         <SelectExpensesContainer>
           <Error description={ERROR_MESSAGE_GENERAL} />
         </SelectExpensesContainer>
       ) }
       { (loading) && (
       <LoadingExpensesContainer>
-        <Paragraph>Loading expenses...</Paragraph>
-        <Loader />
+        <Typography variant="body2">Loading expenses...</Typography>
+        <HorizontalLoader />
       </LoadingExpensesContainer>
       ) }
       { (noExpensesFound && !loading && expenses.length === 0) && (
         <ExpensesNotFoundContainer>
-          <Paragraph align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Paragraph>
+          <Typography align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Typography>
         </ExpensesNotFoundContainer>
       ) }
       { (!noExpensesFound && !loading && expenses.length > 0) && (

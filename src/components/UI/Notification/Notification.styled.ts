@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { AppColors, Paragraph, Heading3 } from '../../../styles';
+import { Typography } from '@mui/material';
+import { AppColors } from '../../../styles';
 
 export const NotificationWrapper = styled.div`
   width: 100%;
@@ -36,13 +37,13 @@ export const IconStatusContainer = styled.picture`
   }
 `;
 
-export const NotificationTitle = styled(Heading3)`
+export const NotificationTitle = styled(Typography)`
   grid-column: 2 / 3;
   grid-row: 1 / 2;
   align-self: center;
 `;
 
-export const NotificationDescription = styled(Paragraph)`
+export const NotificationDescription = styled(Typography)`
   grid-column: 2 / 3;
   grid-row: 2 / 3;
   margin: 2rem 0;

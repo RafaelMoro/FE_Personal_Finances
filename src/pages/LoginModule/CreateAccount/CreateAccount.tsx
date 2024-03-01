@@ -1,14 +1,16 @@
 /* eslint-disable react/no-unstable-nested-components */
 import {
-  ReactElement, useEffect, useRef, useState,
+  ReactElement, useRef, useState,
 } from 'react';
 
+import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_EMAIL_EXISTS, ERROR_CATCH_USER_CREATED } from '../../../constants';
 import {
-  ICreateAccountValues, PersonalInfoFormValues, UserAndPasswordFormValues,
+  CreateUserValues, CreateUserValuesMutation, PersonalInfoFormValues, UserAndPasswordFormValues,
 } from './interface';
-import { CREATE_ACCOUNT_POST_ROUTE, ERROR_RESPONSE_USER_CREATED } from './constants';
-import { postRequest } from '../../../utils/PostRequest.ts';
+import { GeneralError } from '../../../globalInterface';
+import { useCreateUserMutation } from '../../../redux/slices/User/actions/createUser';
 import { useAnimateBox } from '../../../hooks/useAnimateBox';
+
 import {
   CreateAccountResult, SuccessCreateAccount, ErrorCreateAccount, LoadingCreateAccount,
 } from './CreateAccountResult';
@@ -18,8 +20,6 @@ import {
   Main, MainContainer, FormTitle, FormDescription,
 } from '../../../styles/LoginModule.styled';
 
-const ERROR_MESSAGE_CREATE_ACCOUNT = 'Something went wrong, Try again in some minutes.';
-const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try with a different email.';
 const initialValuesCreateAccountForm = {
   email: '',
   firstName: '',
@@ -30,31 +30,43 @@ const initialValuesCreateAccountForm = {
 };
 
 const CreateAccount = ():ReactElement => {
+  const [createUserMutation, { isLoading, isError }] = useCreateUserMutation();
   const {
-    direction, counterView, goPreviousView, goNextView, resetCounterView,
+    direction, counterView, goPreviousView, goNextView, resetCounterView, getFinalResult,
   } = useAnimateBox();
-  const formData = useRef<ICreateAccountValues>(initialValuesCreateAccountForm);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<string>(ERROR_MESSAGE_CREATE_ACCOUNT);
+  const formData = useRef<CreateUserValues>(initialValuesCreateAccountForm);
+  const [errorText, setErrorText] = useState<string>(ERROR_MESSAGE_GENERAL);
+
+  const handleErrorText = (newMessage: string) => setErrorText(newMessage);
 
   const updateData = (newInfo: PersonalInfoFormValues | UserAndPasswordFormValues) => {
     const { current } = formData;
     formData.current = { ...current, ...newInfo };
   };
 
-  const handleSubmit = async (values: ICreateAccountValues) => {
-    const { confirmPassword, ...restOfValues } = values;
-    const response = await postRequest(restOfValues, CREATE_ACCOUNT_POST_ROUTE);
-    setIsLoading(false);
+  const handleSubmit = async (valuesReceived: CreateUserValues) => {
+    try {
+      // Omitting confirmPassword value as it's not needed.
+      const {
+        firstName, lastName, middleName, password, email,
+      } = valuesReceived;
+      const values: CreateUserValuesMutation = {
+        firstName, lastName, middleName, password, email,
+      };
 
-    if (!response || response?.error) {
-      // if response is undefined, the server did not respond. Show error
-      // If the response has any error, show error.
-      setIsError(true);
-      if (response?.message === ERROR_RESPONSE_USER_CREATED) {
-        setError(ERROR_MESSAGE_EMAIL_EXISTS);
+      await createUserMutation(values).unwrap();
+      setTimeout(() => {
+        getFinalResult();
+      }, 3000);
+    } catch (err) {
+      const error = err as GeneralError;
+      const message = error?.data?.error?.message;
+      if (message === ERROR_CATCH_USER_CREATED) {
+        handleErrorText(ERROR_MESSAGE_EMAIL_EXISTS);
       }
+      setTimeout(() => {
+        getFinalResult();
+      }, 3000);
     }
   };
 
@@ -64,21 +76,14 @@ const CreateAccount = ():ReactElement => {
 
     // This view means that the data is ready to be submitted.
     if (counterView === 1) {
-      setIsLoading(true);
       handleSubmit(formData.current);
     }
   };
 
-  useEffect(() => {
-    if (!isLoading && counterView === 2) {
-      setTimeout(() => goNextView(), 3000);
-    }
-  }, [counterView, goNextView, isLoading]);
-
   return (
     <Main>
       <MainContainer>
-        <FormTitle>Create account</FormTitle>
+        <FormTitle variant="h1">Create account</FormTitle>
         <FormDescription>Fill the following information to create your account.</FormDescription>
         <PersonalInformation goNext={goNext} counterView={counterView} direction={direction} />
         <UserAndPassword
@@ -93,7 +98,7 @@ const CreateAccount = ():ReactElement => {
             counterView={counterView}
             direction={direction}
             isError={isError}
-            onError={() => <ErrorCreateAccount error={error} resetCounterView={resetCounterView} />}
+            onError={() => <ErrorCreateAccount error={errorText} resetCounterView={resetCounterView} />}
             onSuccess={() => <SuccessCreateAccount />}
           />
         )}
