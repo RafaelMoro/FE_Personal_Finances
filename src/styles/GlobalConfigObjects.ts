@@ -101,11 +101,11 @@ export const responsiveBreakpoints = {
 export const globalConfiguration: GlobalConfiguration = {
   mobile: {
     fontSizes: {
-      H1: '2.2rem',
-      H2: '2rem',
-      H3: '1.7rem',
-      H4: '1.7rem',
-      H5: '1.6rem',
+      H1: '2.4rem',
+      H2: '2.2rem',
+      H3: '2.2rem',
+      H4: '2.2rem',
+      H5: '2rem',
       P: '1.6rem',
       Sub: '1.4rem',
     },
