@@ -3,6 +3,7 @@ import {
   DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
   ErrorOutlineOutlined, ArrowDropDown as ArrowDropDownMUI, ChevronLeft as ChevronLeftMUI,
   ChevronRight as ChevronRightMUI, CalendarMonth as CalendarMonthMUI,
+  Fastfood,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
 
@@ -16,6 +17,10 @@ const DEFAULT_SIZE_CLOSE_ICON = '3.5rem';
 
 export const DeleteIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <DeleteOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />
+);
+
+export const CategoryIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
+  <Fastfood sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
 );
 
 export const ErrorIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
