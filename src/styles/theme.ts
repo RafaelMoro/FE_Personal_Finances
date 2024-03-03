@@ -17,6 +17,7 @@ declare module '@mui/material' {
 }
 
 export const appTheme = createTheme({
+  spacing: ['0rem', '0.4rem', '0.8rem', '1.6rem', '3.2rem', '6.4rem'],
   palette: {
     mode: 'light',
     primary: {
@@ -161,6 +162,18 @@ appTheme.typography.h4 = {
 };
 
 appTheme.typography.h5 = {
+  [appTheme.breakpoints.down('sm')]: {
+    fontSize: globalConfiguration.mobile.fontSizes.H5,
+  },
+  [appTheme.breakpoints.between('sm', 'md')]: {
+    fontSize: globalConfiguration.tablet.fontSizes.H5,
+  },
+  [appTheme.breakpoints.up('md')]: {
+    fontSize: globalConfiguration.desktop.fontSizes.H5,
+  },
+};
+
+appTheme.typography.subtitle1 = {
   [appTheme.breakpoints.down('sm')]: {
     fontSize: globalConfiguration.mobile.fontSizes.H5,
   },
