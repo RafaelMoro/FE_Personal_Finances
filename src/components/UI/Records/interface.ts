@@ -14,10 +14,6 @@ export interface DrawerChipContainerProps {
   afterContent: string;
 }
 
-export interface PaymentStatusChipProps {
-  isPaid?: boolean;
-}
-
 export interface RecordTableProps {
   isGrid?: boolean;
 }
