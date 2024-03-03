@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Drawer, Typography,
+  Drawer,
 } from '@mui/material';
 
 import { RecordProps } from './interface';
@@ -13,8 +13,11 @@ import {
 import {
   RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription,
-  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate, RecordTime, PaymentStatusChip,
+  ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate,
+  RecordTime, PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox,
 } from './Records.styled';
+import { CategoryIcon } from '../Icons';
+import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
@@ -36,10 +39,10 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   const showDeleteRecordModal = () => setOpenDeleteRecordModal(true);
   const hideDeleteRecordModal = () => setOpenDeleteRecordModal(false);
 
-  const descriptionIsLong = description.length > 50;
-  const nameIsLong = shortName.length > 80;
+  const descriptionIsLong = description.length > MAX_LENGTH_DESCRIPTION;
+  const nameIsLong = shortName.length > MAX_LENGTH_TITLE;
   const isExpense = typeof isPaid !== 'undefined';
-  const status = isPaid ? 'Expense Paid' : 'Expense Not Paid';
+  const status = isPaid ? 'Paid' : 'Unpaid';
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;
@@ -47,7 +50,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   useEffect(() => {
     if (descriptionIsLong) {
-      const descriptionSliced = description.slice(0, 50);
+      const descriptionSliced = description.slice(0, MAX_LENGTH_DESCRIPTION);
       const descriptionWithEllipsis = descriptionSliced.concat('...');
       setShortedDescription(descriptionWithEllipsis);
     }
@@ -55,7 +58,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   useEffect(() => {
     if (nameIsLong) {
-      const nameSliced = shortName.slice(0, 80);
+      const nameSliced = shortName.slice(0, MAX_LENGTH_TITLE);
       const nameWithEllipsis = nameSliced.concat('...');
       setShortedName(nameWithEllipsis);
     }
@@ -66,14 +69,14 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   const amountShown = isExpense
     ? (
-      <RecordExpense>
+      <RecordExpense variant="subtitle1">
         -
         {' '}
         { amountFormatted }
       </RecordExpense>
     )
     : (
-      <RecordIncome>
+      <RecordIncome variant="subtitle1">
         +
         {' '}
         { amountFormatted }
@@ -93,7 +96,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           <RecordSubCategory>{ subCategory }</RecordSubCategory>
           { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
+            <PaymentStatusChip label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
           </RecordStatusContainer>
           ) }
           <BudgetChipContainer>
@@ -152,14 +155,32 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   return (
     <>
       <ListItemRecord onClick={showLongView}>
-        <RecordTitle variant="h5" align="center">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
-        { amountShown }
-        <Typography variant="body2">{ fullDate }</Typography>
-        <Typography variant="body2">{ formattedTime }</Typography>
-        <Typography variant="body2">{ category.categoryName }</Typography>
-        <Typography variant="body2">{ subCategory }</Typography>
+        <RecordDate variant="body2" align="center">
+          { fullDate }
+          { ' ' }
+          { formattedTime }
+        </RecordDate>
+        <MainRecordDataBox>
+          <TitleContainer>
+            <CategoryIcon />
+            <RecordTitle variant="subtitle1">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
+          </TitleContainer>
+          { amountShown }
+          { (isExpense && isCredit) && (
+          <RecordStatusContainer>
+            <PaymentStatusChip label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+          </RecordStatusContainer>
+          ) }
+          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+          <RecordsPaidNumber>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordsPaidNumber>
+          ) }
+        </MainRecordDataBox>
         <BudgetChipContainer>
-          { budgets.length === 0 && (<RecordSubtitleText>No budgets</RecordSubtitleText>) }
+          { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (
             <Chip key={`${_id}-${budget}`} label={budget} variant="outlined" chipColor={backgroundColor} />
           ))}
@@ -168,7 +189,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           ) }
         </BudgetChipContainer>
         <TagsChipContainer>
-          { tag.length === 0 && (<RecordSubtitleText>No tags</RecordSubtitleText>) }
+          { tag.length === 0 && (<RecordSubtitleText variant="body2">No tags</RecordSubtitleText>) }
           { tag.length > 0 && firstTwoTags.map((item) => (
             <Chip key={`${_id}-${item}`} label={item} variant="outlined" chipColor={backgroundColor} />
           ))}
@@ -185,18 +206,6 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
                 indebtedPeopleNames.map((personName) => (personName))
               }
         </RecordText>
-        ) }
-        { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-          <RecordText>
-            Records Paid:
-            {' '}
-            { expensesPaid.length }
-          </RecordText>
-        ) }
-        { (isExpense && isCredit) && (
-          <RecordStatusContainer>
-            <PaymentStatusChip isPaid={isPaid} label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
-          </RecordStatusContainer>
         ) }
       </ListItemRecord>
       <Drawer anchor="bottom" open={openLongView}>

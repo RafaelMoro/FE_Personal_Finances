@@ -1,23 +1,26 @@
 import styled from '@emotion/styled';
+import { Theme, styled as styledMui } from '@mui/material/styles';
 import {
+  Box,
   ListItem, ListItemButton, List as ListMUI, Typography,
 } from '@mui/material';
 
 import {
-  ListExpandableContainerProps, PaymentStatusChipProps,
+  ListExpandableContainerProps,
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Chip, responsiveBreakpoints,
+  AppColors, Chip, globalConfiguration, responsiveBreakpoints,
 } from '../../../styles';
+import { appTheme } from '../../../styles/theme';
 
-export const ListItemRecord = styled(ListItem)`
+export const ListItemRecord = styledMui(ListItem)(({ theme }: { theme: Theme }) => `
   width: 100%;
   min-height: 10rem;
-  padding: 1rem;
+  padding: ${theme.spacing(2)};
   display: grid;
   grid-template-columns: 1fr 1fr;
-  row-gap: 2rem;
+  row-gap: ${theme.spacing(3)};
   cursor: pointer;
 
   &:hover {
@@ -26,17 +29,18 @@ export const ListItemRecord = styled(ListItem)`
 
   @media ${responsiveBreakpoints.tablet} {
     grid-template-columns: 50% 25% 25%;
-    column-gap: 1rem;
+    column-gap: ${theme.spacing(2)};
   }
 
   @media ${responsiveBreakpoints.desktop} {
     grid-template-columns: 60% 20% 20%;
-    column-gap: 0;
+    column-gap: ${theme.spacing(0)};
   }
-`;
+`);
 
 export const RecordTitle = styled(Typography)`
   grid-column: 1 / 3;
+  text-wrap: balance;
 
   @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 4;
@@ -48,7 +52,21 @@ export const RecordTitle = styled(Typography)`
   }
 `;
 
+export const MainRecordDataBox = styled('div', { shouldForwardProp: (props) => props !== 'isIncome' })`
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  row-gap: ${appTheme.spacing(2)};
+`;
+
+export const TitleContainer = styledMui(Box)(({ theme }: { theme: Theme }) => `
+  display: flex;
+  gap: ${theme.spacing(2)};
+`);
+
 export const RecordDate = styled(Typography)`
+  grid-column: 1 / 3;
   @media ${responsiveBreakpoints.tablet} {
     grid-column: 2 / 3;
     text-align: start;
@@ -74,8 +92,6 @@ export const RecordTime = styled(Typography)`
 
 export const RecordPrice = styled(Typography)`
   font-weight: 500;
-  text-align: center;
-  grid-column: 1 / 3;
 
   @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 2;
@@ -87,6 +103,7 @@ export const RecordPrice = styled(Typography)`
 `;
 
 export const RecordIncome = styled(RecordPrice)`
+  grid-row: 2 / 3;
   color: ${AppColors.positive};
 `;
 
@@ -135,9 +152,9 @@ export const RecordDescription = styled(Typography)`
 `;
 
 export const RecordStatusContainer = styled.div`
-  grid-column: 1 / 3;
-  display: grid;
-  place-items: center;
+  grid-row: 1 / 3;
+  grid-column: 2 / 3;
+  place-self: center;
 
   @media ${responsiveBreakpoints.tablet} {
     grid-row: 5 / 6;
@@ -156,6 +173,12 @@ export const RecordText = styled(Typography)`
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 1 / 2;
   }
+`;
+
+export const RecordsPaidNumber = styled(RecordText)`
+  grid-row: 1 / 3;
+  grid-column: 2 / 3;
+  place-self: center;
 `;
 
 export const ChipContainer = styled.div`
@@ -222,7 +245,11 @@ export const RecordSkeletonHolder = styled.div`
 `;
 
 export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'isPaid' })`
-  ${({ isPaid }: PaymentStatusChipProps) => isPaid && `color: ${AppColors.white};`}
+  color: ${AppColors.white};
+
+  & .MuiChip-label {
+    font-size: ${globalConfiguration.mobile.fontSizes.P};
+  }
 `;
 
 // Record List
