@@ -58,23 +58,26 @@ export const MainRecordDataBox = styled('div', { shouldForwardProp: (props) => p
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   row-gap: ${appTheme.spacing(2)};
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 4;
+  }
 `;
 
 export const TitleContainer = styledMui(Box)(({ theme }: { theme: Theme }) => `
   display: flex;
   gap: ${theme.spacing(2)};
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 2;
+  }
 `);
 
 export const RecordDate = styled(Typography)`
   grid-column: 1 / 3;
-  @media ${responsiveBreakpoints.tablet} {
-    grid-column: 2 / 3;
-    text-align: start;
-  }
 
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 4;
   }
 `;
 
@@ -93,12 +96,9 @@ export const RecordTime = styled(Typography)`
 export const RecordPrice = styled(Typography)`
   font-weight: 500;
 
-  @media ${responsiveBreakpoints.tablet} {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 1 / 2;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    text-align: start;
+    grid-row: 2 / 3;
   }
 `;
 
@@ -156,14 +156,8 @@ export const RecordStatusContainer = styled.div`
   grid-column: 2 / 3;
   place-self: center;
 
-  @media ${responsiveBreakpoints.tablet} {
-    grid-row: 5 / 6;
-    grid-column: 1 / 2;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 4 / 5;
-    grid-column: 2 / 4;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 2 / 3;
   }
 `;
 

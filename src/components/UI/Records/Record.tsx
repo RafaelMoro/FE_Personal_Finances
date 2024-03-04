@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
-  Drawer,
+  Drawer, Typography,
 } from '@mui/material';
 
 import { RecordProps } from './interface';
@@ -87,18 +87,24 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
     return (
       <>
         <ListItemRecord onClick={showLongView}>
-          <RecordTitle variant="h5" align="center">{ shortName }</RecordTitle>
-          { amountShown }
-          <RecordDate>{ fullDate }</RecordDate>
-          <RecordTime>{ formattedTime }</RecordTime>
+          <RecordDate variant="body2" align="center">
+            { fullDate }
+            { ' ' }
+            { formattedTime }
+          </RecordDate>
+          <MainRecordDataBox>
+            <TitleContainer>
+              <CategoryIcon />
+              <RecordTitle variant="subtitle1">{ shortName }</RecordTitle>
+            </TitleContainer>
+            { amountShown }
+            { (isExpense && isCredit) && (
+            <RecordStatusContainer>
+              <PaymentStatusChip label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+            </RecordStatusContainer>
+            ) }
+          </MainRecordDataBox>
           <RecordDescription>{ description }</RecordDescription>
-          <RecordCategory>{ category.categoryName }</RecordCategory>
-          <RecordSubCategory>{ subCategory }</RecordSubCategory>
-          { (isExpense && isCredit) && (
-          <RecordStatusContainer>
-            <PaymentStatusChip label={status} variant={isPaid ? 'filled' : 'outlined'} color={isPaid ? 'success' : 'primary'} />
-          </RecordStatusContainer>
-          ) }
           <BudgetChipContainer>
             { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
@@ -112,13 +118,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             ))}
           </TagsChipContainer>
           { (indebtedPeople.length > 0 && !openLongView) && (
-            <RecordSubtitleText variant="body2">
+            <Typography variant="body2">
               People involved:
               {' '}
               {
               indebtedPeopleNames.map((personName) => (personName))
             }
-            </RecordSubtitleText>
+            </Typography>
           ) }
           { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
             <RecordSubtitleText variant="body2">
@@ -199,7 +205,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         </TagsChipContainer>
         <RecordDescription>{ (descriptionIsLong) ? shortedDescription : description }</RecordDescription>
         { (indebtedPeople.length > 0 && !openLongView) && (
-        <RecordText>
+        <RecordText variant="body2">
           People involved:
           {' '}
           {
