@@ -18,6 +18,7 @@ import {
 } from './Records.styled';
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
+import { MainRecordData } from './features/MainRecordDataBox';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
@@ -92,18 +93,24 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             { ' ' }
             { formattedTime }
           </RecordDate>
-          <MainRecordDataBox>
-            <TitleContainer>
-              <CategoryIcon />
-              <RecordTitle variant="subtitle1">{ shortName }</RecordTitle>
-            </TitleContainer>
-            { amountShown }
+          <MainRecordData
+            categoryIcon={<CategoryIcon />}
+            amountShown={amountShown}
+            shortName={shortName}
+          >
             { (isExpense && isCredit) && (
             <RecordStatusContainer>
               <PaymentStatusChip label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
             </RecordStatusContainer>
             ) }
-          </MainRecordDataBox>
+            { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+            <RecordSubtitleText>
+              Records Paid:
+              {' '}
+              { expensesPaid.length }
+            </RecordSubtitleText>
+            ) }
+          </MainRecordData>
           <RecordDescription>{ description }</RecordDescription>
           <BudgetChipContainer>
             { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
@@ -125,13 +132,6 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
               indebtedPeopleNames.map((personName) => (personName))
             }
             </Typography>
-          ) }
-          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
-            <RecordSubtitleText variant="body2">
-              Records Paid:
-              {' '}
-              { expensesPaid.length }
-            </RecordSubtitleText>
           ) }
         </ListItemRecord>
         <Drawer

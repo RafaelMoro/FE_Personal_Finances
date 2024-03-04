@@ -34,7 +34,7 @@ export const ListItemRecord = styledMui(ListItem)(({ theme }: { theme: Theme }) 
 
   @media ${responsiveBreakpoints.desktop} {
     grid-template-columns: 60% 20% 20%;
-    column-gap: ${theme.spacing(0)};
+    column-gap: ${theme.spacing(2)};
   }
 `);
 
@@ -146,8 +146,13 @@ export const RecordSubCategory = styled(Typography)`
 export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 2;
+  }
+
+  @media ${responsiveBreakpoints.desktop} {
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
   }
 `;
 
@@ -197,7 +202,7 @@ export const BudgetChipContainer = styled(ChipContainer)`
 
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 2 / 3;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
   }
 `;
 export const TagsChipContainer = styled(ChipContainer)`
@@ -210,7 +215,7 @@ export const TagsChipContainer = styled(ChipContainer)`
 
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 3 / 4;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
   }
 `;
 
