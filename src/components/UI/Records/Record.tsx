@@ -11,10 +11,10 @@ import {
   Chip,
 } from '../../../styles';
 import {
-  RecordCategory, RecordSubtitleText, RecordSubCategory, RecordExpense,
+  RecordSubtitleText, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription,
   ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate,
-  RecordTime, PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox,
+  PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox,
 } from './Records.styled';
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';

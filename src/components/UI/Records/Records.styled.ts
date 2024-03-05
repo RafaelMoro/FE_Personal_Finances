@@ -81,18 +81,6 @@ export const RecordDate = styled(Typography)`
   }
 `;
 
-export const RecordTime = styled(Typography)`
-  @media ${responsiveBreakpoints.tablet} {
-    grid-column: 3 / 4;
-    text-align: start;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 1 / 2;
-    grid-column: 3 / 4;
-  }
-`;
-
 export const RecordPrice = styled(Typography)`
   font-weight: 500;
 
@@ -116,30 +104,6 @@ export const RecordSubtitleText = styled(Typography)`
 
   @media ${responsiveBreakpoints.tabletAndDesktop} {
     text-align: start;
-  }
-`;
-
-export const RecordCategory = styled(Typography)`
-  grid-column: 2 / 4;
-
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
-    grid-column: 2 / 3;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 2 / 3;
-  }
-`;
-
-export const RecordSubCategory = styled(Typography)`
-  grid-column: 2 / 4;
-
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
-    grid-column: 3 / 4;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 2 / 3;
   }
 `;
 
