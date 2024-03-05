@@ -10,10 +10,6 @@ export interface RecordProps {
   backgroundColor: string;
 }
 
-export interface DrawerChipContainerProps {
-  afterContent: string;
-}
-
 export interface RecordTableProps {
   isGrid?: boolean;
 }
