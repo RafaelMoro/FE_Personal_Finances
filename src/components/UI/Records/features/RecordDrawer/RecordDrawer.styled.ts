@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
-import { Table, Typography } from '@mui/material';
+import { Table, Typography, TypographyProps } from '@mui/material';
 
 import {
-  AppColors, responsiveBreakpoints,
+  responsiveBreakpoints,
 } from '../../../../../styles';
 import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
-import { DrawerChipContainerProps, RecordTableProps } from '../../interface';
+import { RecordTableProps } from '../../interface';
 
 export const RecordDrawerContainer = styled.div`
   display: grid;
@@ -30,11 +30,23 @@ export const DrawerTitleContainer = styled.div`
 export const DrawerCloseBox = styled.div`
   cursor: pointer;
   grid-column: 2 / 3;
+  grid-row: 1 / 2;
   justify-self: end;
+`;
+
+export const DrawerDate = styled(Typography)`
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+  align-self: center;
+  justify-self: center;
 `;
 
 export const RecordDrawerTitle = styled(Typography)`
   grid-column: 1 / 3;
+`;
+
+export const DrawerTypographyBold = styled(Typography)<TypographyProps & { component: React.ElementType }>`
+  font-weight: bold;
 `;
 
 export const RecordDrawerDescription = styled(RecordSubtitleText)`
@@ -59,22 +71,6 @@ export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !
 `;
 
 export const DrawerChipContainer = styled(ChipContainer)`
-  grid-template-columns: repeat(5, 1fr);
-  position: relative;
-  padding: 1.5rem;
-  border-radius: 1rem;
-
-  &:after {
-    content: '${(props: DrawerChipContainerProps) => props.afterContent}';
-    position: absolute;
-    top: -1rem;
-    left: 1.6rem;
-    bottom: 0;
-    right: 0;
-    height: 1rem;
-    width: 6rem;
-    background-color: white;
-    font-size: 1.5rem;
-    color: ${AppColors.grey};
-  }
+  display: grid;
+  grid-template-rows: 1fr 1fr;
 `;

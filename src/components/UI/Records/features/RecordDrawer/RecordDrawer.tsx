@@ -12,6 +12,8 @@ import {
   RecordDrawerPriceContainer,
   DrawerTitleContainer,
   DrawerCloseBox,
+  DrawerDate,
+  DrawerTypographyBold,
 } from './RecordDrawer.styled';
 import { Chip } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
@@ -39,6 +41,11 @@ const RecordDrawer = ({
 
   return (
     <RecordDrawerContainer>
+      <DrawerDate variant="body2">
+        {fullDate}
+        {' '}
+        {formattedTime}
+      </DrawerDate>
       <DrawerCloseBox>
         <IconButton onClick={onCloseCb}>
           <CloseIcon />
@@ -53,22 +60,28 @@ const RecordDrawer = ({
           <DeleteIcon />
         </IconButton>
       </DrawerTitleContainer>
-      <Typography>{fullDate}</Typography>
-      <Typography>{formattedTime}</Typography>
-      <Typography>{category.categoryName}</Typography>
-      <Typography>{subCategory}</Typography>
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
+      <Typography>
+        <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
+        {category.categoryName}
+      </Typography>
+      <Typography>
+        <DrawerTypographyBold component="span">Subcategory: </DrawerTypographyBold>
+        {subCategory}
+      </Typography>
       { (budgets.length > 0 && (
-        <DrawerChipContainer afterContent="Budgets">
+        <DrawerChipContainer>
+          <Typography variant="body2">Budgets:</Typography>
           { (budgets.map((budget, index) => (
             <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" chipColor={chipColor} />
           ))) }
         </DrawerChipContainer>
       )) }
       { (tag.length > 0) && (
-        <DrawerChipContainer afterContent="Tags">
+        <DrawerChipContainer>
+          <Typography variant="body2">Tags:</Typography>
           { (tag.map((individualTag, index) => (
             <Chip key={`${index + 1}-${individualTag}`} label={individualTag} variant="outlined" chipColor={chipColor} />
           ))) }
