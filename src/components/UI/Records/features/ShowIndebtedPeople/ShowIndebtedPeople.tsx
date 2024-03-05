@@ -12,7 +12,7 @@ import {
   TableTitle, RecordTable, TableNote,
 } from '../RecordDrawer/RecordDrawer.styled';
 import {
-  IconsCell, IndebtedPeopleName, NameCell, NameCellTitle, DebtPaid,
+  IconsCell, IndebtedPeopleName, NameCell, NameCellTitle, DebtPaid, IndebtedTableCell,
 } from '../Features.styled';
 
 const ShowIndebtedPeople = ({
@@ -42,9 +42,9 @@ const ShowIndebtedPeople = ({
           <TableHead>
             <TableRow>
               <NameCellTitle>Name:</NameCellTitle>
-              <TableCell>Amount:</TableCell>
-              <TableCell>Amount Paid:</TableCell>
-              <TableCell>Resting Debt:</TableCell>
+              <IndebtedTableCell>Amount:</IndebtedTableCell>
+              <IndebtedTableCell>Amount Paid:</IndebtedTableCell>
+              <IndebtedTableCell>Resting Debt:</IndebtedTableCell>
               { /** Show the extra column Actions if we are not in mobile */ }
               { (windowSize !== 'Mobile' && !inRecordDrawer) && (<TableCell>Actions:</TableCell>) }
             </TableRow>
@@ -72,7 +72,7 @@ const ShowIndebtedPeople = ({
                   : (
                     <>
                       { (windowSize !== 'Mobile') && (<TableCell>{person.name}</TableCell>) }
-                      { (windowSize === 'Mobile') && (
+                      { (windowSize === 'Mobile' && !inRecordDrawer) && (
                         <NameCell>
                           <IndebtedPeopleName>{person.name}</IndebtedPeopleName>
                           <FlexContainer>
