@@ -1,5 +1,5 @@
 import {
-  TableHead, TableRow, TableBody, TablePagination, Typography,
+  TableHead, TableRow, TableBody, TablePagination,
 } from '@mui/material';
 import { useMemo } from 'react';
 
