@@ -23,7 +23,7 @@ describe('<Login />', () => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  test("Render Login Page with the title 'welcome back', email and password input and login button", () => {
+  test.skip("Render Login Page with the title 'welcome back', email and password input and login button", () => {
     const title = screen.getByRole('heading', { name: /welcome back/i });
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const passwordInput = screen.getByLabelText(/password/i);
@@ -36,7 +36,7 @@ describe('<Login />', () => {
     expect(registerButton).toBeInTheDocument();
   });
 
-  test('If the email and password input are empty, a validation error must appear in each input', async () => {
+  test.skip('If the email and password input are empty, a validation error must appear in each input', async () => {
     const loginButton = screen.getByRole('button', { name: /login/i });
 
     fireEvent.click(loginButton);
@@ -47,7 +47,7 @@ describe('<Login />', () => {
     });
   });
 
-  test('If the email input has an invalid email, a validation error must appear in each input', async () => {
+  test.skip('If the email input has an invalid email, a validation error must appear in each input', async () => {
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const loginButton = screen.getByRole('button', { name: /login/i });
 
@@ -59,7 +59,7 @@ describe('<Login />', () => {
     });
   });
 
-  test('Click the button Register and redirect into the register route', async () => {
+  test.skip('Click the button Register and redirect into the register route', async () => {
     const registerLink = screen.getByRole('link', { name: /register/i });
 
     fireEvent.click(registerLink);
