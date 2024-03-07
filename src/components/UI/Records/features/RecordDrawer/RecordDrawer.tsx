@@ -15,7 +15,7 @@ import {
   DrawerDate,
   DrawerTypographyBold,
 } from './RecordDrawer.styled';
-import { Chip } from '../../../../../styles';
+import { Chip, ParagraphBold } from '../../../../../styles';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
@@ -71,9 +71,10 @@ const RecordDrawer = ({
         <DrawerTypographyBold component="span">Subcategory: </DrawerTypographyBold>
         {subCategory}
       </Typography>
+      <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (budgets.length > 0 && (
         <DrawerChipContainer>
-          <Typography variant="body2">Budgets:</Typography>
+          <ParagraphBold>Budgets:</ParagraphBold>
           { (budgets.map((budget, index) => (
             <Chip key={`${index + 1}-${budget}`} label={budget} variant="outlined" chipColor={chipColor} />
           ))) }
@@ -81,13 +82,12 @@ const RecordDrawer = ({
       )) }
       { (tag.length > 0) && (
         <DrawerChipContainer>
-          <Typography variant="body2">Tags:</Typography>
+          <ParagraphBold>Tags:</ParagraphBold>
           { (tag.map((individualTag, index) => (
             <Chip key={`${index + 1}-${individualTag}`} label={individualTag} variant="outlined" chipColor={chipColor} />
           ))) }
         </DrawerChipContainer>
       ) }
-      <RecordDrawerDescription>{description}</RecordDrawerDescription>
       { (indebtedPeople.length > 0) && (
       <ShowIndebtedPeople indebtedPeople={indebtedPeople} inRecordDrawer />
       ) }
