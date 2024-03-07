@@ -1,3 +1,4 @@
+import { ElementType } from 'react';
 import {
   EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
   DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
@@ -12,6 +13,20 @@ interface IconProps {
   fillColor?: string;
 }
 
+interface AllCategoryIcons {
+  fastFood: ElementType;
+}
+
+const categoryIcons: AllCategoryIcons = {
+  fastFood: Fastfood,
+};
+
+type IconKeys = keyof typeof categoryIcons;
+
+interface CategoryIconProps extends IconProps {
+  icon: IconKeys;
+}
+
 const DEFAULT_SIZE = '2.5rem';
 const DEFAULT_SIZE_CLOSE_ICON = '3.5rem';
 
@@ -19,9 +34,12 @@ export const DeleteIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <DeleteOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />
 );
 
-export const CategoryIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
-  <Fastfood sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
-);
+export const CategoryIcon = ({ size = DEFAULT_SIZE, fillColor, icon }: CategoryIconProps) => {
+  const Icon = categoryIcons[icon as keyof AllCategoryIcons];
+  return (
+    <Icon sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
+  );
+};
 
 export const ErrorIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <ErrorOutlineOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />

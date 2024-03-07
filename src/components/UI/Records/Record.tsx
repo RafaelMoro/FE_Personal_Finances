@@ -94,7 +94,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             { formattedTime }
           </RecordDate>
           <MainRecordData
-            categoryIcon={<CategoryIcon />}
+            categoryIcon={<CategoryIcon icon="fastFood" />}
             amountShown={amountShown}
             shortName={shortName}
           >
@@ -168,7 +168,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         </RecordDate>
         <MainRecordDataBox>
           <TitleContainer>
-            <CategoryIcon />
+            <CategoryIcon icon="fastFood" />
             <RecordTitle variant="subtitle1">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
           </TitleContainer>
           { amountShown }
