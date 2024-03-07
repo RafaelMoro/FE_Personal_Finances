@@ -1,31 +1,12 @@
-import { ElementType } from 'react';
 import {
   EditOutlined, DeleteOutlined, Close, LogoutOutlined, KeyboardArrowUpOutlined,
   DoneOutlined, Visibility as VisibilityMui, VisibilityOff as VisibilityOffMui,
   ErrorOutlineOutlined, ArrowDropDown as ArrowDropDownMUI, ChevronLeft as ChevronLeftMUI,
   ChevronRight as ChevronRightMUI, CalendarMonth as CalendarMonthMUI,
-  Fastfood,
 } from '@mui/icons-material';
 import { AppColors } from '../../../styles';
-
-interface IconProps {
-  size?: string;
-  fillColor?: string;
-}
-
-interface AllCategoryIcons {
-  fastFood: ElementType;
-}
-
-const categoryIcons: AllCategoryIcons = {
-  fastFood: Fastfood,
-};
-
-type IconKeys = keyof typeof categoryIcons;
-
-interface CategoryIconProps extends IconProps {
-  icon: IconKeys;
-}
+import { AllCategoryIcons, CategoryIconProps, IconProps } from './interface';
+import { categoryIcons } from './constants';
 
 const DEFAULT_SIZE = '2.5rem';
 const DEFAULT_SIZE_CLOSE_ICON = '3.5rem';
