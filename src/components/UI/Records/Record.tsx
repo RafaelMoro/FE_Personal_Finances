@@ -23,7 +23,7 @@ import { MainRecordData } from './features/MainRecordDataBox';
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    _id, shortName, description, category, subCategory, tag = [],
+    _id, shortName, description, tag = [],
     indebtedPeople = [], budgets = [],
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
