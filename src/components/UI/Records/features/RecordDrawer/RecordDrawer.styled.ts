@@ -6,14 +6,15 @@ import {
 } from '../../../../../styles';
 import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
 import { RecordTableProps } from '../../interface';
+import { appTheme } from '../../../../../styles/theme';
 
 export const RecordDrawerContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  padding: 2rem;
+  padding: ${appTheme.spacing(3)};
   justify-content: center;
-  gap: 1rem;
-  row-gap: 2rem;
+  gap: ${appTheme.spacing(2)};
+  row-gap: ${appTheme.spacing(4)};
 
   @media ${responsiveBreakpoints.tabletAndDesktop} {
     min-width: 47rem;
@@ -23,7 +24,7 @@ export const RecordDrawerContainer = styled.div`
 export const DrawerTitleContainer = styled.div`
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: ${appTheme.spacing(3)};
   grid-column: 1 / 3;
 `;
 
