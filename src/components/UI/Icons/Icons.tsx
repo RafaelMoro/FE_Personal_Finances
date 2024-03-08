@@ -15,10 +15,10 @@ export const DeleteIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
   <DeleteOutlined sx={{ fontSize: size, fill: fillColor ?? AppColors.negative }} />
 );
 
-export const CategoryIcon = ({ size = DEFAULT_SIZE, fillColor, icon }: CategoryIconProps) => {
+export const CategoryIcon = ({ size = DEFAULT_SIZE, icon }: CategoryIconProps) => {
   const Icon = categoryIcons[icon as keyof AllCategoryIcons];
   return (
-    <Icon sx={{ fontSize: size, fill: fillColor ?? AppColors.black }} />
+    <Icon sx={{ fontSize: size, fill: AppColors.black }} />
   );
 };
 
