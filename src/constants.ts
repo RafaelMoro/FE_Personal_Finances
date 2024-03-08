@@ -154,7 +154,7 @@ const KIDS_CATEGORY: Category = {
     'Footwear',
   ],
 };
-const CLOTHING_AND_PERSONAL_CARE: Category = {
+const SHOPPING: Category = {
   _id: 'local-category-10',
   __v: 0,
   categoryName: 'Shopping',
@@ -220,7 +220,7 @@ export const CATEGORIES_RECORDS: Category[] = [
   DEBT_AND_LOANS_CATEGORY,
   HEALTHCARE_CATEGORY,
   KIDS_CATEGORY,
-  CLOTHING_AND_PERSONAL_CARE,
+  SHOPPING,
   ENTERTAINMENT_AND_LEISURE_CATEGORY,
   SAVINGS_CATEGORY,
 ];
