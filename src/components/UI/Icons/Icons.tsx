@@ -17,6 +17,7 @@ export const DeleteIcon = ({ size = DEFAULT_SIZE, fillColor }: IconProps) => (
 
 export const CategoryIcon = ({ size = DEFAULT_SIZE, icon }: CategoryIconProps) => {
   const Icon = categoryIcons[icon as keyof AllCategoryIcons];
+  if (!Icon) return null;
   return (
     <Icon sx={{ fontSize: size, fill: AppColors.black }} />
   );
