@@ -105,7 +105,7 @@ const TRANSPORTATION_CATEGORY: Category = {
   ],
   icon: 'transportation',
 };
-const DEBT_AND_LOANS_CATEGORY: Category = {
+const FINANCIAL_EXPENSES_CATEGORY: Category = {
   _id: 'local-category-6',
   __v: 0,
   categoryName: 'Financial Expenses',
@@ -228,7 +228,7 @@ export const CATEGORIES_RECORDS: Category[] = [
   UTILITIES_CATEGORY,
   SUSCRIPTIONS_CATEGORY,
   TRANSPORTATION_CATEGORY,
-  DEBT_AND_LOANS_CATEGORY,
+  FINANCIAL_EXPENSES_CATEGORY,
   HEALTHCARE_CATEGORY,
   KIDS_CATEGORY,
   SHOPPING,
