@@ -19,11 +19,12 @@ import {
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
 import { MainRecordData } from './features/MainRecordDataBox';
+import { AllCategoryIcons } from '../Icons/interface';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    _id, shortName, description, tag = [],
+    _id, shortName, description, tag = [], category: { icon: categoryIcon },
     indebtedPeople = [], budgets = [],
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
@@ -94,7 +95,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             { formattedTime }
           </RecordDate>
           <MainRecordData
-            categoryIcon={<CategoryIcon icon="foodAndDrink" />}
+            categoryIcon={<CategoryIcon icon={categoryIcon as keyof AllCategoryIcons} />}
             amountShown={amountShown}
             shortName={shortName}
           >
@@ -168,7 +169,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
         </RecordDate>
         <MainRecordDataBox>
           <TitleContainer>
-            <CategoryIcon icon="foodAndDrink" />
+            <CategoryIcon icon={categoryIcon as keyof AllCategoryIcons} />
             <RecordTitle variant="subtitle1">{ (nameIsLong) ? shortedName : shortName }</RecordTitle>
           </TitleContainer>
           { amountShown }
