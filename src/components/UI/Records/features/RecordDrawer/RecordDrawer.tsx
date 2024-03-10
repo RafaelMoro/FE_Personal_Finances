@@ -4,8 +4,18 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
+import { AllCategoryIcons } from '../../../Icons/interface';
+import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
+import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { addToLocalStorage } from '../../../../../utils';
-import { DeleteIcon, CloseIcon, EditIcon } from '../../../Icons';
+
+import {
+  DeleteIcon, CloseIcon, EditIcon, CategoryIcon,
+} from '../../../Icons';
+import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
+import { ShowExpenses } from '../ShowExpenses';
+import { Chip, ParagraphBold } from '../../../../../styles';
 import {
   RecordDrawerContainer, RecordDrawerTitle,
   RecordDrawerDescription, DrawerChipContainer,
@@ -15,12 +25,6 @@ import {
   DrawerDate,
   DrawerTypographyBold,
 } from './RecordDrawer.styled';
-import { Chip, ParagraphBold } from '../../../../../styles';
-import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
-import { ShowExpenses } from '../ShowExpenses';
-import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
-import { useAppDispatch } from '../../../../../redux/hooks';
-import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
@@ -29,8 +33,11 @@ const RecordDrawer = ({
     shortName, description, fullDate, formattedTime,
     category, subCategory, tag, indebtedPeople, budgets,
   } = record;
+  const { icon: categoryIcon = 'foodAndDrink' } = category;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const isMobile = windowSize === 'Mobile';
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
@@ -52,6 +59,7 @@ const RecordDrawer = ({
         </IconButton>
       </DrawerCloseBox>
       <DrawerTitleContainer>
+        { (!isMobile) && (<CategoryIcon icon={categoryIcon as keyof AllCategoryIcons} />) }
         <RecordDrawerTitle variant="h4" align="center">{shortName}</RecordDrawerTitle>
         <IconButton onClick={handleEditRecord}>
           <EditIcon />
