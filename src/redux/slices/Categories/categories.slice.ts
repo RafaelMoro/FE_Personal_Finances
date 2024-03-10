@@ -2,6 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CategoriesInitialState } from './interface';
 import { CATEGORIES_RECORDS } from '../../../constants';
+import { Category } from '../../../globalInterface';
 
 const categoriesInitialState: CategoriesInitialState = {
   categories: null,
@@ -14,9 +15,8 @@ export const categoriesSlice = createSlice({
   initialState: categoriesInitialState,
   reducers: {
     setAllCategories: (state, action) => {
-      const allCategories = [...CATEGORIES_RECORDS, ...action.payload];
-      const categoriesSet = new Set(allCategories);
-      const uniqueCategories = [...categoriesSet];
+      const allCategories: Category[] = [...CATEGORIES_RECORDS, ...action.payload];
+      const uniqueCategories = allCategories.filter((category) => CATEGORIES_RECORDS.indexOf(category) === -1);
       state.categories = uniqueCategories;
     },
     updateCurrentCategory: (state, action) => {
