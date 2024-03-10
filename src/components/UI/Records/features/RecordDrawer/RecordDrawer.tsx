@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { addToLocalStorage } from '../../../../../utils';
 
 import {
-  DeleteIcon, CloseIcon, EditIcon, CategoryIcon,
+  CategoryIcon, AppIcon,
 } from '../../../Icons';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople/ShowIndebtedPeople';
 import { ShowExpenses } from '../ShowExpenses';
@@ -55,17 +55,17 @@ const RecordDrawer = ({
       </DrawerDate>
       <DrawerCloseBox>
         <IconButton onClick={onCloseCb}>
-          <CloseIcon />
+          <AppIcon icon="Close" />
         </IconButton>
       </DrawerCloseBox>
       <DrawerTitleContainer>
         { (!isMobile) && (<CategoryIcon icon={categoryIcon as keyof AllCategoryIcons} />) }
         <RecordDrawerTitle variant="h4" align="center">{shortName}</RecordDrawerTitle>
         <IconButton onClick={handleEditRecord}>
-          <EditIcon />
+          <AppIcon icon="Edit" />
         </IconButton>
         <IconButton onClick={openDeleteRecordModal}>
-          <DeleteIcon />
+          <AppIcon icon="Delete" />
         </IconButton>
       </DrawerTitleContainer>
       <RecordDrawerPriceContainer>

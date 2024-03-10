@@ -6,8 +6,8 @@ import {
 import { ShowIndebtedPeopleProps } from './interface';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { formatIndebtedPeople } from '../../../../../utils/formatIndebtedPeople';
-import { EditIcon, DeleteIcon } from '../../../Icons';
-import { FlexContainer, TableCell } from '../../../../../styles';
+import { AppIcon } from '../../../Icons';
+import { AppColors, FlexContainer, TableCell } from '../../../../../styles';
 import {
   TableTitle, RecordTable, TableNote,
 } from '../RecordDrawer/RecordDrawer.styled';
@@ -60,10 +60,10 @@ const ShowIndebtedPeople = ({
                       { (!inRecordDrawer) && (
                         <IconsCell>
                           <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                            <EditIcon />
+                            <AppIcon icon="Edit" fillColor={AppColors.primary} />
                           </IconButton>
                           <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                            <DeleteIcon />
+                            <AppIcon icon="Delete" fillColor={AppColors.negative} />
                           </IconButton>
                         </IconsCell>
                       ) }
@@ -77,10 +77,10 @@ const ShowIndebtedPeople = ({
                           <IndebtedPeopleName>{person.name}</IndebtedPeopleName>
                           <FlexContainer>
                             <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                              <EditIcon />
+                              <AppIcon icon="Edit" fillColor={AppColors.primary} />
                             </IconButton>
                             <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                              <DeleteIcon />
+                              <AppIcon icon="Delete" fillColor={AppColors.negative} />
                             </IconButton>
                           </FlexContainer>
                         </NameCell>
@@ -91,10 +91,10 @@ const ShowIndebtedPeople = ({
                       { (windowSize !== 'Mobile' && !inRecordDrawer) && (
                       <IconsCell>
                         <IconButton onClick={() => modifyIndebtedPerson(person.name)}>
-                          <EditIcon />
+                          <AppIcon icon="Edit" fillColor={AppColors.primary} />
                         </IconButton>
                         <IconButton onClick={() => deleteIndebtedPerson(person.name)}>
-                          <DeleteIcon />
+                          <AppIcon icon="Delete" fillColor={AppColors.negative} />
                         </IconButton>
                       </IconsCell>
                       ) }

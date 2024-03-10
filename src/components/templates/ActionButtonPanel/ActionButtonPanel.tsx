@@ -3,7 +3,7 @@ import { LoadingSpinner } from '../../UI/LoadingSpinner';
 import {
   ButtonContainer, AnchorCancelButton, CancelButtonForm, PrimaryButtonForm, AnchorSubmitButton, SecondaryButtonForm,
 } from './ActionButtonPanel.styled';
-import { TickMark } from '../../UI/Icons';
+import { AppIcon } from '../../UI/Icons';
 import { AppColors } from '../../../styles';
 import { DASHBOARD_ROUTE } from '../../../pages/RoutesConstants';
 
@@ -46,7 +46,7 @@ const ActionButtonPanel = ({
       { (submitButton === 'Button') && (
       <PrimaryButtonForm disabled={disableSubmitButton} minWidth={minWidthNumber} variant="contained" onClick={submitForm} size="medium">
         { (loading && !success) && (<LoadingSpinner />) }
-        { (!loading && success) && (<TickMark fillColor={AppColors.white} />) }
+        { (!loading && success) && (<AppIcon icon="TickMark" fillColor={AppColors.white} />) }
         { (!loading && !success) && submitButtonText }
       </PrimaryButtonForm>
       ) }

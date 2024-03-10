@@ -16,7 +16,7 @@ import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
 } from '../../interface';
 import { SelectInput } from '../../../SelectInput';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 import {
   DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, FlexContainer, InputAdornment,
 } from '../../../../../styles';
@@ -123,7 +123,7 @@ const AccountDialog = ({
         <FlexContainer justifyContent="spaceBetween" alignItems="center" padding="1rem">
           <DialogTitle>{ titleModal }</DialogTitle>
           <IconButton onClick={onClose}>
-            <CloseIcon />
+            <AppIcon icon="Close" />
           </IconButton>
         </FlexContainer>
         <Formik

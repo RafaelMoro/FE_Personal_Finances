@@ -7,7 +7,7 @@ import { useNotification } from '../../../../../hooks/useNotification';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { SystemStateEnum } from '../../../../../enums';
 import { DeleteAccountDialogProps } from './interface';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 import { DeleteAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { useDeleteAccountMutation } from '../../../../../redux/slices/Accounts/actions';
@@ -55,7 +55,7 @@ const DeleteAccountDialog = ({
       <AccountDialogContainer>
         <DeleteAccountTitle variant="h4">Delete Account</DeleteAccountTitle>
         <DeleteAccountIconButton onClick={onClose}>
-          <CloseIcon />
+          <AppIcon icon="Close" />
         </DeleteAccountIconButton>
         <DialogParagraphWarning>THERE IS NO WAY OF RECOVERING YOUR ACCOUNT.</DialogParagraphWarning>
         <DialogParagraph>

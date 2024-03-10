@@ -12,7 +12,7 @@ import {
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { AddIndebtedPersonProps } from './interface';
 import { Container } from './AddIndebtedPeople.styled';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 
 const AddIndebtedPerson = ({
@@ -61,7 +61,7 @@ const AddIndebtedPerson = ({
             Person
           </Typography>
           <TransparentButton onClick={onClose}>
-            <CloseIcon />
+            <AppIcon icon="Close" />
           </TransparentButton>
         </FlexContainer>
         <Formik

@@ -29,7 +29,7 @@ import {
   InputForm, InputAdornment,
   FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 
 /** Styles */
 import {
@@ -241,7 +241,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   return (
     <RecordTemplateMain>
       <GoBackButton to={DASHBOARD_ROUTE}>
-        <CloseIcon />
+        <AppIcon icon="Close" />
       </GoBackButton>
       { (!edit) && (
         <ToggleButtonGroup
