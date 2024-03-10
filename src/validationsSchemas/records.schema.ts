@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import {
-  indebtedName, tagOrBudgetValidation, indebtedIsPaid, stringRequired,
+  indebtedName, tagOrBudgetValidation, indebtedIsPaid, stringRequired, shortNameValidation,
 } from './validations';
 
 export const TagOrBudgetSchema = (name: string) => {
@@ -18,7 +18,8 @@ export const IndebtedPeopleFormSchema = Yup.object({
 });
 
 export const CreateRecordSchema = Yup.object({
-  shortName: stringRequired('Short description is required'),
+  shortName: shortNameValidation,
+  description: Yup.string().min(3, 'Description is too short').max(300, 'Description is too long'),
   category: stringRequired('Category is required'),
   subCategory: stringRequired('Subcategory is required'),
   amount: stringRequired('Amount is required'),

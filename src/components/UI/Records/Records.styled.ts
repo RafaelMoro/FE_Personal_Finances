@@ -1,23 +1,26 @@
 import styled from '@emotion/styled';
+import { Theme, styled as styledMui } from '@mui/material/styles';
 import {
+  Box,
   ListItem, ListItemButton, List as ListMUI, Typography,
 } from '@mui/material';
 
 import {
-  ListExpandableContainerProps, PaymentStatusChipProps,
+  ListExpandableContainerProps,
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Chip, responsiveBreakpoints,
+  AppColors, Chip, globalConfiguration, responsiveBreakpoints,
 } from '../../../styles';
+import { appTheme } from '../../../styles/theme';
 
-export const ListItemRecord = styled(ListItem)`
+export const ListItemRecord = styledMui(ListItem)(({ theme }: { theme: Theme }) => `
   width: 100%;
   min-height: 10rem;
-  padding: 1rem;
+  padding: ${theme.spacing(2)};
   display: grid;
   grid-template-columns: 1fr 1fr;
-  row-gap: 2rem;
+  row-gap: ${theme.spacing(3)};
   cursor: pointer;
 
   &:hover {
@@ -26,17 +29,18 @@ export const ListItemRecord = styled(ListItem)`
 
   @media ${responsiveBreakpoints.tablet} {
     grid-template-columns: 50% 25% 25%;
-    column-gap: 1rem;
+    column-gap: ${theme.spacing(2)};
   }
 
   @media ${responsiveBreakpoints.desktop} {
     grid-template-columns: 60% 20% 20%;
-    column-gap: 0;
+    column-gap: ${theme.spacing(2)};
   }
-`;
+`);
 
 export const RecordTitle = styled(Typography)`
   grid-column: 1 / 3;
+  text-wrap: balance;
 
   @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 4;
@@ -48,45 +52,46 @@ export const RecordTitle = styled(Typography)`
   }
 `;
 
-export const RecordDate = styled(Typography)`
-  @media ${responsiveBreakpoints.tablet} {
-    grid-column: 2 / 3;
-    text-align: start;
-  }
+export const MainRecordDataBox = styled('div', { shouldForwardProp: (props) => props !== 'isIncome' })`
+  grid-column: 1 / 3;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  row-gap: ${appTheme.spacing(2)};
 
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 4;
   }
 `;
 
-export const RecordTime = styled(Typography)`
-  @media ${responsiveBreakpoints.tablet} {
-    grid-column: 3 / 4;
-    text-align: start;
-  }
+export const TitleContainer = styledMui(Box)(({ theme }: { theme: Theme }) => `
+  display: flex;
+  gap: ${theme.spacing(2)};
 
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 1 / 2;
-    grid-column: 3 / 4;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 2;
+  }
+`);
+
+export const RecordDate = styled(Typography)`
+  grid-column: 1 / 3;
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 4;
   }
 `;
 
 export const RecordPrice = styled(Typography)`
   font-weight: 500;
-  text-align: center;
-  grid-column: 1 / 3;
 
-  @media ${responsiveBreakpoints.tablet} {
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
     grid-column: 1 / 2;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    text-align: start;
+    grid-row: 2 / 3;
   }
 `;
 
 export const RecordIncome = styled(RecordPrice)`
+  grid-row: 2 / 3;
   color: ${AppColors.positive};
 `;
 
@@ -102,51 +107,26 @@ export const RecordSubtitleText = styled(Typography)`
   }
 `;
 
-export const RecordCategory = styled(Typography)`
-  grid-column: 2 / 4;
-
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
-    grid-column: 2 / 3;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 2 / 3;
-  }
-`;
-
-export const RecordSubCategory = styled(Typography)`
-  grid-column: 2 / 4;
-
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
-    grid-column: 3 / 4;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 2 / 3;
-  }
-`;
-
 export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
+  @media ${responsiveBreakpoints.tablet} {
     grid-column: 1 / 2;
+  }
+
+  @media ${responsiveBreakpoints.desktop} {
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
   }
 `;
 
 export const RecordStatusContainer = styled.div`
-  grid-column: 1 / 3;
-  display: grid;
-  place-items: center;
+  grid-row: 1 / 3;
+  grid-column: 2 / 3;
+  place-self: center;
 
-  @media ${responsiveBreakpoints.tablet} {
-    grid-row: 5 / 6;
-    grid-column: 1 / 2;
-  }
-
-  @media ${responsiveBreakpoints.desktop} {
-    grid-row: 4 / 5;
-    grid-column: 2 / 4;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 2 / 3;
   }
 `;
 
@@ -156,6 +136,12 @@ export const RecordText = styled(Typography)`
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 1 / 2;
   }
+`;
+
+export const RecordsPaidNumber = styled(RecordText)`
+  grid-row: 1 / 3;
+  grid-column: 2 / 3;
+  place-self: center;
 `;
 
 export const ChipContainer = styled.div`
@@ -180,7 +166,7 @@ export const BudgetChipContainer = styled(ChipContainer)`
 
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 2 / 3;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
   }
 `;
 export const TagsChipContainer = styled(ChipContainer)`
@@ -193,7 +179,7 @@ export const TagsChipContainer = styled(ChipContainer)`
 
   @media ${responsiveBreakpoints.desktop} {
     grid-column: 3 / 4;
-    grid-row: 3 / 4;
+    grid-row: 4 / 5;
   }
 `;
 
@@ -221,8 +207,20 @@ export const RecordSkeletonHolder = styled.div`
   ${blinkAnimation}
 `;
 
-export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'isPaid' })`
-  ${({ isPaid }: PaymentStatusChipProps) => isPaid && `color: ${AppColors.white};`}
+export const PaymentStatusChip = styled(Chip)`
+  color: ${AppColors.white};
+
+  & .MuiChip-label {
+    font-size: ${globalConfiguration.mobile.fontSizes.P};
+
+    @media ${responsiveBreakpoints.tablet} {
+      font-size: ${globalConfiguration.tablet.fontSizes.P};
+    }
+
+    @media ${responsiveBreakpoints.desktop} {
+      font-size: ${globalConfiguration.desktop.fontSizes.P};
+    }
+  }
 `;
 
 // Record List

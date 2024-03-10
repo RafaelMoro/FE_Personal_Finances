@@ -48,6 +48,7 @@ const FOOD_AND_DRINK_CATEGORY: Category = {
     'Restaurants',
     'Groceries',
   ],
+  icon: 'foodAndDrink',
 };
 const HOUSING_CATEGORY: Category = {
   _id: 'local-category-2',
@@ -59,6 +60,7 @@ const HOUSING_CATEGORY: Category = {
     'Home maintenance and Repairs',
     'Property taxes',
   ],
+  icon: 'house',
 };
 const UTILITIES_CATEGORY: Category = {
   _id: 'local-category-3',
@@ -74,6 +76,7 @@ const UTILITIES_CATEGORY: Category = {
     'Mobile communication',
     'Safety',
   ],
+  icon: 'utilities',
 };
 const SUSCRIPTIONS_CATEGORY: Category = {
   _id: 'local-category-4',
@@ -84,6 +87,7 @@ const SUSCRIPTIONS_CATEGORY: Category = {
     'Gym',
     'Software',
   ],
+  icon: 'subcriptions',
 };
 const TRANSPORTATION_CATEGORY: Category = {
   _id: 'local-category-5',
@@ -99,8 +103,9 @@ const TRANSPORTATION_CATEGORY: Category = {
     'Airplane tickets',
     'Taxi',
   ],
+  icon: 'transportation',
 };
-const DEBT_AND_LOANS_CATEGORY: Category = {
+const FINANCIAL_EXPENSES_CATEGORY: Category = {
   _id: 'local-category-6',
   __v: 0,
   categoryName: 'Financial Expenses',
@@ -119,6 +124,7 @@ const DEBT_AND_LOANS_CATEGORY: Category = {
     'Funding',
     'Insurance',
   ],
+  icon: 'debtAndLoans',
 };
 const HEALTHCARE_CATEGORY: Category = {
   _id: 'local-category-8',
@@ -136,6 +142,7 @@ const HEALTHCARE_CATEGORY: Category = {
     'Out of pocket costs for primary care',
     'Health supplements',
   ],
+  icon: 'healthCare',
 };
 const KIDS_CATEGORY: Category = {
   _id: 'local-category-9',
@@ -153,8 +160,9 @@ const KIDS_CATEGORY: Category = {
     'Clothing',
     'Footwear',
   ],
+  icon: 'kids',
 };
-const CLOTHING_AND_PERSONAL_CARE: Category = {
+const SHOPPING: Category = {
   _id: 'local-category-10',
   __v: 0,
   categoryName: 'Shopping',
@@ -174,6 +182,7 @@ const CLOTHING_AND_PERSONAL_CARE: Category = {
     'Health and beauty',
     'Free time / Hobbies',
   ],
+  icon: 'shopping',
 };
 
 const ENTERTAINMENT_AND_LEISURE_CATEGORY: Category = {
@@ -195,6 +204,7 @@ const ENTERTAINMENT_AND_LEISURE_CATEGORY: Category = {
     'Concerts',
     'Cinema',
   ],
+  icon: 'entertainment',
 };
 const SAVINGS_CATEGORY: Category = {
   _id: 'local-category-12',
@@ -209,6 +219,7 @@ const SAVINGS_CATEGORY: Category = {
     'Vacations',
     'Car / Real property ',
   ],
+  icon: 'savings',
 };
 
 export const CATEGORIES_RECORDS: Category[] = [
@@ -217,10 +228,10 @@ export const CATEGORIES_RECORDS: Category[] = [
   UTILITIES_CATEGORY,
   SUSCRIPTIONS_CATEGORY,
   TRANSPORTATION_CATEGORY,
-  DEBT_AND_LOANS_CATEGORY,
+  FINANCIAL_EXPENSES_CATEGORY,
   HEALTHCARE_CATEGORY,
   KIDS_CATEGORY,
-  CLOTHING_AND_PERSONAL_CARE,
+  SHOPPING,
   ENTERTAINMENT_AND_LEISURE_CATEGORY,
   SAVINGS_CATEGORY,
 ];

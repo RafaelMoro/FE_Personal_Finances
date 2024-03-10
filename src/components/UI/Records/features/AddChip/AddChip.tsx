@@ -30,8 +30,13 @@ const AddChip = ({
     setChips(newInfo);
   };
 
-  const checkRepeatedValue = (value: string) => {
+  const showError = (value: string) => {
     let error;
+    if (chips.length > 7) {
+      error = `You cannot add more than 8 ${name}s.`;
+      return error;
+    }
+
     const repeatedChip = chips.find((chip) => chip === value);
     if (!repeatedChip) return error;
     error = `${value} cannot be repeated. Try a different one.`;
@@ -79,7 +84,7 @@ const AddChip = ({
                 type="text"
                 variant="standard"
                 label={label}
-                validate={checkRepeatedValue}
+                validate={showError}
               />
             </div>
             <AddChipButtonContainer>

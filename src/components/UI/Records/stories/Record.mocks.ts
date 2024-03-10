@@ -10,6 +10,7 @@ export const expenseSample: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Transport',
+    icon: 'transportation',
     __v: 0,
     subCategories: ['Didi'],
   },
@@ -35,6 +36,7 @@ export const expenseSampleWithLongShortName: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Food',
+    icon: 'foodAndDrink',
     __v: 0,
     subCategories: ['Fast Food'],
   },
@@ -62,6 +64,7 @@ export const expenseSampleWithLongDescription: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Food',
+    icon: 'foodAndDrink',
     __v: 0,
     subCategories: ['Fast Food'],
   },
@@ -84,6 +87,7 @@ export const ExpenseSampleWithoutTagsAndBudgets: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Food',
+    icon: 'foodAndDrink',
     __v: 0,
     subCategories: ['Fast Food'],
   },
@@ -108,6 +112,7 @@ export const ExpenseSampleWithManyBudgets: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Leisure',
+    icon: 'leisure',
     __v: 0,
     subCategories: ['Concert'],
   },
@@ -132,6 +137,7 @@ export const ExpenseSampleWithManyBudgetsAndLongNameBudget: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Leisure',
+    icon: 'leisure',
     __v: 0,
     subCategories: ['Concert'],
   },
@@ -156,6 +162,7 @@ export const ExpenseSampleWithManyBudgetsAndTags: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Leisure',
+    icon: 'leisure',
     __v: 0,
     subCategories: ['Concert'],
   },
@@ -180,6 +187,7 @@ export const ExpenseSampleWithNoBudgetsAndManyTags: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Leisure',
+    icon: 'leisure',
     __v: 0,
     subCategories: ['Concert'],
   },
@@ -204,6 +212,7 @@ export const IncomeSample: AnyRecord = {
   category: {
     _id: '123-456-789',
     categoryName: 'Payment',
+    icon: 'payment',
     __v: 0,
     subCategories: ['Credit Card'],
   },
@@ -229,6 +238,7 @@ export const IncomeSampleWithExpensesPaid: AnyRecord = {
     _id: '123-456-789',
     __v: 0,
     categoryName: 'Payment',
+    icon: 'payment',
     subCategories: ['Credit Card'],
   },
   subCategory: 'Credit Card',

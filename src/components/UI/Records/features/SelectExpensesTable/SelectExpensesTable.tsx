@@ -10,9 +10,9 @@ import { Order, ExpensePaidTable } from './interface';
 import { ExpensePaid } from '../../../../../globalInterface';
 import { orderExpenses } from './utils';
 
-import { TickMark, XMark } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 import {
-  TableCell, CancelButton, FlexContainer, ConfirmButton,
+  TableCell, CancelButton, FlexContainer, ConfirmButton, AppColors,
 } from '../../../../../styles';
 import { SelectExpensesCell, SelectExpensesContainer } from '../Features.styled';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
@@ -127,7 +127,9 @@ function SelectExpensesTable({
                   </TableCell>
                   <SelectExpensesCell align="right">{row.amountFormatted}</SelectExpensesCell>
                   <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
-                  <SelectExpensesCell align="right">{ (row.isPaid) ? <TickMark /> : <XMark />}</SelectExpensesCell>
+                  <SelectExpensesCell align="right">
+                    { (row.isPaid) ? <AppIcon icon="TickMark" /> : <AppIcon icon="Close" fillColor={AppColors.negative} />}
+                  </SelectExpensesCell>
                 </TableRow>
               );
             })}

@@ -79,6 +79,7 @@ export interface Category {
   __v: number;
   categoryName: string;
   subCategories: string[];
+  icon: string;
 }
 
 export interface AccountRecord {

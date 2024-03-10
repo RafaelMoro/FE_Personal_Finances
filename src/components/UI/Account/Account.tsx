@@ -1,6 +1,6 @@
 import { IconButton, Typography } from '@mui/material';
 
-import { EditIcon, DeleteIcon } from '../Icons';
+import { AppIcon } from '../Icons';
 import { AccountComponentProps } from './interface';
 import {
   AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
@@ -26,10 +26,10 @@ const Account = ({
       <Typography>{ amountFormatted }</Typography>
       <AccountIconsContainer>
         <IconButton onClick={() => openModifyAccountModal(accountId)}>
-          <EditIcon fillColor={backgroundColorUI.color} />
+          <AppIcon icon="Edit" fillColor={backgroundColorUI.color} />
         </IconButton>
         <IconButton onClick={() => openDeleteAccountModal(accountId, title)}>
-          <DeleteIcon fillColor={backgroundColorUI.color} />
+          <AppIcon icon="Delete" fillColor={backgroundColorUI.color} />
         </IconButton>
       </AccountIconsContainer>
       <Typography>{ accountType }</Typography>

@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import {
   FlexContainer,
 } from '../../../styles';
-import { LogOutIcon } from '../../UI/Icons';
+import { AppIcon } from '../../UI/Icons';
 import { HeaderContainer, HeaderShadow } from './Header.styled';
 import { BrandLogoName } from '../BrandLogoName';
 
@@ -21,7 +21,7 @@ const Header = () => {
         </FlexContainer>
         { (windowSize === 'Desktop') && (<Typography variant="h3">Account management</Typography>) }
         <IconButton onClick={signOut}>
-          <LogOutIcon />
+          <AppIcon icon="LogOut" />
         </IconButton>
       </HeaderContainer>
     </HeaderShadow>

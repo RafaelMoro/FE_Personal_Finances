@@ -4,6 +4,7 @@ import { Toolbar, Typography } from '@mui/material';
 import {
   AppColors, TableCell, responsiveBreakpoints,
 } from '../../../../styles';
+import { appTheme } from '../../../../styles/theme';
 
 /** SelectExpenses */
 export const SelectExpensesContainer = styled.div`
@@ -97,6 +98,10 @@ export const DebtPaid = styled(TableCell)`
 export const NameCellTitle = styled(TableCell)`
   padding: 1.6rem 0;
   text-align: center;
+`;
+
+export const IndebtedTableCell = styled(TableCell)`
+  padding: ${appTheme.spacing(1)} 0;
 `;
 
 export const NameCell = styled(TableCell)`

@@ -149,6 +149,10 @@ export const TransparentButton = styled(Button)`
 
 // **** Paragraphs
 
+export const ParagraphBold = styled(Typography)`
+  font-weight: bold;
+`;
+
 export const ErrorParagraphValidation = styled(Typography)`
   color: ${AppColors.validationError};
 `;
