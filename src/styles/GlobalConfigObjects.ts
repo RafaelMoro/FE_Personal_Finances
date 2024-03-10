@@ -127,7 +127,7 @@ export const globalConfiguration: GlobalConfiguration = {
       H2: '2.8rem',
       H3: '2.4rem',
       H4: '2.4rem',
-      H5: '2rem',
+      H5: '2.2rem',
       P: '1.8rem',
       Sub: '1.5rem',
     },
