@@ -24,6 +24,7 @@ import {
   DrawerCloseBox,
   DrawerDate,
   DrawerTypographyBold,
+  PaymentStatusChipDrawer,
 } from './RecordDrawer.styled';
 
 const RecordDrawer = ({
@@ -31,13 +32,14 @@ const RecordDrawer = ({
 }: RecordDrawerProps) => {
   const {
     shortName, description, fullDate, formattedTime,
-    category, subCategory, tag, indebtedPeople, budgets,
+    category, subCategory, tag, indebtedPeople, budgets, isPaid,
   } = record;
   const { icon: categoryIcon = 'foodAndDrink' } = category;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
+  const status = isPaid ? 'Paid' : 'Unpaid';
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
@@ -71,6 +73,7 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
+      <PaymentStatusChipDrawer label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
       <Typography>
         <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
         {category.categoryName}

@@ -4,7 +4,7 @@ import { Table, Typography, TypographyProps } from '@mui/material';
 import {
   responsiveBreakpoints,
 } from '../../../../../styles';
-import { ChipContainer, RecordSubtitleText } from '../../Records.styled';
+import { ChipContainer, PaymentStatusChip, RecordSubtitleText } from '../../Records.styled';
 import { RecordTableProps } from '../../interface';
 import { appTheme } from '../../../../../styles/theme';
 
@@ -52,6 +52,11 @@ export const DrawerTypographyBold = styled(Typography)<TypographyProps & { compo
 
 export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
+`;
+
+export const PaymentStatusChipDrawer = styled(PaymentStatusChip)`
+  grid-column: 1 / 3;
+  place-self: center;
 `;
 
 export const TableTitle = styled(Typography, { shouldForwardProp: (props) => props !== 'isGrid' })`
