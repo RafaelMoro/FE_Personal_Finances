@@ -211,14 +211,14 @@ export const PaymentStatusChip = styled(Chip)`
   color: ${AppColors.white};
 
   & .MuiChip-label {
-    font-size: ${globalConfiguration.mobile.fontSizes.H5};
+    font-size: ${globalConfiguration.mobile.fontSizes.P};
 
     @media ${responsiveBreakpoints.tablet} {
-      font-size: ${globalConfiguration.tablet.fontSizes.H5};
+      font-size: ${globalConfiguration.tablet.fontSizes.P};
     }
 
     @media ${responsiveBreakpoints.desktop} {
-      font-size: ${globalConfiguration.desktop.fontSizes.H5};
+      font-size: ${globalConfiguration.desktop.fontSizes.P};
     }
   }
 `;
