@@ -207,11 +207,19 @@ export const RecordSkeletonHolder = styled.div`
   ${blinkAnimation}
 `;
 
-export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'isPaid' })`
+export const PaymentStatusChip = styled(Chip)`
   color: ${AppColors.white};
 
   & .MuiChip-label {
-    font-size: ${globalConfiguration.mobile.fontSizes.P};
+    font-size: ${globalConfiguration.mobile.fontSizes.H5};
+
+    @media ${responsiveBreakpoints.tablet} {
+      font-size: ${globalConfiguration.tablet.fontSizes.H5};
+    }
+
+    @media ${responsiveBreakpoints.desktop} {
+      font-size: ${globalConfiguration.desktop.fontSizes.H5};
+    }
   }
 `;
 
