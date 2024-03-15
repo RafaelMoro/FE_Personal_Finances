@@ -24,6 +24,7 @@ export const ERROR_MESSAGE_UNAUTHORIZED = 'Email or Password incorrect.';
 export const ERROR_MESSAGE_EMAIL_EXISTS = 'The email entered is registered to other user. Please try with a different email.';
 
 export const ERROR_MESSAGE_FETCH_CATEGORIES = 'We could not get your categories. Please try again later';
+export const ERROR_CREATE_LOCAL_CATEGORIES = 'We could not create your categories. Please try again later';
 export const ERROR_INCORRECT_MAIL_DESC = 'Verify that your email is correct or create an account.';
 
 /** Success Login Module */
