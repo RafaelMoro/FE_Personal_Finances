@@ -23,6 +23,7 @@ import { FlexContainerProps, ChipProps } from './interface';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 import { dynamicPadding } from './DynamicStyles.styled';
+import { appTheme } from './theme';
 
 /*
 * This file has generic emotion components to use accross the application and
@@ -78,10 +79,10 @@ const flexContainerStyles = ({
 }: FlexContainerProps) => css`
   justify-content: ${justifyContent ?? 'start'};
   align-items: ${alignItems ?? 'start'};
-  gap: ${gap ?? '0'}rem;
+  gap: ${appTheme.spacing(gap ?? 0)};
   flex-direction: ${flexDirection ?? 'row'};
-  margin: ${margin ?? '0'};
-  padding: ${padding ?? '0'};
+  margin: ${appTheme.spacing(margin ?? 0)};
+  padding: ${appTheme.spacing(padding ?? 0)};
 `;
 
 export const FlexContainer = styled.div`

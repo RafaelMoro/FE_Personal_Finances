@@ -32,10 +32,10 @@ export interface BackgroundColors {
 export interface FlexContainerProps {
   justifyContent?: string;
   alignItems?: string;
-  gap?: string;
+  gap?: number;
   flexDirection?: string;
-  margin?: string;
-  padding?: string;
+  margin?: number;
+  padding?: number;
 }
 
 export interface ChipProps {
