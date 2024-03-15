@@ -40,7 +40,7 @@ const PersonalInformation = ({ goNext, counterView, direction }: PersonalInforma
               name="middleName"
               type="text"
               variant="standard"
-              label="Middle Name"
+              label="Middle Name (Optional)"
             />
             <Field
               component={InputForm}
