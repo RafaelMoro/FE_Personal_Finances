@@ -13,7 +13,7 @@ import { SystemStateEnum } from '../../../../../enums';
 import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { isCategorySelected, setAllCategories, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
+import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import { useFetchCategoriesQuery } from '../../../../../redux/slices/Categories/categories.api';
 
@@ -33,16 +33,10 @@ const CategoriesAndSubcategories = ({
   const bearerToken = user?.bearerToken as string;
   const categoriesState = useAppSelector((state) => state.categories);
   const { updateGlobalNotification } = useNotification();
-  const onlyCategories = useMemo(() => (categoriesState.categories ?? []).map((item) => item.categoryName), [categoriesState.categories]);
   const {
-    currentData, isSuccess, isError, isFetching,
+    currentData, isError, isFetching,
   } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
-
-  useEffect(() => {
-    if (currentData && isSuccess) {
-      dispatch(setAllCategories(currentData));
-    }
-  }, [currentData, dispatch, isSuccess]);
+  const onlyCategories = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
 
   useEffect(() => {
     if (categoryToBeEdited) {
@@ -64,7 +58,7 @@ const CategoriesAndSubcategories = ({
 
   const setNewCategory = (name: string, value: string | string[]) => {
     if (name === 'category' && typeof value === 'string') {
-      const selectedCategory = (categoriesState.categories ?? []).find((item) => item.categoryName === value);
+      const selectedCategory = (currentData ?? []).find((item) => item.categoryName === value);
       if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
         dispatch(updateCurrentCategory(selectedCategory));
         if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
