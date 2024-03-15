@@ -6,6 +6,7 @@ export interface UserInfo {
   middleName: string;
   lastName: string;
   email: string;
+  sub: string;
 }
 
 export interface User {

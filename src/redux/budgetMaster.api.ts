@@ -22,7 +22,7 @@ export const budgetMasterApi = createApi({
         const { data } = response;
         const {
           accessToken, user: {
-            email, firstName, lastName, middleName,
+            email, firstName, lastName, middleName, _id: sub,
           },
         } = data;
         const bearerToken = `Bearer ${accessToken}`;
@@ -30,7 +30,7 @@ export const budgetMasterApi = createApi({
           bearerToken,
           accessToken,
           user: {
-            email, firstName, lastName, middleName,
+            email, firstName, lastName, middleName, sub,
           },
         };
         return user;
