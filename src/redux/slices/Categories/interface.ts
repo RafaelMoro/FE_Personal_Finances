@@ -6,10 +6,6 @@ export interface CategoriesInitialState {
   categoryNotSelected: boolean;
 }
 
-export interface FetchCategoriesQueryProps {
-  bearerToken: string;
-}
-
 export interface FetchCategoriesThunkResponse {
   response: CategoriesResponse;
   categoryToBeEdited: Category | null;
