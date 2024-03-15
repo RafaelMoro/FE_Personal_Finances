@@ -10,12 +10,13 @@ import { SelectInput } from '../../../SelectInput';
 
 import { Category } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { CATEGORIES_RECORDS, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
+import { CATEGORIES_RECORDS, ERROR_CREATE_LOCAL_CATEGORIES, ERROR_MESSAGE_FETCH_CATEGORIES } from '../../../../../constants';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/slices/Categories/categories.slice';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import { useFetchCategoriesQuery } from '../../../../../redux/slices/Categories/categories.api';
+import { useCreateLocalCategoriesMutation } from '../../../../../redux/slices/User/actions/createUser';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -29,14 +30,36 @@ const CategoriesAndSubcategories = ({
   errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user.userInfo);
-  const bearerToken = user?.bearerToken as string;
+  const userData = useAppSelector((state) => state.user.userInfo);
+  const sub = userData?.user.sub ?? '';
+  const bearerToken = userData?.bearerToken as string;
   const categoriesState = useAppSelector((state) => state.categories);
   const { updateGlobalNotification } = useNotification();
+  const [createLocalCategoriesMutation, { isLoading: isLoadingCreateCategories }] = useCreateLocalCategoriesMutation();
   const {
     currentData, isError, isFetching,
   } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
   const onlyCategories = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
+
+  const handleCreateLocalCatergories = async () => {
+    try {
+      await createLocalCategoriesMutation({ sub }).unwrap();
+    } catch (err) {
+      updateGlobalNotification({
+        newTitle: 'Error',
+        newDescription: ERROR_CREATE_LOCAL_CATEGORIES,
+        newStatus: SystemStateEnum.Error,
+      });
+    }
+  };
+
+  useEffect(() => {
+    // If categories array is empty, create local categories.
+    if (currentData && currentData.length === 0) {
+      handleCreateLocalCatergories();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentData]);
 
   useEffect(() => {
     if (categoryToBeEdited) {
@@ -66,7 +89,7 @@ const CategoriesAndSubcategories = ({
     }
   };
 
-  if (isFetching) {
+  if (isFetching || isLoadingCreateCategories) {
     return (
       <>
         <SelectInput
@@ -74,7 +97,7 @@ const CategoriesAndSubcategories = ({
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
-              <Typography>Loading categories</Typography>
+              <Typography>{ isLoadingCreateCategories ? 'Creating local categories' : 'Loading categories' }</Typography>
             </FlexContainer>
           )}
           fieldName="category"
@@ -88,7 +111,7 @@ const CategoriesAndSubcategories = ({
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
-              <Typography>Loading subcategories</Typography>
+              <Typography>{ isLoadingCreateCategories ? 'Creating local subcategories' : 'Loading subcategories' }</Typography>
             </FlexContainer>
           )}
           fieldName="category"
