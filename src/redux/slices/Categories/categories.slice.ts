@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { CategoriesInitialState } from './interface';
 
 const categoriesInitialState: CategoriesInitialState = {
-  categories: null,
   currentCategory: null,
   categoryNotSelected: true,
 };

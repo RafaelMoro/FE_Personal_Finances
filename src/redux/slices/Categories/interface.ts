@@ -2,7 +2,6 @@ import { Category } from '../../../globalInterface';
 import { CategoriesResponse } from '../../../components/UI/Records/interface';
 
 export interface CategoriesInitialState {
-  categories: Category[] | null,
   currentCategory: Category | null;
   categoryNotSelected: boolean;
 }
