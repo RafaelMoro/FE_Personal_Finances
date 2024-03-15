@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Field, Formik } from 'formik';
 
 import { AnimateBox } from '../../../animations/AnimateBox';
-import { IUserAndPasswordProps } from './interface';
+import { UserAndPasswordProps } from './interface';
 import { UserAndPasswordSchema } from '../../../validationsSchemas/login.schema';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
 import { InputForm, PrimaryButton, CancelButton } from '../../../styles';
@@ -16,7 +16,7 @@ const initialValuesUserAndPassword = {
 
 const UserAndPassword = ({
   goBack, goNext, counterView, direction,
-}: IUserAndPasswordProps) => {
+}: UserAndPasswordProps) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
 
@@ -25,7 +25,7 @@ const UserAndPassword = ({
     <Formik
       initialValues={initialValuesUserAndPassword}
       validationSchema={UserAndPasswordSchema}
-      onSubmit={(values) => goNext(values)}
+      onSubmit={(values) => goNext({ data: values, skipUpdateData: false, shouldSubmitForm: true })}
       validateOnMount
     >
       {({ submitForm }) => (
