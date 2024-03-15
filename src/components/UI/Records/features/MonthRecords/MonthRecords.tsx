@@ -37,11 +37,11 @@ const MonthRecords = ({
     onClickCallback={onClickCb}
   >
     <ShowTotalContianer>
-      <FlexContainer gap="1">
+      <FlexContainer gap={2}>
         <Typography>Total Expense: </Typography>
         <RecordExpense>{totalExpense}</RecordExpense>
       </FlexContainer>
-      <FlexContainer gap="1">
+      <FlexContainer gap={2}>
         <Typography>Total Income: </Typography>
         <RecordIncome>{totalIncome}</RecordIncome>
       </FlexContainer>

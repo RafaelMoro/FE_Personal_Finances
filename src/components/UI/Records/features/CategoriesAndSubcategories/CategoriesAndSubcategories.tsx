@@ -72,7 +72,7 @@ const CategoriesAndSubcategories = ({
         <SelectInput
           labelId="select-record-category"
           labelName={(
-            <FlexContainer justifyContent="center" gap="2">
+            <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
               <Typography>Loading categories</Typography>
             </FlexContainer>
@@ -86,7 +86,7 @@ const CategoriesAndSubcategories = ({
         <SelectInput
           labelId="select-record-category"
           labelName={(
-            <FlexContainer justifyContent="center" gap="2">
+            <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
               <Typography>Loading subcategories</Typography>
             </FlexContainer>

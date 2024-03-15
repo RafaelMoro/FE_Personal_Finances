@@ -7,7 +7,7 @@ interface LoadingStatusProps {
 }
 
 const LoadingStatus = ({ text }: LoadingStatusProps) => (
-  <FlexContainer justifyContent="center" alignItems="center" gap="3" flexDirection="column">
+  <FlexContainer justifyContent="center" alignItems="center" gap={4} flexDirection="column">
     <HorizontalLoader />
     <Typography variant="body2">{text}</Typography>
   </FlexContainer>

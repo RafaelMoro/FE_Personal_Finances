@@ -120,7 +120,7 @@ const AccountDialog = ({
   return (
     <Dialog onClose={onClose} open={open}>
       <>
-        <FlexContainer justifyContent="spaceBetween" alignItems="center" padding="1rem">
+        <FlexContainer justifyContent="spaceBetween" alignItems="center" padding={2}>
           <DialogTitle>{ titleModal }</DialogTitle>
           <IconButton onClick={onClose}>
             <AppIcon icon="Close" />
