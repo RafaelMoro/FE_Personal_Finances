@@ -44,6 +44,10 @@ export interface GeneralResponse {
   version: string;
 }
 
+export interface RequestBearerTokenProps {
+  bearerToken: string;
+}
+
 export interface GeneralError {
   data: GeneralResponse;
   status: number
