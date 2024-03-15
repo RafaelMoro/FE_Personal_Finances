@@ -31,7 +31,7 @@ export interface AllCategoryIcons {
   utilities: ElementType;
   subcriptions: ElementType;
   transportation: ElementType;
-  financialExpenses: ElementType;
+  debtAndLoans: ElementType;
   healthCare: ElementType;
   kids: ElementType;
   shopping: ElementType;
