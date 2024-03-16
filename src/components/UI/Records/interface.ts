@@ -81,3 +81,7 @@ export interface SelectMonthYearValues {
 export interface ListExpandableContainerProps {
   color: string;
 }
+
+export interface SelectExpensesCellProps {
+  noHorizontalPadding?: boolean;
+}

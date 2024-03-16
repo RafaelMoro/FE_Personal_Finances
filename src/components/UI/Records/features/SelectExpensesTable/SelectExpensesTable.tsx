@@ -17,6 +17,7 @@ import {
 import { SelectExpensesCell, SelectExpensesContainer } from '../Features.styled';
 import { usePaginationTable } from '../../../../../hooks/usePaginationTable';
 import { EmptyTableRow } from '../../../Table/EmptyTableRow';
+import { useAppSelector } from '../../../../../redux/hooks';
 
 interface SelectExpensesTableProps {
   expenses: ExpensePaid[];
@@ -28,6 +29,8 @@ interface SelectExpensesTableProps {
 function SelectExpensesTable({
   expenses = [], modifySelectedExpenses, selectedExpenses, closeDrawer,
 }: SelectExpensesTableProps) {
+  const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const isMobile = windowSize === 'Mobile';
   const {
     emptyRows, handleChangePage, handleChangeRowsPerPage, page, rowsPerPage,
   } = usePaginationTable({ arrayOfOptions: expenses, initialRowsPerPage: 10 });
@@ -117,17 +120,17 @@ function SelectExpensesTable({
                       }}
                     />
                   </TableCell>
-                  <TableCell
+                  <SelectExpensesCell
                     component="th"
                     id={labelId}
                     scope="row"
-                    padding="none"
+                    noHorizontalPadding
                   >
                     {row.shortName}
-                  </TableCell>
+                  </SelectExpensesCell>
                   <SelectExpensesCell align="right">{row.amountFormatted}</SelectExpensesCell>
-                  <SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>
-                  <SelectExpensesCell align="right">
+                  { (!isMobile) && (<SelectExpensesCell align="right">{row.fullDate}</SelectExpensesCell>) }
+                  <SelectExpensesCell align="right" noHorizontalPadding>
                     { (row.isPaid) ? <AppIcon icon="TickMark" /> : <AppIcon icon="Close" fillColor={AppColors.negative} />}
                   </SelectExpensesCell>
                 </TableRow>
