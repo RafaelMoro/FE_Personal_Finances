@@ -6,6 +6,7 @@ export interface UserInfo {
   middleName: string;
   lastName: string;
   email: string;
+  sub: string;
 }
 
 export interface User {
@@ -42,6 +43,10 @@ export interface GeneralResponse {
   message: null | string;
   success: boolean;
   version: string;
+}
+
+export interface RequestBearerTokenProps {
+  bearerToken: string;
 }
 
 export interface GeneralError {

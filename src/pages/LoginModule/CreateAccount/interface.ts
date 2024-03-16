@@ -9,7 +9,16 @@ export interface CreateUserValues {
   middleName?: string;
 }
 
+export interface GoNextProps {
+  data: PersonalInfoFormValues | UserAndPasswordFormValues;
+  skipUpdateData: boolean;
+  shouldSubmitForm: boolean;
+}
+
 export interface CreateUserValuesMutation extends Omit<CreateUserValues, 'confirmPassword'> {}
+export interface CreateLocalCategoriesProps {
+  sub: string;
+}
 
 export interface PersonalInfoFormValues {
   firstName: string;
@@ -22,14 +31,14 @@ export interface UserAndPasswordFormValues {
   password: string;
   confirmPassword: string;
 }
-export interface IPersonalInformationProps {
-  goNext: (props: PersonalInfoFormValues | UserAndPasswordFormValues) => void;
+export interface PersonalInformationProps {
+  goNext: (props: GoNextProps) => void;
   counterView: number;
   direction: number;
 }
 
-export interface IUserAndPasswordProps {
-  goNext: (props: UserAndPasswordFormValues | PersonalInfoFormValues) => void;
+export interface UserAndPasswordProps {
+  goNext: (props: GoNextProps) => void;
   goBack: () => void;
   counterView: number;
   direction: number;

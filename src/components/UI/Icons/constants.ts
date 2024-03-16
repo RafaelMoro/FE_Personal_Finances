@@ -53,7 +53,7 @@ export const categoryIcons: AllCategoryIcons = {
   utilities: Engineering,
   subcriptions: Language,
   transportation: DirectionsCar,
-  financialExpenses: AccountBalance,
+  debtAndLoans: AccountBalance,
   healthCare: MedicalInformation,
   kids: FamilyRestroom,
   shopping: ShoppingCart,

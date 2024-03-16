@@ -3,14 +3,14 @@ import { BACKEND_ENV_URI, BACKEND_LOCAL_URI, POST_METHOD } from '../constants';
 import { LOGIN_POST_ROUTE } from '../pages/LoginModule/Login/constants';
 import { LoginResponse } from './slices/User/interface';
 import { User } from '../globalInterface';
-import { ACCOUNT_TAG, RECORD_TAG } from './constants';
+import { ACCOUNT_TAG, CATEGORIES_TAG, RECORD_TAG } from './constants';
 
 const BACKEND_URI = BACKEND_ENV_URI ?? BACKEND_LOCAL_URI;
 
 export const budgetMasterApi = createApi({
   reducerPath: 'budgetMasterApi',
   baseQuery: fetchBaseQuery({ baseUrl: BACKEND_URI }),
-  tagTypes: [ACCOUNT_TAG, RECORD_TAG],
+  tagTypes: [ACCOUNT_TAG, RECORD_TAG, CATEGORIES_TAG],
   endpoints: (builder) => ({
     login: builder.mutation({
       query: ({ values }) => ({
@@ -22,7 +22,7 @@ export const budgetMasterApi = createApi({
         const { data } = response;
         const {
           accessToken, user: {
-            email, firstName, lastName, middleName,
+            email, firstName, lastName, middleName, _id: sub,
           },
         } = data;
         const bearerToken = `Bearer ${accessToken}`;
@@ -30,7 +30,7 @@ export const budgetMasterApi = createApi({
           bearerToken,
           accessToken,
           user: {
-            email, firstName, lastName, middleName,
+            email, firstName, lastName, middleName, sub,
           },
         };
         return user;

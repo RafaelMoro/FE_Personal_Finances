@@ -1,7 +1,7 @@
 import { Field, Formik } from 'formik';
 
 import { LOGIN_ROUTE } from '../../RoutesConstants';
-import { IPersonalInformationProps } from './interface';
+import { PersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
 import {
   InputForm, PrimaryButton, CancelButton, AnchorButton,
@@ -15,14 +15,14 @@ const initialValuesPersonalInfo = {
   lastName: '',
 };
 
-const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInformationProps) => {
+const PersonalInformation = ({ goNext, counterView, direction }: PersonalInformationProps) => {
   if (counterView !== 0) return null;
 
   return (
     <Formik
       initialValues={initialValuesPersonalInfo}
       validationSchema={PersonalInformationSchema}
-      onSubmit={(values) => goNext(values)}
+      onSubmit={(values) => goNext({ data: values, skipUpdateData: false, shouldSubmitForm: false })}
       validateOnMount
     >
       {({ submitForm }) => (
@@ -40,7 +40,7 @@ const PersonalInformation = ({ goNext, counterView, direction }: IPersonalInform
               name="middleName"
               type="text"
               variant="standard"
-              label="Middle Name"
+              label="Middle Name (Optional)"
             />
             <Field
               component={InputForm}

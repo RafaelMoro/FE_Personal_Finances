@@ -5,6 +5,7 @@ import {
   AppColors, TableCell, responsiveBreakpoints,
 } from '../../../../styles';
 import { appTheme } from '../../../../styles/theme';
+import { SelectExpensesCellProps } from '../interface';
 
 /** SelectExpenses */
 export const SelectExpensesContainer = styled.div`
@@ -76,8 +77,8 @@ export const SelectMonthYearBox = styled.div`
   }
 `;
 
-export const SelectExpensesCell = styled(TableCell)`
-  padding: 1.5rem 1rem 1.5rem 0;
+export const SelectExpensesCell = styled(TableCell, { shouldForwardProp: (props) => props !== 'noHorizontalPadding' })`
+  padding: ${({ noHorizontalPadding }: SelectExpensesCellProps) => (noHorizontalPadding ? '1.5rem 0' : '1.5rem 1rem 1.5rem 0')};
 `;
 
 /** MonthRecords */

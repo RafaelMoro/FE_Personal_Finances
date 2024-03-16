@@ -23,6 +23,7 @@ import { FlexContainerProps, ChipProps } from './interface';
 import { AppColors } from './GlobalConfigObjects';
 import { createResponsiveProps } from './createResponsiveProps';
 import { dynamicPadding } from './DynamicStyles.styled';
+import { appTheme } from './theme';
 
 /*
 * This file has generic emotion components to use accross the application and
@@ -50,15 +51,8 @@ export const GlobalStyles = css`
   }
 
   // Calendar Header
-  // Style for the week days span from M to S
-  .MuiDayCalendar-header .MuiDayCalendar-weekDayLabel {
-    ${createResponsiveProps({ fontSize: 'P' })}
-  }
 
   // Style to override the years when selected other year and years are listed.
-  & .MuiPickersYear-yearButton {
-    ${createResponsiveProps({ fontSize: 'P', important: true })}
-  }
 
   // Table pagination of select expenses of the select and sort table MUI
   .MuiTablePagination-selectIcon {
@@ -78,10 +72,10 @@ const flexContainerStyles = ({
 }: FlexContainerProps) => css`
   justify-content: ${justifyContent ?? 'start'};
   align-items: ${alignItems ?? 'start'};
-  gap: ${gap ?? '0'}rem;
+  gap: ${appTheme.spacing(gap ?? 0)};
   flex-direction: ${flexDirection ?? 'row'};
-  margin: ${margin ?? '0'};
-  padding: ${padding ?? '0'};
+  margin: ${appTheme.spacing(margin ?? 0)};
+  padding: ${appTheme.spacing(padding ?? 0)};
 `;
 
 export const FlexContainer = styled.div`
@@ -218,7 +212,7 @@ export const DateTimePicker = styled(DateTimePickerMUI)`
   label {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
-  & .MuiTypography-root .MuiDayCalendar-weekDayLabel {
+   & .MuiTypography-root .MuiDayCalendar-weekDayLabel {
     ${createResponsiveProps({ fontSize: 'P' })}
   }
   fieldset {

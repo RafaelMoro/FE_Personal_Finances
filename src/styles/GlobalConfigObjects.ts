@@ -30,7 +30,7 @@ export const AppColors = {
   bgColorDark: '#66440D',
   bgColorGrey: '#dbcaca',
   grey: '#9F9B94',
-  subtitleColor: '#B5BFCA',
+  subtitleColor: '#4b5055',
   validationError: '#d32f2f',
 };
 

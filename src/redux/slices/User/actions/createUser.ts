@@ -1,7 +1,8 @@
 import { POST_METHOD } from '../../../../constants';
-import { CREATE_USER_POST_ROUTE } from '../../../../pages/LoginModule/CreateAccount/constants';
-import { CreateUserValuesMutation } from '../../../../pages/LoginModule/CreateAccount/interface';
+import { CREATE_LOCAL_CATEGORIES_ROUTE, CREATE_USER_POST_ROUTE } from '../../../../pages/LoginModule/CreateAccount/constants';
+import { CreateLocalCategoriesProps, CreateUserValuesMutation } from '../../../../pages/LoginModule/CreateAccount/interface';
 import { budgetMasterApi } from '../../../budgetMaster.api';
+import { CATEGORIES_TAG } from '../../../constants';
 
 export const createUserApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,7 +13,15 @@ export const createUserApiSlice = budgetMasterApi.injectEndpoints({
         body: values,
       }),
     }),
+    createLocalCategories: builder.mutation({
+      query: (values: CreateLocalCategoriesProps) => ({
+        url: CREATE_LOCAL_CATEGORIES_ROUTE,
+        method: POST_METHOD,
+        body: values,
+      }),
+      invalidatesTags: [CATEGORIES_TAG],
+    }),
   }),
 });
 
-export const { useCreateUserMutation } = createUserApiSlice;
+export const { useCreateUserMutation, useCreateLocalCategoriesMutation } = createUserApiSlice;
