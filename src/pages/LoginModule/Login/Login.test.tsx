@@ -4,6 +4,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import fetchMock from 'jest-fetch-mock';
 
 import { Login } from './Login';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
@@ -11,6 +12,23 @@ import { WrapperRedux } from '../../../tests/WrapperRedux';
 const credentials = {
   email: 'example@mail.com',
   password: 'example123',
+};
+const successfulLoginResponse = {
+  version: '2.0.0',
+  success: true,
+  message: null,
+  data: {
+    accessToken: 'accessToken-sample',
+    user: {
+      _id: 'some-id',
+      email: 'johndoe@mail.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      middleName: '',
+      __v: 0,
+    },
+  },
+  error: null,
 };
 
 describe('<Login />', () => {
@@ -74,7 +92,8 @@ describe('<Login />', () => {
     });
   });
 
-  test.skip('Submit the form and have a successful return', async () => {
+  test('Submit the form and have a successful return', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(successfulLoginResponse));
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     const passwordInput = screen.getByLabelText(/password/i);
     const loginButton = screen.getByRole('button', { name: /login/i });
@@ -87,6 +106,8 @@ describe('<Login />', () => {
 
     await waitFor(() => {
       // expect the mock to be called.
+      expect(fetchMock).toHaveBeenCalled();
+      // expect(fetchMock.mock.calls).toContainEqual(successfulLoginResponse);
     });
   });
 
