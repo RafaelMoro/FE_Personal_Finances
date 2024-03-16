@@ -20,7 +20,7 @@ const Header = () => {
           <BrandLogoName />
         </FlexContainer>
         { (windowSize === 'Desktop') && (<Typography variant="h3">Account management</Typography>) }
-        <IconButton onClick={signOut}>
+        <IconButton aria-label="sign-out-button" onClick={signOut}>
           <AppIcon icon="LogOut" />
         </IconButton>
       </HeaderContainer>
