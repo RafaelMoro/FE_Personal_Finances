@@ -39,7 +39,16 @@ function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
               '& .MuiDateTimePickerTabs-root .MuiSvgIcon-root': {
                 fontSize: '2rem',
               },
+              // Time picker hour size
               '& .MuiTimeClock-root': {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+              // Days of the week
+              '& .MuiDayCalendar-header > span': {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+              // Button to change year.
+              '& .MuiPickersYear-root > button': {
                 fontSize: globalConfiguration.mobile.fontSizes.P,
               },
             },
