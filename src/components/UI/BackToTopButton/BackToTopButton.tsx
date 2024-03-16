@@ -1,4 +1,4 @@
-import { GoToTopIcon } from '../Icons';
+import { AppIcon } from '../Icons';
 import { IconButtonBackToTop } from './BackToTopButton.styled';
 import { BackToTopButtonProps } from './interface';
 
@@ -8,7 +8,7 @@ import { BackToTopButtonProps } from './interface';
 
 const BackToTopButton = ({ scrollToTop }: BackToTopButtonProps) => (
   <IconButtonBackToTop onClick={scrollToTop}>
-    <GoToTopIcon />
+    <AppIcon icon="GoToTop" />
   </IconButtonBackToTop>
 );
 

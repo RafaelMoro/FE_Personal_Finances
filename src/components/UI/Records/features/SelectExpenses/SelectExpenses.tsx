@@ -8,7 +8,7 @@ import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalIn
 
 import { SelectMonthYear } from './SelectMonthYear';
 import { Error } from '../../../Error';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 import { HorizontalLoader } from '../../../HorizontalLoader';
 import { SelectExpensesTable } from '../SelectExpensesTable/SelectExpensesTable';
 import {
@@ -42,7 +42,7 @@ const SelectExpenses = ({
     <>
       <CloseDrawerContainer>
         <IconButton onClick={closeDrawer}>
-          <CloseIcon />
+          <AppIcon icon="Close" />
         </IconButton>
       </CloseDrawerContainer>
       { (!isError) && (

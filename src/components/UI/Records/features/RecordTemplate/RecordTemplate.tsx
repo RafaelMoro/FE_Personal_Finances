@@ -29,7 +29,7 @@ import {
   InputForm, InputAdornment,
   FlexContainer, FormControlLabel, ToggleButton,
 } from '../../../../../styles';
-import { CloseIcon } from '../../../Icons';
+import { AppIcon } from '../../../Icons';
 
 /** Styles */
 import {
@@ -42,6 +42,7 @@ import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
+import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
 const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const {
@@ -241,7 +242,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   return (
     <RecordTemplateMain>
       <GoBackButton to={DASHBOARD_ROUTE}>
-        <CloseIcon />
+        <AppIcon icon="Close" />
       </GoBackButton>
       { (!edit) && (
         <ToggleButtonGroup
@@ -270,53 +271,55 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       >
         {({
           submitForm, errors, touched, values, setFieldValue,
-        }) => (
-          <FormContainer>
-            <Field
-              component={InputForm}
-              name="amount"
-              type="text"
-              variant="standard"
-              label="Amount"
-              InputProps={{
-                startAdornment,
-                inputComponent: NumericFormatCustom as any,
-              }}
-            />
-            <Field
-              component={DateTimePickerValue}
-              setFieldValueCb={setFieldValue}
-              disableFuture
-              name="date"
-              label="Date and Time"
-            />
-            <Field
-              component={InputForm}
-              name="shortName"
-              type="text"
-              variant="standard"
-              label="Short Description"
-            />
-            <Field
-              component={InputForm}
-              multiline
-              rows={5}
-              name="description"
-              variant="standard"
-              label="Description (Optional)"
-            />
-            <CategoriesAndSubcategories
-              errorCategory={errors.category}
-              errorSubcategory={errors.subCategory}
-              touchedCategory={touched.category}
-              touchedSubCategory={touched.subCategory}
-              categoryToBeEdited={categoryToBeEdited}
-            />
-            <AddChipContainer>
-              <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
-              <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
-            </AddChipContainer>
-            { (isCredit && typeOfRecord === 'expense') && (
+        }) => {
+          const hasErrors = Object.keys(errors).length > 0;
+          return (
+            <FormContainer>
+              <Field
+                component={InputForm}
+                name="amount"
+                type="text"
+                variant="standard"
+                label="Amount"
+                InputProps={{
+                  startAdornment,
+                  inputComponent: NumericFormatCustom as any,
+                }}
+              />
+              <Field
+                component={DateTimePickerValue}
+                setFieldValueCb={setFieldValue}
+                disableFuture
+                name="date"
+                label="Date and Time"
+              />
+              <Field
+                component={InputForm}
+                name="shortName"
+                type="text"
+                variant="standard"
+                label="Short Description"
+              />
+              <Field
+                component={InputForm}
+                multiline
+                rows={5}
+                name="description"
+                variant="standard"
+                label="Description (Optional)"
+              />
+              <CategoriesAndSubcategories
+                errorCategory={errors.category}
+                errorSubcategory={errors.subCategory}
+                touchedCategory={touched.category}
+                touchedSubCategory={touched.subCategory}
+                categoryToBeEdited={categoryToBeEdited}
+              />
+              <AddChipContainer>
+                <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
+                <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
+              </AddChipContainer>
+              { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
                 control={(
                   <Field
@@ -329,8 +332,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               )}
                 label="Transaction paid"
               />
-            ) }
-            { (typeOfRecord === 'expense') && (
+              ) }
+              { (typeOfRecord === 'expense') && (
               <ShowIndebtedPeopleContainer>
                 <ShowIndebtedPeople
                   indebtedPeople={indebtedPeople}
@@ -341,8 +344,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   <SecondaryButtonForm variant="contained" onClick={() => openAddPersonModal(values)} size="medium">Add Person</SecondaryButtonForm>
                 </FlexContainer>
               </ShowIndebtedPeopleContainer>
-            ) }
-            { (typeOfRecord === 'income' && isCredit) && (
+              ) }
+              { (typeOfRecord === 'income' && isCredit) && (
               <>
                 <ShowExpenses usePagination expenses={expensesSelected} />
                 <FlexContainer justifyContent="center">
@@ -351,18 +354,26 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
                   </SecondaryButtonForm>
                 </FlexContainer>
               </>
-            ) }
-            <ActionButtonPanel
-              routeCancelButton={DASHBOARD_ROUTE}
-              minWidthNumber="18"
-              submitButtonText={buttonText}
-              loading={loadingMutation}
-              success={successMutation}
-              disableSubmitButton={loadingMutation || successMutation}
-              submitForm={submitForm}
-            />
-          </FormContainer>
-        )}
+              ) }
+              <ActionButtonPanel
+                routeCancelButton={DASHBOARD_ROUTE}
+                minWidthNumber="18"
+                submitButtonText={buttonText}
+                loading={loadingMutation}
+                success={successMutation}
+                disableSubmitButton={loadingMutation || successMutation}
+                submitForm={() => {
+                  if (hasErrors) {
+                    scrollToTop();
+                    submitForm();
+                    return;
+                  }
+                  submitForm();
+                }}
+              />
+            </FormContainer>
+          );
+        }}
       </Formik>
       <AddIndebtedPerson
         addPerson={addIndebtedPerson}

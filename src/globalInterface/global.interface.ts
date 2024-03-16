@@ -6,6 +6,7 @@ export interface UserInfo {
   middleName: string;
   lastName: string;
   email: string;
+  sub: string;
 }
 
 export interface User {
@@ -44,6 +45,10 @@ export interface GeneralResponse {
   version: string;
 }
 
+export interface RequestBearerTokenProps {
+  bearerToken: string;
+}
+
 export interface GeneralError {
   data: GeneralResponse;
   status: number
@@ -79,6 +84,7 @@ export interface Category {
   __v: number;
   categoryName: string;
   subCategories: string[];
+  icon: string;
 }
 
 export interface AccountRecord {

@@ -5,10 +5,10 @@ import {
 
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_EMAIL_EXISTS, ERROR_CATCH_USER_CREATED } from '../../../constants';
 import {
-  CreateUserValues, CreateUserValuesMutation, PersonalInfoFormValues, UserAndPasswordFormValues,
+  CreateUserValues, CreateUserValuesMutation, GoNextProps, PersonalInfoFormValues, UserAndPasswordFormValues,
 } from './interface';
 import { GeneralError } from '../../../globalInterface';
-import { useCreateUserMutation } from '../../../redux/slices/User/actions/createUser';
+import { useCreateLocalCategoriesMutation, useCreateUserMutation } from '../../../redux/slices/User/actions/createUser';
 import { useAnimateBox } from '../../../hooks/useAnimateBox';
 
 import {
@@ -30,7 +30,8 @@ const initialValuesCreateAccountForm = {
 };
 
 const CreateAccount = ():ReactElement => {
-  const [createUserMutation, { isLoading, isError }] = useCreateUserMutation();
+  const [createUserMutation, { isLoading: isLoadingUser, isError: isErrorUser }] = useCreateUserMutation();
+  const [createLocalCategoriesMutation, { isLoading: isLoadingCategories, isError: isErrorCategories }] = useCreateLocalCategoriesMutation();
   const {
     direction, counterView, goPreviousView, goNextView, resetCounterView, getFinalResult,
   } = useAnimateBox();
@@ -54,7 +55,9 @@ const CreateAccount = ():ReactElement => {
         firstName, lastName, middleName, password, email,
       };
 
-      await createUserMutation(values).unwrap();
+      const responseCreateUser = await createUserMutation(values).unwrap();
+      const { data: { userCreated: { sub } } } = responseCreateUser;
+      await createLocalCategoriesMutation({ sub }).unwrap();
       setTimeout(() => {
         getFinalResult();
       }, 3000);
@@ -70,14 +73,10 @@ const CreateAccount = ():ReactElement => {
     }
   };
 
-  const goNext = (props: PersonalInfoFormValues | UserAndPasswordFormValues) => {
-    updateData(props);
+  const goNext = ({ data, shouldSubmitForm = false, skipUpdateData = true }: GoNextProps) => {
+    if (!skipUpdateData) updateData(data);
+    if (shouldSubmitForm) handleSubmit(formData.current);
     goNextView();
-
-    // This view means that the data is ready to be submitted.
-    if (counterView === 1) {
-      handleSubmit(formData.current);
-    }
   };
 
   return (
@@ -93,11 +92,11 @@ const CreateAccount = ():ReactElement => {
           direction={direction}
         />
         <LoadingCreateAccount counterView={counterView} direction={direction} />
-        { (!isLoading) && (
+        { (!isLoadingUser || isLoadingCategories) && (
           <CreateAccountResult
             counterView={counterView}
             direction={direction}
-            isError={isError}
+            isError={isErrorCategories || isErrorUser}
             onError={() => <ErrorCreateAccount error={errorText} resetCounterView={resetCounterView} />}
             onSuccess={() => <SuccessCreateAccount />}
           />

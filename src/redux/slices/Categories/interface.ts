@@ -2,13 +2,8 @@ import { Category } from '../../../globalInterface';
 import { CategoriesResponse } from '../../../components/UI/Records/interface';
 
 export interface CategoriesInitialState {
-  categories: Category[] | null,
   currentCategory: Category | null;
   categoryNotSelected: boolean;
-}
-
-export interface FetchCategoriesQueryProps {
-  bearerToken: string;
 }
 
 export interface FetchCategoriesThunkResponse {

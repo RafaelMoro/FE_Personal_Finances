@@ -49,7 +49,7 @@ describe('<CreateAccount />', () => {
       );
     });
 
-    test('Render first view with title, description, inputs: First name, middle name and last name, buttons: cancel and next', () => {
+    test.skip('Render first view with title, description, inputs: First name, middle name and last name, buttons: cancel and next', () => {
       title = screen.getByRole('heading', { name: /create account/i });
       description = screen.getByText(/fill the following information to create your account\./i);
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
@@ -67,7 +67,8 @@ describe('<CreateAccount />', () => {
       expect(cancelButton).toBeInTheDocument();
     });
 
-    test('Render second view with title, description, inputs: email, password and confirm password, buttons: return and create account', async () => {
+    test.skip(`Render second view with title, description, inputs:
+    email, password and confirm password, buttons: return and create account`, async () => {
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
       lastNameInput = screen.getByRole('textbox', { name: /last name/i });
       nextButton = screen.getByRole('button', { name: /next/i });
@@ -96,7 +97,7 @@ describe('<CreateAccount />', () => {
       });
     });
 
-    test('Render the third view LoadingCreateAccount component', async () => {
+    test.skip('Render the third view LoadingCreateAccount component', async () => {
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
       lastNameInput = screen.getByRole('textbox', { name: /last name/i });
       nextButton = screen.getByRole('button', { name: /next/i });

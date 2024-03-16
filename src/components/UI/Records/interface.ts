@@ -10,14 +10,6 @@ export interface RecordProps {
   backgroundColor: string;
 }
 
-export interface DrawerChipContainerProps {
-  afterContent: string;
-}
-
-export interface PaymentStatusChipProps {
-  isPaid?: boolean;
-}
-
 export interface RecordTableProps {
   isGrid?: boolean;
 }
@@ -88,4 +80,8 @@ export interface SelectMonthYearValues {
 
 export interface ListExpandableContainerProps {
   color: string;
+}
+
+export interface SelectExpensesCellProps {
+  noHorizontalPadding?: boolean;
 }

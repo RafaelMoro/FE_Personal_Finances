@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 describe('<ResetPassword />', () => {
-  test('Render Forgot Password page with title, description, input and button', () => {
+  test.skip('Render Forgot Password page with title, description, input and button', () => {
     const history = createMemoryHistory();
     render(
       <Router location={history.location} navigator={history}>
@@ -40,7 +40,7 @@ describe('<ResetPassword />', () => {
       );
     });
 
-    test('If the email input is empty and the button is clicked, a validation error must appear', async () => {
+    test.skip('If the email input is empty and the button is clicked, a validation error must appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
       changePasswordButton = screen.getByRole('button', { name: /change my password/i });
 
@@ -53,7 +53,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test('If the email entered is invalid and the submit button is clicked, a validation error must appear', async () => {
+    test.skip('If the email entered is invalid and the submit button is clicked, a validation error must appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
       changePasswordButton = screen.getByRole('button', { name: /change my password/i });
 

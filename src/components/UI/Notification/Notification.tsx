@@ -9,7 +9,8 @@ import {
   NotificationDescription, IconCloseContainer, NotificationUIElementContainer,
 } from './Notification.styled';
 import { fadeIn, fadeOut } from '../../../styles/animations/fadeInOut';
-import { CloseIcon } from '../Icons';
+import { AppIcon } from '../Icons';
+import { AppColors } from '../../../styles';
 
 const Notification = ({
   title, description, status, close, UIElement = null,
@@ -45,7 +46,7 @@ const Notification = ({
           </NotificationUIElementContainer>
         )}
         <IconCloseContainer onClick={close}>
-          <CloseIcon />
+          <AppIcon icon="Close" fillColor={AppColors.grey} />
         </IconCloseContainer>
       </NotificationContainer>
     </NotificationWrapper>
