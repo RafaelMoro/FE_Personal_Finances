@@ -1,7 +1,7 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-
-import { DateTimePicker } from '../../../styles';
+import { pickersLayoutClasses } from '@mui/x-date-pickers';
+import { DateTimePicker, globalConfiguration } from '../../../styles';
 import { SelectFormikFieldProps } from '../SelectInput/interface';
 import {
   ArrowDropDownIcon, CalendarMonthIcon, ChevronLeftIcon, ChevronRightIcon,
@@ -15,6 +15,7 @@ interface DateTimePickerProps {
 
 function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
   const { value } = field;
+  console.log('pickersLayoutClasses', pickersLayoutClasses);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -28,6 +29,15 @@ function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
           leftArrowIcon: ChevronLeftIcon,
           rightArrowIcon: ChevronRightIcon,
           openPickerIcon: CalendarMonthIcon,
+        }}
+        slotProps={{
+          layout: {
+            sx: {
+              [`& .${pickersLayoutClasses.toolbar} > span`]: {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+            },
+          },
         }}
       />
     </LocalizationProvider>
