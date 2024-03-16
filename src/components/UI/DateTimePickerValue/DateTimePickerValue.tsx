@@ -15,7 +15,6 @@ interface DateTimePickerProps {
 
 function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
   const { value } = field;
-  console.log('pickersLayoutClasses', pickersLayoutClasses);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -50,6 +49,21 @@ function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
               // Button to change year.
               '& .MuiPickersYear-root > button': {
                 fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+              '& .MuiDateTimePickerToolbar-dateContainer > button > span': {
+                fontSize: globalConfiguration.mobile.fontSizes.H4,
+              },
+              '& .MuiDateTimePickerToolbar-timeContainer .MuiPickersToolbarText-root': {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+              '& .MuiDateTimePickerToolbar-timeContainer .MuiDateTimePickerToolbar-separator': {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
+              '& .MuiDateTimePickerToolbar-timeDigitsContainer': {
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gridTemplateRows: '1fr',
+                placeItems: 'center',
               },
             },
           },
