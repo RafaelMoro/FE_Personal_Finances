@@ -25,10 +25,10 @@ const Account = ({
       <AccountTitle variant="h4">{ title }</AccountTitle>
       <Typography>{ amountFormatted }</Typography>
       <AccountIconsContainer>
-        <IconButton onClick={() => openModifyAccountModal(accountId)}>
+        <IconButton aria-label={`edit-button-account-${title}`} onClick={() => openModifyAccountModal(accountId)}>
           <AppIcon icon="Edit" fillColor={backgroundColorUI.color} />
         </IconButton>
-        <IconButton onClick={() => openDeleteAccountModal(accountId, title)}>
+        <IconButton aria-label={`delete-button-account-${title}`} onClick={() => openDeleteAccountModal(accountId, title)}>
           <AppIcon icon="Delete" fillColor={backgroundColorUI.color} />
         </IconButton>
       </AccountIconsContainer>
