@@ -1,3 +1,18 @@
+## v2.2.0 (2024-03-16)
+Release Changes
+- Fix accesibility issue on log out icon button, edit and remove icon button on account.
+- Fix: Select expenses table was having horizontal overflow. For mobile, the date field was removed.
+- Fix Accesibility issue on subtitle color was not having enough contrast
+- Fix font sizes and icon sizes shown in the date time picker
+- Create local categories on create user
+- Create local categories if the user logins and there are no local categories
+- Apply theme spacing to flex container component
+- Refactor categories and subcategories to fetch categories only and do not show hardcoded local categories
+- Fix create user query fired twice.
+
+### Pull Requests
+[#5](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/5) | Multiple fixes v2.1.0 
+
 ## v2.1.0 (2024-03-10)
 Release Changes
 - Change validation for limit of characters for short description and description
