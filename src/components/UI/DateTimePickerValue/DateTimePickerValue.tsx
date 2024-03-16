@@ -36,6 +36,12 @@ function DateTimePickerValue({ field, setFieldValueCb }: DateTimePickerProps) {
               [`& .${pickersLayoutClasses.toolbar} > span`]: {
                 fontSize: globalConfiguration.mobile.fontSizes.P,
               },
+              '& .MuiDateTimePickerTabs-root .MuiSvgIcon-root': {
+                fontSize: '2rem',
+              },
+              '& .MuiTimeClock-root': {
+                fontSize: globalConfiguration.mobile.fontSizes.P,
+              },
             },
           },
         }}
