@@ -161,7 +161,8 @@ describe('Test Login re routes', () => {
 
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalled();
-      // expect(fetchMock.mock.calls).toContainEqual(successfulLoginResponse);
+      // Expect to see the tick in the button after successful login
+      expect(screen.getByTestId('DoneOutlinedIcon')).toBeInTheDocument();
     });
     await waitFor(() => {
       expect(history.location.pathname).toBe(DASHBOARD_ROUTE);
