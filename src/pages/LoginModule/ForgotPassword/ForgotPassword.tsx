@@ -116,6 +116,7 @@ const ForgotPassword = (): ReactElement => {
                   routeCancelButton={LOGIN_ROUTE}
                   minWidthNumber="10.5"
                   submitButtonText="Send"
+                  actionDataTestId="forgot-password-button"
                   loading={isLoading}
                   success={isSuccess}
                   disableSubmitButton={(isLoading || isSuccess)}

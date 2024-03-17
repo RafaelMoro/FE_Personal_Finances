@@ -122,6 +122,7 @@ const ResetPassword = (): ReactElement => {
                 <ActionButtonPanel
                   minWidthNumber="19"
                   submitButtonText="Reset Password"
+                  actionDataTestId="reset-password-button"
                   submitForm={submitForm}
                   routeCancelButton={LOGIN_ROUTE}
                   disableSubmitButton={isSuccess || isLoading}
