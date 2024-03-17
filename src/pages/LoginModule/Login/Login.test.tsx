@@ -1,5 +1,5 @@
 import {
-  render, screen, fireEvent, waitFor,
+  render, screen, fireEvent, waitFor, cleanup,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory, MemoryHistory } from 'history';
@@ -31,11 +31,24 @@ const successfulLoginResponse = {
   },
   error: null,
 };
+const unsuccessfulLoginResponse = {
+  version: '2.0.0',
+  success: false,
+  message: null,
+  data: null,
+  error: {
+    error: 'Unauthorized',
+    message: 'Email or password Incorrect',
+    statusCode: 401,
+  },
+};
+afterEach(cleanup);
 
 describe('<Login />', () => {
   const history: MemoryHistory = createMemoryHistory();
   beforeEach(() => {
     fetchMock.resetMocks();
+    jest.clearAllMocks();
     render(
       <WrapperRedux>
         <Router location={history.location} navigator={history}>
@@ -81,44 +94,12 @@ describe('<Login />', () => {
       expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
     });
   });
-
-  test.skip('Submit the form and have a unsuccessful return', async () => {
-    const emailInput = screen.getByRole('textbox', { name: /email/i });
-    const passwordInput = screen.getByLabelText(/password/i);
-    const loginButton = screen.getByRole('button', { name: /login/i });
-
-    // Mock the rejected value response
-
-    userEvent.type(emailInput, credentials.email);
-    userEvent.type(passwordInput, credentials.password);
-    userEvent.click(loginButton);
-
-    await waitFor(() => {
-      // expect the mock to be called.
-    });
-  });
-
-  test.skip('Show notification error when email and password are incorrect', async () => {
-    const emailInput = screen.getByRole('textbox', { name: /email/i });
-    const passwordInput = screen.getByLabelText(/password/i);
-    const loginButton = screen.getByRole('button', { name: /login/i });
-
-    // Mock the rejected value response
-
-    userEvent.type(emailInput, credentials.email);
-    userEvent.type(passwordInput, credentials.password);
-    userEvent.click(loginButton);
-
-    await waitFor(() => {
-      const errorNotification = screen.getByRole('heading', { name: /error/i });
-      expect(errorNotification).toBeInTheDocument();
-    });
-  });
 });
 
 describe('Test Login re routes', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
+    jest.clearAllMocks();
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   test('Click the button Register and redirect into the register route', async () => {
@@ -141,9 +122,38 @@ describe('Test Login re routes', () => {
     });
   });
 
-  test('Submit the form and have a successful return', async () => {
+  test('Try to login and show error notification of user and/or password incorrect.', async () => {
     const history: MemoryHistory = createMemoryHistory();
-    fetchMock.mockResponseOnce(JSON.stringify(successfulLoginResponse));
+    fetchMock.mockRejectedValueOnce(JSON.stringify(unsuccessfulLoginResponse));
+    render(
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <Login />
+        </Router>
+      </WrapperRedux>,
+    );
+
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    const passwordInput = screen.getByLabelText(/password/i);
+    const loginButton = screen.getByRole('button', { name: /login/i });
+
+    // Mock the rejected value response
+
+    userEvent.type(emailInput, credentials.email);
+    userEvent.type(passwordInput, credentials.password);
+    userEvent.click(loginButton);
+
+    await waitFor(() => {
+      // expect the mock to be called.
+      expect(fetchMock).toHaveBeenCalled();
+      const errorNotification = screen.getByRole('heading', { name: /error/i });
+      expect(errorNotification).toBeInTheDocument();
+    });
+  });
+
+  test('The user loggs in.', async () => {
+    const history: MemoryHistory = createMemoryHistory();
+    fetchMock.once(JSON.stringify(successfulLoginResponse));
     render(
       <WrapperRedux>
         <Router location={history.location} navigator={history}>
