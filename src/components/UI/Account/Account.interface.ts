@@ -66,3 +66,16 @@ export interface AccountActions {
   handleCloseDeleteAccount: () => void;
   handleOpenDeleteAccount: (accountId: string, accountName: string) => void;
 }
+
+export interface AddAccountProps {
+  onClick: () => void;
+}
+
+export interface ViewAccountsProps {
+  hide: boolean | null;
+  accountsActions: AccountActions;
+}
+
+export interface ViewAccountsStylesProps {
+  hide: boolean | null;
+}

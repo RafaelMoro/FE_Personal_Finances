@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { AddOutlined } from '@mui/icons-material';
 
-import { AddAccountProps } from '../ViewAccounts/interface';
+import { AddAccountProps } from '../../Account.interface';
 import { AddAccountContainer } from '../../Account.styled';
 import { AppColors } from '../../../../../styles';
 
