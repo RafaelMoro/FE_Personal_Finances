@@ -6,43 +6,49 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { ForgotPassword } from './ForgotPassword';
+import { WrapperRedux } from '../../../tests/WrapperRedux';
 
 beforeEach(() => {
   // having console error because of formik.
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-describe('<ResetPassword />', () => {
-  test.skip('Render Forgot Password page with title, description, input and button', () => {
+describe('Reset password page', () => {
+  test('Render Forgot Password page with title, description, input and button', () => {
     const history = createMemoryHistory();
     render(
-      <Router location={history.location} navigator={history}>
-        <ForgotPassword />
-      </Router>,
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <ForgotPassword />
+        </Router>
+      </WrapperRedux>,
     );
 
     expect(screen.getByRole('heading', { name: /forgot password/i })).toBeInTheDocument();
     expect(screen.getByText(/please enter your email and we will send you the instructions to reset your password\./i)).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /change my password/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument();
   });
 
-  describe('Validations of the input and submit form', () => {
+  describe('Validations of the input', () => {
     let emailInput: HTMLElement | null = null;
     let changePasswordButton: HTMLElement | null = null;
 
     beforeEach(() => {
       const history = createMemoryHistory();
       render(
-        <Router location={history.location} navigator={history}>
-          <ForgotPassword />
-        </Router>,
+        <WrapperRedux>
+          <Router location={history.location} navigator={history}>
+            <ForgotPassword />
+          </Router>
+        </WrapperRedux>,
       );
     });
 
-    test.skip('If the email input is empty and the button is clicked, a validation error must appear', async () => {
+    test('If the email input is empty and the button is clicked, a validation error must appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
-      changePasswordButton = screen.getByRole('button', { name: /change my password/i });
+      changePasswordButton = screen.getByRole('button', { name: /send/i });
 
       fireEvent.click(changePasswordButton);
 
@@ -53,9 +59,9 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('If the email entered is invalid and the submit button is clicked, a validation error must appear', async () => {
+    test('If the email entered is invalid and the submit button is clicked, a validation error must appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
-      changePasswordButton = screen.getByRole('button', { name: /change my password/i });
+      changePasswordButton = screen.getByRole('button', { name: /send/i });
 
       userEvent.type(emailInput, 'a');
       fireEvent.click(changePasswordButton);
