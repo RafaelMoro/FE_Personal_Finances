@@ -3,6 +3,7 @@ export type ClickableElement = 'Button' | 'Link';
 export interface ActionButtonPanelProps {
   minWidthNumber: string;
   submitButtonText: string;
+  actionDataTestId: string;
   submitForm?: () => void;
   routeCancelButton?: string;
   disableCancelButton?: boolean;

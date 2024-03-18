@@ -85,6 +85,7 @@ const Login = () => {
                 <ActionButtonPanel
                   minWidthNumber="12"
                   submitButtonText="Login"
+                  actionDataTestId="login-button"
                   submitForm={submitForm}
                   cancelButtonText="Register"
                   routeCancelButton={REGISTER_ROUTE}
