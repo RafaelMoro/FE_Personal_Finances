@@ -1,4 +1,4 @@
-import { AccountUI } from '../../components/UI/Account/interface';
+import { AccountUI } from '../../components/UI/Account/Account.interface';
 import { Account } from '../../globalInterface';
 import { findColor } from '../FindColor';
 import { formatValueToCurrency } from '../FormatNumberToCurrency';

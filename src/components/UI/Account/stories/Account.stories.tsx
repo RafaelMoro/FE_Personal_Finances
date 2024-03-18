@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Account } from '../Account';
-import { AccountUI } from '../interface';
+import { AccountUI } from '../Account.interface';
 
 export default {
   title: 'UI/Account',

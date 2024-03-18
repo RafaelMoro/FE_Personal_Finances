@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ViewAccountsProps } from './interface';
-import { AccountUI } from '../../interface';
+import { AccountUI } from '../../Account.interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { Error } from '../../../Error';

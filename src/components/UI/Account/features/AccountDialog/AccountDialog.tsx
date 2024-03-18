@@ -14,7 +14,7 @@ import { useNotification } from '../../../../../hooks/useNotification';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
-} from '../../interface';
+} from '../../Account.interface';
 import { SelectInput } from '../../../SelectInput';
 import { AppIcon } from '../../../Icons';
 import {

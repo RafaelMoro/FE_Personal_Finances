@@ -1,4 +1,4 @@
-import { DELETE_ACCOUNT_ROUTE, POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/constants';
+import { DELETE_ACCOUNT_ROUTE, POST_PUT_ACCOUNT_ROUTE } from '../../../../components/UI/Account/Account.constants';
 import { GET_ACCOUNTS_ROUTE } from '../../../../components/UI/Account/features/ViewAccounts/constants';
 import { DELETE_METHOD, POST_METHOD, PUT_METHOD } from '../../../../constants';
 import { formatAccounts } from '../../../../utils';

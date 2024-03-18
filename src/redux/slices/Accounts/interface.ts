@@ -1,4 +1,4 @@
-import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
+import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/Account.interface';
 import { Account, GeneralResponse } from '../../../globalInterface';
 
 type AccountsState = 'isUninitialized' | 'loading' | 'success';

@@ -1,4 +1,4 @@
-import { AccountActions } from '../../interface';
+import { AccountActions } from '../../Account.interface';
 
 export interface AddAccountProps {
   onClick: () => void;
