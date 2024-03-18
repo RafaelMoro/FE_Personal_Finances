@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import { ResetPassword } from './ResetPassword';
+import { WrapperRedux } from '../../../tests/WrapperRedux';
 
 beforeEach(() => {
   // having console error because of formik.
@@ -17,12 +18,14 @@ describe('<ResetPassword />', () => {
   beforeEach(() => {
     const history = createMemoryHistory();
     render(
-      <Router location={history.location} navigator={history}>
-        <ResetPassword />
-      </Router>,
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <ResetPassword />
+        </Router>
+      </WrapperRedux>,
     );
   });
-  test.skip('Render Reset Password page', () => {
+  test('Render Reset Password page', () => {
     expect(screen.getByRole('heading', { name: /reset password/i })).toBeInTheDocument();
     expect(screen.getByText(/enter your new password in the fields below:/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
@@ -37,7 +40,7 @@ describe('<ResetPassword />', () => {
     let errorMessage: HTMLElement | null = null;
     let textForPasswordInput: string | null = null;
 
-    test.skip('Password and confirm password inputs are empty and click button, return error message where those inputs are required', async () => {
+    test('Password and confirm password inputs are empty and click button, return error message where those inputs are required', async () => {
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
 
       fireEvent.click(resetPasswordButton);
@@ -48,7 +51,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('Type one character in password input and click button, return error message to have 8 minimum characters', async () => {
+    test('Type one character in password input and click button, return error message to have 8 minimum characters', async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
 
@@ -61,7 +64,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('Type 8 characters with no capital letter and click button, return error message to include 1 capital letter', async () => {
+    test('Type 8 characters with no capital letter and click button, return error message to include 1 capital letter', async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
       textForPasswordInput = 'aksyctdk';
@@ -75,7 +78,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('Type 8 characters, 1 capital letter and click button. Return error message to include at least 1 number', async () => {
+    test('Type 8 characters, 1 capital letter and click button. Return error message to include at least 1 number', async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
       textForPasswordInput = 'aksyctdkC';
@@ -89,7 +92,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip(`Type 8 characters, 1 capital letter, 1 number and click button.
+    test(`Type 8 characters, 1 capital letter, 1 number and click button.
     Return error message to include at least 1 special character`, async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
@@ -104,7 +107,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip(`Type 8 characters, 1 capital letter, 1 number, 1 special character, a space and click button.
+    test(`Type 8 characters, 1 capital letter, 1 number, 1 special character, a space and click button.
     Return error message to do not include white`, async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
@@ -119,7 +122,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('Type 32 characters and click button. Return error message to type password less than 32 characters', async () => {
+    test('Type 32 characters and click button. Return error message to type password less than 32 characters', async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
       textForPasswordInput = 'alsocuetdhskcirtshdleoapsowkrndiww ';
@@ -133,7 +136,7 @@ describe('<ResetPassword />', () => {
       });
     });
 
-    test.skip('Fill the password input correctly, type a character, click button. Return error message that both inputs should match.', async () => {
+    test('Fill the password input correctly, type a character, click button. Return error message that both inputs should match.', async () => {
       passwordInput = screen.getByLabelText(/new password/i);
       confirmPasswordInput = screen.getByLabelText(/confirm password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
