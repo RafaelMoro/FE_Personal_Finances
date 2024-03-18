@@ -17,6 +17,17 @@ const successfulResponse = {
   data: null,
   error: null,
 };
+const userNotFoundResponse = {
+  version: '2.0.0',
+  success: false,
+  message: null,
+  data: null,
+  error: {
+    statusCode: 400,
+    message: 'User not found.',
+    error: 'Bad Request',
+  },
+};
 
 beforeEach(() => {
   fetchMock.resetMocks();
@@ -81,6 +92,36 @@ describe('Reset password page tests', () => {
       await waitFor(() => {
         expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
       });
+    });
+  });
+
+  test(`The user enters a non registered email,
+  then show a notification where the email is not registered and show create account button.`, async () => {
+    let emailInput: HTMLElement | null = null;
+    let changePasswordButton: HTMLElement | null = null;
+    const email = 'example@mail.com';
+
+    const history = createMemoryHistory();
+    fetchMock.mockRejectedValueOnce(JSON.stringify(userNotFoundResponse));
+    render(
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <ForgotPassword />
+        </Router>
+      </WrapperRedux>,
+    );
+    emailInput = screen.getByRole('textbox', { name: /email/i });
+    changePasswordButton = screen.getByRole('button', { name: /send/i });
+
+    userEvent.type(emailInput, email);
+    userEvent.click(changePasswordButton);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      const notificationText = screen.getByText("We don't have any email associated to an account.");
+      const createAccountButton = screen.getByRole('button', { name: /create account/i });
+      expect(notificationText).toBeInTheDocument();
+      expect(createAccountButton).toBeInTheDocument();
     });
   });
 
