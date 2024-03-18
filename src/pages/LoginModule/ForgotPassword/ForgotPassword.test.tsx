@@ -13,8 +13,8 @@ beforeEach(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-describe('Reset password page', () => {
-  test('Render Forgot Password page with title, description, input and button', () => {
+describe('Reset password page tests', () => {
+  test('Show Forgot Password page with title, description, an input to put an email, cancel and send buttons', () => {
     const history = createMemoryHistory();
     render(
       <WrapperRedux>
@@ -31,7 +31,7 @@ describe('Reset password page', () => {
     expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument();
   });
 
-  describe('Validations of the input', () => {
+  describe('Validations of the email input', () => {
     let emailInput: HTMLElement | null = null;
     let changePasswordButton: HTMLElement | null = null;
 
@@ -46,7 +46,7 @@ describe('Reset password page', () => {
       );
     });
 
-    test('If the email input is empty and the button is clicked, a validation error must appear', async () => {
+    test('When the user leaves the email input empty, then he clicks the button, a required email error should appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
       changePasswordButton = screen.getByRole('button', { name: /send/i });
 
@@ -59,7 +59,7 @@ describe('Reset password page', () => {
       });
     });
 
-    test('If the email entered is invalid and the submit button is clicked, a validation error must appear', async () => {
+    test('When the user enters an invalid email, then he clicks on the button send, an invalid email error should appear', async () => {
       emailInput = screen.getByRole('textbox', { name: /email/i });
       changePasswordButton = screen.getByRole('button', { name: /send/i });
 
