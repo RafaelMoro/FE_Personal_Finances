@@ -9,12 +9,15 @@ import fetchMock from 'jest-fetch-mock';
 
 import { ResetPassword } from './ResetPassword';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
+import { LOGIN_ROUTE } from '../../RoutesConstants';
 
 beforeEach(() => {
   // having console error because of formik.
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
+// I'm not mocking invalid jwt as the backend returns a 400 error as well.
+// It's reduntant as the frontend will show an error notification
 const expiredTokenResponse = {
   version: '2.0.0',
   success: false,
@@ -26,17 +29,12 @@ const expiredTokenResponse = {
     statusCode: 400,
   },
 };
-
-const tokenNotValidResponse = {
+const successfulResponse = {
   version: '2.0.0',
-  success: false,
-  message: null,
+  success: true,
+  message: 'Reset password Successfully',
   data: null,
-  error: {
-    error: 'Bad Request',
-    message: 'jwt malformed',
-    statusCode: 400,
-  },
+  error: null,
 };
 
 describe('Reset password page', () => {
@@ -186,25 +184,6 @@ describe('Reset password page', () => {
         expect(errorMessage).toBeInTheDocument();
       });
     });
-
-    test.skip('Submit the form and have a successfully return', async () => {
-      const password = 'MiContraseña2022!';
-      passwordInput = screen.getByLabelText(/new password/i);
-      confirmPasswordInput = screen.getByLabelText(/confirm password/i);
-      resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
-
-      // Mock the successful response
-
-      userEvent.type(passwordInput, password);
-      userEvent.type(confirmPasswordInput, password);
-      fireEvent.click(resetPasswordButton);
-
-      await waitFor(() => {
-        // eslint-disable-next-line no-restricted-globals
-        expect(location.pathname).toBe('/');
-        // expect the mock to be called
-      });
-    });
   });
 
   describe('Validate the user reseting the password', () => {
@@ -213,7 +192,7 @@ describe('Reset password page', () => {
       jest.clearAllMocks();
     });
 
-    test('When the token has expired and the user tries to reset his password, a notification error appears.', async () => {
+    test('When the token has expired or invalid, then the user tries to reset his password, a notification error appears.', async () => {
       const password = 'MiContraseña2022!';
       const history = createMemoryHistory();
       fetchMock.mockRejectedValueOnce(JSON.stringify(expiredTokenResponse));
@@ -238,6 +217,40 @@ describe('Reset password page', () => {
         expect(fetchMock).toHaveBeenCalled();
         const errorNotification = screen.getByRole('heading', { name: /error/i });
         expect(errorNotification).toBeInTheDocument();
+      });
+    });
+
+    test(`When the user resets his password successfully, then a success notification is shown,
+    then the user is redirected to the login page`, async () => {
+      const history = createMemoryHistory();
+      fetchMock.once(JSON.stringify(successfulResponse));
+      render(
+        <WrapperRedux>
+          <Router location={history.location} navigator={history}>
+            <ResetPassword />
+          </Router>
+        </WrapperRedux>,
+      );
+
+      const password = 'MiContraseña2022!';
+      passwordInput = screen.getByLabelText(/new password/i);
+      confirmPasswordInput = screen.getByLabelText(/confirm password/i);
+      resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
+
+      userEvent.type(passwordInput, password);
+      userEvent.type(confirmPasswordInput, password);
+      fireEvent.click(resetPasswordButton);
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+        const successNotification = screen.getByRole('heading', { name: /password reset successfully/i });
+        expect(successNotification).toBeInTheDocument();
+      });
+
+      await waitFor(() => {
+        expect(history.location.pathname).toBe(LOGIN_ROUTE);
+      }, {
+        timeout: 4000,
       });
     });
   });
