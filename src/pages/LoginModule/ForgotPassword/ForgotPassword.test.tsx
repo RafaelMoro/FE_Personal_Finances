@@ -4,11 +4,23 @@ import {
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import fetchMock from 'jest-fetch-mock';
 
 import { ForgotPassword } from './ForgotPassword';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
+import { LOGIN_ROUTE } from '../../RoutesConstants';
+
+const successfulResponse = {
+  version: '2.0.0',
+  success: true,
+  message: 'Email sent',
+  data: null,
+  error: null,
+};
 
 beforeEach(() => {
+  fetchMock.resetMocks();
+  jest.clearAllMocks();
   // having console error because of formik.
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
@@ -70,20 +82,38 @@ describe('Reset password page tests', () => {
         expect(screen.getByText(/invalid email/i)).toBeInTheDocument();
       });
     });
+  });
 
-    // This form will always return successfull return due user security.
-    test.skip('Submit the form and have a successful return', async () => {
-      const email = 'example@mail.com';
-      emailInput = screen.getByRole('textbox', { name: /email/i });
-      changePasswordButton = screen.getByRole('button', { name: /change my password/i });
-      // Mock the response
+  test('The user enters a registered email, then the email sent notification is shown.', async () => {
+    let emailInput: HTMLElement | null = null;
+    let changePasswordButton: HTMLElement | null = null;
+    const email = 'example@mail.com';
 
-      userEvent.type(emailInput, email);
-      userEvent.click(changePasswordButton);
+    const history = createMemoryHistory();
+    fetchMock.once(JSON.stringify(successfulResponse));
+    render(
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <ForgotPassword />
+        </Router>
+      </WrapperRedux>,
+    );
+    emailInput = screen.getByRole('textbox', { name: /email/i });
+    changePasswordButton = screen.getByRole('button', { name: /send/i });
 
-      await waitFor(() => {
-        // expect the mock to be called.
-      });
+    userEvent.type(emailInput, email);
+    userEvent.click(changePasswordButton);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      const successNotification = screen.getByRole('heading', { name: /email sent/i });
+      expect(successNotification).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      expect(history.location.pathname).toBe(LOGIN_ROUTE);
+    }, {
+      timeout: 4000,
     });
   });
 });
