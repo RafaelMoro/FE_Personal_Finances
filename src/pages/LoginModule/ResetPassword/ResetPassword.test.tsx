@@ -5,6 +5,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import fetchMock from 'jest-fetch-mock';
 
 import { ResetPassword } from './ResetPassword';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
@@ -14,8 +15,38 @@ beforeEach(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-describe('<ResetPassword />', () => {
-  beforeEach(() => {
+const expiredTokenResponse = {
+  version: '2.0.0',
+  success: false,
+  message: null,
+  data: null,
+  error: {
+    error: 'Bad Request',
+    message: 'Invalid signature',
+    statusCode: 400,
+  },
+};
+
+const tokenNotValidResponse = {
+  version: '2.0.0',
+  success: false,
+  message: null,
+  data: null,
+  error: {
+    error: 'Bad Request',
+    message: 'jwt malformed',
+    statusCode: 400,
+  },
+};
+
+describe('Reset password page', () => {
+  let passwordInput: HTMLElement | null = null;
+  let confirmPasswordInput: HTMLElement | null = null;
+  let resetPasswordButton: HTMLElement | null = null;
+  let errorMessage: HTMLElement | null = null;
+  let textForPasswordInput: string | null = null;
+
+  test('Render Reset Password page', () => {
     const history = createMemoryHistory();
     render(
       <WrapperRedux>
@@ -24,8 +55,7 @@ describe('<ResetPassword />', () => {
         </Router>
       </WrapperRedux>,
     );
-  });
-  test('Render Reset Password page', () => {
+
     expect(screen.getByRole('heading', { name: /reset password/i })).toBeInTheDocument();
     expect(screen.getByText(/enter your new password in the fields below:/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/new password/i)).toBeInTheDocument();
@@ -34,11 +64,16 @@ describe('<ResetPassword />', () => {
   });
 
   describe('Validations of the inputs form and submit form', () => {
-    let passwordInput: HTMLElement | null = null;
-    let confirmPasswordInput: HTMLElement | null = null;
-    let resetPasswordButton: HTMLElement | null = null;
-    let errorMessage: HTMLElement | null = null;
-    let textForPasswordInput: string | null = null;
+    beforeEach(() => {
+      const history = createMemoryHistory();
+      render(
+        <WrapperRedux>
+          <Router location={history.location} navigator={history}>
+            <ResetPassword />
+          </Router>
+        </WrapperRedux>,
+      );
+    });
 
     test('Password and confirm password inputs are empty and click button, return error message where those inputs are required', async () => {
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
@@ -170,9 +205,25 @@ describe('<ResetPassword />', () => {
         // expect the mock to be called
       });
     });
+  });
 
-    test.skip('Submit the form and have a unsuccessful return', async () => {
+  describe('Validate the user reseting the password', () => {
+    beforeEach(() => {
+      fetchMock.resetMocks();
+      jest.clearAllMocks();
+    });
+
+    test('When the token has expired and the user tries to reset his password, a notification error appears.', async () => {
       const password = 'MiContraseña2022!';
+      const history = createMemoryHistory();
+      fetchMock.mockRejectedValueOnce(JSON.stringify(expiredTokenResponse));
+      render(
+        <WrapperRedux>
+          <Router location={history.location} navigator={history}>
+            <ResetPassword />
+          </Router>
+        </WrapperRedux>,
+      );
       passwordInput = screen.getByLabelText(/new password/i);
       confirmPasswordInput = screen.getByLabelText(/confirm password/i);
       resetPasswordButton = screen.getByRole('button', { name: /reset password/i });
@@ -184,7 +235,9 @@ describe('<ResetPassword />', () => {
       fireEvent.click(resetPasswordButton);
 
       await waitFor(() => {
-        // expect the mock to be called
+        expect(fetchMock).toHaveBeenCalled();
+        const errorNotification = screen.getByRole('heading', { name: /error/i });
+        expect(errorNotification).toBeInTheDocument();
       });
     });
   });
