@@ -358,6 +358,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
               <ActionButtonPanel
                 routeCancelButton={DASHBOARD_ROUTE}
                 minWidthNumber="18"
+                actionDataTestId="create-edit-record-button"
                 submitButtonText={buttonText}
                 loading={loadingMutation}
                 success={successMutation}

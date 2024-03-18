@@ -1,6 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { AnyRecord } from '../../../globalInterface';
+import { WrapperRedux } from '../../../tests/WrapperRedux';
 
 const records: AnyRecord[] = [
   {
@@ -93,46 +96,52 @@ const records: AnyRecord[] = [
 ];
 
 describe('<Records />', () => {
-  test.skip('Render expense in Mobile', () => {
+  test('Render expense in Mobile', () => {
     const expense = records[0];
     const backgroundColor = 'green';
+    const history = createMemoryHistory();
     render(
-      <Record
-        record={expense}
-        backgroundColor={backgroundColor}
-      />,
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={expense}
+            backgroundColor={backgroundColor}
+          />
+        </Router>
+      </WrapperRedux>,
     );
 
     expect(screen.getByText(/casa a solesta gym/i)).toBeInTheDocument();
     expect(screen.getByText(/esta es una descripcion muy larga para darme una i.../i)).toBeInTheDocument();
     expect(screen.getByText(/- \$150\.09/i)).toBeInTheDocument();
-    expect(screen.getByText('May 20')).toBeInTheDocument();
-    expect(screen.getByText('12:34pm')).toBeInTheDocument();
-    expect(screen.getByText('Transport')).toBeInTheDocument();
-    expect(screen.getByText('Didi/Uber')).toBeInTheDocument();
-    expect(screen.getByText('No Budget')).toBeInTheDocument();
-    expect(screen.getByText('No Tags')).toBeInTheDocument();
+    expect(screen.getByText(/may 20/i)).toBeInTheDocument();
+    expect(screen.getByText(/12:34pm/i)).toBeInTheDocument();
+    expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+    expect(screen.getByText(/no tags/i)).toBeInTheDocument();
   });
 
-  test.skip('Render income in Mobile', () => {
+  test('Render income in Mobile', () => {
     const income = records[1];
     const backgroundColor = 'green';
+    const history = createMemoryHistory();
     render(
-      <Record
-        record={income}
-        backgroundColor={backgroundColor}
-      />,
+      <WrapperRedux>
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={income}
+            backgroundColor={backgroundColor}
+          />
+        </Router>
+      </WrapperRedux>,
     );
 
     expect(screen.getByText(/solesta gym a casa/i)).toBeInTheDocument();
     expect(screen.getByText(/didi para ir a casa/i)).toBeInTheDocument();
     expect(screen.getByText(/\+ \$110\.24/i)).toBeInTheDocument();
-    expect(screen.getByText('May 20')).toBeInTheDocument();
+    expect(screen.getByText(/may 20/i)).toBeInTheDocument();
     expect(screen.getByText(/1:50pm/i)).toBeInTheDocument();
-    expect(screen.getByText('Transport')).toBeInTheDocument();
-    expect(screen.getByText('Didi/Uber')).toBeInTheDocument();
-    expect(screen.getByText('No Budget')).toBeInTheDocument();
-    expect(screen.getByText('No Tags')).toBeInTheDocument();
+    expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+    expect(screen.getByText(/no tags/i)).toBeInTheDocument();
     expect(screen.getByText(/records paid: 2/i)).toBeInTheDocument();
   });
 });

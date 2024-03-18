@@ -1,3 +1,13 @@
+## v2.3.0 (2024-03-18)
+Release Changes
+- Fix all tests written by wrapping it with Redux
+- Install jest fetch mocks dependency to mock RTK queries
+- Add data test id to action button panel to submit button
+- Fix errors of pnpm on not recognizing jest-dom methods
+
+### Pull Requests
+[#6](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/6) | Fix tests that were not working properly
+
 ## v2.2.0 (2024-03-16)
 Release Changes
 - Fix accesibility issue on log out icon button, edit and remove icon button on account.

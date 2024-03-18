@@ -54,6 +54,12 @@ export interface GeneralError {
   status: number
 }
 
+// This interface is used for unit test reject responses.
+export interface MockedError {
+  status: string;
+  error: string;
+}
+
 export interface Account {
   _id: string;
   __v: number;

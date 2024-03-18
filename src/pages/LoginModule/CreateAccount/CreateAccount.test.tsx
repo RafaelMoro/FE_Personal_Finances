@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 import userEvent from '@testing-library/user-event';
 
 import { CreateAccount } from './CreateAccount';
+import { WrapperRedux } from '../../../tests/WrapperRedux';
 
 beforeEach(() => {
   // having console error because of formik.
@@ -43,13 +44,15 @@ describe('<CreateAccount />', () => {
   describe('Render all UI elements in Create Account page', () => {
     beforeEach(() => {
       render(
-        <Router location={history.location} navigator={history}>
-          <CreateAccount />
-        </Router>,
+        <WrapperRedux>
+          <Router location={history.location} navigator={history}>
+            <CreateAccount />
+          </Router>
+        </WrapperRedux>,
       );
     });
 
-    test.skip('Render first view with title, description, inputs: First name, middle name and last name, buttons: cancel and next', () => {
+    test('Render first view with title, description, inputs: First name, middle name and last name, buttons: cancel and next', () => {
       title = screen.getByRole('heading', { name: /create account/i });
       description = screen.getByText(/fill the following information to create your account\./i);
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
@@ -67,7 +70,7 @@ describe('<CreateAccount />', () => {
       expect(cancelButton).toBeInTheDocument();
     });
 
-    test.skip(`Render second view with title, description, inputs:
+    test(`Render second view with title, description, inputs:
     email, password and confirm password, buttons: return and create account`, async () => {
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
       lastNameInput = screen.getByRole('textbox', { name: /last name/i });
@@ -97,7 +100,7 @@ describe('<CreateAccount />', () => {
       });
     });
 
-    test.skip('Render the third view LoadingCreateAccount component', async () => {
+    test('Render the third view LoadingCreateAccount component', async () => {
       firstNameInput = screen.getByRole('textbox', { name: /first name/i });
       lastNameInput = screen.getByRole('textbox', { name: /last name/i });
       nextButton = screen.getByRole('button', { name: /next/i });

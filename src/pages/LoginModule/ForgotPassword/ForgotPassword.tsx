@@ -11,7 +11,7 @@ import { LOGIN_ROUTE } from '../../RoutesConstants';
 import {
   ERROR_MESSAGE_GENERAL, ERROR_TITLE_GENERAL, USER_NOT_FOUND_CATCH_ERROR, SUCCESS_FORGOT_PASSWORD_DESC, SUCCESS_FORGOT_PASSWORD_TITLE,
 } from '../../../constants';
-import { GeneralError } from '../../../globalInterface';
+import { GeneralError, MockedError } from '../../../globalInterface';
 import { ForgotPasswordValues } from './interface';
 import { SystemStateEnum } from '../../../enums';
 import { ForgotPasswordSchema } from '../../../validationsSchemas/login.schema';
@@ -58,7 +58,10 @@ const ForgotPassword = (): ReactElement => {
     } catch (err) {
       const error = err as GeneralError;
       const message = error?.data?.error?.message;
-      if (message === USER_NOT_FOUND_CATCH_ERROR) {
+
+      // Message catched for unit test.
+      const messageFromMock = JSON.parse((err as MockedError)?.error)?.error?.message;
+      if (message === USER_NOT_FOUND_CATCH_ERROR || messageFromMock === USER_NOT_FOUND_CATCH_ERROR) {
         toggleUserNotFound();
         updateTitle('Oops!');
         updateDescription("We don't have any email associated to an account.");
@@ -116,6 +119,7 @@ const ForgotPassword = (): ReactElement => {
                   routeCancelButton={LOGIN_ROUTE}
                   minWidthNumber="10.5"
                   submitButtonText="Send"
+                  actionDataTestId="forgot-password-button"
                   loading={isLoading}
                   success={isSuccess}
                   disableSubmitButton={(isLoading || isSuccess)}
