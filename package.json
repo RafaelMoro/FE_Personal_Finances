@@ -36,6 +36,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.{styled,interface,stories,constants,test}.{ts,tsx} --collectCoverageFrom=!src/**/index.ts",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 7007 -s public",
     "build-storybook": "build-storybook -s public",
