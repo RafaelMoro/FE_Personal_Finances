@@ -9,7 +9,7 @@ const TransferAccountSelector = () => {
       <SelectInput
         labelId="select-origin-account"
         labelName="Origin Account"
-        fieldName="origin-account"
+        fieldName="originAccount"
         stringOptions={accountsOptions}
         colorOptions={[]}
         processSelectDataFn={() => {}}
@@ -17,7 +17,7 @@ const TransferAccountSelector = () => {
       <SelectInput
         labelId="select-destiny-account"
         labelName="Destiny Account"
-        fieldName="destiny-account"
+        fieldName="destinationAccount"
         stringOptions={accountsOptions}
         colorOptions={[]}
         processSelectDataFn={() => {}}
