@@ -7,4 +7,4 @@ export interface AdditionalData {
   tag: string[];
 }
 
-export type TypeOfRecord = 'expense' | 'income';
+export type TypeOfRecord = 'expense' | 'income' | 'transfer';

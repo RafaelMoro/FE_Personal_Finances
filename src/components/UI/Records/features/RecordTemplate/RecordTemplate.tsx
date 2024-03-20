@@ -254,6 +254,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         >
           <ToggleButton value="expense">Expense</ToggleButton>
           <ToggleButton value="income">Income</ToggleButton>
+          <ToggleButton value="transfer">Transfer</ToggleButton>
         </ToggleButtonGroup>
       ) }
       <Typography variant="h3" align="center">
