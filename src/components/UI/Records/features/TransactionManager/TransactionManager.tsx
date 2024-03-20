@@ -4,6 +4,7 @@ import { Typography } from '@mui/material';
 import { TypeOfRecord } from '../RecordTemplate/interface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
+import { Transfer } from '../Transfer';
 import { AppIcon } from '../../../Icons';
 import { ToggleButton } from '../../../../../styles';
 import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
@@ -42,6 +43,7 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
         { typeOfRecord }
       </Typography>
       { (typeOfRecord !== 'transfer') && (<RecordTemplate changeTypeIncome={changeTypeIncome} typeOfRecord={typeOfRecord} edit={edit} />) }
+      { (typeOfRecord === 'transfer') && (<Transfer action={action} />) }
     </RecordTemplateMain>
   );
 };
