@@ -49,6 +49,13 @@ export interface CreateRecordValues {
   date: Dayjs;
 }
 
+export interface CreateTransferValues extends CreateRecordValues {
+  originAccount: string;
+  destinationAccount: string;
+  budgets: string[];
+  tag: string[];
+}
+
 export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> {
   amount: number;
   tag: string[];

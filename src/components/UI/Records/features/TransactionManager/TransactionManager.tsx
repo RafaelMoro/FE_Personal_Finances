@@ -43,7 +43,7 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
         { typeOfRecord }
       </Typography>
       { (typeOfRecord !== 'transfer') && (<RecordTemplate changeTypeIncome={changeTypeIncome} typeOfRecord={typeOfRecord} edit={edit} />) }
-      { (typeOfRecord === 'transfer') && (<Transfer action={action} />) }
+      { (typeOfRecord === 'transfer') && (<Transfer typeOfRecord={typeOfRecord} action={action} />) }
     </RecordTemplateMain>
   );
 };

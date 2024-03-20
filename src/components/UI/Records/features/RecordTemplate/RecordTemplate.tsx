@@ -17,16 +17,14 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
+import { TransactionFormFields } from '../TransactionFormFields';
 import { ActionButtonPanel } from '../../../../templates';
-import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
 import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
-import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
-  InputForm, InputAdornment,
   FlexContainer, FormControlLabel,
 } from '../../../../../styles';
 
@@ -37,7 +35,6 @@ import {
 } from './RecordTemplate.styled';
 
 /** Utils */
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
@@ -99,9 +96,6 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
   });
 
   const isExpense = typeOfRecord === 'expense';
-  const startAdornment = isExpense
-    ? <InputAdornment position="start">- $</InputAdornment>
-    : <InputAdornment position="start">+ $</InputAdornment>;
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const buttonText = `${action} record`;
 
@@ -248,44 +242,11 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
           const hasErrors = Object.keys(errors).length > 0;
           return (
             <FormContainer>
-              <Field
-                component={InputForm}
-                name="amount"
-                type="text"
-                variant="standard"
-                label="Amount"
-                InputProps={{
-                  startAdornment,
-                  inputComponent: NumericFormatCustom as any,
-                }}
-              />
-              <Field
-                component={DateTimePickerValue}
-                setFieldValueCb={setFieldValue}
-                disableFuture
-                name="date"
-                label="Date and Time"
-              />
-              <Field
-                component={InputForm}
-                name="shortName"
-                type="text"
-                variant="standard"
-                label="Short Description"
-              />
-              <Field
-                component={InputForm}
-                multiline
-                rows={5}
-                name="description"
-                variant="standard"
-                label="Description (Optional)"
-              />
-              <CategoriesAndSubcategories
-                errorCategory={errors.category}
-                errorSubcategory={errors.subCategory}
-                touchedCategory={touched.category}
-                touchedSubCategory={touched.subCategory}
+              <TransactionFormFields
+                typeOfRecord={typeOfRecord}
+                setFieldValue={setFieldValue}
+                errors={errors}
+                touched={touched}
                 categoryToBeEdited={categoryToBeEdited}
               />
               <AddChipContainer>

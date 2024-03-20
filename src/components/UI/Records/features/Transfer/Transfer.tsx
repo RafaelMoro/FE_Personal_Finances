@@ -1,17 +1,27 @@
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { Formik } from 'formik';
+
+import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { AccountUI } from '../../../Account/interface';
+import { CreateTransferValues } from '../../interface';
+import { TypeOfRecord } from '../RecordTemplate/interface';
 import { TransferSchema } from '../../../../../validationsSchemas/records.schema';
-import { TransferAccountSelector } from '../TransferAccountSelector';
-import { ActionButtonPanel } from '../../../../templates';
-import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
-const Transfer = ({ action }: { action: string }) => {
+import { TransferAccountSelector } from '../TransferAccountSelector';
+import { TransactionFormFields } from '../TransactionFormFields';
+import { ActionButtonPanel } from '../../../../templates';
+
+interface TransferProps {
+  action: string;
+  typeOfRecord: TypeOfRecord;
+}
+
+const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues, setInitialValues] = useState<CreateTransferValues>({
     originAccount: (selectedAccount as AccountUI).title,
     destinationAccount: '',
     amount: '',
@@ -42,11 +52,21 @@ const Transfer = ({ action }: { action: string }) => {
       enableReinitialize
       validateOnMount
     >
-      {({ submitForm, errors }) => {
+      {({
+        submitForm, errors, touched, setFieldValue,
+      }) => {
         const hasErrors = Object.keys(errors).length > 0;
         return (
           <>
             <TransferAccountSelector />
+            <TransactionFormFields
+              typeOfRecord={typeOfRecord}
+              setFieldValue={setFieldValue}
+              errors={errors}
+              touched={touched}
+              // @TODO Change this to the real value.
+              categoryToBeEdited={null}
+            />
             <ActionButtonPanel
               routeCancelButton={DASHBOARD_ROUTE}
               minWidthNumber="18"
