@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
 import {
-  RecordTemplateProps, AdditionalData, TypeOfRecord,
+  RecordTemplateProps, AdditionalData,
 } from './interface';
 import { CreateRecordValues } from '../../interface';
 import { ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
@@ -27,13 +27,12 @@ import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
   InputForm, InputAdornment,
-  FlexContainer, FormControlLabel, ToggleButton,
+  FlexContainer, FormControlLabel,
 } from '../../../../../styles';
-import { AppIcon } from '../../../Icons';
 
 /** Styles */
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
+  FormContainer, AddChipContainer,
   ShowIndebtedPeopleContainer, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
@@ -44,7 +43,7 @@ import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
-const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: RecordTemplateProps) => {
   const {
     createExpense,
     createIncome,
@@ -81,7 +80,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
   const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const isCredit = selectedAccount?.accountType === 'Credit';
-  const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
@@ -112,7 +110,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     if (edit && recordToBeEdited) {
       // Set record type to income if it's an income.
       if (recordToBeEdited?.expensesPaid) {
-        setTypeOfRecord('income');
+        changeTypeIncome();
       }
 
       const newInitialValues: CreateRecordValues = {
@@ -165,10 +163,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     setShowExpenses(!showExpenses);
   };
   const closeShowExpenses = () => setShowExpenses(false);
-
-  const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
-    setTypeOfRecord(newTypeOfRecord);
-  };
 
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
 
@@ -240,23 +234,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   };
 
   return (
-    <RecordTemplateMain>
-      <GoBackButton to={DASHBOARD_ROUTE}>
-        <AppIcon icon="Close" />
-      </GoBackButton>
-      { (!edit) && (
-        <ToggleButtonGroup
-          color="primary"
-          exclusive
-          value={typeOfRecord}
-          onChange={changeTypeOfRecord}
-          aria-label="Select type of record"
-        >
-          <ToggleButton value="expense">Expense</ToggleButton>
-          <ToggleButton value="income">Income</ToggleButton>
-          <ToggleButton value="transfer">Transfer</ToggleButton>
-        </ToggleButtonGroup>
-      ) }
+    <>
       <Typography variant="h3" align="center">
         {' '}
         { action }
@@ -389,7 +367,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
         <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
       </Drawer>
-    </RecordTemplateMain>
+    </>
   );
 };
 
