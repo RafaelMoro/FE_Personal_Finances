@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Drawer, Typography } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
 import dayjs from 'dayjs';
@@ -235,12 +235,6 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
 
   return (
     <>
-      <Typography variant="h3" align="center">
-        {' '}
-        { action }
-        {' '}
-        { typeOfRecord }
-      </Typography>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}

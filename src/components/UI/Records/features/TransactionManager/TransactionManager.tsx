@@ -1,13 +1,16 @@
 import { useState } from 'react';
+import { Typography } from '@mui/material';
+
 import { TypeOfRecord } from '../RecordTemplate/interface';
-import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
+import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
 import { AppIcon } from '../../../Icons';
 import { ToggleButton } from '../../../../../styles';
-import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
+import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
 
 const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
+  const action: string = edit ? 'Edit' : 'Create';
 
   const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
     setTypeOfRecord(newTypeOfRecord);
@@ -32,6 +35,12 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
         <ToggleButton value="transfer">Transfer</ToggleButton>
       </ToggleButtonGroup>
       ) }
+      <Typography variant="h3" align="center">
+        {' '}
+        { action }
+        {' '}
+        { typeOfRecord }
+      </Typography>
       { (typeOfRecord !== 'transfer') && (<RecordTemplate changeTypeIncome={changeTypeIncome} typeOfRecord={typeOfRecord} edit={edit} />) }
     </RecordTemplateMain>
   );
