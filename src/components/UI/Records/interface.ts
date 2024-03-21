@@ -47,6 +47,8 @@ export interface CreateRecordValues {
   subCategory: string;
   isPaid?: boolean;
   date: Dayjs;
+  tag: string[];
+  budgets: string[];
 }
 
 export interface CreateTransferValues extends CreateRecordValues {
