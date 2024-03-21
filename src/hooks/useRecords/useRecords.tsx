@@ -16,6 +16,7 @@ import {
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
   UpdateTotalCurrencyProps,
   Actions,
+  CreateTransferProps,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -199,6 +200,74 @@ const useRecords = ({
 
       // Navigate to dashboard
       navigate(DASHBOARD_ROUTE);
+    } catch (err) {
+      const errorCatched = err as GeneralError;
+      showErrorNotification({
+        errorMessage: errorCatched?.data?.message ?? '',
+        action: 'Create',
+        goToDashboard: true,
+      });
+    }
+  };
+
+  const createTransfer = async ({ valuesExpense, valuesIncome }: CreateTransferProps) => {
+    try {
+      const { amount: amountExpense, date: dateValue } = valuesExpense;
+      const { amount: amountIncome } = valuesIncome;
+      const date = dateValue.toDate();
+
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
+
+      await createExpenseMutation({ values: valuesExpense, bearerToken }).unwrap();
+      await createIncomeMutation({ values: valuesIncome, bearerToken }).unwrap();
+
+      // Update the amount of the account.
+      const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true });
+      // If there's an error while updating the account, return
+      if (updateAmountOriginAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+      const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false });
+      if (updateAmountDestinationAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+
+      // Update amount of total records
+      if (isCurrentMonth) {
+        const payloadExpense = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amountExpense,
+          recordAgeCategory: 'Current Month',
+        });
+        const payloadIncome = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.incomeTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Current Month',
+        });
+        dispatch(updateTotalExpense(payloadExpense));
+        dispatch(updateTotalIncome(payloadIncome));
+      }
+
+      if (isLastMonth) {
+        const payloadExpense = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Last month',
+        });
+        const payloadIncome = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.incomeTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Last month',
+        });
+        dispatch(updateTotalExpense(payloadExpense));
+        dispatch(updateTotalIncome(payloadIncome));
+      }
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Transfer created',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
@@ -440,6 +509,7 @@ const useRecords = ({
     editExpense,
     createIncome,
     editIncome,
+    createTransfer,
     deleteRecord,
     loadingDeleteRecord,
     isLoadingCreateExpense,

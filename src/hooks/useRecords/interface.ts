@@ -30,6 +30,11 @@ export interface ShowErrorNotificationProps {
   goToDashboard?: boolean;
 }
 
+export interface CreateTransferProps {
+  valuesExpense: CreateExpenseValues;
+  valuesIncome: CreateIncomeValues;
+}
+
 export interface UpdateRecordsOnEditProps {
   date: Date;
   recordEdited: AnyRecord;

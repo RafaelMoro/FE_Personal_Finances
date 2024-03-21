@@ -23,8 +23,7 @@ interface TransferProps {
 
 const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const {
-    createExpense,
-    createIncome,
+    createTransfer,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isSucessCreateExpense,
@@ -64,7 +63,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       isPaid, amount, destinationAccount, originAccount, ...restValues
     } = values;
     const amountToNumber = Number(amount);
-    // Submit the expense in the origin record
+
     const newValuesExpense = {
       ...restValues,
       amount: amountToNumber,
@@ -72,9 +71,6 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       account: values.originAccount,
       isPaid: true,
     };
-    createExpense(newValuesExpense);
-
-    // Submit the income in the destination record
     const newValuesIncome = {
       ...restValues,
       amount: amountToNumber,
@@ -82,7 +78,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       expensesPaid: [],
       account: values.destinationAccount,
     };
-    createIncome(newValuesIncome);
+    createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
 
   return (
