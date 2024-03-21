@@ -5,6 +5,8 @@ import { SelectInput } from '../../../SelectInput';
 import { SelectAccount } from '../../../SelectInput/interface';
 
 interface TransferAccountSelectorProps {
+  setDestinationAsCredit: () => void;
+  setDestinationAsNonCredit: () => void;
   errorOriginAccount?: string;
   errorDestinationAccount?: string;
   touchedOriginAccount?: boolean;
@@ -12,13 +14,14 @@ interface TransferAccountSelectorProps {
 }
 
 const TransferAccountSelector = ({
-  errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
+  errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount, setDestinationAsCredit, setDestinationAsNonCredit,
 }: TransferAccountSelectorProps) => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accountsOptions: SelectAccount[] = (accounts ?? []).map((account) => ({ _id: account._id, title: account.title }));
   const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== selectedAccount?._id);
+  let lastDestinationAccountId: string | null = null;
 
   const handleSelectOriginAccount = (name: string, value: string | string[]) => {
     if (name === 'originAccount' && typeof value === 'string') {
@@ -30,6 +33,22 @@ const TransferAccountSelector = ({
       }
     }
   };
+
+  // Function to toggle the flag where the destination account is a credit account.
+  const toggleDestinationCredit = (name: string, value: string | string[]) => {
+    if (name === 'destinationAccount' && typeof value === 'string' && value !== '') {
+      if (value !== lastDestinationAccountId) {
+        lastDestinationAccountId = value;
+        const destinationAccount = (accounts ?? []).find((account) => account._id === value);
+        if (destinationAccount && destinationAccount.accountType === 'Credit') {
+          setDestinationAsCredit();
+        } else if (destinationAccount && destinationAccount.accountType !== 'Credit') {
+          setDestinationAsNonCredit();
+        }
+      }
+    }
+  };
+
   return (
     <>
       <SelectInput
@@ -51,6 +70,7 @@ const TransferAccountSelector = ({
         accountsOptions={accountsOptionsDestination}
         colorOptions={[]}
         stringOptions={[]}
+        processSelectDataFn={toggleDestinationCredit}
       />
       { (touchedDestinationAccount && errorDestinationAccount) && (
         <ErrorParagraphValidation variant="subText">{errorDestinationAccount}</ErrorParagraphValidation>

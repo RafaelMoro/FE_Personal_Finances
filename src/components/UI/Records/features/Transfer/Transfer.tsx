@@ -30,6 +30,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     isSucessCreateIncome,
   } = useRecords({});
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
     originAccount: (selectedAccount as AccountUI)._id,
     destinationAccount: '',
@@ -44,6 +45,9 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     budgets: [],
     tag: [],
   });
+
+  const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
+  const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
 
   const updateTags = (newChips: string[]) => {
     setInitialValues({ ...initialValues, tag: newChips });
@@ -100,6 +104,8 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
               errorOriginAccount={errors.originAccount}
               touchedDestinationAccount={touched.destinationAccount}
               touchedOriginAccount={touched.originAccount}
+              setDestinationAsCredit={setDestinationAsCredit}
+              setDestinationAsNonCredit={setDestinationAsNonCredit}
             />
             <TransactionFormFields
               typeOfRecord={typeOfRecord}
