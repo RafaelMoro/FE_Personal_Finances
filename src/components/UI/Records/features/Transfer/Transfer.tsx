@@ -36,6 +36,14 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     tag: [],
   });
 
+  const updateTags = (newChips: string[]) => {
+    setInitialValues({ ...initialValues, tag: newChips });
+  };
+
+  const updateBudgets = (newBudgets: string[]) => {
+    setInitialValues({ ...initialValues, budgets: newBudgets });
+  };
+
   const buttonText = `${action} transfer`;
   // @TODO: Change this to the real values.
   const loadingMutation = false;
@@ -66,6 +74,10 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
               touched={touched}
               // @TODO Change this to the real value.
               categoryToBeEdited={null}
+              updateBudgets={updateBudgets}
+              updateTags={updateTags}
+              tags={initialValues.tag}
+              budgets={initialValues.budgets}
             />
             <ActionButtonPanel
               routeCancelButton={DASHBOARD_ROUTE}

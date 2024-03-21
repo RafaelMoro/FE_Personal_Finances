@@ -6,9 +6,7 @@ import { Switch } from 'formik-mui';
 import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
-import {
-  RecordTemplateProps, AdditionalData,
-} from './interface';
+import { RecordTemplateProps } from './interface';
 import { CreateRecordValues } from '../../interface';
 import { ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
@@ -21,7 +19,6 @@ import { TransactionFormFields } from '../TransactionFormFields';
 import { ActionButtonPanel } from '../../../../templates';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
-import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
 import {
@@ -30,8 +27,7 @@ import {
 
 /** Styles */
 import {
-  FormContainer, AddChipContainer,
-  ShowIndebtedPeopleContainer, SecondaryButtonForm,
+  FormContainer, ShowIndebtedPeopleContainer, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
@@ -88,12 +84,17 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
     // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: !isCredit,
     date: dayjs(new Date()),
+    tag: [],
+    budgets: [],
   });
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
-  const [additionalData, setAdditionalData] = useState<AdditionalData>({
-    budgets: [],
-    tag: [],
-  });
+  const updateTags = (newChips: string[]) => {
+    setInitialValues({ ...initialValues, tag: newChips });
+  };
+
+  const updateBudgets = (newBudgets: string[]) => {
+    setInitialValues({ ...initialValues, budgets: newBudgets });
+  };
 
   const isExpense = typeOfRecord === 'expense';
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
@@ -115,10 +116,8 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
         subCategory: recordToBeEdited.subCategory,
         isPaid: recordToBeEdited.isPaid ?? !isCredit,
         date: dayjs(recordToBeEdited.date),
-      };
-      const newAdditionalData: AdditionalData = {
-        budgets: recordToBeEdited.budgets,
         tag: recordToBeEdited.tag,
+        budgets: recordToBeEdited.budgets,
       };
 
       // If the expense has indebted people, update it.
@@ -140,7 +139,6 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
       }
 
       setInitialValues(newInitialValues);
-      setAdditionalData(newAdditionalData);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordToBeEdited?.category.categoryName, edit, isCredit]);
@@ -160,14 +158,6 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
 
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
 
-  const updateTags = (newTags: string[]):void => {
-    setAdditionalData({ ...additionalData, tag: newTags });
-  };
-
-  const updateBudgets = (newBudgets: string[]):void => {
-    setAdditionalData({ ...additionalData, budgets: newBudgets });
-  };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
     // Flag to know if amount has a different value from the initial value. If so, the query to update account amount will be executed.
@@ -182,13 +172,11 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
     const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
-      ...additionalData,
       amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
     } : {
       ...restValues,
-      ...additionalData,
       amount: amountToNumber,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
@@ -248,11 +236,11 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
                 errors={errors}
                 touched={touched}
                 categoryToBeEdited={categoryToBeEdited}
+                updateBudgets={updateBudgets}
+                updateTags={updateTags}
+                tags={initialValues.tag}
+                budgets={initialValues.budgets}
               />
-              <AddChipContainer>
-                <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
-                <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
-              </AddChipContainer>
               { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
                 control={(
