@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Field, FormikErrors, FormikTouched } from 'formik';
-import { InputForm } from '../../../../../styles';
 import { TypeOfRecord } from '../RecordTemplate/interface';
+import { CreateRecordValues, CreateTransferValues } from '../../interface';
+import { Category } from '../../../../../globalInterface';
+
 import { CurrencyAdornment } from './CurrencyAdornment';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
-import { CreateRecordValues, CreateTransferValues } from '../../interface';
-import { Category } from '../../../../../globalInterface';
+import { AddChip } from '../AddChip';
+import { InputForm } from '../../../../../styles';
+import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
 
 interface TransactionFormFieldsProps {
   typeOfRecord: TypeOfRecord;
@@ -15,10 +18,14 @@ interface TransactionFormFieldsProps {
   errors: FormikErrors<CreateRecordValues | CreateTransferValues>;
   touched: FormikTouched<CreateRecordValues | CreateTransferValues>;
   categoryToBeEdited: Category | null;
+  updateTags: (newTags: string[]) => void;
+  updateBudgets: (newBudgets: string[]) => void;
+  tags: string[];
+  budgets: string[];
 }
 
 const TransactionFormFields = ({
-  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited,
+  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets,
 }: TransactionFormFieldsProps) => (
   <>
     <Field
@@ -61,6 +68,10 @@ const TransactionFormFields = ({
       touchedSubCategory={touched.subCategory}
       categoryToBeEdited={categoryToBeEdited}
     />
+    <AddChipContainer>
+      <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={tags} />
+      <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={budgets} />
+    </AddChipContainer>
   </>
 );
 
