@@ -13,6 +13,8 @@ import { scrollToTop } from '../../../../../utils/ScrollToTop';
 import { TransferAccountSelector } from '../TransferAccountSelector';
 import { TransactionFormFields } from '../TransactionFormFields';
 import { ActionButtonPanel } from '../../../../templates';
+import { FormContainer } from '../RecordTemplate/RecordTemplate.styled';
+import { useRecords } from '../../../../../hooks/useRecords';
 
 interface TransferProps {
   action: string;
@@ -20,6 +22,14 @@ interface TransferProps {
 }
 
 const Transfer = ({ action, typeOfRecord }: TransferProps) => {
+  const {
+    createExpense,
+    createIncome,
+    isLoadingCreateExpense,
+    isLoadingCreateIncome,
+    isSucessCreateExpense,
+    isSucessCreateIncome,
+  } = useRecords({});
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
     originAccount: (selectedAccount as AccountUI)._id,
@@ -46,11 +56,34 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
 
   const buttonText = `${action} transfer`;
   // @TODO: Change this to the real values.
-  const loadingMutation = false;
-  const successMutation = false;
+  const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome;
+  const successMutation = isSucessCreateExpense && isSucessCreateIncome;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = (values: any) => {};
+  const handleSubmit = (values: CreateTransferValues) => {
+    const {
+      isPaid, amount, destinationAccount, originAccount, ...restValues
+    } = values;
+    const amountToNumber = Number(amount);
+    // Submit the expense in the origin record
+    const newValuesExpense = {
+      ...restValues,
+      amount: amountToNumber,
+      indebtedPeople: [],
+      account: values.originAccount,
+      isPaid: true,
+    };
+    createExpense(newValuesExpense);
+
+    // Submit the income in the destination record
+    const newValuesIncome = {
+      ...restValues,
+      amount: amountToNumber,
+      indebtedPeople: [],
+      expensesPaid: [],
+      account: values.destinationAccount,
+    };
+    createIncome(newValuesIncome);
+  };
 
   return (
     <Formik
@@ -65,7 +98,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       }) => {
         const hasErrors = Object.keys(errors).length > 0;
         return (
-          <>
+          <FormContainer>
             <TransferAccountSelector
               errorDestinationAccount={errors.destinationAccount}
               errorOriginAccount={errors.originAccount}
@@ -101,7 +134,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
                 submitForm();
               }}
             />
-          </>
+          </FormContainer>
         );
       }}
     </Formik>
