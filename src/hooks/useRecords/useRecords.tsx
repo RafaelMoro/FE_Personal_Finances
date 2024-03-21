@@ -268,6 +268,9 @@ const useRecords = ({
         newDescription: '',
         newStatus: SystemStateEnum.Success,
       });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
     } catch (err) {
       const errorCatched = err as GeneralError;
       showErrorNotification({
