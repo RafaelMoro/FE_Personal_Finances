@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Typography } from '@mui/material';
 
+import { useAppSelector } from '../../../../../redux/hooks';
 import { TypeOfRecord } from '../RecordTemplate/interface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
@@ -10,6 +11,8 @@ import { ToggleButton } from '../../../../../styles';
 import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
 
 const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
+  const accounts = useAppSelector((state) => state.accounts.accounts);
+  const hasOnlyOneAccount = accounts?.length === 1;
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const action: string = edit ? 'Edit' : 'Create';
 
@@ -33,7 +36,7 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
       >
         <ToggleButton value="expense">Expense</ToggleButton>
         <ToggleButton value="income">Income</ToggleButton>
-        <ToggleButton value="transfer">Transfer</ToggleButton>
+        { (!hasOnlyOneAccount) && (<ToggleButton value="transfer">Transfer</ToggleButton>) }
       </ToggleButtonGroup>
       ) }
       <Typography variant="h3" align="center">
@@ -43,7 +46,7 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
         { typeOfRecord }
       </Typography>
       { (typeOfRecord !== 'transfer') && (<RecordTemplate changeTypeIncome={changeTypeIncome} typeOfRecord={typeOfRecord} edit={edit} />) }
-      { (typeOfRecord === 'transfer') && (<Transfer typeOfRecord={typeOfRecord} action={action} />) }
+      { (typeOfRecord === 'transfer' && !hasOnlyOneAccount) && (<Transfer typeOfRecord={typeOfRecord} action={action} />) }
     </RecordTemplateMain>
   );
 };
