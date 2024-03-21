@@ -22,7 +22,7 @@ interface TransferProps {
 const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
-    originAccount: (selectedAccount as AccountUI).title,
+    originAccount: (selectedAccount as AccountUI)._id,
     destinationAccount: '',
     amount: '',
     shortName: '',

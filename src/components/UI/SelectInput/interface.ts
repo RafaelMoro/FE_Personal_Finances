@@ -19,11 +19,17 @@ export interface SelectFormikProps {
   disabled?: boolean;
 }
 
+export interface SelectAccount {
+  _id: string;
+  title: string;
+}
+
 export interface SelectInputProps {
   labelId: string;
   labelName: string | ReactNode;
   fieldName: string;
   stringOptions: string[];
+  accountsOptions?: SelectAccount[];
   colorOptions: | TextColors[] | BackgroundColors[];
   selectInputColors?: boolean;
   // Callback to do any action depending on the name and value of the select input

@@ -1,6 +1,7 @@
 import { useAppSelector } from '../../../../../redux/hooks';
 import { ErrorParagraphValidation } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
+import { SelectAccount } from '../../../SelectInput/interface';
 
 interface TransferAccountSelectorProps {
   errorOriginAccount?: string;
@@ -14,16 +15,21 @@ const TransferAccountSelector = ({
 }: TransferAccountSelectorProps) => {
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
-  const accountsOptions = (accounts ?? []).map((account) => account.title);
-  const accountsOptionsDestination = accountsOptions.filter((account) => account !== selectedAccount?.title);
+  const accountsOptions: SelectAccount[] = (accounts ?? []).map((account) => ({ _id: account._id, title: account.title }));
+  const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== selectedAccount?._id);
+
+  const handleSelectOriginAccount = () => {
+    // something
+  };
   return (
     <>
       <SelectInput
         labelId="select-origin-account"
         labelName="Origin Account"
         fieldName="originAccount"
-        stringOptions={accountsOptions}
+        accountsOptions={accountsOptions}
         colorOptions={[]}
+        stringOptions={[]}
         processSelectDataFn={() => {}}
       />
       { (touchedOriginAccount && errorOriginAccount) && (
@@ -33,8 +39,9 @@ const TransferAccountSelector = ({
         labelId="select-destination-account"
         labelName="Destination Account"
         fieldName="destinationAccount"
-        stringOptions={accountsOptionsDestination}
+        accountsOptions={accountsOptionsDestination}
         colorOptions={[]}
+        stringOptions={[]}
         processSelectDataFn={() => {}}
       />
       { (touchedDestinationAccount && errorDestinationAccount) && (
