@@ -5,8 +5,3 @@ export interface RecordTemplateProps {
   changeTypeIncome: () => void;
   typeOfRecord: TypeOfRecord;
 }
-
-export interface AdditionalData {
-  budgets: string[];
-  tag: string[];
-}
