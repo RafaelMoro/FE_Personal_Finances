@@ -66,7 +66,12 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
         const hasErrors = Object.keys(errors).length > 0;
         return (
           <>
-            <TransferAccountSelector />
+            <TransferAccountSelector
+              errorDestinationAccount={errors.destinationAccount}
+              errorOriginAccount={errors.originAccount}
+              touchedDestinationAccount={touched.destinationAccount}
+              touchedOriginAccount={touched.originAccount}
+            />
             <TransactionFormFields
               typeOfRecord={typeOfRecord}
               setFieldValue={setFieldValue}
