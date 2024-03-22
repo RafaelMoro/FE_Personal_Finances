@@ -175,12 +175,14 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
       amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
+      transferId: '',
     } : {
       ...restValues,
       amount: amountToNumber,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: selectedAccount?._id,
+      transferId: '',
     };
 
     if (isExpense) {
