@@ -7,6 +7,7 @@ import { SelectAccount } from '../../../SelectInput/interface';
 interface TransferAccountSelectorProps {
   setDestinationAsCredit: () => void;
   setDestinationAsNonCredit: () => void;
+  updateDestinationAccountId: (id: string) => void;
   errorOriginAccount?: string;
   errorDestinationAccount?: string;
   touchedOriginAccount?: boolean;
@@ -14,7 +15,8 @@ interface TransferAccountSelectorProps {
 }
 
 const TransferAccountSelector = ({
-  errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount, setDestinationAsCredit, setDestinationAsNonCredit,
+  errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
+  setDestinationAsCredit, setDestinationAsNonCredit, updateDestinationAccountId,
 }: TransferAccountSelectorProps) => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts.accounts);
@@ -42,6 +44,7 @@ const TransferAccountSelector = ({
         const destinationAccount = (accounts ?? []).find((account) => account._id === value);
         if (destinationAccount && destinationAccount.accountType === 'Credit') {
           setDestinationAsCredit();
+          updateDestinationAccountId(value);
         } else if (destinationAccount && destinationAccount.accountType !== 'Credit') {
           setDestinationAsNonCredit();
         }

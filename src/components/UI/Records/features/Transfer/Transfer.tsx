@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Formik } from 'formik';
 
 import { Drawer } from '@mui/material';
@@ -55,11 +55,16 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     tag: [],
   });
 
+  const destinationAccountId = useRef('');
+
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
 
   const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
   const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
   const closeShowExpenses = () => setShowExpenses(false);
+  const updateDestinationAccountId = (id: string) => {
+    destinationAccountId.current = id;
+  };
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
   const toggleShowExpenses = (values: CreateTransferValues) => {
     // save initial values
@@ -124,6 +129,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
                 touchedOriginAccount={touched.originAccount}
                 setDestinationAsCredit={setDestinationAsCredit}
                 setDestinationAsNonCredit={setDestinationAsNonCredit}
+                updateDestinationAccountId={updateDestinationAccountId}
               />
               <TransactionFormFields
                 typeOfRecord={typeOfRecord}
@@ -169,7 +175,12 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
         }}
       </Formik>
       <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
-        <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
+        <SelectExpenses
+          modifySelectedExpenses={addExpenseToIncome}
+          selectedExpenses={expensesSelected}
+          closeDrawer={closeShowExpenses}
+          accountId={destinationAccountId.current}
+        />
       </Drawer>
     </>
   );

@@ -19,17 +19,18 @@ interface SelectExpensesProps {
   modifySelectedExpenses: (expenses: ExpensePaid[]) => void;
   selectedExpenses: ExpensePaid[];
   closeDrawer: () => void;
+  accountId?: string;
 }
 
 const SelectExpenses = ({
-  modifySelectedExpenses, selectedExpenses = [], closeDrawer,
+  modifySelectedExpenses, selectedExpenses = [], closeDrawer, accountId,
 }: SelectExpensesProps) => {
   const {
     month, completeMonth, year, years, updateYear, updateMonth, updateCompleteMonth,
   } = useDate();
   const {
     expenses, noExpensesFound, loading, isError,
-  } = useAllExpenses({ month, year });
+  } = useAllExpenses({ month, year, accountId });
 
   const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
     const monthIndex = MONTHS.indexOf(newMonth);
