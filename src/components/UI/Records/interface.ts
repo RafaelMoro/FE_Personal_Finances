@@ -67,7 +67,7 @@ export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> 
 }
 
 export interface CreateIncomeValues extends CreateExpenseValues {
-  expensesPaid: string[];
+  expensesPaid: ExpensePaid[];
 }
 
 export interface RecordOperationResponse extends Omit<GeneralResponse, 'data'> {

@@ -59,8 +59,6 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
 
   const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
   const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
-  // code repeated from RecordTemplate
-  // show expenses and expenses selected state
   const closeShowExpenses = () => setShowExpenses(false);
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
   const toggleShowExpenses = (values: CreateTransferValues) => {
@@ -78,7 +76,6 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   };
 
   const buttonText = `${action} transfer`;
-  // @TODO: Change this to the real values.
   const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome;
   const successMutation = isSucessCreateExpense && isSucessCreateIncome;
 
@@ -99,13 +96,12 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       ...restValues,
       amount: amountToNumber,
       indebtedPeople: [],
-      expensesPaid: [],
+      expensesPaid: expensesSelected,
       account: values.destinationAccount,
     };
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
 
-  // reuse drawer of select expenses and show expenses components
   return (
     <>
       <Formik
