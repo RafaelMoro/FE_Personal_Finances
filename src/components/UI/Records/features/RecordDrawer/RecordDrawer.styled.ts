@@ -2,11 +2,13 @@ import styled from '@emotion/styled';
 import { Table, Typography, TypographyProps } from '@mui/material';
 
 import {
+  RecordStatusTypeColors,
   responsiveBreakpoints,
 } from '../../../../../styles';
 import { ChipContainer, PaymentStatusChip, RecordSubtitleText } from '../../Records.styled';
 import { RecordTableProps } from '../../interface';
 import { appTheme } from '../../../../../styles/theme';
+import { RecordStatusType } from '../../../../../aliasType';
 
 export const RecordDrawerContainer = styled.div`
   display: grid;
@@ -54,7 +56,8 @@ export const RecordDrawerDescription = styled(RecordSubtitleText)`
   grid-column: 1 / 3;
 `;
 
-export const PaymentStatusChipDrawer = styled(PaymentStatusChip)`
+export const PaymentStatusChipDrawer = styled(PaymentStatusChip, { shouldForwardProp: (props) => props !== 'status' })`
+  background-color: ${({ status }: { status: RecordStatusType }) => (RecordStatusTypeColors[status])};
   grid-column: 1 / 3;
   place-self: center;
 `;
