@@ -36,7 +36,7 @@ import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
-const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: RecordTemplateProps) => {
+const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => {
   const {
     createExpense,
     createIncome,
@@ -103,11 +103,6 @@ const RecordTemplate = ({ edit = false, changeTypeIncome, typeOfRecord }: Record
   // Update edit data to the initial values
   useEffect(() => {
     if (edit && recordToBeEdited) {
-      // Set record type to income if it's an income.
-      if (recordToBeEdited?.expensesPaid) {
-        changeTypeIncome();
-      }
-
       const newInitialValues: CreateRecordValues = {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,

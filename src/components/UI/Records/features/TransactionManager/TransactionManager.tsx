@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 
 import { useAppSelector } from '../../../../../redux/hooks';
@@ -13,13 +13,27 @@ import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTe
 const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const hasOnlyOneAccount = accounts?.length === 1;
+  const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const action: string = edit ? 'Edit' : 'Create';
+
+  const changeTypeIncome = () => setTypeOfRecord('income');
+  const changeTypeTransfer = () => setTypeOfRecord('transfer');
+
+  useEffect(() => {
+    if (recordToBeEdited && edit) {
+      if (recordToBeEdited?.transferId) {
+        changeTypeTransfer();
+      }
+      if (recordToBeEdited?.expensesPaid) {
+        changeTypeIncome();
+      }
+    }
+  }, [edit, recordToBeEdited]);
 
   const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
     setTypeOfRecord(newTypeOfRecord);
   };
-  const changeTypeIncome = () => setTypeOfRecord('income');
 
   return (
     <RecordTemplateMain>
@@ -45,8 +59,10 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
         {' '}
         { typeOfRecord }
       </Typography>
-      { (typeOfRecord !== 'transfer') && (<RecordTemplate changeTypeIncome={changeTypeIncome} typeOfRecord={typeOfRecord} edit={edit} />) }
-      { (typeOfRecord === 'transfer' && !hasOnlyOneAccount) && (<Transfer typeOfRecord={typeOfRecord} action={action} />) }
+      { (typeOfRecord !== 'transfer') && (<RecordTemplate typeOfRecord={typeOfRecord} edit={edit} />) }
+      {(typeOfRecord === 'transfer' && !hasOnlyOneAccount) && (
+      <Transfer typeOfRecord={typeOfRecord} action={action} />
+      )}
     </RecordTemplateMain>
   );
 };
