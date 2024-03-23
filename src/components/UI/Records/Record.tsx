@@ -45,6 +45,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   const descriptionIsLong = description.length > MAX_LENGTH_DESCRIPTION;
   const nameIsLong = shortName.length > MAX_LENGTH_TITLE;
   const isExpense = typeof isPaid !== 'undefined';
+  const isTransferIncome = transferId && !isExpense;
   const status = getRecordStatus({ isPaid, transferId });
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
@@ -105,7 +106,12 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
               <PaymentStatusChip label={status} variant="filled" status={status} />
             </RecordStatusContainer>
             ) }
-            { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+            { (isTransferIncome) && (
+              <RecordStatusContainer>
+                <PaymentStatusChip label={status} variant="filled" status="Transfer" />
+              </RecordStatusContainer>
+            )}
+            { (!isExpense && expensesPaid.length > 0 && !openLongView && !isTransferIncome) && (
             <RecordSubtitleText>
               Records Paid:
               {' '}
