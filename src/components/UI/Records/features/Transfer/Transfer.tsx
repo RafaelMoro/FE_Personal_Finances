@@ -21,7 +21,7 @@ import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { ExpensePaid } from '../../../../../globalInterface';
 import { SelectExpenses } from '../SelectExpenses';
-import { createTransferId } from '../../../../../utils/createTransferId';
+import { createTransferId } from '../../../../../utils/CreateTransferId';
 
 interface TransferProps {
   action: string;

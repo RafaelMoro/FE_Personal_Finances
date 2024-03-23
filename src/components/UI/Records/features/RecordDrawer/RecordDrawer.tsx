@@ -26,12 +26,13 @@ import {
   DrawerTypographyBold,
   PaymentStatusChipDrawer,
 } from './RecordDrawer.styled';
+import { getRecordStatus } from '../../../../../utils/GetRecordStatus';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => {
   const {
-    shortName, description, fullDate, formattedTime,
+    shortName, description, fullDate, formattedTime, transferId,
     category, subCategory, tag, indebtedPeople, budgets, isPaid,
   } = record;
   const { icon: categoryIcon = 'foodAndDrink' } = category;
@@ -39,7 +40,7 @@ const RecordDrawer = ({
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
-  const status = isPaid ? 'Paid' : 'Unpaid';
+  const status = getRecordStatus({ isPaid, transferId });
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
@@ -73,7 +74,7 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <PaymentStatusChipDrawer label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+      <PaymentStatusChipDrawer label={status} variant="filled" status={status} />
       <Typography>
         <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
         {category.categoryName}

@@ -10,9 +10,10 @@ import {
 } from './interface';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import {
-  AppColors, Chip, globalConfiguration, responsiveBreakpoints,
+  AppColors, Chip, RecordStatusTypeColors, globalConfiguration, responsiveBreakpoints,
 } from '../../../styles';
 import { appTheme } from '../../../styles/theme';
+import { RecordStatusType } from '../../../aliasType';
 
 export const ListItemRecord = styledMui(ListItem)(({ theme }: { theme: Theme }) => `
   width: 100%;
@@ -207,8 +208,9 @@ export const RecordSkeletonHolder = styled.div`
   ${blinkAnimation}
 `;
 
-export const PaymentStatusChip = styled(Chip)`
+export const PaymentStatusChip = styled(Chip, { shouldForwardProp: (props) => props !== 'status' })`
   color: ${AppColors.white};
+  background-color: ${({ status }: { status: RecordStatusType }) => (RecordStatusTypeColors[status])};
 
   & .MuiChip-label {
     font-size: ${globalConfiguration.mobile.fontSizes.P};
