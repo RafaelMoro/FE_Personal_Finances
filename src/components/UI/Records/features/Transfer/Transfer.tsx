@@ -21,6 +21,7 @@ import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { ExpensePaid } from '../../../../../globalInterface';
 import { SelectExpenses } from '../SelectExpenses';
+import { createTransferId } from '../../../../../utils/createTransferId';
 
 interface TransferProps {
   action: string;
@@ -85,6 +86,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const successMutation = isSucessCreateExpense && isSucessCreateIncome;
 
   const handleSubmit = (values: CreateTransferValues) => {
+    const transferId = createTransferId();
     const {
       isPaid, amount, destinationAccount, originAccount, ...restValues
     } = values;
@@ -95,6 +97,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       amount: amountToNumber,
       indebtedPeople: [],
       account: values.originAccount,
+      transferId,
       isPaid: true,
     };
     const newValuesIncome = {
@@ -103,6 +106,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: values.destinationAccount,
+      transferId,
     };
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
