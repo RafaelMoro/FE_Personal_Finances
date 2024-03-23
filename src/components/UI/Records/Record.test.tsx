@@ -22,6 +22,7 @@ const records: AnyRecord[] = [
     subCategory: 'Didi/Uber',
     tag: [],
     date: new Date(),
+    transferId: '',
     indebtedPeople: [
       {
         name: 'Beto',
@@ -67,6 +68,7 @@ const records: AnyRecord[] = [
     tag: [],
     indebtedPeople: [],
     budgets: [],
+    transferId: '',
     formattedTime: '1:50pm',
     fullDate: 'May 20',
     amount: 110.24,
