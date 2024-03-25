@@ -1,10 +1,11 @@
 import { RecordStatusType } from '../../aliasType';
+import { TypeOfRecord } from '../../globalInterface';
 
-export const getRecordStatus = ({ isPaid, transferId }: { isPaid: boolean | undefined, transferId: string }): RecordStatusType => {
-  if (transferId) {
+export const getRecordStatus = ({ typeOfRecord, isPaid }: { typeOfRecord: TypeOfRecord, isPaid?: boolean }): RecordStatusType => {
+  if (typeOfRecord === 'transfer') {
     return 'Transfer';
   }
-  if (isPaid) {
+  if (typeOfRecord === 'expense' && isPaid) {
     return 'Paid';
   }
   return 'Unpaid';

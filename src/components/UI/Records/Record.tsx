@@ -26,7 +26,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _id, shortName, description, tag = [], category: { icon: categoryIcon },
-    indebtedPeople = [], budgets = [], transferId,
+    indebtedPeople = [], budgets = [], transferId, typeOfRecord,
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
@@ -46,7 +46,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   const nameIsLong = shortName.length > MAX_LENGTH_TITLE;
   const isExpense = typeof isPaid !== 'undefined';
   const isTransferIncome = transferId && !isExpense;
-  const status = getRecordStatus({ isPaid, transferId });
+  const status = getRecordStatus({ isPaid, typeOfRecord });
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;

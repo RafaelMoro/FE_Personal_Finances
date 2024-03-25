@@ -32,7 +32,7 @@ const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => {
   const {
-    shortName, description, fullDate, formattedTime, transferId,
+    shortName, description, fullDate, formattedTime,
     category, subCategory, tag, indebtedPeople, budgets, isPaid, typeOfRecord,
   } = record;
   const { icon: categoryIcon = 'foodAndDrink' } = category;
@@ -40,8 +40,9 @@ const RecordDrawer = ({
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
-  // @TODO: Here's the bug
-  const status = getRecordStatus({ isPaid, transferId });
+  const isExpense = typeof isPaid !== 'undefined';
+  const isTransfer = typeOfRecord === 'transfer';
+  const status = getRecordStatus({ isPaid, typeOfRecord });
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
@@ -75,7 +76,7 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <PaymentStatusChipDrawer label={status} variant="filled" status={status} />
+      { (isExpense || isTransfer) && (<PaymentStatusChipDrawer label={status} variant="filled" status={status} />) }
       <Typography>
         <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
         {category.categoryName}
