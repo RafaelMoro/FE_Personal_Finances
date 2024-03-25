@@ -170,6 +170,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
+      typeOfRecord: 'expense',
       transferId: '',
     } : {
       ...restValues,
@@ -177,6 +178,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: selectedAccount?._id,
+      typeOfRecord: 'income',
       transferId: '',
     };
 

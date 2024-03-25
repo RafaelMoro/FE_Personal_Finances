@@ -7,7 +7,7 @@ import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { AccountUI } from '../../../Account/interface';
 import { CreateTransferValues } from '../../interface';
-import { TypeOfRecord } from '../RecordTemplate/interface';
+import { TypeOfRecord, ExpensePaid } from '../../../../../globalInterface';
 import { TransferSchema } from '../../../../../validationsSchemas/records.schema';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
@@ -19,7 +19,6 @@ import { useRecords } from '../../../../../hooks/useRecords';
 // Reuse imports on RecordTemplate
 import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
-import { ExpensePaid } from '../../../../../globalInterface';
 import { SelectExpenses } from '../SelectExpenses';
 import { createTransferId } from '../../../../../utils/CreateTransferId';
 
@@ -86,6 +85,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const successMutation = isSucessCreateExpense && isSucessCreateIncome;
 
   const handleSubmit = (values: CreateTransferValues) => {
+    const typeOfRecordValue = 'transfer';
     const transferId = createTransferId();
     const {
       isPaid, amount, destinationAccount, originAccount, ...restValues
@@ -98,6 +98,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       indebtedPeople: [],
       account: values.originAccount,
       transferId,
+      typeOfRecord: typeOfRecordValue,
       isPaid: true,
     };
     const newValuesIncome = {
@@ -106,6 +107,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: values.destinationAccount,
+      typeOfRecord: typeOfRecordValue,
       transferId,
     };
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });

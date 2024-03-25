@@ -93,10 +93,13 @@ export interface Category {
   icon: string;
 }
 
+export type TypeOfRecord = 'expense' | 'income' | 'transfer';
+
 export interface AccountRecord {
   _id: string;
   userId: string;
   shortName: string;
+  typeOfRecord: TypeOfRecord;
   description: string;
   amount: number;
   amountFormatted: string;

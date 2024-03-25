@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Field, FormikErrors, FormikTouched } from 'formik';
-import { TypeOfRecord } from '../RecordTemplate/interface';
 import { CreateRecordValues, CreateTransferValues } from '../../interface';
-import { Category } from '../../../../../globalInterface';
+import { Category, TypeOfRecord } from '../../../../../globalInterface';
 
 import { CurrencyAdornment } from './CurrencyAdornment';
 import NumericFormatCustom from '../../../../Other/NumericFormatCustom';

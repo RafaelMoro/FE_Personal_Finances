@@ -1,4 +1,4 @@
-export type TypeOfRecord = 'expense' | 'income' | 'transfer';
+import { TypeOfRecord } from '../../../../../globalInterface';
 
 export interface RecordTemplateProps {
   edit?: boolean;

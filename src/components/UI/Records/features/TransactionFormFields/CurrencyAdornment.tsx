@@ -1,5 +1,5 @@
 import { InputAdornment } from '../../../../../styles';
-import { TypeOfRecord } from '../RecordTemplate/interface';
+import { TypeOfRecord } from '../../../../../globalInterface';
 
 const CurrencyAdornment = ({ typeOfRecord }: { typeOfRecord: TypeOfRecord }) => {
   const isExpense = typeOfRecord === 'expense';
