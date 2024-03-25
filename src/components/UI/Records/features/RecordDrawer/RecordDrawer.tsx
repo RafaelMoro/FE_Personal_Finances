@@ -33,20 +33,21 @@ const RecordDrawer = ({
 }: RecordDrawerProps) => {
   const {
     shortName, description, fullDate, formattedTime, transferId,
-    category, subCategory, tag, indebtedPeople, budgets, isPaid,
+    category, subCategory, tag, indebtedPeople, budgets, isPaid, typeOfRecord,
   } = record;
   const { icon: categoryIcon = 'foodAndDrink' } = category;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
+  // @TODO: Here's the bug
   const status = getRecordStatus({ isPaid, transferId });
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
     // Update local storage
     addToLocalStorage({ recordToBeEdited: record });
-    navigate(EDIT_RECORD_ROUTE);
+    navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
   };
 
   return (

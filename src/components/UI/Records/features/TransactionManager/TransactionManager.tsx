@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Typography } from '@mui/material';
+import { useLocation } from 'react-router-dom';
 
 import { useAppSelector } from '../../../../../redux/hooks';
-import { TypeOfRecord } from '../RecordTemplate/interface';
+import { TypeOfRecord } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
 import { Transfer } from '../Transfer';
@@ -11,25 +12,12 @@ import { ToggleButton } from '../../../../../styles';
 import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
 
 const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
+  const location = useLocation();
+  const typeOfRecordState: TypeOfRecord | undefined = location?.state?.typeOfRecord;
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const hasOnlyOneAccount = accounts?.length === 1;
-  const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
-  const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
+  const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>(typeOfRecordState ?? 'expense');
   const action: string = edit ? 'Edit' : 'Create';
-
-  const changeTypeIncome = () => setTypeOfRecord('income');
-  const changeTypeTransfer = () => setTypeOfRecord('transfer');
-
-  useEffect(() => {
-    if (recordToBeEdited && edit) {
-      if (recordToBeEdited?.transferId) {
-        changeTypeTransfer();
-      }
-      if (recordToBeEdited?.expensesPaid) {
-        changeTypeIncome();
-      }
-    }
-  }, [edit, recordToBeEdited]);
 
   const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
     setTypeOfRecord(newTypeOfRecord);
