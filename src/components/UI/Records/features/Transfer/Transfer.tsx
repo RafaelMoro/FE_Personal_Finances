@@ -112,6 +112,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     const recordIdExpense = isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
     const recordIdIncome = !isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
     const incomeAccount = !isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
+    const expenseAccount = isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
     const amountToNumber = Number(amount);
     const typeOfRecordValue = 'transfer';
     let amountTouched = false;
@@ -139,7 +140,12 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     const userIdRecord = recordToBeEdited?.userId ?? '';
     resetLocalStorageWithUserOnly();
     await editExpense({
-      values: newValuesExpense, recordId: recordIdExpense, amountTouched, previousAmount, userId: userIdRecord,
+      values: newValuesExpense,
+      recordId: recordIdExpense,
+      amountTouched,
+      previousAmount,
+      userId: userIdRecord,
+      accountId: expenseAccount,
     });
 
     const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];

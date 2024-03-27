@@ -17,6 +17,16 @@ export interface UpdateAccountsStatusProps {
   type: string;
 }
 
+interface UpdateAmountAccountPayload {
+  accountId: string;
+  amount: number;
+}
+
+export interface UpdateAmountAccountProps {
+  payload: UpdateAmountAccountPayload;
+  type: string;
+}
+
 export interface DeleteAccountValues {
   accountId: string;
 }

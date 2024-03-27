@@ -129,7 +129,7 @@ const useRecords = ({
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
       // dispatch update amount account
-      dispatch(updateAmountSelectedAccount(amountFetched));
+      dispatch(updateAmountSelectedAccount({ amount: amountFetched, accountId: newAccountId }));
 
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
@@ -285,7 +285,7 @@ const useRecords = ({
   };
 
   const editExpense = async ({
-    values, recordId, amountTouched, previousAmount, userId,
+    values, recordId, amountTouched, previousAmount, userId, accountId,
   }: EditExpenseProps) => {
     try {
       const { amount, date: dateValue } = values;
@@ -299,7 +299,9 @@ const useRecords = ({
 
       await editExpenseMutation({ values: newValues, bearerToken }).unwrap();
       if (amountTouched) {
-        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
+        const updateAmount = await updateAmountAccountOnEditRecord({
+          amount, isExpense: true, previousAmount, accountId,
+        });
         // If there's an error while updating the account, return
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }

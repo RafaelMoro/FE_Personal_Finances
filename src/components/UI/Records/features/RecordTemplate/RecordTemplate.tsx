@@ -187,7 +187,12 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         const userIdRecord = recordToBeEdited?.userId ?? '';
         resetLocalStorageWithUserOnly();
         editExpense({
-          values: newValues, recordId, amountTouched, previousAmount, userId: userIdRecord,
+          values: newValues,
+          recordId,
+          amountTouched,
+          previousAmount,
+          userId: userIdRecord,
+          accountId: (selectedAccount?._id ?? ''),
         });
         return;
       }
@@ -205,7 +210,13 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
       resetLocalStorageWithUserOnly();
       editIncome({
-        values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
+        values: newValues,
+        recordId,
+        amountTouched,
+        previousAmount,
+        previousExpensesRelated: oldRecords,
+        userId: userIdRecord,
+        accountId: (selectedAccount?._id ?? ''),
       });
       return;
     }
