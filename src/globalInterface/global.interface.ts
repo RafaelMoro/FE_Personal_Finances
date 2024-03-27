@@ -95,8 +95,14 @@ export interface Category {
 
 export type TypeOfRecord = 'expense' | 'income' | 'transfer';
 
+export interface TransferRecord {
+  transferId: string;
+  account: string;
+}
+
 export interface AccountRecord {
   _id: string;
+  transferRecord?: TransferRecord;
   userId: string;
   shortName: string;
   typeOfRecord: TypeOfRecord;
