@@ -30,10 +30,8 @@ interface TransferProps {
 const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const {
     createTransfer,
-    isLoadingCreateExpense,
-    isLoadingCreateIncome,
-    isSucessCreateExpense,
-    isSucessCreateIncome,
+    isLoadingCreateTransfer,
+    isSuccessCreateTransfer,
   } = useRecords({});
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
@@ -81,8 +79,6 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   };
 
   const buttonText = `${action} transfer`;
-  const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome;
-  const successMutation = isSucessCreateExpense && isSucessCreateIncome;
 
   const handleSubmit = (values: CreateTransferValues) => {
     const typeOfRecordValue = 'transfer';
@@ -164,9 +160,9 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
                 minWidthNumber="18"
                 actionDataTestId="create-edit-transfer-button"
                 submitButtonText={buttonText}
-                loading={loadingMutation}
-                success={successMutation}
-                disableSubmitButton={loadingMutation || successMutation}
+                loading={isLoadingCreateTransfer}
+                success={isSuccessCreateTransfer}
+                disableSubmitButton={isLoadingCreateTransfer || isSuccessCreateTransfer}
                 submitForm={() => {
                   if (hasErrors) {
                     scrollToTop();

@@ -70,6 +70,16 @@ export interface DeleteRecordMutationProps {
   bearerToken: string;
 }
 
+export interface CreateTransferValues {
+  expense: CreateExpenseValues;
+  income: CreateIncomeValues;
+}
+
+export interface CreateTransferMutationProps {
+  values: CreateTransferValues;
+  bearerToken: string;
+}
+
 export interface DeleteExpenseThunkResponse extends Omit<RecordOperationThunkResponse, 'response'> {
   response: DeleteRecordResponse;
   values: DeleteRecordProps;

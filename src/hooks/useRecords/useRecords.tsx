@@ -35,6 +35,7 @@ import {
   useUpdatePaidMultipleExpensesMutation,
   useCreateIncomeMutation,
   useEditIncomeMutation,
+  useCreateTransferMutation,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
@@ -49,6 +50,7 @@ const useRecords = ({
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
   const [createExpenseMutation, { isLoading: isLoadingCreateExpense, isSuccess: isSucessCreateExpense }] = useCreateExpenseMutation();
   const [createIncomeMutation, { isLoading: isLoadingCreateIncome, isSuccess: isSucessCreateIncome }] = useCreateIncomeMutation();
+  const [createTransferMutation, { isLoading: isLoadingCreateTransfer, isSuccess: isSuccessCreateTransfer }] = useCreateTransferMutation();
   const [editExpenseMutation, { isLoading: isLoadingEditExpense, isSuccess: isSucessEditExpense }] = useEditExpenseMutation();
   const [editIncomeMutation, { isLoading: isLoadingEditIncome, isSuccess: isSucessEditIncome }] = useEditIncomeMutation();
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
@@ -221,8 +223,7 @@ const useRecords = ({
       const isLastMonth = lastMonth === monthFormatted;
       const isCurrentMonth = currentMonth === monthFormatted;
 
-      await createExpenseMutation({ values: valuesExpense, bearerToken }).unwrap();
-      await createIncomeMutation({ values: valuesIncome, bearerToken }).unwrap();
+      await createTransferMutation({ values: { expense: valuesExpense, income: valuesIncome }, bearerToken }).unwrap();
 
       // Update the amount of the account.
       const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true });
@@ -517,10 +518,12 @@ const useRecords = ({
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
+    isLoadingCreateTransfer,
     isLoadingEditExpense,
     isLoadingEditIncome,
     isSucessCreateExpense,
     isSucessCreateIncome,
+    isSuccessCreateTransfer,
     isSucessEditExpense,
     isSucessEditIncome,
   };
