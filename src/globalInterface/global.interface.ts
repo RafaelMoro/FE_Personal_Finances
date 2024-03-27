@@ -118,7 +118,6 @@ export interface AccountRecord {
   indebtedPeople: IndebtedPeople[];
   account: string;
   budgets: string[];
-  transferId: string;
 }
 
 export interface Expense extends AccountRecord {
