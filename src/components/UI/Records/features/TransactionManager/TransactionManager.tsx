@@ -49,7 +49,7 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
       </Typography>
       { (typeOfRecord !== 'transfer') && (<RecordTemplate typeOfRecord={typeOfRecord} edit={edit} />) }
       {(typeOfRecord === 'transfer' && !hasOnlyOneAccount) && (
-      <Transfer typeOfRecord={typeOfRecord} action={action} />
+      <Transfer edit={edit} typeOfRecord={typeOfRecord} action={action} />
       )}
     </RecordTemplateMain>
   );

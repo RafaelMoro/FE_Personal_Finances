@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Formik } from 'formik';
 
 import { Drawer } from '@mui/material';
@@ -25,14 +25,16 @@ import { createTransferId } from '../../../../../utils/CreateTransferId';
 interface TransferProps {
   action: string;
   typeOfRecord: TypeOfRecord;
+  edit?: boolean;
 }
 
-const Transfer = ({ action, typeOfRecord }: TransferProps) => {
+const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const {
     createTransfer,
     isLoadingCreateTransfer,
     isSuccessCreateTransfer,
   } = useRecords({});
+  const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
   // Reuse show expenses and expenses selected state
@@ -46,7 +48,6 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     description: '',
     category: '',
     subCategory: '',
-    // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: true,
     date: dayjs(new Date()),
     budgets: [],
@@ -56,6 +57,7 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
   const destinationAccountId = useRef('');
 
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
+  const buttonText = `${action} transfer`;
 
   const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
   const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
@@ -78,7 +80,27 @@ const Transfer = ({ action, typeOfRecord }: TransferProps) => {
     setInitialValues({ ...initialValues, budgets: newBudgets });
   };
 
-  const buttonText = `${action} transfer`;
+  useEffect(() => {
+    if (edit && recordToBeEdited) {
+      const newInitialValues: CreateTransferValues = {
+        originAccount: (selectedAccount as AccountUI)._id,
+        destinationAccount: recordToBeEdited.transferRecord?.account ?? '',
+        amount: String(recordToBeEdited.amount),
+        shortName: recordToBeEdited.shortName,
+        description: recordToBeEdited.description,
+        category: recordToBeEdited.category.categoryName,
+        subCategory: recordToBeEdited.subCategory,
+        date: dayjs(recordToBeEdited.date),
+        tag: recordToBeEdited.tag,
+        budgets: recordToBeEdited.budgets,
+      };
+      updateDestinationAccountId(recordToBeEdited.transferRecord?.account ?? '');
+      setInitialValues({
+        ...newInitialValues,
+        isPaid: true,
+      });
+    }
+  }, [edit, recordToBeEdited, selectedAccount]);
 
   const handleSubmit = (values: CreateTransferValues) => {
     const typeOfRecordValue = 'transfer';
