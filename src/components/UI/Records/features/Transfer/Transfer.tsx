@@ -20,7 +20,7 @@ import { useRecords } from '../../../../../hooks/useRecords';
 import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
-import { createTransferId } from '../../../../../utils/CreateTransferId';
+import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
 
 interface TransferProps {
   action: string;
@@ -31,6 +31,8 @@ interface TransferProps {
 const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const {
     createTransfer,
+    editExpense,
+    editIncome,
     isLoadingCreateTransfer,
     isSuccessCreateTransfer,
   } = useRecords({});
@@ -102,20 +104,25 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     }
   }, [edit, recordToBeEdited, selectedAccount]);
 
-  const handleSubmit = (values: CreateTransferValues) => {
-    const typeOfRecordValue = 'transfer';
-    const transferId = createTransferId();
+  const handleEditTransfer = async (values: CreateTransferValues) => {
     const {
       isPaid, amount, destinationAccount, originAccount, ...restValues
     } = values;
+    const isExpense = !recordToBeEdited?.expensesPaid;
+    const recordIdExpense = isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
+    const recordIdIncome = !isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
+    const incomeAccount = !isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
     const amountToNumber = Number(amount);
-
+    const typeOfRecordValue = 'transfer';
+    let amountTouched = false;
+    if (recordToBeEdited?.amount !== Number(values?.amount)) {
+      amountTouched = true;
+    }
     const newValuesExpense = {
       ...restValues,
       amount: amountToNumber,
       indebtedPeople: [],
       account: values.originAccount,
-      transferId,
       typeOfRecord: typeOfRecordValue,
       isPaid: true,
     };
@@ -126,10 +133,55 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
       expensesPaid: expensesSelected,
       account: values.destinationAccount,
       typeOfRecord: typeOfRecordValue,
-      transferId,
+    };
+
+    const previousAmount = recordToBeEdited?.amount ?? 0;
+    const userIdRecord = recordToBeEdited?.userId ?? '';
+    resetLocalStorageWithUserOnly();
+    await editExpense({
+      values: newValuesExpense, recordId: recordIdExpense, amountTouched, previousAmount, userId: userIdRecord,
+    });
+
+    const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
+    const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+    await editIncome({
+      values: newValuesIncome,
+      recordId: recordIdIncome,
+      amountTouched,
+      previousAmount,
+      previousExpensesRelated: oldRecords,
+      userId: userIdRecord,
+      accountId: incomeAccount,
+    });
+  };
+
+  const handleCreateTransfer = (values: CreateTransferValues) => {
+    const typeOfRecordValue = 'transfer';
+    const {
+      isPaid, amount, destinationAccount, originAccount, ...restValues
+    } = values;
+    const amountToNumber = Number(amount);
+
+    const newValuesExpense = {
+      ...restValues,
+      amount: amountToNumber,
+      indebtedPeople: [],
+      account: values.originAccount,
+      typeOfRecord: typeOfRecordValue,
+      isPaid: true,
+    };
+    const newValuesIncome = {
+      ...restValues,
+      amount: amountToNumber,
+      indebtedPeople: [],
+      expensesPaid: expensesSelected,
+      account: values.destinationAccount,
+      typeOfRecord: typeOfRecordValue,
     };
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
+
+  const handleSubmit = edit ? handleEditTransfer : handleCreateTransfer;
 
   return (
     <>

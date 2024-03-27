@@ -22,6 +22,7 @@ export interface UpdateAmountAccountProps {
 
 export interface UpdateAmountAccountOnEditProps extends Omit<UpdateAmountAccountProps, 'deleteRecord'> {
   previousAmount: number;
+  accountId?: string;
 }
 
 export interface ShowErrorNotificationProps {
@@ -55,6 +56,7 @@ export interface EditIncomeProps {
   amountTouched: boolean;
   previousAmount: number;
   previousExpensesRelated: ExpensePaid[];
+  accountId?: string;
 }
 
 export interface UpdateTotalCurrencyProps {

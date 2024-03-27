@@ -114,15 +114,17 @@ const useRecords = ({
     }
   }
 
-  const updateAmountAccountOnEditRecord = async ({ amount, isExpense, previousAmount }: UpdateAmountAccountOnEditProps) => {
+  const updateAmountAccountOnEditRecord = async ({
+    amount, isExpense, previousAmount, accountId,
+  }: UpdateAmountAccountOnEditProps) => {
     try {
       const amountToUpdate = selectedAccount?.amount as number;
-      const accountId = selectedAccount?._id as string;
+      const newAccountId = accountId ?? selectedAccount?._id as string;
       const amountResultIncome = amountToUpdate - previousAmount + amount;
       const amountResultExpense = amountToUpdate + previousAmount - amount;
       const payload: UpdateAmountPayload = isExpense
-        ? { accountId, amount: amountResultExpense }
-        : { accountId, amount: amountResultIncome };
+        ? { accountId: newAccountId, amount: amountResultExpense }
+        : { accountId: newAccountId, amount: amountResultIncome };
 
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
@@ -398,7 +400,7 @@ const useRecords = ({
   };
 
   const editIncome = async ({
-    values, recordId, amountTouched, previousAmount, previousExpensesRelated, userId,
+    values, recordId, amountTouched, previousAmount, previousExpensesRelated, userId, accountId,
   }: EditIncomeProps) => {
     try {
       const { amount, date: dateValue } = values;
@@ -413,7 +415,9 @@ const useRecords = ({
       await editIncomeMutation({ values: newValues, bearerToken }).unwrap();
 
       if (amountTouched) {
-        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
+        const updateAmount = await updateAmountAccountOnEditRecord({
+          amount, isExpense: false, previousAmount, accountId,
+        });
         // If there's an error while updating the account, return
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
