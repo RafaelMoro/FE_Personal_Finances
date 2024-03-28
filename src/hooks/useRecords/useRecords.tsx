@@ -56,6 +56,7 @@ const useRecords = ({
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
   const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -118,7 +119,7 @@ const useRecords = ({
     amount, isExpense, previousAmount, accountId,
   }: UpdateAmountAccountOnEditProps) => {
     try {
-      const amountToUpdate = selectedAccount?.amount as number;
+      const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
       const newAccountId = accountId ?? selectedAccount?._id as string;
       const amountResultIncome = amountToUpdate - previousAmount + amount;
       const amountResultExpense = amountToUpdate + previousAmount - amount;
