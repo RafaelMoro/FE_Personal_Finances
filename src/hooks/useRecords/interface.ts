@@ -17,6 +17,7 @@ export interface Actions {
 export interface UpdateAmountAccountProps {
   amount: number;
   isExpense: boolean;
+  accountId: string;
   deleteRecord?: boolean;
 }
 

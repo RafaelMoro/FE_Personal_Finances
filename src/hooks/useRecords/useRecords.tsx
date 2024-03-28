@@ -84,11 +84,10 @@ const useRecords = ({
   };
 
   async function updateAmountAccount({
-    amount, isExpense, deleteRecord = false,
+    amount, isExpense, accountId, deleteRecord = false,
   }: UpdateAmountAccountProps) {
     try {
-      const amountToUpdate = selectedAccount?.amount as number;
-      const accountId = selectedAccount?._id as string;
+      const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
 
       const payloadDeleteRecord = (isExpense)
         ? { accountId, amount: amountToUpdate + amount }
@@ -101,7 +100,7 @@ const useRecords = ({
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
       // dispatch update amount account
-      dispatch(updateAmountSelectedAccount(amountFetched));
+      dispatch(updateAmountSelectedAccount({ amount: amountFetched, accountId }));
 
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
@@ -162,7 +161,7 @@ const useRecords = ({
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {
-      const { amount, date: dateValue } = values;
+      const { amount, date: dateValue, account } = values;
       const date = dateValue.toDate();
 
       // Format date and determine if the record from what period is: currentMonth, lastMonth, older
@@ -173,7 +172,7 @@ const useRecords = ({
       await createExpenseMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
-      const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true });
+      const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true, accountId: account });
       // If there's an error while updating the account, return
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
@@ -217,8 +216,8 @@ const useRecords = ({
 
   const createTransfer = async ({ valuesExpense, valuesIncome }: CreateTransferProps) => {
     try {
-      const { amount: amountExpense, date: dateValue } = valuesExpense;
-      const { amount: amountIncome } = valuesIncome;
+      const { amount: amountExpense, date: dateValue, account: accountExpense } = valuesExpense;
+      const { amount: amountIncome, account: accountIncome } = valuesIncome;
       const date = dateValue.toDate();
 
       // Format date and determine if the record from what period is: currentMonth, lastMonth, older
@@ -229,10 +228,10 @@ const useRecords = ({
       await createTransferMutation({ values: { expense: valuesExpense, income: valuesIncome }, bearerToken }).unwrap();
 
       // Update the amount of the account.
-      const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true });
+      const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true, accountId: accountExpense });
       // If there's an error while updating the account, return
       if (updateAmountOriginAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
-      const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false });
+      const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false, accountId: accountIncome });
       if (updateAmountDestinationAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
       // Update amount of total records
@@ -350,7 +349,7 @@ const useRecords = ({
 
   const createIncome = async (values: CreateIncomeValues) => {
     try {
-      const { amount, date: dateValue } = values;
+      const { amount, date: dateValue, account } = values;
       const date = dateValue.toDate();
 
       // Format date and determine if the record from what period is: currentMonth, lastMonth, older
@@ -361,7 +360,7 @@ const useRecords = ({
       await createIncomeMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
-      const updateAmount = await updateAmountAccount({ amount, isExpense: false });
+      const updateAmount = await updateAmountAccount({ amount, isExpense: false, accountId: account });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
@@ -480,15 +479,16 @@ const useRecords = ({
     try {
       const amountOfRecord = recordToBeDeleted?.amount as number;
       const recordId = recordToBeDeleted?._id as string;
-      const transferRecordId = recordToBeDeleted?.transferRecord?.transferId ?? '';
-
+      const accountRecord = recordToBeDeleted?.account as string;
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
       await deleteRecordMutation({ values: valuesDeleteRecord, route, bearerToken });
 
       // Update Amount of the account.
-      const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
+      const updateAmount = await updateAmountAccount({
+        amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true, accountId: accountRecord,
+      });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
         closeDeleteRecordModalCb();
@@ -497,13 +497,15 @@ const useRecords = ({
       }
 
       if (deleteTransfer) {
+        const transferRecordId = recordToBeDeleted?.transferRecord?.transferId ?? '';
+        const transferAccountId = recordToBeDeleted?.transferRecord?.account ?? '';
         const valuesTransferRecord: DeleteRecordProps = { recordId: transferRecordId };
         const transferRoute = deleteRecordExpense ? INCOME_ROUTE : EXPENSE_ROUTE;
         await deleteRecordMutation({ values: valuesTransferRecord, route: transferRoute, bearerToken });
 
         // Update Amount of the account.
         const updateAmountTransfer = await updateAmountAccount({
-          amount: amountOfRecord, isExpense: !deleteRecordExpense ?? false, deleteRecord: true,
+          amount: amountOfRecord, isExpense: !deleteRecordExpense ?? false, deleteRecord: true, accountId: transferAccountId,
         });
         // If there's an error while updating the account, return
         if (updateAmountTransfer !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
