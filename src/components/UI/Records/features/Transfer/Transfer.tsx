@@ -38,6 +38,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     isSuccessCreateTransfer,
   } = useRecords({});
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
+  const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
   // Reuse show expenses and expenses selected state
@@ -111,6 +112,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     const recordIdIncome = !isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
     const incomeAccount = !isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
     const expenseAccount = isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
+
     let amountTouched = false;
     if (recordToBeEdited?.amount !== Number(values?.amount)) {
       amountTouched = true;
@@ -178,8 +180,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
                 setFieldValue={setFieldValue}
                 errors={errors}
                 touched={touched}
-              // @TODO Change this to the real value.
-                categoryToBeEdited={null}
+                categoryToBeEdited={categoryToBeEdited}
                 updateBudgets={updateBudgets}
                 updateTags={updateTags}
                 tags={initialValues.tag}
