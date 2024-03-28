@@ -21,6 +21,7 @@ import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
 import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
+import { getValuesIncomeAndExpense } from './Transfer.util';
 
 interface TransferProps {
   action: string;
@@ -105,36 +106,16 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   }, [edit, recordToBeEdited, selectedAccount]);
 
   const handleEditTransfer = async (values: CreateTransferValues) => {
-    const {
-      isPaid, amount, destinationAccount, originAccount, ...restValues
-    } = values;
     const isExpense = !recordToBeEdited?.expensesPaid;
     const recordIdExpense = isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
     const recordIdIncome = !isExpense ? (recordToBeEdited?._id ?? '') : (recordToBeEdited?.transferRecord?.transferId ?? '');
     const incomeAccount = !isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
     const expenseAccount = isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
-    const amountToNumber = Number(amount);
-    const typeOfRecordValue = 'transfer';
     let amountTouched = false;
     if (recordToBeEdited?.amount !== Number(values?.amount)) {
       amountTouched = true;
     }
-    const newValuesExpense = {
-      ...restValues,
-      amount: amountToNumber,
-      indebtedPeople: [],
-      account: values.originAccount,
-      typeOfRecord: typeOfRecordValue,
-      isPaid: true,
-    };
-    const newValuesIncome = {
-      ...restValues,
-      amount: amountToNumber,
-      indebtedPeople: [],
-      expensesPaid: expensesSelected,
-      account: values.destinationAccount,
-      typeOfRecord: typeOfRecordValue,
-    };
+    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values, expensesSelected });
 
     const previousAmount = recordToBeEdited?.amount ?? 0;
     const userIdRecord = recordToBeEdited?.userId ?? '';
@@ -162,28 +143,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   };
 
   const handleCreateTransfer = (values: CreateTransferValues) => {
-    const typeOfRecordValue = 'transfer';
-    const {
-      isPaid, amount, destinationAccount, originAccount, ...restValues
-    } = values;
-    const amountToNumber = Number(amount);
-
-    const newValuesExpense = {
-      ...restValues,
-      amount: amountToNumber,
-      indebtedPeople: [],
-      account: values.originAccount,
-      typeOfRecord: typeOfRecordValue,
-      isPaid: true,
-    };
-    const newValuesIncome = {
-      ...restValues,
-      amount: amountToNumber,
-      indebtedPeople: [],
-      expensesPaid: expensesSelected,
-      account: values.destinationAccount,
-      typeOfRecord: typeOfRecordValue,
-    };
+    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values, expensesSelected });
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
 
