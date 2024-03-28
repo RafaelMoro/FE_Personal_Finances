@@ -476,10 +476,12 @@ const useRecords = ({
     }
   };
 
-  const deleteRecord = async () => {
+  const deleteRecord = async ({ deleteTransfer }: { deleteTransfer?: boolean; }) => {
     try {
       const amountOfRecord = recordToBeDeleted?.amount as number;
       const recordId = recordToBeDeleted?._id as string;
+      const transferRecordId = recordToBeDeleted?.transferRecord?.transferId ?? '';
+
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
@@ -492,6 +494,23 @@ const useRecords = ({
         closeDeleteRecordModalCb();
         closeDrawer();
         return;
+      }
+
+      if (deleteTransfer) {
+        const valuesTransferRecord: DeleteRecordProps = { recordId: transferRecordId };
+        const transferRoute = deleteRecordExpense ? INCOME_ROUTE : EXPENSE_ROUTE;
+        await deleteRecordMutation({ values: valuesTransferRecord, route: transferRoute, bearerToken });
+
+        // Update Amount of the account.
+        const updateAmountTransfer = await updateAmountAccount({
+          amount: amountOfRecord, isExpense: !deleteRecordExpense ?? false, deleteRecord: true,
+        });
+        // If there's an error while updating the account, return
+        if (updateAmountTransfer !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
+          closeDeleteRecordModalCb();
+          closeDrawer();
+          return;
+        }
       }
 
       // Show success notification
