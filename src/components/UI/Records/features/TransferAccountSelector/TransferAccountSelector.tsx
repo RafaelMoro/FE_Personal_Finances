@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { updateAccounts, updateSelectedAccount } from '../../../../../redux/slices/Accounts/accounts.slice';
+import { useAppSelector } from '../../../../../redux/hooks';
 import { ErrorParagraphValidation } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 import { SelectAccount } from '../../../SelectInput/interface';
@@ -19,24 +18,11 @@ const TransferAccountSelector = ({
   errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
   setDestinationAsCredit, setDestinationAsNonCredit, updateDestinationAccountId, originAccountId,
 }: TransferAccountSelectorProps) => {
-  const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts.accounts);
-  const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accountsOptions: SelectAccount[] = (accounts ?? []).map((account) => ({ _id: account._id, title: account.title }));
   // @TODO: Volver accounts option destination en un estado para que se actualice en base de la cuenta de origen.
   const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== originAccountId);
   let lastDestinationAccountId: string | null = null;
-
-  const handleSelectOriginAccount = (name: string, value: string | string[]) => {
-    if (name === 'originAccount' && typeof value === 'string') {
-      const newSelectedAccount = (accounts ?? []).find((account) => account._id === value);
-      const updatedAccounts = accounts?.map((account) => (account._id === value ? { ...account, selected: true } : { ...account, selected: false }));
-      if (newSelectedAccount && selectedAccount?._id !== newSelectedAccount._id) {
-        dispatch(updateSelectedAccount(newSelectedAccount));
-        dispatch(updateAccounts(updatedAccounts));
-      }
-    }
-  };
 
   // Function to toggle the flag where the destination account is a credit account.
   const toggleDestinationCredit = (name: string, value: string | string[]) => {
@@ -63,7 +49,6 @@ const TransferAccountSelector = ({
         accountsOptions={accountsOptions}
         colorOptions={[]}
         stringOptions={[]}
-        processSelectDataFn={handleSelectOriginAccount}
       />
       { (touchedOriginAccount && errorOriginAccount) && (
         <ErrorParagraphValidation variant="subText">{errorOriginAccount}</ErrorParagraphValidation>
