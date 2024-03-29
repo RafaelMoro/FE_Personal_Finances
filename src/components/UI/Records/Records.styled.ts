@@ -108,6 +108,15 @@ export const RecordSubtitleText = styled(Typography)`
   }
 `;
 
+export const RecordsPaidText = styled(Typography)`
+  grid-column: 1 / 3;
+  grid-row: 4 / 5;
+  text-align: center;
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    grid-column: 1 / 2;
+  }
+`;
+
 export const RecordDescription = styled(Typography)`
   grid-column: 1 / 3;
 

@@ -14,7 +14,7 @@ import {
   RecordSubtitleText, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription,
   ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate,
-  PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox,
+  PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox, RecordsPaidText,
 } from './Records.styled';
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
@@ -121,6 +121,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             ) }
           </MainRecordData>
           <RecordDescription>{ description }</RecordDescription>
+          { (isTransferIncome && expensesPaid.length > 0) && (
+          <RecordsPaidText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordsPaidText>
+          )}
           <BudgetChipContainer>
             { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
@@ -186,7 +193,12 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             <PaymentStatusChip label={status} variant="filled" status={status} />
           </RecordStatusContainer>
           ) }
-          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+          { (isTransferIncome) && (
+          <RecordStatusContainer>
+            <PaymentStatusChip label={status} variant="filled" status="Transfer" />
+          </RecordStatusContainer>
+          )}
+          { (!isExpense && expensesPaid.length > 0 && !openLongView && !isTransferIncome) && (
           <RecordsPaidNumber>
             Records Paid:
             {' '}
@@ -194,6 +206,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           </RecordsPaidNumber>
           ) }
         </MainRecordDataBox>
+        { (isTransferIncome && expensesPaid.length > 0) && (
+          <RecordsPaidText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordsPaidText>
+        )}
         <BudgetChipContainer>
           { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (
