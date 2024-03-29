@@ -86,9 +86,11 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
 
   useEffect(() => {
     if (edit && recordToBeEdited) {
+      const isIncome = !!recordToBeEdited?.expensesPaid;
       const newInitialValues: CreateTransferValues = {
-        originAccount: (selectedAccount as AccountUI)._id,
-        destinationAccount: recordToBeEdited.transferRecord?.account ?? '',
+        // Origin account is always the expense.
+        originAccount: !isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '',
+        destinationAccount: isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '',
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
         description: recordToBeEdited.description,
