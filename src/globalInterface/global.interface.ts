@@ -1,4 +1,5 @@
 import { SerializedError } from '@reduxjs/toolkit';
+import { ReactNode } from 'react';
 import { SystemStateEnum } from '../enums';
 
 export interface UserInfo {
@@ -166,4 +167,20 @@ export interface GlobalNotification {
   description: string;
   status: SystemStateEnum;
   showNotification: boolean;
+}
+
+export interface SelectFormikFieldProps {
+  name: string;
+  value: string;
+}
+
+export interface SelectFormikFormProps {
+  setFieldValue: (name: string, value: string) => void;
+}
+
+export interface SelectFormikProps {
+  children: ReactNode;
+  field: SelectFormikFieldProps;
+  form: SelectFormikFormProps;
+  disabled?: boolean;
 }

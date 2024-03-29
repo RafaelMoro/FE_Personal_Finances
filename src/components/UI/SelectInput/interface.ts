@@ -1,22 +1,10 @@
 import { ReactNode } from 'react';
 import { TextColors, BackgroundColors } from '../../../styles/interface';
+import { SelectFormikProps } from '../../../globalInterface';
 
-export interface SelectFormikFieldProps {
-  name: string;
-  value: string;
-}
-
-export interface SelectFormikFormProps {
-  setFieldValue: (name: string, value: string) => void;
-}
-
-export interface SelectFormikProps {
-  children: ReactNode;
-  field: SelectFormikFieldProps;
-  form: SelectFormikFormProps;
+export interface GeneralSelectFormikProps extends SelectFormikProps {
   // Callback to do any action depending on the name and value of the select input
   processSelectDataFn?: (name: string, value: string | string[]) => void;
-  disabled?: boolean;
 }
 
 export interface SelectAccount {

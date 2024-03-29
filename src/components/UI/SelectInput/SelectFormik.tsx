@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import { Select } from '../../../styles';
-import { SelectFormikProps } from './interface';
+import { GeneralSelectFormikProps } from './interface';
 
 const SelectFormik = ({
   children, form, field, processSelectDataFn, disabled = false,
-}: SelectFormikProps) => {
+}: GeneralSelectFormikProps) => {
   const { name, value } = field;
   const { setFieldValue } = form;
 

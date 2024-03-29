@@ -60,6 +60,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     tag: [],
   });
 
+  // It's used to pass the destination account id to the SelectExpenses component
   const destinationAccountId = useRef('');
 
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';

@@ -1,5 +1,4 @@
-import { ReactNode } from 'react';
-import { SelectFormikFieldProps, SelectFormikFormProps } from '../../../SelectInput/interface';
+import { SelectFormikProps } from '../../../../../globalInterface';
 
 export interface TransferAccountSelectorProps {
   setDestinationAsCredit: () => void;
@@ -12,9 +11,10 @@ export interface TransferAccountSelectorProps {
   originAccountId: string;
 }
 
-export interface SelectDestinationAccountProps {
-  children: ReactNode;
-  field: SelectFormikFieldProps;
-  form: SelectFormikFormProps;
+export interface SelectDestinationAccountProps extends SelectFormikProps {
+  toggleDestinationCredit: (value: string) => void;
+}
+
+export interface SelectOriginAccountProps extends SelectFormikProps {
   selectOriginAccount: (value: string) => void
 }

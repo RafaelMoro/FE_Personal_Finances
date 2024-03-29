@@ -5,9 +5,9 @@ import { Field } from 'formik';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { SelectAccount } from '../../../SelectInput/interface';
 import { TransferAccountSelectorProps } from './TransferAccountSelector.interfaces';
-import { SelectInput } from '../../../SelectInput';
 import { SelectOriginAccount } from './SelectOriginAccount';
 import { ErrorParagraphValidation, InputLabel, MenuItem } from '../../../../../styles';
+import { SelectDestinationAccount } from './SelectDestinationAccount';
 
 const TransferAccountSelector = ({
   errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
@@ -25,17 +25,15 @@ const TransferAccountSelector = ({
   };
 
   // Function to toggle the flag where the destination account is a credit account.
-  const toggleDestinationCredit = (name: string, value: string | string[]) => {
-    if (name === 'destinationAccount' && typeof value === 'string' && value !== '') {
-      if (value !== lastDestinationAccountId) {
-        lastDestinationAccountId = value;
-        const destinationAccount = (accounts ?? []).find((account) => account._id === value);
-        if (destinationAccount && destinationAccount.accountType === 'Credit') {
-          setDestinationAsCredit();
-          updateDestinationAccountId(value);
-        } else if (destinationAccount && destinationAccount.accountType !== 'Credit') {
-          setDestinationAsNonCredit();
-        }
+  const toggleDestinationCredit = (value: string) => {
+    if (value !== lastDestinationAccountId) {
+      lastDestinationAccountId = value;
+      const destinationAccount = (accounts ?? []).find((account) => account._id === value);
+      if (destinationAccount && destinationAccount.accountType === 'Credit') {
+        setDestinationAsCredit();
+        updateDestinationAccountId(value);
+      } else if (destinationAccount && destinationAccount.accountType !== 'Credit') {
+        setDestinationAsNonCredit();
       }
     }
   };
@@ -43,7 +41,7 @@ const TransferAccountSelector = ({
   return (
     <>
       <FormControl variant="standard">
-        <InputLabel id="select-origin-account">Destination Account</InputLabel>
+        <InputLabel id="select-origin-account">Origin Account</InputLabel>
         <Field name="originAccount" selectOriginAccount={selectOriginAccount} component={SelectOriginAccount}>
           {
             (accountsOptions ?? []).map((option) => (
@@ -55,15 +53,16 @@ const TransferAccountSelector = ({
       { (touchedOriginAccount && errorOriginAccount) && (
         <ErrorParagraphValidation variant="subText">{errorOriginAccount}</ErrorParagraphValidation>
       ) }
-      <SelectInput
-        labelId="select-destination-account"
-        labelName="Destination Account"
-        fieldName="destinationAccount"
-        accountsOptions={accountsOptionsDestination}
-        colorOptions={[]}
-        stringOptions={[]}
-        processSelectDataFn={toggleDestinationCredit}
-      />
+      <FormControl variant="standard">
+        <InputLabel id="select-destination-account">Destination Account</InputLabel>
+        <Field name="destinationAccount" toggleDestinationCredit={toggleDestinationCredit} component={SelectDestinationAccount}>
+          {
+            (accountsOptionsDestination ?? []).map((option) => (
+              <MenuItem key={`destinationAccount-${option._id}`} value={option._id}>{option.title}</MenuItem>
+            ))
+          }
+        </Field>
+      </FormControl>
       { (touchedDestinationAccount && errorDestinationAccount) && (
         <ErrorParagraphValidation variant="subText">{errorDestinationAccount}</ErrorParagraphValidation>
       ) }
