@@ -1,4 +1,5 @@
-import { ExpensePaid } from '../../../../../globalInterface';
+import { ExpensePaid, AnyRecord } from '../../../../../globalInterface';
+import { AccountUI } from '../../../Account/interface';
 import { CreateTransferValues } from '../../interface';
 
 export const getValuesIncomeAndExpense = ({ values, expensesSelected }: { values: CreateTransferValues, expensesSelected: ExpensePaid[] }) => {
@@ -24,4 +25,23 @@ export const getValuesIncomeAndExpense = ({ values, expensesSelected }: { values
     typeOfRecord: typeOfRecordValue,
   };
   return { newValuesIncome, newValuesExpense };
+};
+
+interface GetOriginAccountProps {
+  isIncome: boolean;
+  selectedAccount: AccountUI | null;
+  recordToBeEdited?: AnyRecord | null;
+  edit?: boolean;
+}
+
+export const getOriginAccount = ({
+  isIncome, selectedAccount, recordToBeEdited, edit = false,
+}: GetOriginAccountProps) => {
+  if (edit && recordToBeEdited) {
+    return !isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '';
+  }
+  if (selectedAccount) {
+    return selectedAccount?._id;
+  }
+  return '';
 };

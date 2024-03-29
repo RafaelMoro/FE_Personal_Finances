@@ -5,7 +5,6 @@ import { Formik } from 'formik';
 import { Drawer } from '@mui/material';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { AccountUI } from '../../../Account/interface';
 import { CreateTransferValues } from '../../interface';
 import { TypeOfRecord, ExpensePaid } from '../../../../../globalInterface';
 import { TransferSchema } from '../../../../../validationsSchemas/records.schema';
@@ -21,7 +20,7 @@ import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
 import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
-import { getValuesIncomeAndExpense } from './Transfer.util';
+import { getOriginAccount, getValuesIncomeAndExpense } from './Transfer.util';
 
 interface TransferProps {
   action: string;
@@ -38,6 +37,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     isSuccessCreateTransfer,
   } = useRecords({});
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
+  const isIncome = !!recordToBeEdited?.expensesPaid;
   const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
@@ -45,7 +45,9 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
-    originAccount: (selectedAccount as AccountUI)._id,
+    originAccount: getOriginAccount({
+      isIncome, selectedAccount, recordToBeEdited, edit,
+    }),
     destinationAccount: '',
     amount: '',
     shortName: '',
@@ -86,10 +88,10 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
 
   useEffect(() => {
     if (edit && recordToBeEdited) {
-      const isIncome = !!recordToBeEdited?.expensesPaid;
       const newInitialValues: CreateTransferValues = {
-        // Origin account is always the expense.
-        originAccount: !isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '',
+        originAccount: getOriginAccount({
+          isIncome, selectedAccount, recordToBeEdited, edit,
+        }),
         destinationAccount: isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '',
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
@@ -100,13 +102,18 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
         tag: recordToBeEdited.tag,
         budgets: recordToBeEdited.budgets,
       };
-      updateDestinationAccountId(recordToBeEdited.transferRecord?.account ?? '');
+      updateDestinationAccountId(isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '');
       setInitialValues({
         ...newInitialValues,
         isPaid: true,
       });
+
+      const expensesPaid = (recordToBeEdited?.expensesPaid ?? []) as ExpensePaid[];
+      if (expensesPaid.length > 0) {
+        setExpensesSelected(expensesPaid);
+      }
     }
-  }, [edit, recordToBeEdited, selectedAccount]);
+  }, [edit, isIncome, recordToBeEdited, selectedAccount]);
 
   const handleEditTransfer = async (values: CreateTransferValues) => {
     const isExpense = !recordToBeEdited?.expensesPaid;
@@ -176,6 +183,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
                 setDestinationAsCredit={setDestinationAsCredit}
                 setDestinationAsNonCredit={setDestinationAsNonCredit}
                 updateDestinationAccountId={updateDestinationAccountId}
+                originAccountId={initialValues.originAccount}
               />
               <TransactionFormFields
                 typeOfRecord={typeOfRecord}
