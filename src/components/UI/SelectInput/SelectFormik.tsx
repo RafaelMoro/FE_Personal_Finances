@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 
 import { Select } from '../../../styles';
@@ -31,4 +31,44 @@ const SelectFormik = ({
   );
 };
 
-export { SelectFormik };
+interface SelectFormikFieldProps {
+  name: string;
+  value: string;
+}
+
+interface SelectFormikFormProps {
+  setFieldValue: (name: string, value: string) => void;
+}
+
+interface SelectDestinationAccountProps {
+  children: ReactNode;
+  field: SelectFormikFieldProps;
+  form: SelectFormikFormProps;
+  selectOriginAccount: (value: string) => void
+}
+
+const SelectOriginAccount = ({
+  children, field, form, selectOriginAccount,
+}: SelectDestinationAccountProps) => {
+  const { name, value } = field;
+  const { setFieldValue } = form;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleChange = (event: SelectChangeEvent<any>) => {
+    selectOriginAccount(event.target.value);
+    setFieldValue('destinationAccount', '');
+    setFieldValue(name, event.target.value);
+  };
+
+  return (
+    <Select
+      name={name}
+      value={value}
+      onChange={handleChange}
+    >
+      { children }
+    </Select>
+  );
+};
+
+export { SelectFormik, SelectOriginAccount };

@@ -1,7 +1,11 @@
+import { useMemo, useState } from 'react';
+import { FormControl } from '@mui/material';
+import { Field } from 'formik';
 import { useAppSelector } from '../../../../../redux/hooks';
-import { ErrorParagraphValidation } from '../../../../../styles';
+import { ErrorParagraphValidation, InputLabel, MenuItem } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 import { SelectAccount } from '../../../SelectInput/interface';
+import { SelectOriginAccount } from '../../../SelectInput/SelectFormik';
 
 interface TransferAccountSelectorProps {
   setDestinationAsCredit: () => void;
@@ -19,10 +23,15 @@ const TransferAccountSelector = ({
   setDestinationAsCredit, setDestinationAsNonCredit, updateDestinationAccountId, originAccountId,
 }: TransferAccountSelectorProps) => {
   const accounts = useAppSelector((state) => state.accounts.accounts);
-  const accountsOptions: SelectAccount[] = (accounts ?? []).map((account) => ({ _id: account._id, title: account.title }));
-  // @TODO: Volver accounts option destination en un estado para que se actualice en base de la cuenta de origen.
-  const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== originAccountId);
+  const accountsOptions: SelectAccount[] = useMemo(() => (accounts ?? []).map((account) => ({ _id: account._id, title: account.title })), [accounts]);
+  const initialDestinationOptions = accountsOptions.filter((account) => account._id !== originAccountId);
+  const [accountsOptionsDestination, setAccountsOptionsDestination] = useState<SelectAccount[]>(initialDestinationOptions);
   let lastDestinationAccountId: string | null = null;
+
+  const selectOriginAccount = (value: string) => {
+    const newDestinationOptions = accountsOptions.filter((account) => account._id !== value);
+    setAccountsOptionsDestination(newDestinationOptions);
+  };
 
   // Function to toggle the flag where the destination account is a credit account.
   const toggleDestinationCredit = (name: string, value: string | string[]) => {
@@ -42,14 +51,16 @@ const TransferAccountSelector = ({
 
   return (
     <>
-      <SelectInput
-        labelId="select-origin-account"
-        labelName="Origin Account"
-        fieldName="originAccount"
-        accountsOptions={accountsOptions}
-        colorOptions={[]}
-        stringOptions={[]}
-      />
+      <FormControl variant="standard">
+        <InputLabel id="select-origin-account">Destination Account</InputLabel>
+        <Field name="originAccount" selectOriginAccount={selectOriginAccount} component={SelectOriginAccount}>
+          {
+            (accountsOptions ?? []).map((option) => (
+              <MenuItem key={`originAccount-${option._id}`} value={option._id}>{option.title}</MenuItem>
+            ))
+          }
+        </Field>
+      </FormControl>
       { (touchedOriginAccount && errorOriginAccount) && (
         <ErrorParagraphValidation variant="subText">{errorOriginAccount}</ErrorParagraphValidation>
       ) }
