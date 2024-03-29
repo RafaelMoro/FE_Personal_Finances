@@ -1,22 +1,13 @@
 import { useMemo, useState } from 'react';
 import { FormControl } from '@mui/material';
 import { Field } from 'formik';
-import { useAppSelector } from '../../../../../redux/hooks';
-import { ErrorParagraphValidation, InputLabel, MenuItem } from '../../../../../styles';
-import { SelectInput } from '../../../SelectInput';
-import { SelectAccount } from '../../../SelectInput/interface';
-import { SelectOriginAccount } from '../../../SelectInput/SelectFormik';
 
-interface TransferAccountSelectorProps {
-  setDestinationAsCredit: () => void;
-  setDestinationAsNonCredit: () => void;
-  updateDestinationAccountId: (id: string) => void;
-  errorOriginAccount?: string;
-  errorDestinationAccount?: string;
-  touchedOriginAccount?: boolean;
-  touchedDestinationAccount?: boolean;
-  originAccountId: string;
-}
+import { useAppSelector } from '../../../../../redux/hooks';
+import { SelectAccount } from '../../../SelectInput/interface';
+import { TransferAccountSelectorProps } from './TransferAccountSelector.interfaces';
+import { SelectInput } from '../../../SelectInput';
+import { SelectOriginAccount } from './SelectOriginAccount';
+import { ErrorParagraphValidation, InputLabel, MenuItem } from '../../../../../styles';
 
 const TransferAccountSelector = ({
   errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
