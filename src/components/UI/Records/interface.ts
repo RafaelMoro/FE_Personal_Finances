@@ -3,6 +3,7 @@ import { Dayjs } from 'dayjs';
 import {
   Category, ExpensePaid, AnyRecord, IndebtedPeople, CompleteMonthsType,
   GeneralResponse,
+  SelectFormikProps,
 } from '../../../globalInterface';
 
 export interface RecordProps {
@@ -38,6 +39,11 @@ export interface CategoriesResponse extends Omit<GeneralResponse, 'data'> {
     categories: Category[];
   };
 }
+
+export interface SelectCategoryProps extends SelectFormikProps {
+  setNewCategory: (value: string) => void
+}
+
 // Check the IndebtedPeople array and fields that may be different.
 export interface CreateRecordValues {
   amount: string;
