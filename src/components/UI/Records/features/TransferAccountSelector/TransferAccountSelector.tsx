@@ -12,17 +12,19 @@ interface TransferAccountSelectorProps {
   errorDestinationAccount?: string;
   touchedOriginAccount?: boolean;
   touchedDestinationAccount?: boolean;
+  originAccountId: string;
 }
 
 const TransferAccountSelector = ({
   errorDestinationAccount, errorOriginAccount, touchedDestinationAccount, touchedOriginAccount,
-  setDestinationAsCredit, setDestinationAsNonCredit, updateDestinationAccountId,
+  setDestinationAsCredit, setDestinationAsNonCredit, updateDestinationAccountId, originAccountId,
 }: TransferAccountSelectorProps) => {
   const dispatch = useAppDispatch();
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accountsOptions: SelectAccount[] = (accounts ?? []).map((account) => ({ _id: account._id, title: account.title }));
-  const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== selectedAccount?._id);
+  // @TODO: Volver accounts option destination en un estado para que se actualice en base de la cuenta de origen.
+  const accountsOptionsDestination = accountsOptions.filter((account) => account._id !== originAccountId);
   let lastDestinationAccountId: string | null = null;
 
   const handleSelectOriginAccount = (name: string, value: string | string[]) => {
