@@ -75,6 +75,11 @@ export const RecordDrawerPriceContainer = styled.div`
   grid-column: 1 / 3;
 `;
 
+export const TransferInformation = styled(Typography)`
+  grid-column: 1 / 3;
+  text-align: center;
+`;
+
 export const RecordTable = styled(Table, { shouldForwardProp: (props) => props !== 'isGrid' })`
   ${(props: RecordTableProps) => (props.isGrid && 'grid-column: 1 / 3;')}
 `;

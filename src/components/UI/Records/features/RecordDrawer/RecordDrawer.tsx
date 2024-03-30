@@ -25,6 +25,7 @@ import {
   DrawerDate,
   DrawerTypographyBold,
   PaymentStatusChipDrawer,
+  TransferInformation,
 } from './RecordDrawer.styled';
 import { getRecordStatus } from '../../../../../utils/GetRecordStatus';
 
@@ -39,9 +40,13 @@ const RecordDrawer = ({
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
+  const transferAccountName = (accounts ?? []).find((account) => account._id === record.transferRecord?.account)?.title;
   const isMobile = windowSize === 'Mobile';
   const isExpense = typeof isPaid !== 'undefined';
   const isTransfer = typeOfRecord === 'transfer';
+  const isOrigin = isExpense && isTransfer;
+  const transferText = isOrigin ? 'Transfer to:' : 'Transfer from:';
   const status = getRecordStatus({ isPaid, typeOfRecord });
 
   const handleEditRecord = () => {
@@ -77,6 +82,13 @@ const RecordDrawer = ({
         { amountShown }
       </RecordDrawerPriceContainer>
       { (isExpense || isTransfer) && (<PaymentStatusChipDrawer label={status} variant="filled" status={status} />) }
+      { (isTransfer) && (
+      <TransferInformation variant="body2">
+        {transferText}
+        {' '}
+        {transferAccountName}
+      </TransferInformation>
+      ) }
       <Typography>
         <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
         {category.categoryName}
