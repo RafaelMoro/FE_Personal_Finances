@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { useEffect, useRef, useState } from 'react';
 import { Formik } from 'formik';
 
@@ -28,6 +30,9 @@ interface TransferProps {
   edit?: boolean;
 }
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const {
     createTransfer,
@@ -56,7 +61,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     category: '',
     subCategory: '',
     isPaid: true,
-    date: dayjs(new Date()),
+    date: dayjs(new Date()).tz('America/Mexico_City'),
     budgets: [],
     tag: [],
   });

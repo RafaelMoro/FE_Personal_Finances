@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
@@ -35,6 +37,9 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => {
   const {
@@ -83,7 +88,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     subCategory: '',
     // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: !isCredit,
-    date: dayjs(new Date()),
+    date: dayjs(new Date()).tz('America/Mexico_City'),
     tag: [],
     budgets: [],
   });
