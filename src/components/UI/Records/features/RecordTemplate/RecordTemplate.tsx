@@ -167,9 +167,8 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     }
 
     const {
-      isPaid, date, amount, ...restValues
+      isPaid, amount, ...restValues
     } = values;
-    console.log('date sent', date);
     const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
