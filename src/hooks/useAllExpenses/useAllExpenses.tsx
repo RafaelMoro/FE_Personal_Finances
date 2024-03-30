@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { GET_EXPENSES } from '../../components/UI/Records/constants';
 import { UseAllExpensesProps } from './interface';
 import { useAppSelector } from '../../redux/hooks';
@@ -11,9 +12,10 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
   const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
 
   const { isFetching, isError, currentData } = useGetExpensesQuery({ route: fullRoute, bearerToken }, { skip: (!bearerToken || !selectedAccountId) });
+  const onlyExpensesIncomes = useMemo(() => currentData?.records.filter((record) => record.typeOfRecord !== 'transfer'), [currentData?.records]);
 
   return {
-    expenses: currentData?.records ?? [],
+    expenses: onlyExpensesIncomes ?? [],
     noExpensesFound: currentData?.message === 'No expenses found.',
     isError,
     loading: isFetching,
