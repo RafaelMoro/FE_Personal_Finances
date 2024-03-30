@@ -61,7 +61,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     category: '',
     subCategory: '',
     isPaid: true,
-    date: dayjs(new Date()).tz('America/Mexico_City'),
+    date: dayjs().tz('America/Mexico_City'),
     budgets: [],
     tag: [],
   });

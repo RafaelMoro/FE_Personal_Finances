@@ -88,10 +88,11 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     subCategory: '',
     // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: !isCredit,
-    date: dayjs(new Date()).tz('America/Mexico_City'),
+    date: dayjs().tz('America/Mexico_City'),
     tag: [],
     budgets: [],
   });
+  console.log(initialValues.date);
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
   const updateTags = (newChips: string[]) => {
     setInitialValues({ ...initialValues, tag: newChips });
