@@ -90,11 +90,12 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
 
   useEffect(() => {
     if (edit && recordToBeEdited) {
+      const destinationAccount = isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '';
       const newInitialValues: CreateTransferValues = {
         originAccount: getOriginAccount({
           isIncome, selectedAccount, recordToBeEdited, edit,
         }),
-        destinationAccount: isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '',
+        destinationAccount,
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
         description: recordToBeEdited.description,
@@ -109,7 +110,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
       if (destinationIsCredit) {
         setDestinationAsCredit();
       }
-      updateDestinationAccountId(isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '');
+      updateDestinationAccountId(destinationAccount);
       setInitialValues({
         ...newInitialValues,
         isPaid: true,
