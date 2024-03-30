@@ -40,6 +40,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const isIncome = !!recordToBeEdited?.expensesPaid;
   const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
   // Reuse show expenses and expenses selected state
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
@@ -103,6 +104,11 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
         tag: recordToBeEdited.tag,
         budgets: recordToBeEdited.budgets,
       };
+      // Show add expense button if destination is credit
+      const destinationIsCredit = accounts?.find((account) => account._id === newInitialValues.destinationAccount)?.accountType === 'Credit';
+      if (destinationIsCredit) {
+        setDestinationAsCredit();
+      }
       updateDestinationAccountId(isIncome ? recordToBeEdited.account : recordToBeEdited.transferRecord?.account ?? '');
       setInitialValues({
         ...newInitialValues,
@@ -114,7 +120,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
         setExpensesSelected(expensesPaid);
       }
     }
-  }, [edit, isIncome, recordToBeEdited, selectedAccount]);
+  }, [accounts, edit, isIncome, recordToBeEdited, selectedAccount]);
 
   const handleEditTransfer = async (values: CreateTransferValues) => {
     const isExpense = !recordToBeEdited?.expensesPaid;
