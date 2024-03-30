@@ -1,3 +1,10 @@
+## v0.5.2 (2024-03-30)
+Release Changes.
+- Fix error when creating income
+
+### Pull Requests
+[#10](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/10) | Fix/create income transfer
+
 ## v0.5.1 (2024-03-30)
 Release Changes.
 - Fix time that was set incorrectly when creating record
