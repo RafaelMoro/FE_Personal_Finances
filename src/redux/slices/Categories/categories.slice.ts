@@ -14,12 +14,15 @@ export const categoriesSlice = createSlice({
     updateCurrentCategory: (state, action) => {
       state.currentCategory = action.payload;
     },
+    isCategoryNotSelected: (state) => {
+      state.categoryNotSelected = true;
+    },
     isCategorySelected: (state) => {
       state.categoryNotSelected = false;
     },
   },
 });
 
-export const { updateCurrentCategory, isCategorySelected } = categoriesSlice.actions;
+export const { updateCurrentCategory, isCategorySelected, isCategoryNotSelected } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;
