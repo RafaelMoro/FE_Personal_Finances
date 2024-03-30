@@ -40,7 +40,7 @@ const CategoriesAndSubcategories = ({
   const { updateGlobalNotification } = useNotification();
   const [createLocalCategoriesMutation, { isLoading: isLoadingCreateCategories }] = useCreateLocalCategoriesMutation();
   const {
-    currentData, isError, isFetching,
+    currentData, isError, isFetching, isSuccess,
   } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
   const onlyCategories = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
 
@@ -65,11 +65,12 @@ const CategoriesAndSubcategories = ({
   }, [currentData]);
 
   useEffect(() => {
-    if (categoryToBeEdited) {
-      dispatch(updateCurrentCategory(categoryToBeEdited));
+    if (categoryToBeEdited && isSuccess) {
+      const newCategory = (currentData ?? []).find((item) => item.categoryName === categoryToBeEdited.categoryName);
+      dispatch(updateCurrentCategory(newCategory));
       dispatch(isCategorySelected());
     }
-  }, [categoryToBeEdited, dispatch]);
+  }, [categoryToBeEdited, currentData, dispatch, isSuccess]);
 
   useEffect(() => {
     if (isError) {
