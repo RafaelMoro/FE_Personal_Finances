@@ -103,8 +103,6 @@ const CategoriesAndSubcategories = ({
           )}
           fieldName="category"
           stringOptions={[]}
-          colorOptions={[]}
-          processSelectDataFn={setNewCategory}
           disabled
         />
         <SelectInput
@@ -117,8 +115,6 @@ const CategoriesAndSubcategories = ({
           )}
           fieldName="category"
           stringOptions={[]}
-          colorOptions={[]}
-          processSelectDataFn={setNewCategory}
           disabled
         />
       </>
