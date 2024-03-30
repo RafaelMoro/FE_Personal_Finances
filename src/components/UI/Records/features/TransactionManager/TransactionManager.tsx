@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { Typography } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useAppSelector } from '../../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { TypeOfRecord } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { RecordTemplate } from '../RecordTemplate/RecordTemplate';
 import { Transfer } from '../Transfer';
 import { AppIcon } from '../../../Icons';
 import { ToggleButton } from '../../../../../styles';
-import { GoBackButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
+import { GoBackIconButton, RecordTemplateMain, ToggleButtonGroup } from '../RecordTemplate/RecordTemplate.styled';
+import { isCategoryNotSelected } from '../../../../../redux/slices/Categories/categories.slice';
 
 const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const typeOfRecordState: TypeOfRecord | undefined = location?.state?.typeOfRecord;
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const hasOnlyOneAccount = accounts?.length === 1;
@@ -23,11 +26,16 @@ const TransactionManager = ({ edit = false }: { edit?: boolean }) => {
     setTypeOfRecord(newTypeOfRecord);
   };
 
+  const handleGoBack = () => {
+    dispatch(isCategoryNotSelected());
+    navigate(DASHBOARD_ROUTE);
+  };
+
   return (
     <RecordTemplateMain>
-      <GoBackButton to={DASHBOARD_ROUTE}>
+      <GoBackIconButton aria-label="sign-out-button" onClick={handleGoBack}>
         <AppIcon icon="Close" />
-      </GoBackButton>
+      </GoBackIconButton>
       { (!edit) && (
       <ToggleButtonGroup
         color="primary"

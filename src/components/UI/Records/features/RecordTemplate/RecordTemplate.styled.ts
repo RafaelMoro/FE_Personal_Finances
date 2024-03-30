@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { Form } from 'formik';
-import { ToggleButtonGroup as ToggleButtonGroupMUI } from '@mui/material';
+import { IconButton, ToggleButtonGroup as ToggleButtonGroupMUI } from '@mui/material';
 import {
-  AnchorButton, AppColors, SecondaryButton,
+  AppColors, SecondaryButton,
 } from '../../../../../styles';
 
 export const RecordTemplateMain = styled.main`
@@ -17,7 +17,7 @@ export const ToggleButtonGroup = styled(ToggleButtonGroupMUI)`
   justify-self: center;
 `;
 
-export const GoBackButton = styled(AnchorButton)`
+export const GoBackIconButton = styled(IconButton)`
   color: ${AppColors.grey};
   justify-self: end;
 `;
