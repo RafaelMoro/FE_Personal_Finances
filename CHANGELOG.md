@@ -1,4 +1,4 @@
-## v0.5.0 (2024-03-30)
+## v0.5.1 (2024-03-30)
 Release Changes.
 - Fix time that was set incorrectly when creating record
 
