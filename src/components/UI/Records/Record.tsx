@@ -14,18 +14,19 @@ import {
   RecordSubtitleText, RecordExpense,
   RecordIncome, RecordStatusContainer, RecordDescription,
   ListItemRecord, BudgetChipContainer, TagsChipContainer, RecordTitle, RecordText, RecordDate,
-  PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox,
+  PaymentStatusChip, TitleContainer, RecordsPaidNumber, MainRecordDataBox, RecordsPaidText,
 } from './Records.styled';
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
 import { MainRecordData } from './features/MainRecordDataBox';
 import { AllCategoryIcons } from '../Icons/interface';
+import { getRecordStatus } from '../../../utils/GetRecordStatus';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
   const {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _id, shortName, description, tag = [], category: { icon: categoryIcon },
-    indebtedPeople = [], budgets = [],
+    indebtedPeople = [], budgets = [], typeOfRecord,
     formattedTime, fullDate, isPaid, amountFormatted, expensesPaid = [],
   } = record;
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
@@ -43,8 +44,10 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   const descriptionIsLong = description.length > MAX_LENGTH_DESCRIPTION;
   const nameIsLong = shortName.length > MAX_LENGTH_TITLE;
+  // A transfer may be an expense.
   const isExpense = typeof isPaid !== 'undefined';
-  const status = isPaid ? 'Paid' : 'Unpaid';
+  const isTransferIncome = typeOfRecord === 'transfer' && !isExpense;
+  const status = getRecordStatus({ isPaid, typeOfRecord });
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
     return `${person.name} - `;
@@ -101,10 +104,15 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           >
             { (isExpense && isCredit) && (
             <RecordStatusContainer>
-              <PaymentStatusChip label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+              <PaymentStatusChip label={status} variant="filled" status={status} />
             </RecordStatusContainer>
             ) }
-            { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+            { (isTransferIncome) && (
+              <RecordStatusContainer>
+                <PaymentStatusChip label={status} variant="filled" status="Transfer" />
+              </RecordStatusContainer>
+            )}
+            { (!isExpense && expensesPaid.length > 0 && !openLongView && !isTransferIncome) && (
             <RecordSubtitleText>
               Records Paid:
               {' '}
@@ -113,6 +121,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             ) }
           </MainRecordData>
           <RecordDescription>{ description }</RecordDescription>
+          { (isTransferIncome && expensesPaid.length > 0) && (
+          <RecordsPaidText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordsPaidText>
+          )}
           <BudgetChipContainer>
             { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
             { budgets.length > 0 && budgets.map((budget) => (
@@ -175,10 +190,15 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           { amountShown }
           { (isExpense && isCredit) && (
           <RecordStatusContainer>
-            <PaymentStatusChip label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+            <PaymentStatusChip label={status} variant="filled" status={status} />
           </RecordStatusContainer>
           ) }
-          { (!isExpense && expensesPaid.length > 0 && !openLongView) && (
+          { (isTransferIncome) && (
+          <RecordStatusContainer>
+            <PaymentStatusChip label={status} variant="filled" status="Transfer" />
+          </RecordStatusContainer>
+          )}
+          { (!isExpense && expensesPaid.length > 0 && !openLongView && !isTransferIncome) && (
           <RecordsPaidNumber>
             Records Paid:
             {' '}
@@ -186,6 +206,13 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
           </RecordsPaidNumber>
           ) }
         </MainRecordDataBox>
+        { (isTransferIncome && expensesPaid.length > 0) && (
+          <RecordsPaidText>
+            Records Paid:
+            {' '}
+            { expensesPaid.length }
+          </RecordsPaidText>
+        )}
         <BudgetChipContainer>
           { budgets.length === 0 && (<RecordSubtitleText variant="body2">No budgets</RecordSubtitleText>) }
           { budgets.length > 0 && firstTwoBudgets.map((budget) => (

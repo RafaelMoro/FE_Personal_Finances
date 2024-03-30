@@ -1,8 +1,9 @@
+import { TRANSFER_ROUTE } from '../../../../components/UI/Records/constants';
 import { IncomeAndExpensesResponse } from '../../../../components/UI/Records/interface';
-import { DELETE_METHOD } from '../../../../constants';
+import { DELETE_METHOD, POST_METHOD } from '../../../../constants';
 import { budgetMasterApi } from '../../../budgetMaster.api';
 import { RECORD_TAG } from '../../../constants';
-import { DeleteRecordMutationProps, GetRecordByMonthAndYearProps } from '../interface';
+import { CreateTransferMutationProps, DeleteRecordMutationProps, GetRecordByMonthAndYearProps } from '../interface';
 
 export const recordsApiSlice = budgetMasterApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -32,10 +33,21 @@ export const recordsApiSlice = budgetMasterApi.injectEndpoints({
       }),
       invalidatesTags: [RECORD_TAG],
     }),
+    createTransfer: builder.mutation({
+      query: ({ values, bearerToken }: CreateTransferMutationProps) => ({
+        url: TRANSFER_ROUTE,
+        method: POST_METHOD,
+        body: values,
+        headers: {
+          Authorization: bearerToken,
+        },
+      }),
+      invalidatesTags: [RECORD_TAG],
+    }),
   }),
 });
 
 export const {
   useFetchRecordsByMonthYearQuery, useLazyFetchRecordsByMonthYearQuery,
-  useDeleteRecordMutation,
+  useDeleteRecordMutation, useCreateTransferMutation,
 } = recordsApiSlice;

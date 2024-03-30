@@ -17,17 +17,24 @@ export interface Actions {
 export interface UpdateAmountAccountProps {
   amount: number;
   isExpense: boolean;
+  accountId: string;
   deleteRecord?: boolean;
 }
 
 export interface UpdateAmountAccountOnEditProps extends Omit<UpdateAmountAccountProps, 'deleteRecord'> {
   previousAmount: number;
+  accountId: string;
 }
 
 export interface ShowErrorNotificationProps {
   errorMessage: string;
   action: string;
   goToDashboard?: boolean;
+}
+
+export interface CreateTransferProps {
+  valuesExpense: CreateExpenseValues;
+  valuesIncome: CreateIncomeValues;
 }
 
 export interface UpdateRecordsOnEditProps {
@@ -40,6 +47,7 @@ export interface EditExpenseProps {
   recordId: string;
   amountTouched: boolean;
   previousAmount: number;
+  accountId: string;
   userId: string;
 }
 
@@ -50,6 +58,7 @@ export interface EditIncomeProps {
   amountTouched: boolean;
   previousAmount: number;
   previousExpensesRelated: ExpensePaid[];
+  accountId: string;
 }
 
 export interface UpdateTotalCurrencyProps {

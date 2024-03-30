@@ -2,10 +2,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { pickersLayoutClasses } from '@mui/x-date-pickers';
 import { DateTimePicker, globalConfiguration } from '../../../styles';
-import { SelectFormikFieldProps } from '../SelectInput/interface';
 import {
   ArrowDropDownIcon, CalendarMonthIcon, ChevronLeftIcon, ChevronRightIcon,
 } from '../Icons';
+import { SelectFormikFieldProps } from '../../../globalInterface';
 
 interface DateTimePickerProps {
   field: SelectFormikFieldProps;

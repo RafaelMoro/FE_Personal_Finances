@@ -1,4 +1,5 @@
 import { SerializedError } from '@reduxjs/toolkit';
+import { ReactNode } from 'react';
 import { SystemStateEnum } from '../enums';
 
 export interface UserInfo {
@@ -93,10 +94,19 @@ export interface Category {
   icon: string;
 }
 
+export type TypeOfRecord = 'expense' | 'income' | 'transfer';
+
+export interface TransferRecord {
+  transferId: string;
+  account: string;
+}
+
 export interface AccountRecord {
   _id: string;
+  transferRecord?: TransferRecord;
   userId: string;
   shortName: string;
+  typeOfRecord: TypeOfRecord;
   description: string;
   amount: number;
   amountFormatted: string;
@@ -157,4 +167,20 @@ export interface GlobalNotification {
   description: string;
   status: SystemStateEnum;
   showNotification: boolean;
+}
+
+export interface SelectFormikFieldProps {
+  name: string;
+  value: string;
+}
+
+export interface SelectFormikFormProps {
+  setFieldValue: (name: string, value: string) => void;
+}
+
+export interface SelectFormikProps {
+  children: ReactNode;
+  field: SelectFormikFieldProps;
+  form: SelectFormikFormProps;
+  disabled?: boolean;
 }

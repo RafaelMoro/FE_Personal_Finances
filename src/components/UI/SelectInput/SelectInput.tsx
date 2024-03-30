@@ -14,13 +14,17 @@ import { ColorCircle, PersonalizedMenuItem } from './SelectInput.styled';
 ** the value and name of the select input
 */
 const SelectInput = ({
-  labelId, labelName, fieldName, stringOptions, colorOptions,
-  selectInputColors = false, processSelectDataFn, disabled = false,
+  labelId, labelName, fieldName, stringOptions, colorOptions, accountsOptions,
+  selectInputColors = false, disabled = false,
 }: SelectInputProps) => (
   <FormControl variant="standard">
     <InputLabel id={labelId}>{ labelName }</InputLabel>
-    <Field disabled={disabled} processSelectDataFn={processSelectDataFn} name={fieldName} component={SelectFormik}>
-      { (colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
+    <Field
+      disabled={disabled}
+      name={fieldName}
+      component={SelectFormik}
+    >
+      { (colorOptions && colorOptions.length > 0 && selectInputColors) && colorOptions.map((option) => (
         <PersonalizedMenuItem
           key={`${fieldName}-${option.name}`}
           value={option.name}
@@ -29,6 +33,11 @@ const SelectInput = ({
           <ColorCircle backgroundColor={option.color} />
         </PersonalizedMenuItem>
       )) }
+      { ((accountsOptions ?? []).length > 0) && (
+        (accountsOptions ?? []).map((option) => (
+          <MenuItem key={`${fieldName}-${option._id}`} value={option._id}>{option.title}</MenuItem>
+        ))
+      ) }
       { ((stringOptions ?? []).length > 0) && (
         stringOptions.map((option, index) => (
           <MenuItem key={`${fieldName}-${option}-${index + 1}`} value={option}>{option}</MenuItem>
