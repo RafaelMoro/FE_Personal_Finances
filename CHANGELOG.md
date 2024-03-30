@@ -1,10 +1,17 @@
+## v0.5.0 (2024-03-30)
+Release Changes.
+- Fix time that was set incorrectly when creating record
+
+### Pull Requests
+[#9](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/9) | Fix timezone
+
 ## v0.5.0 (2024-03-29)
 Release Changes
 - Create a transfer
 - Edit a transfer
 - Delete a transfer
 - When linking expenses, only records and incomes are shown omiting transfers.
-- Fix on timezone when creating a record.s
+- Fix on timezone when creating a record.
 
 ### Pull Requests
 [#8](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/8) | Add Transfer Feature
