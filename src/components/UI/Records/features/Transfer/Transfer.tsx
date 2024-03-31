@@ -198,7 +198,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
                 updateDestinationAccountId={updateDestinationAccountId}
                 originAccountId={initialValues.originAccount}
               />
-              <TransactionFormFields
+              <TransactionFormFields<CreateTransferValues>
                 values={values}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}

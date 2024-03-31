@@ -11,23 +11,23 @@ import { AddChip } from '../AddChip';
 import { InputForm } from '../../../../../styles';
 import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
 
-interface TransactionFormFieldsProps {
+interface TransactionFormFieldsProps<CreateAnyRecord> {
   typeOfRecord: TypeOfRecord;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
-  values: CreateRecordValues;
+  values: CreateAnyRecord;
   errors: FormikErrors<CreateRecordValues | CreateTransferValues>;
   touched: FormikTouched<CreateRecordValues | CreateTransferValues>;
   categoryToBeEdited: Category | null;
-  // @TODO: Fix any type using generic type
-  updateTags: ({ values, newChips }: { values: any, newChips: string[] }) => void;
-  updateBudgets: ({ values, newBudgets }: { values: any, newBudgets: string[] }) => void;
+  updateTags: ({ values, newChips }: { values: CreateAnyRecord, newChips: string[] }) => void;
+  updateBudgets: ({ values, newBudgets }: { values: CreateAnyRecord, newBudgets: string[] }) => void;
   tags: string[];
   budgets: string[];
 }
 
-const TransactionFormFields = ({
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+const TransactionFormFields = <CreateAnyRecord,>({
   typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values,
-}: TransactionFormFieldsProps) => (
+}: TransactionFormFieldsProps<CreateAnyRecord>) => (
   <>
     <Field
       component={InputForm}
@@ -80,6 +80,6 @@ const TransactionFormFields = ({
       />
     </AddChipContainer>
   </>
-);
+  );
 
 export { TransactionFormFields };
