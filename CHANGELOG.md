@@ -3,7 +3,7 @@ Release Changes.
 - Fix any on transaction form fields component using generic types
 
 ### Pull Requests
-[#12](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/12) | Fix reset values when adding budgets or tags
+[#12](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/12) | Fix using any type for generic type transaction form field component
 
 ## v0.5.3 (2024-03-31)
 Release Changes.
