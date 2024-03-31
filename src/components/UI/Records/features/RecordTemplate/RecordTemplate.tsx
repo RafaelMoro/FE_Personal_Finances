@@ -243,7 +243,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
           const hasErrors = Object.keys(errors).length > 0;
           return (
             <FormContainer>
-              <TransactionFormFields
+              <TransactionFormFields<CreateRecordValues>
                 values={values}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
