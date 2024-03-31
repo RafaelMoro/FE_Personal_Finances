@@ -93,12 +93,12 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     budgets: [],
   });
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
-  const updateTags = (newChips: string[]) => {
-    setInitialValues({ ...initialValues, tag: newChips });
+  const updateTags = ({ values, newChips }: { values: CreateRecordValues, newChips: string[] }) => {
+    setInitialValues({ ...values, tag: newChips });
   };
 
-  const updateBudgets = (newBudgets: string[]) => {
-    setInitialValues({ ...initialValues, budgets: newBudgets });
+  const updateBudgets = ({ values, newBudgets }: { values: CreateRecordValues, newBudgets: string[] }) => {
+    setInitialValues({ ...values, budgets: newBudgets });
   };
 
   const isExpense = typeOfRecord === 'expense';
@@ -244,6 +244,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
           return (
             <FormContainer>
               <TransactionFormFields
+                values={values}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}

@@ -85,12 +85,12 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     setShowExpenses(!showExpenses);
   };
 
-  const updateTags = (newChips: string[]) => {
-    setInitialValues({ ...initialValues, tag: newChips });
+  const updateTags = ({ values, newChips }: { values: CreateTransferValues, newChips: string[] }) => {
+    setInitialValues({ ...values, tag: newChips });
   };
 
-  const updateBudgets = (newBudgets: string[]) => {
-    setInitialValues({ ...initialValues, budgets: newBudgets });
+  const updateBudgets = ({ values, newBudgets }: { values: CreateTransferValues, newBudgets: string[] }) => {
+    setInitialValues({ ...values, budgets: newBudgets });
   };
 
   useEffect(() => {
@@ -199,6 +199,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
                 originAccountId={initialValues.originAccount}
               />
               <TransactionFormFields
+                values={values}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}
