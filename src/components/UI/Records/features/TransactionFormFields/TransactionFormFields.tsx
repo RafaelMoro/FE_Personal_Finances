@@ -14,17 +14,19 @@ import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
 interface TransactionFormFieldsProps {
   typeOfRecord: TypeOfRecord;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
+  values: CreateRecordValues;
   errors: FormikErrors<CreateRecordValues | CreateTransferValues>;
   touched: FormikTouched<CreateRecordValues | CreateTransferValues>;
   categoryToBeEdited: Category | null;
-  updateTags: (newTags: string[]) => void;
-  updateBudgets: (newBudgets: string[]) => void;
+  // @TODO: Fix any type using generic type
+  updateTags: ({ values, newChips }: { values: any, newChips: string[] }) => void;
+  updateBudgets: ({ values, newBudgets }: { values: any, newBudgets: string[] }) => void;
   tags: string[];
   budgets: string[];
 }
 
 const TransactionFormFields = ({
-  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets,
+  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values,
 }: TransactionFormFieldsProps) => (
   <>
     <Field
@@ -68,8 +70,14 @@ const TransactionFormFields = ({
       categoryToBeEdited={categoryToBeEdited}
     />
     <AddChipContainer>
-      <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={tags} />
-      <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={budgets} />
+      <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={(newChips) => updateTags({ values, newChips })} chipsData={tags} />
+      <AddChip
+        name="budget"
+        label="Budget (Optional)"
+        action="budget"
+        updateData={(newBudgets) => updateBudgets({ values, newBudgets })}
+        chipsData={budgets}
+      />
     </AddChipContainer>
   </>
 );

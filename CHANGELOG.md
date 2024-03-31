@@ -1,3 +1,10 @@
+## v0.5.3 (2024-03-31)
+Release Changes.
+- Fix reset values when adding budgets or tags
+
+### Pull Requests
+[#11](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/11) | Fix reset values when adding budgets or tags
+
 ## v0.5.2 (2024-03-30)
 Release Changes.
 - Fix error when creating income
