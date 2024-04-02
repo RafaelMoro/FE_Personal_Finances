@@ -25,27 +25,35 @@ import {
   DrawerDate,
   DrawerTypographyBold,
   PaymentStatusChipDrawer,
+  TransferInformation,
 } from './RecordDrawer.styled';
+import { getRecordStatus } from '../../../../../utils/GetRecordStatus';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
 }: RecordDrawerProps) => {
   const {
     shortName, description, fullDate, formattedTime,
-    category, subCategory, tag, indebtedPeople, budgets, isPaid,
+    category, subCategory, tag, indebtedPeople, budgets, isPaid, typeOfRecord,
   } = record;
   const { icon: categoryIcon = 'foodAndDrink' } = category;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
+  const transferAccountName = (accounts ?? []).find((account) => account._id === record.transferRecord?.account)?.title;
   const isMobile = windowSize === 'Mobile';
-  const status = isPaid ? 'Paid' : 'Unpaid';
+  const isExpense = typeof isPaid !== 'undefined';
+  const isTransfer = typeOfRecord === 'transfer';
+  const isOrigin = isExpense && isTransfer;
+  const transferText = isOrigin ? 'Transfer to:' : 'Transfer from:';
+  const status = getRecordStatus({ isPaid, typeOfRecord });
 
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
     // Update local storage
     addToLocalStorage({ recordToBeEdited: record });
-    navigate(EDIT_RECORD_ROUTE);
+    navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
   };
 
   return (
@@ -73,7 +81,14 @@ const RecordDrawer = ({
       <RecordDrawerPriceContainer>
         { amountShown }
       </RecordDrawerPriceContainer>
-      <PaymentStatusChipDrawer label={status} variant="filled" color={isPaid ? 'success' : 'error'} />
+      { (isExpense || isTransfer) && (<PaymentStatusChipDrawer label={status} variant="filled" status={status} />) }
+      { (isTransfer) && (
+      <TransferInformation variant="body2">
+        {transferText}
+        {' '}
+        {transferAccountName}
+      </TransferInformation>
+      ) }
       <Typography>
         <DrawerTypographyBold component="span">Category: </DrawerTypographyBold>
         {category.categoryName}

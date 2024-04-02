@@ -3,6 +3,7 @@ import { Dayjs } from 'dayjs';
 import {
   Category, ExpensePaid, AnyRecord, IndebtedPeople, CompleteMonthsType,
   GeneralResponse,
+  SelectFormikProps,
 } from '../../../globalInterface';
 
 export interface RecordProps {
@@ -38,6 +39,11 @@ export interface CategoriesResponse extends Omit<GeneralResponse, 'data'> {
     categories: Category[];
   };
 }
+
+export interface SelectCategoryProps extends SelectFormikProps {
+  setNewCategory: (value: string) => void
+}
+
 // Check the IndebtedPeople array and fields that may be different.
 export interface CreateRecordValues {
   amount: string;
@@ -47,6 +53,15 @@ export interface CreateRecordValues {
   subCategory: string;
   isPaid?: boolean;
   date: Dayjs;
+  tag: string[];
+  budgets: string[];
+}
+
+export interface CreateTransferValues extends CreateRecordValues {
+  originAccount: string;
+  destinationAccount: string;
+  budgets: string[];
+  tag: string[];
 }
 
 export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> {
@@ -58,7 +73,7 @@ export interface CreateExpenseValues extends Omit<CreateRecordValues, 'amount'> 
 }
 
 export interface CreateIncomeValues extends CreateExpenseValues {
-  expensesPaid: string[];
+  expensesPaid: ExpensePaid[];
 }
 
 export interface RecordOperationResponse extends Omit<GeneralResponse, 'data'> {

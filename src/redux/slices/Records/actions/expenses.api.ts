@@ -14,6 +14,7 @@ export const expensesApiSlice = budgetMasterApi.injectEndpoints({
           Authorization: bearerToken,
         },
       }),
+      providesTags: [RECORD_TAG],
       transformResponse: (response: GetExpensesResponse) => {
         const { message, data } = response;
         const records = data?.records ?? null;

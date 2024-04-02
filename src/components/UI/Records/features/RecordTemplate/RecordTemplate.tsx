@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import { Drawer, Typography } from '@mui/material';
+import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import dayjs from 'dayjs';
 
 /** Constants, atoms, interfaces, hooks */
-import {
-  RecordTemplateProps, AdditionalData, TypeOfRecord,
-} from './interface';
+import { RecordTemplateProps } from './interface';
 import { CreateRecordValues } from '../../interface';
 import { ExpensePaid, IndebtedPeople } from '../../../../../globalInterface';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
@@ -17,34 +17,31 @@ import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
 
 /** Components */
+import { TransactionFormFields } from '../TransactionFormFields';
 import { ActionButtonPanel } from '../../../../templates';
-import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { ShowExpenses } from '../ShowExpenses';
 import { SelectExpenses } from '../SelectExpenses';
-import { AddChip } from '../AddChip/AddChip';
 import { AddIndebtedPerson } from '../AddIndebtedPerson/AddIndebtedPerson';
 import { ShowIndebtedPeople } from '../ShowIndebtedPeople';
-import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import {
-  InputForm, InputAdornment,
-  FlexContainer, FormControlLabel, ToggleButton,
+  FlexContainer, FormControlLabel,
 } from '../../../../../styles';
-import { AppIcon } from '../../../Icons';
 
 /** Styles */
 import {
-  RecordTemplateMain, GoBackButton, FormContainer, AddChipContainer, ToggleButtonGroup,
-  ShowIndebtedPeopleContainer, SecondaryButtonForm,
+  FormContainer, ShowIndebtedPeopleContainer, SecondaryButtonForm,
 } from './RecordTemplate.styled';
 
 /** Utils */
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { CreateRecordSchema } from '../../../../../validationsSchemas/records.schema';
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 
-const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => {
   const {
     createExpense,
     createIncome,
@@ -81,7 +78,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   const action: string = edit ? 'Edit' : 'Create';
   const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const isCredit = selectedAccount?.accountType === 'Credit';
-  const [typeOfRecord, setTypeOfRecord] = useState<TypeOfRecord>('expense');
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
@@ -92,29 +88,26 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     subCategory: '',
     // If is credit, the prop is false, otherwise it's true because only credit is paid later.
     isPaid: !isCredit,
-    date: dayjs(new Date()),
+    date: dayjs().tz('America/Mexico_City'),
+    tag: [],
+    budgets: [],
   });
   // This data is not included in initial values because are not part of the main form, hence, the data will be empty.
-  const [additionalData, setAdditionalData] = useState<AdditionalData>({
-    budgets: [],
-    tag: [],
-  });
+  const updateTags = ({ values, newChips }: { values: CreateRecordValues, newChips: string[] }) => {
+    setInitialValues({ ...values, tag: newChips });
+  };
+
+  const updateBudgets = ({ values, newBudgets }: { values: CreateRecordValues, newBudgets: string[] }) => {
+    setInitialValues({ ...values, budgets: newBudgets });
+  };
 
   const isExpense = typeOfRecord === 'expense';
-  const startAdornment = isExpense
-    ? <InputAdornment position="start">- $</InputAdornment>
-    : <InputAdornment position="start">+ $</InputAdornment>;
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const buttonText = `${action} record`;
 
   // Update edit data to the initial values
   useEffect(() => {
     if (edit && recordToBeEdited) {
-      // Set record type to income if it's an income.
-      if (recordToBeEdited?.expensesPaid) {
-        setTypeOfRecord('income');
-      }
-
       const newInitialValues: CreateRecordValues = {
         amount: String(recordToBeEdited.amount),
         shortName: recordToBeEdited.shortName,
@@ -123,10 +116,8 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         subCategory: recordToBeEdited.subCategory,
         isPaid: recordToBeEdited.isPaid ?? !isCredit,
         date: dayjs(recordToBeEdited.date),
-      };
-      const newAdditionalData: AdditionalData = {
-        budgets: recordToBeEdited.budgets,
         tag: recordToBeEdited.tag,
+        budgets: recordToBeEdited.budgets,
       };
 
       // If the expense has indebted people, update it.
@@ -148,7 +139,6 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       }
 
       setInitialValues(newInitialValues);
-      setAdditionalData(newAdditionalData);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recordToBeEdited?.category.categoryName, edit, isCredit]);
@@ -166,19 +156,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   };
   const closeShowExpenses = () => setShowExpenses(false);
 
-  const changeTypeOfRecord = (event: React.MouseEvent<HTMLElement>, newTypeOfRecord: TypeOfRecord) => {
-    setTypeOfRecord(newTypeOfRecord);
-  };
-
   const addExpenseToIncome = (expenses: ExpensePaid[]) => setExpensesSelected(expenses);
-
-  const updateTags = (newTags: string[]):void => {
-    setAdditionalData({ ...additionalData, tag: newTags });
-  };
-
-  const updateBudgets = (newBudgets: string[]):void => {
-    setAdditionalData({ ...additionalData, budgets: newBudgets });
-  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (values: any) => {
@@ -194,17 +172,17 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
     const amountToNumber = Number(amount);
     const newValues = isExpense ? {
       ...values,
-      ...additionalData,
       amount: amountToNumber,
       indebtedPeople,
       account: selectedAccount?._id,
+      typeOfRecord: 'expense',
     } : {
       ...restValues,
-      ...additionalData,
       amount: amountToNumber,
       indebtedPeople: [],
       expensesPaid: expensesSelected,
       account: selectedAccount?._id,
+      typeOfRecord: 'income',
     };
 
     if (isExpense) {
@@ -214,7 +192,12 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
         const userIdRecord = recordToBeEdited?.userId ?? '';
         resetLocalStorageWithUserOnly();
         editExpense({
-          values: newValues, recordId, amountTouched, previousAmount, userId: userIdRecord,
+          values: newValues,
+          recordId,
+          amountTouched,
+          previousAmount,
+          userId: userIdRecord,
+          accountId: (selectedAccount?._id ?? ''),
         });
         return;
       }
@@ -232,7 +215,13 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
       resetLocalStorageWithUserOnly();
       editIncome({
-        values: newValues, recordId, amountTouched, previousAmount, previousExpensesRelated: oldRecords, userId: userIdRecord,
+        values: newValues,
+        recordId,
+        amountTouched,
+        previousAmount,
+        previousExpensesRelated: oldRecords,
+        userId: userIdRecord,
+        accountId: (selectedAccount?._id ?? ''),
       });
       return;
     }
@@ -240,28 +229,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
   };
 
   return (
-    <RecordTemplateMain>
-      <GoBackButton to={DASHBOARD_ROUTE}>
-        <AppIcon icon="Close" />
-      </GoBackButton>
-      { (!edit) && (
-        <ToggleButtonGroup
-          color="primary"
-          exclusive
-          value={typeOfRecord}
-          onChange={changeTypeOfRecord}
-          aria-label="Select type of record"
-        >
-          <ToggleButton value="expense">Expense</ToggleButton>
-          <ToggleButton value="income">Income</ToggleButton>
-        </ToggleButtonGroup>
-      ) }
-      <Typography variant="h3" align="center">
-        {' '}
-        { action }
-        {' '}
-        { typeOfRecord }
-      </Typography>
+    <>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => handleSubmit(values)}
@@ -275,50 +243,18 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
           const hasErrors = Object.keys(errors).length > 0;
           return (
             <FormContainer>
-              <Field
-                component={InputForm}
-                name="amount"
-                type="text"
-                variant="standard"
-                label="Amount"
-                InputProps={{
-                  startAdornment,
-                  inputComponent: NumericFormatCustom as any,
-                }}
-              />
-              <Field
-                component={DateTimePickerValue}
-                setFieldValueCb={setFieldValue}
-                disableFuture
-                name="date"
-                label="Date and Time"
-              />
-              <Field
-                component={InputForm}
-                name="shortName"
-                type="text"
-                variant="standard"
-                label="Short Description"
-              />
-              <Field
-                component={InputForm}
-                multiline
-                rows={5}
-                name="description"
-                variant="standard"
-                label="Description (Optional)"
-              />
-              <CategoriesAndSubcategories
-                errorCategory={errors.category}
-                errorSubcategory={errors.subCategory}
-                touchedCategory={touched.category}
-                touchedSubCategory={touched.subCategory}
+              <TransactionFormFields<CreateRecordValues>
+                values={values}
+                typeOfRecord={typeOfRecord}
+                setFieldValue={setFieldValue}
+                errors={errors}
+                touched={touched}
                 categoryToBeEdited={categoryToBeEdited}
+                updateBudgets={updateBudgets}
+                updateTags={updateTags}
+                tags={initialValues.tag}
+                budgets={initialValues.budgets}
               />
-              <AddChipContainer>
-                <AddChip name="tag" label="Tag (Optional)" action="tag" updateData={updateTags} chipsData={additionalData.tag} />
-                <AddChip name="budget" label="Budget (Optional)" action="budget" updateData={updateBudgets} chipsData={additionalData.budgets} />
-              </AddChipContainer>
               { (isCredit && typeOfRecord === 'expense') && (
               <FormControlLabel
                 control={(
@@ -388,7 +324,7 @@ const RecordTemplate = ({ edit = false }: RecordTemplateProps) => {
       <Drawer anchor="right" open={showExpenses} onClose={closeShowExpenses}>
         <SelectExpenses modifySelectedExpenses={addExpenseToIncome} selectedExpenses={expensesSelected} closeDrawer={closeShowExpenses} />
       </Drawer>
-    </RecordTemplateMain>
+    </>
   );
 };
 

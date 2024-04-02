@@ -1,4 +1,43 @@
-## v2.3.0 (2024-03-18)
+## v0.5.4 (2024-03-31)
+Release Changes.
+- Fix any on transaction form fields component using generic types
+
+### Pull Requests
+[#12](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/12) | Fix using any type for generic type transaction form field component
+
+## v0.5.3 (2024-03-31)
+Release Changes.
+- Fix reset values when adding budgets or tags
+
+### Pull Requests
+[#11](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/11) | Fix reset values when adding budgets or tags
+
+## v0.5.2 (2024-03-30)
+Release Changes.
+- Fix error when creating income
+
+### Pull Requests
+[#10](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/10) | Fix/create income transfer
+
+## v0.5.1 (2024-03-30)
+Release Changes.
+- Fix time that was set incorrectly when creating record
+
+### Pull Requests
+[#9](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/9) | Fix timezone
+
+## v0.5.0 (2024-03-29)
+Release Changes
+- Create a transfer
+- Edit a transfer
+- Delete a transfer
+- When linking expenses, only records and incomes are shown omiting transfers.
+- Fix on timezone when creating a record.
+
+### Pull Requests
+[#8](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/8) | Add Transfer Feature
+
+## v0.4.0 (2024-03-18)
 Release Changes
 - Fix all tests written by wrapping it with Redux
 - Install jest fetch mocks dependency to mock RTK queries
@@ -8,7 +47,7 @@ Release Changes
 ### Pull Requests
 [#6](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/6) | Fix tests that were not working properly
 
-## v2.2.0 (2024-03-16)
+## v0.3.0 (2024-03-16)
 Release Changes
 - Fix accesibility issue on log out icon button, edit and remove icon button on account.
 - Fix: Select expenses table was having horizontal overflow. For mobile, the date field was removed.
@@ -23,7 +62,7 @@ Release Changes
 ### Pull Requests
 [#5](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/5) | Multiple fixes v2.1.0 
 
-## v2.1.0 (2024-03-10)
+## v0.2.0 (2024-03-10)
 Release Changes
 - Change validation for limit of characters for short description and description
 - Add spacing to the theme
@@ -37,14 +76,20 @@ Release Changes
 ### Pull Requests
 [#3](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/3) | Redesign record and record Drawer. Fix other bugs
 
-## v2.0.1 (2024-03-06)
+## v0.1.1 (2024-03-06)
 Release Changes
 - Skip tests to update them using redux. This is to be able to deploy in beta.
 
 ### Pull Requests
 [#1](https://github.com/RafaelMoro/FE_Personal_Finances/pull/2) | Skip tests.
 
-## v2.0.0 (2023-12-20)
+## v0.1.0 (2023-12-20)
 Release Changes
 - Change of react state management from jotai to redux.
 - Refactoring code
+
+## Past versions
+- Use of jotai atoms
+- Use of async await without fetching libraries
+- Have a non standard theme
+- Having various changes on design
