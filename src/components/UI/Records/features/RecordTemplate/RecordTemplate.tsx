@@ -185,47 +185,48 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       typeOfRecord: 'income',
     };
 
-    if (isExpense) {
-      if (edit) {
-        const recordId = recordToBeEdited?._id ?? '';
-        const previousAmount = recordToBeEdited?.amount ?? 0;
-        const userIdRecord = recordToBeEdited?.userId ?? '';
-        resetLocalStorageWithUserOnly();
-        editExpense({
-          values: newValues,
-          recordId,
-          amountTouched,
-          previousAmount,
-          userId: userIdRecord,
-          accountId: (selectedAccount?._id ?? ''),
-        });
-        return;
-      }
-      createExpense(newValues);
-      return;
-    }
+    console.log('newValues', newValues);
+    // if (isExpense) {
+    //   if (edit) {
+    //     const recordId = recordToBeEdited?._id ?? '';
+    //     const previousAmount = recordToBeEdited?.amount ?? 0;
+    //     const userIdRecord = recordToBeEdited?.userId ?? '';
+    //     resetLocalStorageWithUserOnly();
+    //     editExpense({
+    //       values: newValues,
+    //       recordId,
+    //       amountTouched,
+    //       previousAmount,
+    //       userId: userIdRecord,
+    //       accountId: (selectedAccount?._id ?? ''),
+    //     });
+    //     return;
+    //   }
+    //   createExpense(newValues);
+    //   return;
+    // }
 
-    if (edit) {
-      const recordId = recordToBeEdited?._id ?? '';
-      const previousAmount = recordToBeEdited?.amount ?? 0;
-      const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
-      const userIdRecord = recordToBeEdited?.userId ?? '';
+    // if (edit) {
+    //   const recordId = recordToBeEdited?._id ?? '';
+    //   const previousAmount = recordToBeEdited?.amount ?? 0;
+    //   const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
+    //   const userIdRecord = recordToBeEdited?.userId ?? '';
 
-      // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
-      const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
-      resetLocalStorageWithUserOnly();
-      editIncome({
-        values: newValues,
-        recordId,
-        amountTouched,
-        previousAmount,
-        previousExpensesRelated: oldRecords,
-        userId: userIdRecord,
-        accountId: (selectedAccount?._id ?? ''),
-      });
-      return;
-    }
-    createIncome(newValues);
+    //   // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
+    //   const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+    //   resetLocalStorageWithUserOnly();
+    //   editIncome({
+    //     values: newValues,
+    //     recordId,
+    //     amountTouched,
+    //     previousAmount,
+    //     previousExpensesRelated: oldRecords,
+    //     userId: userIdRecord,
+    //     accountId: (selectedAccount?._id ?? ''),
+    //   });
+    //   return;
+    // }
+    // createIncome(newValues);
   };
 
   return (

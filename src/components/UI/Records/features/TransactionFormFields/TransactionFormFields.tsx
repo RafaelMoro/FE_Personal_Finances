@@ -10,6 +10,7 @@ import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { AddChip } from '../AddChip';
 import { InputForm } from '../../../../../styles';
 import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
+import { CurrencyField } from '../../../../Other/CurrencyField';
 
 interface TransactionFormFieldsProps<CreateAnyRecord> {
   typeOfRecord: TypeOfRecord;
@@ -29,7 +30,9 @@ const TransactionFormFields = <CreateAnyRecord,>({
   typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values,
 }: TransactionFormFieldsProps<CreateAnyRecord>) => (
   <>
-    <Field
+    {/** @TODO pass the start adornment or the type or record and pass it to start adornment. */}
+    <CurrencyField setFieldValue={setFieldValue} />
+    {/* <Field
       component={InputForm}
       name="amount"
       type="text"
@@ -39,7 +42,7 @@ const TransactionFormFields = <CreateAnyRecord,>({
         startAdornment: CurrencyAdornment({ typeOfRecord }),
         inputComponent: NumericFormatCustom as any,
       }}
-    />
+    /> */}
     <Field
       component={DateTimePickerValue}
       setFieldValueCb={setFieldValue}
