@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
@@ -80,6 +80,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
+  const initialAmount = useRef('0');
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -99,6 +100,9 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
 
   const updateBudgets = ({ values, newBudgets }: { values: CreateRecordValues, newBudgets: string[] }) => {
     setInitialValues({ ...values, budgets: newBudgets });
+  };
+  const updateAmount = (amount: string) => {
+    initialAmount.current = amount;
   };
 
   const isExpense = typeOfRecord === 'expense';
@@ -247,6 +251,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
               <TransactionFormFields<CreateRecordValues>
                 values={values}
                 amount={values.amount}
+                updateAmount={updateAmount}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}

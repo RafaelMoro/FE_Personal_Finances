@@ -50,6 +50,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   // Reuse show expenses and expenses selected state
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
+  const initialAmount = useRef('0');
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
     originAccount: getOriginAccount({
       isIncome, selectedAccount, recordToBeEdited, edit,
@@ -72,6 +73,9 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const buttonText = `${action} transfer`;
 
+  const updateAmount = (amount: string) => {
+    initialAmount.current = amount;
+  };
   const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
   const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
   const closeShowExpenses = () => setShowExpenses(false);
@@ -201,6 +205,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
               <TransactionFormFields<CreateTransferValues>
                 values={values}
                 amount={values.amount}
+                updateAmount={updateAmount}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}
