@@ -16,6 +16,7 @@ interface TransactionFormFieldsProps<CreateAnyRecord> {
   typeOfRecord: TypeOfRecord;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
   values: CreateAnyRecord;
+  amount: string;
   errors: FormikErrors<CreateRecordValues | CreateTransferValues>;
   touched: FormikTouched<CreateRecordValues | CreateTransferValues>;
   categoryToBeEdited: Category | null;
@@ -27,11 +28,11 @@ interface TransactionFormFieldsProps<CreateAnyRecord> {
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
 const TransactionFormFields = <CreateAnyRecord,>({
-  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values,
+  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values, amount,
 }: TransactionFormFieldsProps<CreateAnyRecord>) => (
   <>
     {/** @TODO pass the start adornment or the type or record and pass it to start adornment. */}
-    <CurrencyField setFieldValue={setFieldValue} />
+    <CurrencyField setFieldValue={setFieldValue} amount={amount} />
     {/* <Field
       component={InputForm}
       name="amount"

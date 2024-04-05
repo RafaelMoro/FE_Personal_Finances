@@ -200,6 +200,7 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
               />
               <TransactionFormFields<CreateTransferValues>
                 values={values}
+                amount={values.amount}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}

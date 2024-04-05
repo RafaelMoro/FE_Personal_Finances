@@ -246,6 +246,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
             <FormContainer>
               <TransactionFormFields<CreateRecordValues>
                 values={values}
+                amount={values.amount}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}
