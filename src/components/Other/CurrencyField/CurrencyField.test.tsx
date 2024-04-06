@@ -83,4 +83,12 @@ describe('CurrencyField component', () => {
     userEvent.type(input, newAmount);
     expect(input).toHaveValue('1,025');
   });
+
+  test('Given a user typing 1025.5, should show 1,025.5 as input value', () => {
+    const newAmount = '1025.5';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newAmount);
+    expect(input).toHaveValue('1,025.5');
+  });
 });
