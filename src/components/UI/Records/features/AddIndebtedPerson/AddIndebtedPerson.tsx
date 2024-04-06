@@ -3,21 +3,25 @@ import { Dialog, Typography } from '@mui/material';
 import { Field, Formik } from 'formik';
 import { Switch } from 'formik-mui';
 
+import { useRef } from 'react';
 import { IndebtedPeopleFormSchema } from '../../../../../validationsSchemas/records.schema';
 import { FormContainer } from '../RecordTemplate/RecordTemplate.styled';
 import {
-  PrimaryButton, InputForm, InputAdornment,
+  PrimaryButton, InputForm,
   FormControlLabel, TransparentButton, FlexContainer,
 } from '../../../../../styles';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { AddIndebtedPersonProps } from './interface';
 import { Container } from './AddIndebtedPeople.styled';
 import { AppIcon } from '../../../Icons';
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
+import { CurrencyField } from '../../../../Other';
+import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
 
 const AddIndebtedPerson = ({
   open, onClose, addPerson, indebtedPeople = [], indebtedPerson, modifyAction, updatePerson,
 }: AddIndebtedPersonProps) => {
+  const { updateAmount, initialAmount } = useCurrencyField();
+  const initialAmountPaid = useRef('');
   const initialValues = modifyAction ? {
     name: indebtedPerson?.name ?? '',
     amount: indebtedPerson?.amount ?? '',
@@ -28,6 +32,10 @@ const AddIndebtedPerson = ({
     amount: '',
     amountPaid: '',
     isPaid: false,
+  };
+
+  const updateAmountPaid = (amount: string) => {
+    initialAmountPaid.current = amount;
   };
 
   const checkRepeatedValue = (name: string) => {
@@ -70,7 +78,7 @@ const AddIndebtedPerson = ({
           onSubmit={(values) => handleSubmit(values)}
           validateOnMount
         >
-          {({ submitForm, values }) => (
+          {({ submitForm, values, setFieldValue }) => (
             <FormContainer>
               <Field
                 component={InputForm}
@@ -80,27 +88,13 @@ const AddIndebtedPerson = ({
                 label="Full Name"
                 validate={checkRepeatedValue}
               />
-              <Field
-                component={InputForm}
-                name="amount"
-                type="string"
-                variant="standard"
-                label="Amount"
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                  inputComponent: NumericFormatCustom as any,
-                }}
-              />
-              <Field
-                component={InputForm}
-                name="amountPaid"
-                type="string"
-                variant="standard"
-                label="Amount Paid"
-                InputProps={{
-                  startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                  inputComponent: NumericFormatCustom as any,
-                }}
+              <CurrencyField setFieldValue={setFieldValue} updateAmount={updateAmount} amount={initialAmount.current} />
+              <CurrencyField
+                setFieldValue={setFieldValue}
+                updateAmount={updateAmountPaid}
+                amount={initialAmountPaid.current}
+                fieldName="amountPaid"
+                labelName="Amount Paid"
               />
               <FormControlLabel
                 control={(

@@ -2,14 +2,18 @@ import { formatCurrencyToString, formatValueToCurrency } from '../../../utils';
 
 interface UseCurrencyFieldProps {
   amount: string;
+  fieldName?: string;
   setFieldValue: (name: string, value: string) => void;
   updateAmount: (amount: string) => void;
 }
 /*
 * Custom hook that has all the logic of the handleChange function of the CurrencyField component.
 */
-const useHandleCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFieldProps) => {
+const useHandleCurrencyField = ({
+  amount, setFieldValue, updateAmount, fieldName,
+}: UseCurrencyFieldProps) => {
   const CURRENCY_FIELD_NAME = 'amount';
+  const currentFieldName = fieldName ?? CURRENCY_FIELD_NAME;
 
   const validateCurrencyField = (value: string) => {
     const hasNumericPeriodCommaRegex = /[0-9.,]+/;
@@ -52,7 +56,7 @@ const useHandleCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurr
     } = validateCurrencyField(newValue);
     if (emptyValue) {
       updateAmount('0');
-      setFieldValue(CURRENCY_FIELD_NAME, '');
+      setFieldValue(currentFieldName, '');
       return;
     }
     if (valueHasForbiddenCharacters) return;
@@ -62,34 +66,34 @@ const useHandleCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurr
       const newAmountNotFormatted = formatCurrencyToString(newValue);
       updateAmount(newAmountNotFormatted);
       const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
-      setFieldValue(CURRENCY_FIELD_NAME, newAmount);
+      setFieldValue(currentFieldName, newAmount);
       return;
     }
 
     if (isValueThousandWithNoComma) {
       if (valueEndsWithPeriod) {
-        setFieldValue(CURRENCY_FIELD_NAME, newValue);
+        setFieldValue(currentFieldName, newValue);
         return;
       }
       updateAmount(newValue);
       const newAmount = formatValueToCurrency({ amount: newValue, hasNoDecimals: true, hasNoCurrencySign: true });
-      setFieldValue(CURRENCY_FIELD_NAME, newAmount);
+      setFieldValue(currentFieldName, newAmount);
       return;
     }
 
     if (isValueThousandWithComma) {
       if (valueEndsWithPeriod) {
-        setFieldValue(CURRENCY_FIELD_NAME, newValue);
+        setFieldValue(currentFieldName, newValue);
         return;
       }
       const newAmountNotFormatted = formatCurrencyToString(newValue);
       updateAmount(newAmountNotFormatted);
       const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
-      setFieldValue(CURRENCY_FIELD_NAME, newAmount);
+      setFieldValue(currentFieldName, newAmount);
       return;
     }
     updateAmount(newValue);
-    setFieldValue(CURRENCY_FIELD_NAME, newValue);
+    setFieldValue(currentFieldName, newValue);
   };
 
   return {

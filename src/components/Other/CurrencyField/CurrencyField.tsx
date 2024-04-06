@@ -7,22 +7,26 @@ import { useHandleCurrencyField } from './useHandleCurrencyField';
 interface CurrencyFieldProps {
   amount: string;
   typeOfRecord?: TypeOfRecord;
+  fieldName?: string;
+  labelName?: string;
   setFieldValue: (name: string, value: string) => void;
   updateAmount: (amount: string) => void;
 }
 
 const CurrencyField = ({
-  setFieldValue, updateAmount, amount, typeOfRecord,
+  setFieldValue, updateAmount, amount, typeOfRecord, fieldName, labelName,
 }: CurrencyFieldProps) => {
-  const { handleChange } = useHandleCurrencyField({ setFieldValue, amount, updateAmount });
+  const { handleChange } = useHandleCurrencyField({
+    setFieldValue, amount, updateAmount, fieldName,
+  });
 
   return (
     <Field
       component={InputForm}
-      name="amount"
+      name={fieldName ?? 'amount'}
       type="text"
       variant="standard"
-      label="Amount"
+      label={labelName ?? 'Amount'}
       onChange={handleChange}
       InputProps={{
         startAdornment: CurrencyAdornment({ typeOfRecord }),
