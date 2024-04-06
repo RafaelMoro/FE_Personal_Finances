@@ -51,11 +51,11 @@ const AddIndebtedPerson = ({
 
   const handleSubmit = (values: IndebtedPeople) => {
     if (modifyAction) {
-      updatePerson(values);
+      updatePerson({ ...values, amount: initialAmount.current, amountPaid: initialAmountPaid.current });
       onClose();
       return;
     }
-    addPerson(values);
+    addPerson({ ...values, amount: initialAmount.current, amountPaid: initialAmountPaid.current });
     onClose();
   };
 
