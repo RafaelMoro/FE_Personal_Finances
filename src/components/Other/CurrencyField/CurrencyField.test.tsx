@@ -43,4 +43,20 @@ describe('CurrencyField component', () => {
     userEvent.type(input, newValue);
     expect(input).toHaveValue('');
   });
+
+  test('Given a user typing a special characters, should not show anything typed', () => {
+    const newValue = '!*@';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newValue);
+    expect(input).toHaveValue('');
+  });
+
+  test('Given a user typing a period, should not show anything typed', () => {
+    const newValue = '.';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newValue);
+    expect(input).toHaveValue('');
+  });
 });
