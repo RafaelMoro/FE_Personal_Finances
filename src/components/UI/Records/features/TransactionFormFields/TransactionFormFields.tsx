@@ -8,7 +8,7 @@ import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { AddChip } from '../AddChip';
 import { InputForm } from '../../../../../styles';
 import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
-import { CurrencyField } from '../../../../Other/CurrencyField';
+import { CurrencyField } from '../../../../Other';
 
 interface TransactionFormFieldsProps<CreateAnyRecord> {
   typeOfRecord: TypeOfRecord;

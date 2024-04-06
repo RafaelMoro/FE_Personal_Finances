@@ -1,8 +1,9 @@
 import { Field } from 'formik';
-import { InputForm } from '../../styles';
-import { TypeOfRecord } from '../../globalInterface';
-import { CurrencyAdornment } from '../UI/Records/features/TransactionFormFields/CurrencyAdornment';
-import { formatCurrencyToString, formatValueToCurrency } from '../../utils';
+import { InputForm } from '../../../styles';
+import { TypeOfRecord } from '../../../globalInterface';
+import { CurrencyAdornment } from '../../UI/Records/features/TransactionFormFields/CurrencyAdornment';
+import { formatCurrencyToString, formatValueToCurrency } from '../../../utils';
+import { useCurrencyField } from './useCurrencyField';
 
 interface CurrencyFieldProps {
   amount: string;
@@ -15,15 +16,7 @@ const CURRENCY_FIELD_NAME = 'amount';
 const CurrencyField = ({
   setFieldValue, updateAmount, amount, typeOfRecord,
 }: CurrencyFieldProps) => {
-  const validateCurrencyField = (value: string) => {
-    let error;
-    const hasMoreThanThreeDecimals = /\.\d{3}$/;
-    if (value.match(hasMoreThanThreeDecimals)) {
-      error = 'You cannot use more than 2 decimals.';
-      return error;
-    }
-    return error;
-  };
+  const { validateCurrencyField } = useCurrencyField();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
