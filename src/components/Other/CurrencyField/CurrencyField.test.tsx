@@ -68,11 +68,19 @@ describe('CurrencyField component', () => {
     expect(input).toHaveValue('');
   });
 
-  test('Given a user typing 125 as amount, should not show 125 as input value', async () => {
+  test('Given a user typing 125 as amount, should not show 125 as input value', () => {
     const newAmount = '125';
     const input = screen.getByRole('textbox', { name: /amount/i });
 
     userEvent.type(input, newAmount);
-    await waitFor(() => expect(input).toHaveValue('125'));
+    expect(input).toHaveValue('125');
+  });
+
+  test('Given a user typing 1025, should show 1,025 as input value', () => {
+    const newAmount = '1025';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newAmount);
+    expect(input).toHaveValue('1,025');
   });
 });
