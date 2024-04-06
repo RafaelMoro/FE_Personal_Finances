@@ -28,7 +28,7 @@ export const accountsSlice = createSlice({
     },
     updateAmountSelectedAccount: (state, action: UpdateAmountAccountProps) => {
       const { accountId, amount: amountNumber } = action.payload;
-      const amountFormatted = formatValueToCurrency(amountNumber);
+      const amountFormatted = formatValueToCurrency({ amount: amountNumber });
 
       // Update the amount of the selected account
       if (state.accountSelected && state.accountSelected._id === accountId) {

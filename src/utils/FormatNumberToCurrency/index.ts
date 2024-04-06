@@ -1,19 +1,16 @@
 const CURRENCY = 'currency';
-const MEXICAN_CURRENCY = 'MXN';
 const USD_CURRENCY = 'USD';
-
-type CurrencyOptions = 'USD' | 'MXN';
-
-const mexicanPeso = Intl.NumberFormat('es-ES', {
-  style: CURRENCY,
-  currency: MEXICAN_CURRENCY,
-  minimumFractionDigits: 2,
-});
 
 const usDollar = Intl.NumberFormat('en-US', {
   style: CURRENCY,
   currency: USD_CURRENCY,
   minimumFractionDigits: 2,
+});
+
+const usDollarWithoutDecimals = Intl.NumberFormat('en-US', {
+  style: CURRENCY,
+  currency: USD_CURRENCY,
+  minimumFractionDigits: 0,
 });
 
 /*
@@ -24,8 +21,26 @@ const usDollar = Intl.NumberFormat('en-US', {
 * It returns the number formatted.
 */
 
-export const formatValueToCurrency = (amount: number | string, currency: CurrencyOptions = 'USD'): string => {
+interface FormatValueToCurrencyProps {
+  amount: number | string;
+  hasNoDecimals?: boolean;
+  hasNoCurrencySign?: boolean;
+}
+
+export const formatValueToCurrency = ({
+  amount, hasNoCurrencySign = false, hasNoDecimals = false,
+}: FormatValueToCurrencyProps): string => {
   const transformedAmount = typeof amount === 'number' ? amount : Number(amount);
-  if (currency === 'MXN') return mexicanPeso.format(transformedAmount);
-  return usDollar.format(transformedAmount);
+  const amountCurrency = usDollar.format(transformedAmount);
+  if (hasNoDecimals) {
+    const currencyWithoutDecimals = usDollarWithoutDecimals.format(transformedAmount);
+    if (hasNoCurrencySign) {
+      return currencyWithoutDecimals.replace('$', '');
+    }
+    return currencyWithoutDecimals;
+  }
+  if (hasNoCurrencySign) {
+    return amountCurrency.replace('$', '');
+  }
+  return amountCurrency;
 };

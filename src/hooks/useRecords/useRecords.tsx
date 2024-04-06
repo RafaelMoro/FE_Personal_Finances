@@ -154,7 +154,7 @@ const useRecords = ({
     } else {
       totalUpdated = currentTotalNumber + newAmount;
     }
-    const newTotalCurrency = formatValueToCurrency(totalUpdated);
+    const newTotalCurrency = formatValueToCurrency({ amount: totalUpdated });
     const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
     return payload;
   };

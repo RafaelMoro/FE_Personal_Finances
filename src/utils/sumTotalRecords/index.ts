@@ -12,8 +12,8 @@ export const sumTotalRecords = (records: AnyRecord[]) => {
     incomeTotalCounter += record.amount;
   });
 
-  const expenseTotal = formatValueToCurrency(expenseTotalCounter);
-  const incomeTotal = formatValueToCurrency(incomeTotalCounter);
+  const expenseTotal = formatValueToCurrency({ amount: expenseTotalCounter });
+  const incomeTotal = formatValueToCurrency({ amount: incomeTotalCounter });
 
   return {
     expenseTotal,
