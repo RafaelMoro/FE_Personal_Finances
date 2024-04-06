@@ -33,6 +33,11 @@ const CurrencyField = ({
     const valueEndsWithPeriod = /[0-9]+[.]$/;
     const isPeriod = /\./;
     const hasComma = /,/;
+    if (!newValue && amount) {
+      updateAmount('0');
+      setFieldValue(CURRENCY_FIELD_NAME, '');
+      return;
+    }
     // If the value is not a number, do not update the field
     if (!newValue.match(hasNumericPeriodComma)) return;
     // If the new character is a period and there is no number, do not update the field
