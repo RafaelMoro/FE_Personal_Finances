@@ -23,10 +23,12 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
     const isPeriod = /\./;
     const valueHasForbiddenCharacters = !value.match(hasNumericPeriodComma);
     const valueBeginsWithPeriod = amount === '' && value.match(isPeriod);
+    const emptyValue = !value && amount;
 
     return {
       valueHasForbiddenCharacters,
       valueBeginsWithPeriod,
+      emptyValue,
     };
   };
 
@@ -35,12 +37,13 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
     const {
       valueHasForbiddenCharacters,
       valueBeginsWithPeriod,
+      emptyValue,
     } = validateCurrencyField(newValue);
     const hasDeletedCharacter = amount.length > newValue.length;
     const hasDeletedNumber = /,\d{2}$/;
     const valueEndsWithPeriod = /[0-9]+[.]$/;
     const hasComma = /,/;
-    if (!newValue && amount) {
+    if (emptyValue) {
       updateAmount('0');
       setFieldValue(CURRENCY_FIELD_NAME, '');
       return;
