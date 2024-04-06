@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { useState } from 'react';
@@ -39,7 +39,7 @@ describe('CurrencyField component', () => {
     render(<ScaffoldedCurrencyField />);
     jest.spyOn(console, 'error').mockImplementation(() => {});
   });
-  test('Show an amount field with Amount placeholder', () => {
+  test('Show an amount field.', () => {
     const input = screen.getByRole('textbox', { name: /amount/i });
     expect(input).toBeInTheDocument();
   });
@@ -60,7 +60,7 @@ describe('CurrencyField component', () => {
     expect(input).toHaveValue('');
   });
 
-  test('Given a user typing a period, should not show anything typed', () => {
+  test('Given a user typing a period as first character, should not show anything typed', () => {
     const newValue = '.';
     const input = screen.getByRole('textbox', { name: /amount/i });
 
@@ -68,7 +68,7 @@ describe('CurrencyField component', () => {
     expect(input).toHaveValue('');
   });
 
-  test('Given a user typing 125 as amount, should not show 125 as input value', () => {
+  test('Given a user typing 125 as amount, should show 125 as input value', () => {
     const newAmount = '125';
     const input = screen.getByRole('textbox', { name: /amount/i });
 
