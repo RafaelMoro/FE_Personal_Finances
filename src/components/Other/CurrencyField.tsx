@@ -21,12 +21,21 @@ const CurrencyField = ({
     amountNotFormatted.current = newAmount;
   };
 
+  const validateCurrencyField = (value: string) => {
+    let error;
+    const hasMoreThanThreeDecimals = /\.\d{3}$/;
+    if (value.match(hasMoreThanThreeDecimals)) {
+      error = 'You cannot use more than 2 decimals.';
+      return error;
+    }
+    return error;
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     const hasDeletedCharacter = amount.length > newValue.length;
     const hasDeletedNumber = /,\d{2}$/;
     const hasNumericPeriodComma = /[0-9.,]+/;
-    const hasMoreThanThreeDecimals = /\.\d{3}$/;
     const valueEndsWithPeriod = /[0-9]+[.]$/;
     const isPeriod = /\./;
     const hasComma = /,/;
@@ -34,8 +43,6 @@ const CurrencyField = ({
     if (!newValue.match(hasNumericPeriodComma)) return;
     // If the new character is a period and there is no number, do not update the field
     if (amount === '' && newValue.match(isPeriod)) return;
-    // If the amount has more than two decimals, do not update the field
-    if (newValue.match(hasMoreThanThreeDecimals)) return;
 
     if (hasDeletedCharacter && newValue.match(hasDeletedNumber)) {
       const newAmountNotFormatted = formatCurrencyToString(newValue);
@@ -81,6 +88,7 @@ const CurrencyField = ({
       variant="standard"
       label="Amount"
       onChange={handleChange}
+      validate={validateCurrencyField}
       InputProps={{
         startAdornment: CurrencyAdornment({ typeOfRecord }),
       }}
