@@ -13,13 +13,13 @@ const useHandleCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurr
 
   const validateCurrencyField = (value: string) => {
     const hasNumericPeriodCommaRegex = /[0-9.,]+/;
-    const hasPeriodRegex = /\./;
+    const startsWithPeriodRegex = /^\./;
     const deletedNumberRegex = /,\d{2}$/;
     const EndsWithPeriodRegex = /[0-9]+[.]$/;
     const hasCommaRegex = /,/;
 
     const valueHasForbiddenCharacters = !value.match(hasNumericPeriodCommaRegex);
-    const valueBeginsWithPeriod = amount === '' && value.match(hasPeriodRegex);
+    const valueBeginsWithPeriod = amount === '' && value.match(startsWithPeriodRegex);
     const emptyValue = !value && amount;
     const hasDeleted = value.match(deletedNumberRegex);
     const isValueThousandWithNoComma = value.length === 4 && !value.match(hasCommaRegex);

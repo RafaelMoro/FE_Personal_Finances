@@ -6,7 +6,7 @@ import { useHandleCurrencyField } from './useHandleCurrencyField';
 
 interface CurrencyFieldProps {
   amount: string;
-  typeOfRecord: TypeOfRecord;
+  typeOfRecord?: TypeOfRecord;
   setFieldValue: (name: string, value: string) => void;
   updateAmount: (amount: string) => void;
 }
