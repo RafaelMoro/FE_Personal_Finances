@@ -20,10 +20,13 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
 
   const validateCurrencyField = (value: string) => {
     const hasNumericPeriodComma = /[0-9.,]+/;
+    const isPeriod = /\./;
     const valueHasForbiddenCharacters = !value.match(hasNumericPeriodComma);
+    const valueBeginsWithPeriod = amount === '' && value.match(isPeriod);
 
     return {
       valueHasForbiddenCharacters,
+      valueBeginsWithPeriod,
     };
   };
 
@@ -31,21 +34,19 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
     const newValue = event.target.value;
     const {
       valueHasForbiddenCharacters,
+      valueBeginsWithPeriod,
     } = validateCurrencyField(newValue);
     const hasDeletedCharacter = amount.length > newValue.length;
     const hasDeletedNumber = /,\d{2}$/;
     const valueEndsWithPeriod = /[0-9]+[.]$/;
-    const isPeriod = /\./;
     const hasComma = /,/;
     if (!newValue && amount) {
       updateAmount('0');
       setFieldValue(CURRENCY_FIELD_NAME, '');
       return;
     }
-    // If the value is not a number, do not update the field
     if (valueHasForbiddenCharacters) return;
-    // If the new character is a period and there is no number, do not update the field
-    if (amount === '' && newValue.match(isPeriod)) return;
+    if (valueBeginsWithPeriod) return;
 
     if (hasDeletedCharacter && newValue.match(hasDeletedNumber)) {
       const newAmountNotFormatted = formatCurrencyToString(newValue);
