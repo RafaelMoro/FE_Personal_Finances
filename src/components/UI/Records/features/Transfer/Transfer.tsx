@@ -141,10 +141,13 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     const expenseAccount = isExpense ? (recordToBeEdited?.account ?? '') : (recordToBeEdited?.transferRecord?.account ?? '');
 
     let amountTouched = false;
-    if (recordToBeEdited?.amount !== Number(values?.amount)) {
+    if (recordToBeEdited?.amount !== Number(initialAmount.current)) {
       amountTouched = true;
     }
-    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values, expensesSelected });
+    const newAmount = verifyAmountEndsPeriod(initialAmount.current);
+    const { amount, ...restValues } = values;
+    const newValues = { ...restValues, amount: newAmount };
+    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values: newValues, expensesSelected });
 
     const previousAmount = recordToBeEdited?.amount ?? 0;
     const userIdRecord = recordToBeEdited?.userId ?? '';
