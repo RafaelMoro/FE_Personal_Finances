@@ -110,4 +110,17 @@ describe('CurrencyField component', () => {
     userEvent.type(input, newAmount);
     expect(input).toHaveValue('1,250.57');
   });
+
+  test('Given a user typing a number with 3789, then he erases all the numbers, it should be an empty field', () => {
+    const firstAmount = '3789';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, firstAmount);
+    expect(input).toHaveValue('3,789');
+    userEvent.type(input, '{backspace}');
+    userEvent.type(input, '{backspace}');
+    userEvent.type(input, '{backspace}');
+    userEvent.type(input, '{backspace}');
+    expect(input).toHaveValue('');
+  });
 });
