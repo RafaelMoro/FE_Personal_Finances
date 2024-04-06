@@ -32,7 +32,6 @@ const TransactionFormFields = <CreateAnyRecord,>({
   updateTags, updateBudgets, tags, budgets, values, amount, updateAmount,
 }: TransactionFormFieldsProps<CreateAnyRecord>) => (
   <>
-    {/** @TODO pass the start adornment or the type or record and pass it to start adornment. */}
     <CurrencyField
       setFieldValue={setFieldValue}
       amount={amount}

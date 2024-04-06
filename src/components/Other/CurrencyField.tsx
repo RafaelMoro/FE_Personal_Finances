@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { InputForm } from '../../styles';
 import { TypeOfRecord } from '../../globalInterface';
 import { CurrencyAdornment } from '../UI/Records/features/TransactionFormFields/CurrencyAdornment';
-import { formatCurrencyToNumber, formatCurrencyToString, formatValueToCurrency } from '../../utils';
+import { formatCurrencyToString, formatValueToCurrency } from '../../utils';
 
 interface CurrencyFieldProps {
   amount: string;
@@ -23,6 +23,8 @@ const CurrencyField = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
+    const hasDeletedCharacter = amount.length > newValue.length;
+    const hasDeletedNumber = /,\d{2}$/;
     const hasNumericPeriodComma = /[0-9.,]+/;
     const valueEndsWithPeriod = /[0-9]+[.]$/;
     const isPeriod = /\./;
@@ -32,6 +34,14 @@ const CurrencyField = ({
     // If the new character is a period and there is no number, do not update the field
     if (amount === '' && newValue.match(isPeriod)) return;
     // If the amount has more than two decimals, do not update the field
+
+    if (hasDeletedCharacter && newValue.match(hasDeletedNumber)) {
+      const newAmountNotFormatted = formatCurrencyToString(newValue);
+      updateAmountNotFormatted(newAmountNotFormatted);
+      const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
+      setFieldValue(CURRENCY_FIELD_NAME, newAmount);
+      return;
+    }
 
     // If the new value is a thousand, formate the number
     if (newValue.length === 4 && !newValue.match(hasComma)) {
