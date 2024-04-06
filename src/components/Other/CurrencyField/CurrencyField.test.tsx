@@ -91,4 +91,15 @@ describe('CurrencyField component', () => {
     userEvent.type(input, newAmount);
     expect(input).toHaveValue('1,025.5');
   });
+
+  test('Given a user typing 1250, the input value should be 1,250. Then, he deletes the 0, the input value should be 125', () => {
+    const firstAmount = '1250';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, firstAmount);
+    expect(input).toHaveValue('1,250');
+
+    userEvent.type(input, '{backspace}');
+    expect(input).toHaveValue('125');
+  });
 });

@@ -29,7 +29,6 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
   const validateCurrencyField = (value: string) => {
     const hasNumericPeriodComma = /[0-9.,]+/;
     const hasPeriodRegex = /\./;
-    const deletedCharacterRegex = amount.length > value.length;
     const deletedNumberRegex = /,\d{2}$/;
     const EndsWithPeriodRegex = /[0-9]+[.]$/;
     const hasCommaRegex = /,/;
@@ -37,7 +36,7 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
     const valueHasForbiddenCharacters = !value.match(hasNumericPeriodComma);
     const valueBeginsWithPeriod = amount === '' && value.match(hasPeriodRegex);
     const emptyValue = !value && amount;
-    const hasDeleted = deletedCharacterRegex && value.match(deletedNumberRegex);
+    const hasDeleted = value.match(deletedNumberRegex);
     const isValueThousandWithNoComma = value.length === 4 && !value.match(hasCommaRegex);
     const isValueThousandWithComma = value.length > 5 && value.match(hasCommaRegex);
     const valueEndsWithPeriod = value.match(EndsWithPeriodRegex);
@@ -46,10 +45,9 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
       valueHasForbiddenCharacters,
       valueBeginsWithPeriod,
       emptyValue,
-      hasDeletedCharacter: deletedCharacterRegex,
-      hasDeletedNumber: deletedNumberRegex,
+      deletedNumberRegex,
       valueEndsWithPeriod,
-      hasComma: hasCommaRegex,
+      hasCommaRegex,
       hasDeleted,
       isValueThousandWithNoComma,
       isValueThousandWithComma,
