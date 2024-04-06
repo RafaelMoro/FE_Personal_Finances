@@ -6,6 +6,14 @@ interface UseCurrencyFieldProps {
   updateAmount: (amount: string) => void;
 }
 
+const verifyAmountEndsPeriod = (amount: string) => {
+  const endsPeriod = amount.match(/\.\d*$/);
+  if (endsPeriod) {
+    return amount.replace(/\.\d*$/, '');
+  }
+  return amount;
+};
+
 const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFieldProps) => {
   const CURRENCY_FIELD_NAME = 'amount';
   const validateCurrencyFieldErrors = (value: string) => {
@@ -107,4 +115,4 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
   };
 };
 
-export { useCurrencyField };
+export { useCurrencyField, verifyAmountEndsPeriod };

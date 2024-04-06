@@ -37,6 +37,7 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
+import { verifyAmountEndsPeriod } from '../../../../Other/CurrencyField/useCurrencyField';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -169,15 +170,12 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     if (recordToBeEdited?.amount !== Number(initialAmount.current)) {
       amountTouched = true;
     }
-    // @TODO: Add this into a custom hook
-    if (initialAmount.current.match(/\.\d*$/)) {
-      initialAmount.current = initialAmount.current.replace(/\.\d*$/, '');
-    }
+    const newAmount = verifyAmountEndsPeriod(initialAmount.current);
 
     const {
       isPaid, amount, ...restValues
     } = values;
-    const amountToNumber = Number(initialAmount.current);
+    const amountToNumber = Number(newAmount);
     const newValues = isExpense ? {
       ...values,
       amount: amountToNumber,
