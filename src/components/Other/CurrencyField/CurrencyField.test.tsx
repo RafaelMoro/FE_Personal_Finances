@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { CreateRecordSchema } from '../../../validationsSchemas/records.schema';
 import { CurrencyField } from './CurrencyField';
@@ -11,7 +12,8 @@ describe('CurrencyField component', () => {
   const setFieldValue = jest.fn();
   const updateAmount = jest.fn();
   const handleSubmit = jest.fn();
-  test('Show an amount field with Amount placeholder', () => {
+
+  beforeEach(() => {
     render(
       <Formik
         initialValues={initialValues}
@@ -28,7 +30,17 @@ describe('CurrencyField component', () => {
         />
       </Formik>,
     );
+  });
+  test('Show an amount field with Amount placeholder', () => {
     const input = screen.getByRole('textbox', { name: /amount/i });
     expect(input).toBeInTheDocument();
+  });
+
+  test('Given a user typing any words, should not show anything typed', () => {
+    const newValue = 'abc';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newValue);
+    expect(input).toHaveValue('');
   });
 });
