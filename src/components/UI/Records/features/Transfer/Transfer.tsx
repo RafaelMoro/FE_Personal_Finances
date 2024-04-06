@@ -23,6 +23,7 @@ import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
 import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { getOriginAccount, getValuesIncomeAndExpense } from './Transfer.util';
+import { verifyAmountEndsPeriod } from '../../../../Other/CurrencyField/useCurrencyField';
 
 interface TransferProps {
   action: string;
@@ -171,7 +172,10 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   };
 
   const handleCreateTransfer = (values: CreateTransferValues) => {
-    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values, expensesSelected });
+    const { amount, ...restValues } = values;
+    const newAmount = verifyAmountEndsPeriod(initialAmount.current);
+    const newValues = { ...restValues, amount: newAmount };
+    const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values: newValues, expensesSelected });
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
 
