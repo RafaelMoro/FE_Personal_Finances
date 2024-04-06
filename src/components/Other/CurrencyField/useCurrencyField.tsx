@@ -20,15 +20,31 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
 
   const validateCurrencyField = (value: string) => {
     const hasNumericPeriodComma = /[0-9.,]+/;
-    const isPeriod = /\./;
+    const hasPeriodRegex = /\./;
+    const deletedCharacterRegex = amount.length > value.length;
+    const deletedNumberRegex = /,\d{2}$/;
+    const EndsWithPeriodRegex = /[0-9]+[.]$/;
+    const hasCommaRegex = /,/;
+
     const valueHasForbiddenCharacters = !value.match(hasNumericPeriodComma);
-    const valueBeginsWithPeriod = amount === '' && value.match(isPeriod);
+    const valueBeginsWithPeriod = amount === '' && value.match(hasPeriodRegex);
     const emptyValue = !value && amount;
+    const hasDeleted = deletedCharacterRegex && value.match(deletedNumberRegex);
+    const isValueThousandWithNoComma = value.length === 4 && !value.match(hasCommaRegex);
+    const isValueThousandWithComma = value.length > 5 && value.match(hasCommaRegex);
+    const valueEndsWithPeriod = value.match(EndsWithPeriodRegex);
 
     return {
       valueHasForbiddenCharacters,
       valueBeginsWithPeriod,
       emptyValue,
+      hasDeletedCharacter: deletedCharacterRegex,
+      hasDeletedNumber: deletedNumberRegex,
+      valueEndsWithPeriod,
+      hasComma: hasCommaRegex,
+      hasDeleted,
+      isValueThousandWithNoComma,
+      isValueThousandWithComma,
     };
   };
 
@@ -38,11 +54,11 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
       valueHasForbiddenCharacters,
       valueBeginsWithPeriod,
       emptyValue,
+      valueEndsWithPeriod,
+      hasDeleted,
+      isValueThousandWithNoComma,
+      isValueThousandWithComma,
     } = validateCurrencyField(newValue);
-    const hasDeletedCharacter = amount.length > newValue.length;
-    const hasDeletedNumber = /,\d{2}$/;
-    const valueEndsWithPeriod = /[0-9]+[.]$/;
-    const hasComma = /,/;
     if (emptyValue) {
       updateAmount('0');
       setFieldValue(CURRENCY_FIELD_NAME, '');
@@ -51,7 +67,7 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
     if (valueHasForbiddenCharacters) return;
     if (valueBeginsWithPeriod) return;
 
-    if (hasDeletedCharacter && newValue.match(hasDeletedNumber)) {
+    if (hasDeleted) {
       const newAmountNotFormatted = formatCurrencyToString(newValue);
       updateAmount(newAmountNotFormatted);
       const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
@@ -59,9 +75,8 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
       return;
     }
 
-    // If the new value is a thousand, formate the number
-    if (newValue.length === 4 && !newValue.match(hasComma)) {
-      if (newValue.match(valueEndsWithPeriod)) {
+    if (isValueThousandWithNoComma) {
+      if (valueEndsWithPeriod) {
         setFieldValue(CURRENCY_FIELD_NAME, newValue);
         return;
       }
@@ -70,8 +85,9 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
       setFieldValue(CURRENCY_FIELD_NAME, newAmount);
       return;
     }
-    if (newValue.length > 5 && newValue.match(hasComma)) {
-      if (newValue.match(valueEndsWithPeriod)) {
+
+    if (isValueThousandWithComma) {
+      if (valueEndsWithPeriod) {
         setFieldValue(CURRENCY_FIELD_NAME, newValue);
         return;
       }
@@ -81,8 +97,6 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
       setFieldValue(CURRENCY_FIELD_NAME, newAmount);
       return;
     }
-    // Guardar el nuevo amount como string
-    // Transformo el monto a currency
     updateAmount(newValue);
     setFieldValue(CURRENCY_FIELD_NAME, newValue);
   };
