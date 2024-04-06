@@ -8,7 +8,7 @@ interface UseCurrencyFieldProps {
 
 const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFieldProps) => {
   const CURRENCY_FIELD_NAME = 'amount';
-  const validateCurrencyField = (value: string) => {
+  const validateCurrencyFieldErrors = (value: string) => {
     let error;
     const hasMoreThanThreeDecimals = /\.\d{3}$/;
     if (value.match(hasMoreThanThreeDecimals)) {
@@ -73,7 +73,7 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
   };
 
   return {
-    validateCurrencyField,
+    validateCurrencyFieldErrors,
     handleChange,
   };
 };

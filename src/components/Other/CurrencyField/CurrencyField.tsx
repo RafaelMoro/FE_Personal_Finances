@@ -14,7 +14,7 @@ interface CurrencyFieldProps {
 const CurrencyField = ({
   setFieldValue, updateAmount, amount, typeOfRecord,
 }: CurrencyFieldProps) => {
-  const { validateCurrencyField, handleChange } = useCurrencyField({ setFieldValue, amount, updateAmount });
+  const { validateCurrencyFieldErrors, handleChange } = useCurrencyField({ setFieldValue, amount, updateAmount });
 
   return (
     <Field
@@ -24,7 +24,7 @@ const CurrencyField = ({
       variant="standard"
       label="Amount"
       onChange={handleChange}
-      validate={validateCurrencyField}
+      validate={validateCurrencyFieldErrors}
       InputProps={{
         startAdornment: CurrencyAdornment({ typeOfRecord }),
       }}
