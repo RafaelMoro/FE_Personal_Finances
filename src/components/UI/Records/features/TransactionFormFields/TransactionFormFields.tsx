@@ -3,7 +3,6 @@ import { Field, FormikErrors, FormikTouched } from 'formik';
 import { CreateRecordValues, CreateTransferValues } from '../../interface';
 import { Category, TypeOfRecord } from '../../../../../globalInterface';
 
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { AddChip } from '../AddChip';
@@ -38,17 +37,6 @@ const TransactionFormFields = <CreateAnyRecord,>({
       updateAmount={updateAmount}
       typeOfRecord={typeOfRecord}
     />
-    {/* <Field
-      component={InputForm}
-      name="amount"
-      type="text"
-      variant="standard"
-      label="Amount"
-      InputProps={{
-        startAdornment: CurrencyAdornment({ typeOfRecord }),
-        inputComponent: NumericFormatCustom as any,
-      }}
-    /> */}
     <Field
       component={DateTimePickerValue}
       setFieldValueCb={setFieldValue}
