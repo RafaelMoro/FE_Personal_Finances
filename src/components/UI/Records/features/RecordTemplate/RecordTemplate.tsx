@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Drawer } from '@mui/material';
 import { Formik, Field } from 'formik';
 import { Switch } from 'formik-mui';
@@ -15,6 +15,7 @@ import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
 
 /** Components */
 import { TransactionFormFields } from '../TransactionFormFields';
@@ -37,7 +38,6 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
-import { verifyAmountEndsPeriod } from '../../../../Other/CurrencyField/useCurrencyField';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -72,6 +72,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     fetchPersonToModify,
     action: indebtedPersonModalAction,
   } = useIndebtedPeople();
+  const { initialAmount, updateAmount, verifyAmountEndsPeriod } = useCurrencyField();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
@@ -81,7 +82,6 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
   const isCredit = selectedAccount?.accountType === 'Credit';
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
-  const initialAmount = useRef('0');
   const [initialValues, setInitialValues] = useState<CreateRecordValues>({
     amount: '',
     shortName: '',
@@ -101,9 +101,6 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
 
   const updateBudgets = ({ values, newBudgets }: { values: CreateRecordValues, newBudgets: string[] }) => {
     setInitialValues({ ...values, budgets: newBudgets });
-  };
-  const updateAmount = (amount: string) => {
-    initialAmount.current = amount;
   };
 
   const isExpense = typeOfRecord === 'expense';

@@ -7,23 +7,23 @@ import { Formik } from 'formik';
 import { Drawer } from '@mui/material';
 import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { useRecords } from '../../../../../hooks/useRecords';
+import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
 import { CreateTransferValues } from '../../interface';
 import { TypeOfRecord, ExpensePaid } from '../../../../../globalInterface';
 import { TransferSchema } from '../../../../../validationsSchemas/records.schema';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
+import { getOriginAccount, getValuesIncomeAndExpense } from './Transfer.util';
+import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
 
 import { TransferAccountSelector } from '../TransferAccountSelector';
 import { TransactionFormFields } from '../TransactionFormFields';
 import { ActionButtonPanel } from '../../../../templates';
 import { FormContainer, SecondaryButtonForm } from '../RecordTemplate/RecordTemplate.styled';
-import { useRecords } from '../../../../../hooks/useRecords';
 // Reuse imports on RecordTemplate
 import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
-import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
-import { getOriginAccount, getValuesIncomeAndExpense } from './Transfer.util';
-import { verifyAmountEndsPeriod } from '../../../../Other/CurrencyField/useCurrencyField';
 
 interface TransferProps {
   action: string;
@@ -42,16 +42,18 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     isLoadingCreateTransfer,
     isSuccessCreateTransfer,
   } = useRecords({});
+  const { initialAmount, updateAmount, verifyAmountEndsPeriod } = useCurrencyField();
+
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const isIncome = !!recordToBeEdited?.expensesPaid;
   const categoryToBeEdited = recordToBeEdited?.category ?? null;
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const accounts = useAppSelector((state) => state.accounts.accounts);
+
   const [isCreditDestinationAcc, setIsCreditDestinationAcc] = useState<boolean>(false);
   // Reuse show expenses and expenses selected state
   const [expensesSelected, setExpensesSelected] = useState<ExpensePaid[]>([]);
   const [showExpenses, setShowExpenses] = useState<boolean>(false);
-  const initialAmount = useRef('0');
   const [initialValues, setInitialValues] = useState<CreateTransferValues>({
     originAccount: getOriginAccount({
       isIncome, selectedAccount, recordToBeEdited, edit,
@@ -74,9 +76,6 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const showExpenseText = expensesSelected.length === 0 ? 'Add Expense' : 'Add or Remove Expense';
   const buttonText = `${action} transfer`;
 
-  const updateAmount = (amount: string) => {
-    initialAmount.current = amount;
-  };
   const setDestinationAsCredit = () => setIsCreditDestinationAcc(true);
   const setDestinationAsNonCredit = () => setIsCreditDestinationAcc(false);
   const closeShowExpenses = () => setShowExpenses(false);

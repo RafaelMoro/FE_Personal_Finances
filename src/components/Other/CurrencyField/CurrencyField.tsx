@@ -2,7 +2,7 @@ import { Field } from 'formik';
 import { InputForm } from '../../../styles';
 import { TypeOfRecord } from '../../../globalInterface';
 import { CurrencyAdornment } from '../../UI/Records/features/TransactionFormFields/CurrencyAdornment';
-import { useCurrencyField } from './useCurrencyField';
+import { useHandleCurrencyField } from './useHandleCurrencyField';
 
 interface CurrencyFieldProps {
   amount: string;
@@ -14,7 +14,7 @@ interface CurrencyFieldProps {
 const CurrencyField = ({
   setFieldValue, updateAmount, amount, typeOfRecord,
 }: CurrencyFieldProps) => {
-  const { handleChange } = useCurrencyField({ setFieldValue, amount, updateAmount });
+  const { handleChange } = useHandleCurrencyField({ setFieldValue, amount, updateAmount });
 
   return (
     <Field
