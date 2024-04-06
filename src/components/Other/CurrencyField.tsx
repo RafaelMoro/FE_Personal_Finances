@@ -1,5 +1,4 @@
 import { Field } from 'formik';
-import { useRef } from 'react';
 import { InputForm } from '../../styles';
 import { TypeOfRecord } from '../../globalInterface';
 import { CurrencyAdornment } from '../UI/Records/features/TransactionFormFields/CurrencyAdornment';
@@ -16,11 +15,6 @@ const CURRENCY_FIELD_NAME = 'amount';
 const CurrencyField = ({
   setFieldValue, updateAmount, amount, typeOfRecord,
 }: CurrencyFieldProps) => {
-  const amountNotFormatted = useRef('0');
-  const updateAmountNotFormatted = (newAmount: string) => {
-    amountNotFormatted.current = newAmount;
-  };
-
   const validateCurrencyField = (value: string) => {
     let error;
     const hasMoreThanThreeDecimals = /\.\d{3}$/;
@@ -46,7 +40,7 @@ const CurrencyField = ({
 
     if (hasDeletedCharacter && newValue.match(hasDeletedNumber)) {
       const newAmountNotFormatted = formatCurrencyToString(newValue);
-      updateAmountNotFormatted(newAmountNotFormatted);
+      updateAmount(newAmountNotFormatted);
       const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
       setFieldValue(CURRENCY_FIELD_NAME, newAmount);
       return;
@@ -58,7 +52,7 @@ const CurrencyField = ({
         setFieldValue(CURRENCY_FIELD_NAME, newValue);
         return;
       }
-      updateAmountNotFormatted(newValue);
+      updateAmount(newValue);
       const newAmount = formatValueToCurrency({ amount: newValue, hasNoDecimals: true, hasNoCurrencySign: true });
       setFieldValue(CURRENCY_FIELD_NAME, newAmount);
       return;
@@ -69,14 +63,14 @@ const CurrencyField = ({
         return;
       }
       const newAmountNotFormatted = formatCurrencyToString(newValue);
-      updateAmountNotFormatted(newAmountNotFormatted);
+      updateAmount(newAmountNotFormatted);
       const newAmount = formatValueToCurrency({ amount: newAmountNotFormatted, hasNoDecimals: true, hasNoCurrencySign: true });
       setFieldValue(CURRENCY_FIELD_NAME, newAmount);
       return;
     }
     // Guardar el nuevo amount como string
     // Transformo el monto a currency
-    updateAmountNotFormatted(newValue);
+    updateAmount(newValue);
     setFieldValue(CURRENCY_FIELD_NAME, newValue);
   };
 
