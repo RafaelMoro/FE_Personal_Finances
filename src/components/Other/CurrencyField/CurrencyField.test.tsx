@@ -37,6 +37,7 @@ const ScaffoldedCurrencyField = () => {
 describe('CurrencyField component', () => {
   beforeEach(() => {
     render(<ScaffoldedCurrencyField />);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
   test('Show an amount field with Amount placeholder', () => {
     const input = screen.getByRole('textbox', { name: /amount/i });
