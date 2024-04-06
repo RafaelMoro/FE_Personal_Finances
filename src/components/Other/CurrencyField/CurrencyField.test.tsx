@@ -1,35 +1,42 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
+import { useState } from 'react';
 import { CreateRecordSchema } from '../../../validationsSchemas/records.schema';
 import { CurrencyField } from './CurrencyField';
 import { TypeOfRecord } from '../../../globalInterface';
 
-describe('CurrencyField component', () => {
-  const amount = '0';
+const ScaffoldedCurrencyField = () => {
   const initialValues = { amount: '' };
   const typeOfRecord: TypeOfRecord = 'income';
-  const setFieldValue = jest.fn();
-  const updateAmount = jest.fn();
   const handleSubmit = jest.fn();
+  // amount needs to be an empty string
+  const [amount, setAmount] = useState('');
+  const updateAmount = jest.fn((newAmount: string) => { setAmount(newAmount); });
 
-  beforeEach(() => {
-    render(
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        validationSchema={CreateRecordSchema}
-        enableReinitialize
-        validateOnMount
-      >
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={CreateRecordSchema}
+      enableReinitialize
+      validateOnMount
+    >
+      {({ setFieldValue }) => (
         <CurrencyField
           amount={amount}
           typeOfRecord={typeOfRecord}
           setFieldValue={setFieldValue}
           updateAmount={updateAmount}
         />
-      </Formik>,
-    );
+      )}
+    </Formik>
+  );
+};
+
+describe('CurrencyField component', () => {
+  beforeEach(() => {
+    render(<ScaffoldedCurrencyField />);
   });
   test('Show an amount field with Amount placeholder', () => {
     const input = screen.getByRole('textbox', { name: /amount/i });
@@ -58,5 +65,13 @@ describe('CurrencyField component', () => {
 
     userEvent.type(input, newValue);
     expect(input).toHaveValue('');
+  });
+
+  test('Given a user typing 125 as amount, should not show 125 as input value', async () => {
+    const newAmount = '125';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newAmount);
+    await waitFor(() => expect(input).toHaveValue('125'));
   });
 });
