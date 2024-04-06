@@ -16,24 +16,15 @@ const verifyAmountEndsPeriod = (amount: string) => {
 
 const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFieldProps) => {
   const CURRENCY_FIELD_NAME = 'amount';
-  const validateCurrencyFieldErrors = (value: string) => {
-    let error;
-    const hasMoreThanThreeDecimals = /\.\d{3}$/;
-    if (value.match(hasMoreThanThreeDecimals)) {
-      error = 'You cannot use more than 2 decimals.';
-      return error;
-    }
-    return error;
-  };
 
   const validateCurrencyField = (value: string) => {
-    const hasNumericPeriodComma = /[0-9.,]+/;
+    const hasNumericPeriodCommaRegex = /[0-9.,]+/;
     const hasPeriodRegex = /\./;
     const deletedNumberRegex = /,\d{2}$/;
     const EndsWithPeriodRegex = /[0-9]+[.]$/;
     const hasCommaRegex = /,/;
 
-    const valueHasForbiddenCharacters = !value.match(hasNumericPeriodComma);
+    const valueHasForbiddenCharacters = !value.match(hasNumericPeriodCommaRegex);
     const valueBeginsWithPeriod = amount === '' && value.match(hasPeriodRegex);
     const emptyValue = !value && amount;
     const hasDeleted = value.match(deletedNumberRegex);
@@ -108,7 +99,6 @@ const useCurrencyField = ({ amount, setFieldValue, updateAmount }: UseCurrencyFi
   };
 
   return {
-    validateCurrencyFieldErrors,
     handleChange,
   };
 };

@@ -102,4 +102,12 @@ describe('CurrencyField component', () => {
     userEvent.type(input, '{backspace}');
     expect(input).toHaveValue('125');
   });
+
+  test('Given a user typing a number with more than 2 decimals, it should show only two decimals', () => {
+    const newAmount = '1250.574';
+    const input = screen.getByRole('textbox', { name: /amount/i });
+
+    userEvent.type(input, newAmount);
+    expect(input).toHaveValue('1,250.57');
+  });
 });
