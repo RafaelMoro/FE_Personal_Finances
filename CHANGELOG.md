@@ -1,3 +1,10 @@
+## v0.6.0 (2024-04-06)
+Release Changes.
+- Change for own currency field
+
+### Pull Requests
+[#15](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/15) | Change for own currency field
+
 ## v0.5.4 (2024-03-31)
 Release Changes.
 - Fix any on transaction form fields component using generic types

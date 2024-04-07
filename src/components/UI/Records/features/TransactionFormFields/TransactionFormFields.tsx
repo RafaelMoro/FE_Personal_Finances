@@ -3,18 +3,19 @@ import { Field, FormikErrors, FormikTouched } from 'formik';
 import { CreateRecordValues, CreateTransferValues } from '../../interface';
 import { Category, TypeOfRecord } from '../../../../../globalInterface';
 
-import { CurrencyAdornment } from './CurrencyAdornment';
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
 import { DateTimePickerValue } from '../../../DateTimePickerValue';
 import { CategoriesAndSubcategories } from '../CategoriesAndSubcategories';
 import { AddChip } from '../AddChip';
 import { InputForm } from '../../../../../styles';
 import { AddChipContainer } from '../RecordTemplate/RecordTemplate.styled';
+import { CurrencyField } from '../../../../Other';
 
 interface TransactionFormFieldsProps<CreateAnyRecord> {
   typeOfRecord: TypeOfRecord;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void;
   values: CreateAnyRecord;
+  amount: string;
+  updateAmount: (amount: string) => void;
   errors: FormikErrors<CreateRecordValues | CreateTransferValues>;
   touched: FormikTouched<CreateRecordValues | CreateTransferValues>;
   categoryToBeEdited: Category | null;
@@ -26,19 +27,15 @@ interface TransactionFormFieldsProps<CreateAnyRecord> {
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
 const TransactionFormFields = <CreateAnyRecord,>({
-  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited, updateTags, updateBudgets, tags, budgets, values,
+  typeOfRecord, setFieldValue, errors, touched, categoryToBeEdited,
+  updateTags, updateBudgets, tags, budgets, values, amount, updateAmount,
 }: TransactionFormFieldsProps<CreateAnyRecord>) => (
   <>
-    <Field
-      component={InputForm}
-      name="amount"
-      type="text"
-      variant="standard"
-      label="Amount"
-      InputProps={{
-        startAdornment: CurrencyAdornment({ typeOfRecord }),
-        inputComponent: NumericFormatCustom as any,
-      }}
+    <CurrencyField
+      setFieldValue={setFieldValue}
+      amount={amount}
+      updateAmount={updateAmount}
+      typeOfRecord={typeOfRecord}
     />
     <Field
       component={DateTimePickerValue}
