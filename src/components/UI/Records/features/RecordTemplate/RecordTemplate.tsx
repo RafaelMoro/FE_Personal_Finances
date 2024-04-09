@@ -15,6 +15,7 @@ import { DASHBOARD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
 import { useIndebtedPeople } from '../../../../../hooks/useIndebtedPeople';
 import { useAppSelector } from '../../../../../redux/hooks';
+import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
 
 /** Components */
 import { TransactionFormFields } from '../TransactionFormFields';
@@ -71,6 +72,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     fetchPersonToModify,
     action: indebtedPersonModalAction,
   } = useIndebtedPeople();
+  const { initialAmount, updateAmount, verifyAmountEndsPeriod } = useCurrencyField();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
@@ -162,14 +164,15 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
   const handleSubmit = (values: any) => {
     // Flag to know if amount has a different value from the initial value. If so, the query to update account amount will be executed.
     let amountTouched = false;
-    if (recordToBeEdited?.amount !== Number(values?.amount)) {
+    if (recordToBeEdited?.amount !== Number(initialAmount.current)) {
       amountTouched = true;
     }
+    const newAmount = verifyAmountEndsPeriod(initialAmount.current);
 
     const {
       isPaid, amount, ...restValues
     } = values;
-    const amountToNumber = Number(amount);
+    const amountToNumber = Number(newAmount);
     const newValues = isExpense ? {
       ...values,
       amount: amountToNumber,
@@ -245,6 +248,8 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
             <FormContainer>
               <TransactionFormFields<CreateRecordValues>
                 values={values}
+                amount={values.amount}
+                updateAmount={updateAmount}
                 typeOfRecord={typeOfRecord}
                 setFieldValue={setFieldValue}
                 errors={errors}

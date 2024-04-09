@@ -11,6 +11,7 @@ import { SystemStateEnum } from '../../../../../enums';
 import { useAppSelector } from '../../../../../redux/hooks';
 import { CreateAccountMutationProps, ModifyAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useNotification } from '../../../../../hooks/useNotification';
+import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
@@ -18,11 +19,11 @@ import {
 import { SelectInput } from '../../../SelectInput';
 import { AppIcon } from '../../../Icons';
 import {
-  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, FlexContainer, InputAdornment,
+  DialogTitle, InputForm, PrimaryButton, AllBackgroundColors, FlexContainer,
 } from '../../../../../styles';
 import { AccountDialogFormContainer } from '../../Account.styled';
 import { LoadingSpinner } from '../../../LoadingSpinner';
-import NumericFormatCustom from '../../../../Other/NumericFormatCustom';
+import { CurrencyField } from '../../../../Other';
 import { useCreateAccountMutation, useModifyAccountMutation } from '../../../../../redux/slices/Accounts/actions';
 
 const initialValuesCreateAccount: CreateAccountInitialValues = {
@@ -31,7 +32,6 @@ const initialValuesCreateAccount: CreateAccountInitialValues = {
   amount: '',
   backgroundColor: 'Dark Orange',
 };
-const startAdornment = <InputAdornment position="start">$</InputAdornment>;
 
 const AccountDialog = ({
   open,
@@ -39,6 +39,7 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
+  const { updateAmount, initialAmount } = useCurrencyField();
   const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
   const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
   const disableSubmitButton = isLoadingCreateAccount || isLoadingModifyAccount;
@@ -64,7 +65,7 @@ const AccountDialog = ({
   const createAccount = async (values: CreateAccountInitialValues) => {
     try {
       // Transform amount to number as it comes as string.
-      const amountNumber = Number(values.amount);
+      const amountNumber = Number(initialAmount.current);
       // Leaving default color black as the prop is still needed to create an account.
       const createAccountValues: CreateAccount = { ...values, amount: amountNumber, color: 'black' };
       const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
@@ -93,7 +94,8 @@ const AccountDialog = ({
       const {
         __v: version, sub, selected, backgroundColorUI, colorUI, amountFormatted, amount, _id: accountId, ...rest
       } = values;
-      const amountNumber = Number(amount ?? '0');
+      const newAmount = initialAmount.current !== '' ? initialAmount.current : amount;
+      const amountNumber = Number(newAmount);
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
       const modifyAccountMutationProps: ModifyAccountMutationProps = { values: accountModifiedValues, bearerToken };
       await modifyAccountMutation(modifyAccountMutationProps);
@@ -132,7 +134,7 @@ const AccountDialog = ({
           onSubmit={(values) => handleSubmit(values)}
           validateOnMount
         >
-          {({ submitForm }) => (
+          {({ submitForm, setFieldValue }) => (
             <AccountDialogFormContainer>
               <Field
                 component={InputForm}
@@ -141,17 +143,7 @@ const AccountDialog = ({
                 variant="standard"
                 label="Account Title"
               />
-              <Field
-                component={InputForm}
-                name="amount"
-                type="text"
-                variant="standard"
-                label="Account Amount"
-                InputProps={{
-                  startAdornment,
-                  inputComponent: NumericFormatCustom as any,
-                }}
-              />
+              <CurrencyField setFieldValue={setFieldValue} amount={initialAmount.current} updateAmount={updateAmount} />
               <SelectInput
                 labelId="select-account-type"
                 labelName="Type of Account"
