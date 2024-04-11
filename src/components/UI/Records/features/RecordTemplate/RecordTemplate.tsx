@@ -121,6 +121,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         tag: recordToBeEdited.tag,
         budgets: recordToBeEdited.budgets,
       };
+      initialAmount.current = String(recordToBeEdited.amount);
 
       // If the expense has indebted people, update it.
       const newIndebtedPeople = (recordToBeEdited?.indebtedPeople ?? []) as IndebtedPeople[];
