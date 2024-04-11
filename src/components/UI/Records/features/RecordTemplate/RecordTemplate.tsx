@@ -188,7 +188,6 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       account: selectedAccount?._id,
       typeOfRecord: 'income',
     };
-    console.log('newValues', newValues);
 
     if (isExpense) {
       if (edit) {
