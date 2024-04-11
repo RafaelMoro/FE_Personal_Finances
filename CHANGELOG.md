@@ -1,7 +1,7 @@
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests
-[#16](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/16) | Fix error amount prop is missing while editing record
+[#17](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/17) | Fix error amount prop is missing while editing record
 
 ## v0.6.0 (2024-04-06)
 Release Changes.
