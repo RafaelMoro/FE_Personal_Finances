@@ -1,10 +1,11 @@
 import {
   useEffect, useMemo,
 } from 'react';
-import { Typography } from '@mui/material';
+import { FormControl, InputLabel, Typography } from '@mui/material';
 
+import { Field } from 'formik';
 import {
-  AppColors, ErrorParagraphValidation, FlexContainer,
+  AppColors, ErrorParagraphValidation, FlexContainer, MenuItem,
 } from '../../../../../styles';
 import { SelectInput } from '../../../SelectInput';
 
@@ -17,6 +18,7 @@ import { isCategorySelected, updateCurrentCategory } from '../../../../../redux/
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import { useFetchCategoriesQuery } from '../../../../../redux/slices/Categories/categories.api';
 import { useCreateLocalCategoriesMutation } from '../../../../../redux/slices/User/actions/createUser';
+import { SelectCategory } from './SelectCategory';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -34,10 +36,11 @@ const CategoriesAndSubcategories = ({
   const sub = userData?.user.sub ?? '';
   const bearerToken = userData?.bearerToken as string;
   const categoriesState = useAppSelector((state) => state.categories);
+  const categoriesFieldName = 'category';
   const { updateGlobalNotification } = useNotification();
   const [createLocalCategoriesMutation, { isLoading: isLoadingCreateCategories }] = useCreateLocalCategoriesMutation();
   const {
-    currentData, isError, isFetching,
+    currentData, isError, isFetching, isSuccess,
   } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
   const onlyCategories = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
 
@@ -62,11 +65,12 @@ const CategoriesAndSubcategories = ({
   }, [currentData]);
 
   useEffect(() => {
-    if (categoryToBeEdited) {
-      dispatch(updateCurrentCategory(categoryToBeEdited));
+    if (categoryToBeEdited && isSuccess) {
+      const newCategory = (currentData ?? []).find((item) => item.categoryName === categoryToBeEdited.categoryName);
+      dispatch(updateCurrentCategory(newCategory));
       dispatch(isCategorySelected());
     }
-  }, [categoryToBeEdited, dispatch]);
+  }, [categoryToBeEdited, currentData, dispatch, isSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -79,13 +83,11 @@ const CategoriesAndSubcategories = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError]);
 
-  const setNewCategory = (name: string, value: string | string[]) => {
-    if (name === 'category' && typeof value === 'string') {
-      const selectedCategory = (currentData ?? []).find((item) => item.categoryName === value);
-      if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
-        dispatch(updateCurrentCategory(selectedCategory));
-        if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
-      }
+  const setNewCategory = (value: string) => {
+    const selectedCategory = (currentData ?? []).find((item) => item.categoryName === value);
+    if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
+      dispatch(updateCurrentCategory(selectedCategory));
+      if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
     }
   };
 
@@ -102,8 +104,6 @@ const CategoriesAndSubcategories = ({
           )}
           fieldName="category"
           stringOptions={[]}
-          colorOptions={[]}
-          processSelectDataFn={setNewCategory}
           disabled
         />
         <SelectInput
@@ -116,8 +116,6 @@ const CategoriesAndSubcategories = ({
           )}
           fieldName="category"
           stringOptions={[]}
-          colorOptions={[]}
-          processSelectDataFn={setNewCategory}
           disabled
         />
       </>
@@ -126,14 +124,16 @@ const CategoriesAndSubcategories = ({
 
   return (
     <>
-      <SelectInput
-        labelId="select-record-category"
-        labelName="Category"
-        fieldName="category"
-        stringOptions={onlyCategories}
-        colorOptions={[]}
-        processSelectDataFn={setNewCategory}
-      />
+      <FormControl variant="standard">
+        <InputLabel id="select-record-category">Category</InputLabel>
+        <Field name={categoriesFieldName} setNewCategory={setNewCategory} component={SelectCategory}>
+          {
+            (onlyCategories ?? []).map((option) => (
+              <MenuItem key={`${categoriesFieldName}-${option}`} value={option}>{option}</MenuItem>
+            ))
+          }
+        </Field>
+      </FormControl>
       { (touchedCategory && errorCategory) && (
         <ErrorParagraphValidation variant="subText">{errorCategory}</ErrorParagraphValidation>
       ) }

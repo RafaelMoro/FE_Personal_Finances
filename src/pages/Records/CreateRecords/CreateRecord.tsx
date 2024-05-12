@@ -1,6 +1,6 @@
-import { RecordTemplate } from '../../../components/UI/Records/features/RecordTemplate/RecordTemplate';
 import { useNotification } from '../../../hooks/useNotification';
 import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
+import { TransactionManager } from '../../../components/UI/Records/features/TransactionManager';
 import { Notification } from '../../../components/UI';
 
 const CreateRecord = () => {
@@ -19,7 +19,7 @@ const CreateRecord = () => {
         close={toggleGlobalNotification}
       />
       )}
-      <RecordTemplate />
+      <TransactionManager />
     </>
   );
 };

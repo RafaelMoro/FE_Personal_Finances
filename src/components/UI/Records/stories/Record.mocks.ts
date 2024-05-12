@@ -6,6 +6,7 @@ export const expenseSample: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Uber home to gym.',
+  typeOfRecord: 'expense',
   description: 'Paying Uber to go to smartfit on Solesta',
   category: {
     _id: '123-456-789',
@@ -33,6 +34,7 @@ export const expenseSampleWithLongShortName: AnyRecord = {
   // eslint-disable-next-line max-len
   shortName: "McDonald's didi food 2 combos of $99 each. Rob owes me at Jan 31. Putting more words to see how does the short name behaves in this component. ",
   description: 'Paying Uber to go to a bar.',
+  typeOfRecord: 'expense',
   category: {
     _id: '123-456-789',
     categoryName: 'Food',
@@ -59,6 +61,7 @@ export const expenseSampleWithLongDescription: AnyRecord = {
   date: new Date(),
   account: 'account1',
   shortName: 'Groceries for the week.',
+  typeOfRecord: 'expense',
   // eslint-disable-next-line max-len
   description: 'Eggs $42.5, Meat $182.8, Bananas $17.2, Avocado $36.34, Six Beers $116.31, Coca-cola $45, Mineral water $36, Chips $63, Erics juice $17, Cheese for two weeeks $230, fried chicken for the family $184.29',
   category: {
@@ -83,6 +86,7 @@ export const ExpenseSampleWithoutTagsAndBudgets: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: '2 Mcdonalds ',
+  typeOfRecord: 'expense',
   description: "Mine and Eric's",
   category: {
     _id: '123-456-789',
@@ -108,6 +112,7 @@ export const ExpenseSampleWithManyBudgets: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Imagine Dragons concert ',
+  typeOfRecord: 'expense',
   description: 'CDMX Concert',
   category: {
     _id: '123-456-789',
@@ -133,6 +138,7 @@ export const ExpenseSampleWithManyBudgetsAndLongNameBudget: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Imagine Dragons concert ',
+  typeOfRecord: 'expense',
   description: 'CDMX Concert',
   category: {
     _id: '123-456-789',
@@ -158,6 +164,7 @@ export const ExpenseSampleWithManyBudgetsAndTags: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Imagine Dragons concert ',
+  typeOfRecord: 'expense',
   description: 'CDMX Concert',
   category: {
     _id: '123-456-789',
@@ -183,6 +190,7 @@ export const ExpenseSampleWithNoBudgetsAndManyTags: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Imagine Dragons concert ',
+  typeOfRecord: 'expense',
   description: 'CDMX Concert',
   category: {
     _id: '123-456-789',
@@ -208,6 +216,7 @@ export const IncomeSample: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Payment to credit card',
+  typeOfRecord: 'income',
   description: 'From May 12th to May 19th',
   category: {
     _id: '123-456-789',
@@ -233,6 +242,7 @@ export const IncomeSampleWithExpensesPaid: AnyRecord = {
   _id: '456-789',
   userId: '987-654',
   shortName: 'Payment to credit card',
+  typeOfRecord: 'income',
   description: 'From May 12th to May 19th',
   category: {
     _id: '123-456-789',

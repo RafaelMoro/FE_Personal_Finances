@@ -16,7 +16,8 @@ interface DeleteRecordModalProps {
 const DeleteRecordModal = ({
   open, onClose, record, isExpense, closeDrawer,
 }: DeleteRecordModalProps) => {
-  const { shortName: recordName } = record;
+  const { shortName: recordName, typeOfRecord } = record;
+  const isTransfer = typeOfRecord === 'transfer';
   const { deleteRecord, loadingDeleteRecord } = useRecords({
     recordToBeDeleted: record, deleteRecordExpense: isExpense, closeDeleteRecordModalCb: onClose, closeDrawer,
   });
@@ -34,7 +35,12 @@ const DeleteRecordModal = ({
         </DeleteRecordTitle>
         <DeleteRecordWarn>You cannot reverse this action.</DeleteRecordWarn>
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
-        <CancelButton disabled={loadingDeleteRecord} onClick={deleteRecord}>{ (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }</CancelButton>
+        <CancelButton
+          disabled={loadingDeleteRecord}
+          onClick={() => deleteRecord({ deleteTransfer: isTransfer })}
+        >
+          { (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }
+        </CancelButton>
       </DeleteRecordContainer>
     </Dialog>
   );

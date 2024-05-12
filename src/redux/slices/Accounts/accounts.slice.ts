@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { AccountsInitialState, UpdateAccountsStatusProps } from './interface';
+import { AccountsInitialState, UpdateAccountsStatusProps, UpdateAmountAccountProps } from './interface';
 import { formatValueToCurrency } from '../../../utils';
 import { accountsApiSlice } from './actions';
 
@@ -26,12 +26,12 @@ export const accountsSlice = createSlice({
 
       state.accountsFetchStatus = 'success';
     },
-    updateAmountSelectedAccount: (state, action) => {
-      const amountNumber = action.payload;
-      const amountFormatted = formatValueToCurrency(amountNumber);
+    updateAmountSelectedAccount: (state, action: UpdateAmountAccountProps) => {
+      const { accountId, amount: amountNumber } = action.payload;
+      const amountFormatted = formatValueToCurrency({ amount: amountNumber });
 
       // Update the amount of the selected account
-      if (state.accountSelected) {
+      if (state.accountSelected && state.accountSelected._id === accountId) {
         state.accountSelected.amount = amountNumber;
         state.accountSelected.amountFormatted = amountFormatted;
       }
@@ -39,7 +39,7 @@ export const accountsSlice = createSlice({
       // Update the account in the accounts state
       if (state.accounts && state.accountSelected) {
         const accountsUpdated = state.accounts.map((account) => {
-          if (account._id === state.accountSelected?._id) {
+          if (account._id === accountId) {
             return { ...account, amount: amountNumber, amountFormatted };
           }
           return account;

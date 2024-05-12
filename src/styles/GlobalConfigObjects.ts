@@ -34,6 +34,12 @@ export const AppColors = {
   validationError: '#d32f2f',
 };
 
+export const RecordStatusTypeColors = {
+  Transfer: AppColors.info,
+  Paid: AppColors.positive,
+  Unpaid: AppColors.negative,
+};
+
 export const AllTextColors: TextColors[] = [
   { name: 'Black', color: '#1D1305' },
   { name: 'White', color: '#fbfbfb' },

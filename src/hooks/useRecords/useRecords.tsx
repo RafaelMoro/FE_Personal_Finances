@@ -16,6 +16,7 @@ import {
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
   UpdateTotalCurrencyProps,
   Actions,
+  CreateTransferProps,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -34,6 +35,7 @@ import {
   useUpdatePaidMultipleExpensesMutation,
   useCreateIncomeMutation,
   useEditIncomeMutation,
+  useCreateTransferMutation,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
@@ -48,11 +50,13 @@ const useRecords = ({
   const [deleteRecordMutation, { isLoading: loadingDeleteRecord }] = useDeleteRecordMutation();
   const [createExpenseMutation, { isLoading: isLoadingCreateExpense, isSuccess: isSucessCreateExpense }] = useCreateExpenseMutation();
   const [createIncomeMutation, { isLoading: isLoadingCreateIncome, isSuccess: isSucessCreateIncome }] = useCreateIncomeMutation();
+  const [createTransferMutation, { isLoading: isLoadingCreateTransfer, isSuccess: isSuccessCreateTransfer }] = useCreateTransferMutation();
   const [editExpenseMutation, { isLoading: isLoadingEditExpense, isSuccess: isSucessEditExpense }] = useEditExpenseMutation();
   const [editIncomeMutation, { isLoading: isLoadingEditIncome, isSuccess: isSucessEditIncome }] = useEditIncomeMutation();
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const accounts = useAppSelector((state) => state.accounts.accounts);
   const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
@@ -80,11 +84,10 @@ const useRecords = ({
   };
 
   async function updateAmountAccount({
-    amount, isExpense, deleteRecord = false,
+    amount, isExpense, accountId, deleteRecord = false,
   }: UpdateAmountAccountProps) {
     try {
-      const amountToUpdate = selectedAccount?.amount as number;
-      const accountId = selectedAccount?._id as string;
+      const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
 
       const payloadDeleteRecord = (isExpense)
         ? { accountId, amount: amountToUpdate + amount }
@@ -97,7 +100,7 @@ const useRecords = ({
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
       // dispatch update amount account
-      dispatch(updateAmountSelectedAccount(amountFetched));
+      dispatch(updateAmountSelectedAccount({ amount: amountFetched, accountId }));
 
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
@@ -111,20 +114,22 @@ const useRecords = ({
     }
   }
 
-  const updateAmountAccountOnEditRecord = async ({ amount, isExpense, previousAmount }: UpdateAmountAccountOnEditProps) => {
+  const updateAmountAccountOnEditRecord = async ({
+    amount, isExpense, previousAmount, accountId,
+  }: UpdateAmountAccountOnEditProps) => {
     try {
-      const amountToUpdate = selectedAccount?.amount as number;
-      const accountId = selectedAccount?._id as string;
+      const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
+      const newAccountId = accountId ?? selectedAccount?._id as string;
       const amountResultIncome = amountToUpdate - previousAmount + amount;
       const amountResultExpense = amountToUpdate + previousAmount - amount;
       const payload: UpdateAmountPayload = isExpense
-        ? { accountId, amount: amountResultExpense }
-        : { accountId, amount: amountResultIncome };
+        ? { accountId: newAccountId, amount: amountResultExpense }
+        : { accountId: newAccountId, amount: amountResultIncome };
 
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
       // dispatch update amount account
-      dispatch(updateAmountSelectedAccount(amountFetched));
+      dispatch(updateAmountSelectedAccount({ amount: amountFetched, accountId: newAccountId }));
 
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
@@ -149,14 +154,14 @@ const useRecords = ({
     } else {
       totalUpdated = currentTotalNumber + newAmount;
     }
-    const newTotalCurrency = formatValueToCurrency(totalUpdated);
+    const newTotalCurrency = formatValueToCurrency({ amount: totalUpdated });
     const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
     return payload;
   };
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {
-      const { amount, date: dateValue } = values;
+      const { amount, date: dateValue, account } = values;
       const date = dateValue.toDate();
 
       // Format date and determine if the record from what period is: currentMonth, lastMonth, older
@@ -167,7 +172,7 @@ const useRecords = ({
       await createExpenseMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
-      const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true });
+      const updateAmountAccountResponse = await updateAmountAccount({ amount, isExpense: true, accountId: account });
       // If there's an error while updating the account, return
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
@@ -209,8 +214,78 @@ const useRecords = ({
     }
   };
 
+  const createTransfer = async ({ valuesExpense, valuesIncome }: CreateTransferProps) => {
+    try {
+      const { amount: amountExpense, date: dateValue, account: accountExpense } = valuesExpense;
+      const { amount: amountIncome, account: accountIncome } = valuesIncome;
+      const date = dateValue.toDate();
+
+      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
+      const { monthFormatted } = formatDateToString(date);
+      const isLastMonth = lastMonth === monthFormatted;
+      const isCurrentMonth = currentMonth === monthFormatted;
+
+      await createTransferMutation({ values: { expense: valuesExpense, income: valuesIncome }, bearerToken }).unwrap();
+
+      // Update the amount of the account.
+      const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true, accountId: accountExpense });
+      // If there's an error while updating the account, return
+      if (updateAmountOriginAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+      const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false, accountId: accountIncome });
+      if (updateAmountDestinationAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
+
+      // Update amount of total records
+      if (isCurrentMonth) {
+        const payloadExpense = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amountExpense,
+          recordAgeCategory: 'Current Month',
+        });
+        const payloadIncome = updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.incomeTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Current Month',
+        });
+        dispatch(updateTotalExpense(payloadExpense));
+        dispatch(updateTotalIncome(payloadIncome));
+      }
+
+      if (isLastMonth) {
+        const payloadExpense = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Last month',
+        });
+        const payloadIncome = updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.incomeTotal,
+          newAmount: amountIncome,
+          recordAgeCategory: 'Last month',
+        });
+        dispatch(updateTotalExpense(payloadExpense));
+        dispatch(updateTotalIncome(payloadIncome));
+      }
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Transfer created',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    } catch (err) {
+      const errorCatched = err as GeneralError;
+      showErrorNotification({
+        errorMessage: errorCatched?.data?.message ?? '',
+        action: 'Create',
+        goToDashboard: true,
+      });
+    }
+  };
+
   const editExpense = async ({
-    values, recordId, amountTouched, previousAmount, userId,
+    values, recordId, amountTouched, previousAmount, userId, accountId,
   }: EditExpenseProps) => {
     try {
       const { amount, date: dateValue } = values;
@@ -224,7 +299,9 @@ const useRecords = ({
 
       await editExpenseMutation({ values: newValues, bearerToken }).unwrap();
       if (amountTouched) {
-        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: true, previousAmount });
+        const updateAmount = await updateAmountAccountOnEditRecord({
+          amount, isExpense: true, previousAmount, accountId,
+        });
         // If there's an error while updating the account, return
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
@@ -272,7 +349,7 @@ const useRecords = ({
 
   const createIncome = async (values: CreateIncomeValues) => {
     try {
-      const { amount, date: dateValue } = values;
+      const { amount, date: dateValue, account } = values;
       const date = dateValue.toDate();
 
       // Format date and determine if the record from what period is: currentMonth, lastMonth, older
@@ -283,7 +360,7 @@ const useRecords = ({
       await createIncomeMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
-      const updateAmount = await updateAmountAccount({ amount, isExpense: false });
+      const updateAmount = await updateAmountAccount({ amount, isExpense: false, accountId: account });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
@@ -325,7 +402,7 @@ const useRecords = ({
   };
 
   const editIncome = async ({
-    values, recordId, amountTouched, previousAmount, previousExpensesRelated, userId,
+    values, recordId, amountTouched, previousAmount, previousExpensesRelated, userId, accountId,
   }: EditIncomeProps) => {
     try {
       const { amount, date: dateValue } = values;
@@ -340,7 +417,9 @@ const useRecords = ({
       await editIncomeMutation({ values: newValues, bearerToken }).unwrap();
 
       if (amountTouched) {
-        const updateAmount = await updateAmountAccountOnEditRecord({ amount, isExpense: false, previousAmount });
+        const updateAmount = await updateAmountAccountOnEditRecord({
+          amount, isExpense: false, previousAmount, accountId,
+        });
         // If there's an error while updating the account, return
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
@@ -396,22 +475,44 @@ const useRecords = ({
     }
   };
 
-  const deleteRecord = async () => {
+  const deleteRecord = async ({ deleteTransfer }: { deleteTransfer?: boolean; }) => {
     try {
       const amountOfRecord = recordToBeDeleted?.amount as number;
       const recordId = recordToBeDeleted?._id as string;
+      const accountRecord = recordToBeDeleted?.account as string;
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
       await deleteRecordMutation({ values: valuesDeleteRecord, route, bearerToken });
 
       // Update Amount of the account.
-      const updateAmount = await updateAmountAccount({ amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true });
+      const updateAmount = await updateAmountAccount({
+        amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true, accountId: accountRecord,
+      });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
         closeDeleteRecordModalCb();
         closeDrawer();
         return;
+      }
+
+      if (deleteTransfer) {
+        const transferRecordId = recordToBeDeleted?.transferRecord?.transferId ?? '';
+        const transferAccountId = recordToBeDeleted?.transferRecord?.account ?? '';
+        const valuesTransferRecord: DeleteRecordProps = { recordId: transferRecordId };
+        const transferRoute = deleteRecordExpense ? INCOME_ROUTE : EXPENSE_ROUTE;
+        await deleteRecordMutation({ values: valuesTransferRecord, route: transferRoute, bearerToken });
+
+        // Update Amount of the account.
+        const updateAmountTransfer = await updateAmountAccount({
+          amount: amountOfRecord, isExpense: !deleteRecordExpense ?? false, deleteRecord: true, accountId: transferAccountId,
+        });
+        // If there's an error while updating the account, return
+        if (updateAmountTransfer !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
+          closeDeleteRecordModalCb();
+          closeDrawer();
+          return;
+        }
       }
 
       // Show success notification
@@ -440,14 +541,17 @@ const useRecords = ({
     editExpense,
     createIncome,
     editIncome,
+    createTransfer,
     deleteRecord,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
+    isLoadingCreateTransfer,
     isLoadingEditExpense,
     isLoadingEditIncome,
     isSucessCreateExpense,
     isSucessCreateIncome,
+    isSuccessCreateTransfer,
     isSucessEditExpense,
     isSucessEditIncome,
   };

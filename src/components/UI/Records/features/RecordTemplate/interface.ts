@@ -1,10 +1,6 @@
+import { TypeOfRecord } from '../../../../../globalInterface';
+
 export interface RecordTemplateProps {
   edit?: boolean;
+  typeOfRecord: TypeOfRecord;
 }
-
-export interface AdditionalData {
-  budgets: string[];
-  tag: string[];
-}
-
-export type TypeOfRecord = 'expense' | 'income';
