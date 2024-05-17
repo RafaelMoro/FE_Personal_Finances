@@ -8,9 +8,11 @@ import {
 import { AppIcon } from '../../UI/Icons';
 import { HeaderContainer, HeaderShadow } from './Header.styled';
 import { BrandLogoName } from '../BrandLogoName';
+import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 
 const Header = () => {
   const { signOut } = useLogin();
+  const { hasSignedOn } = useSyncLoginInfo();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
 
   return (
@@ -20,9 +22,11 @@ const Header = () => {
           <BrandLogoName />
         </FlexContainer>
         { (windowSize === 'Desktop') && (<Typography variant="h3">Account management</Typography>) }
-        <IconButton aria-label="sign-out-button" onClick={signOut}>
-          <AppIcon icon="LogOut" />
-        </IconButton>
+        { (hasSignedOn) && (
+          <IconButton aria-label="sign-out-button" onClick={signOut}>
+            <AppIcon icon="LogOut" />
+          </IconButton>
+        ) }
       </HeaderContainer>
     </HeaderShadow>
   );
