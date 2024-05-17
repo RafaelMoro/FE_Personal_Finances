@@ -1,4 +1,4 @@
-export const LOGIN_ROUTE = '/';
+export const LOGIN_ROUTE = '/login';
 export const FORGOT_PASSWORD_ROUTE = '/forgot-password';
 export const REGISTER_ROUTE = '/register';
 export const DASHBOARD_ROUTE = '/dashboard';
