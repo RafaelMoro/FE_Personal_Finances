@@ -6,8 +6,8 @@ import {
   FeatureBox, FeaturePictureBox, Hero, HeroTitle,
 } from './LandingPage.styled';
 
-import indebtedPeopleShot from '../../assets/shot-indebted-people.jpg';
-import indebtedPeopleShotWebp from '../../assets/shot-indebted-people.webp';
+import indebtedPeopleShot from '../../assets/app-feature-shots/shot-indebted-people.png';
+import indebtedPeopleShotWebp from '../../assets/app-feature-shots/shot-indebted-people.webp';
 
 const LandingPage = () => (
   <>
