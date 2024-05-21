@@ -1,3 +1,8 @@
+## v0.6.2 (2024-05-20)
+
+### Pull Requests
+[#18](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/18) | Fix file .env-example
+
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests
