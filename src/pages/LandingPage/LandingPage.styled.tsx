@@ -55,3 +55,29 @@ export const FeaturePictureBox = styled.picture`
     object-fit: contain;
   }
 `;
+
+export const LogoTitle = styled(Typography)`
+  font-family: 'Russo One', sans-serif;
+  color: ${AppColors.primary};
+  display: inline-block;
+`;
+
+export const AppDescription = styled.section`
+  margin-top: 10rem;
+`;
+
+export const Card = styled.article`
+  padding: 3rem;
+  box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);
+  &:hover {
+    box-shadow: 0 .8rem 1.6rem 0 rgba(0, 0, 0, 0.2);
+  }
+`;
+
+export const FeatureTitle = styled(Typography)`
+  color: ${AppColors.primary};
+  font-size: 3rem !important;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 4rem;
+`;
