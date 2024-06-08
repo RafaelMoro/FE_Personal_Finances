@@ -3,15 +3,15 @@ import { LogoImageContainer, LogoTitleLogin } from './BrandLogoName.styled';
 import logoWebp from '../../../assets/logo-webp.webp';
 import logoPng from '../../../assets/logo-png.png';
 
-const BrandLogoName = ({ isLoginPage = false }: BrandLogoNameProps) => {
+const BrandLogoName = ({ isLandingPage = false, isLoginPage = false }: BrandLogoNameProps) => {
   const titleVariant = isLoginPage ? 'h1' : 'h2';
   return (
     <>
-      <LogoImageContainer isLoginPage={isLoginPage}>
+      <LogoImageContainer isLandingPage={isLandingPage} isLoginPage={isLoginPage}>
         <source srcSet={logoWebp} type="image/webp" />
         <img src={logoPng} alt="Budget Master logo" />
       </LogoImageContainer>
-      <LogoTitleLogin variant={titleVariant}>Budget Master</LogoTitleLogin>
+      <LogoTitleLogin isLandingPage={isLandingPage} variant={titleVariant}>Budget Master</LogoTitleLogin>
     </>
   );
 };

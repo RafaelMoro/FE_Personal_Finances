@@ -13,17 +13,18 @@ import { HeaderContainer, HeaderShadow } from './Header.styled';
 import { BrandLogoName } from '../BrandLogoName';
 import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
+import { HeaderProps } from './interface';
 
-const Header = () => {
+const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
   const { hasSignedOn } = useSyncLoginInfo();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
 
   return (
-    <HeaderShadow>
+    <HeaderShadow isLandingPage={isLandingPage}>
       <HeaderContainer>
         <FlexContainer gap={2} alignItems="center">
-          <BrandLogoName />
+          <BrandLogoName isLandingPage={isLandingPage} />
         </FlexContainer>
         { (windowSize === 'Desktop' && hasSignedOn) && (<Typography variant="h3">Account management</Typography>) }
         { (hasSignedOn) && (

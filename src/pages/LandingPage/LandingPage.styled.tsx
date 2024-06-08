@@ -1,39 +1,50 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { AppColors, responsiveBreakpoints } from '../../styles';
+import { AnchorButton, AppColors, responsiveBreakpoints } from '../../styles';
 import heroDesktop from '../../assets/hero-desktop-webp.webp';
 import heroMobile from '../../assets/hero-mobile-webp.webp';
 import heroTablet from '../../assets/hero-tablet-webp.webp';
 import { appTheme } from '../../styles/theme';
 
-export const Hero = styled.div`
-  height: 50rem;
-  margin-bottom: ${appTheme.spacing(5)};
-  display: grid;
-  place-items: center;
-  background-image: url(${heroMobile});
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${heroMobile});
+const imageUrl = 'https://images.pexels.com/photos/2403251/pexels-photo-2403251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+
+export const HeaderHeroBox = styled.div`
+  background-image: url(${imageUrl});
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
   background-repeat:no-repeat;
   background-size: cover;
   background-position: center center;
 
   @media ${responsiveBreakpoints.tablet} {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${heroTablet});
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
     background-repeat:no-repeat;
     background-size: cover;
     background-position: center center;
   }
 
   @media ${responsiveBreakpoints.desktop} {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${heroDesktop});
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
     background-repeat:no-repeat;
     background-size: cover;
     background-position: center center;
   }
 `;
 
+export const Hero = styled.div`
+  height: 70rem;
+  margin-bottom: ${appTheme.spacing(5)};
+  display: grid;
+  justify-content: center;
+  gap: 3rem;
+`;
+
 export const HeroTitle = styled(Typography)`
   color: ${AppColors.white};
+  align-self: flex-end;
+`;
+
+export const AnchorButtonHero = styled(AnchorButton)`
+  justify-self: center;
 `;
 
 export const LogoTitle = styled(Typography)`

@@ -3,9 +3,11 @@ import { Header } from '../../components/templates';
 import { AnchorButton, PrimaryButton } from '../../styles';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
 import {
+  AnchorButtonHero,
   AppDescription,
   AppDescriptionBox,
   CardContainer,
+  HeaderHeroBox,
   Hero, HeroTitle,
   LogoTitle,
 } from './LandingPage.styled';
@@ -18,13 +20,15 @@ import {
 
 const LandingPage = () => (
   <>
-    <Header />
-    <Hero>
-      <HeroTitle variant="h1">Take control of your finances</HeroTitle>
-      <AnchorButton to={DASHBOARD_ROUTE}>
-        <PrimaryButton variant="contained" size="large">Start now</PrimaryButton>
-      </AnchorButton>
-    </Hero>
+    <HeaderHeroBox>
+      <Header isLandingPage />
+      <Hero>
+        <HeroTitle variant="h1">Take control of your finances</HeroTitle>
+        <AnchorButtonHero to={DASHBOARD_ROUTE}>
+          <PrimaryButton variant="contained" size="large">Start now</PrimaryButton>
+        </AnchorButtonHero>
+      </Hero>
+    </HeaderHeroBox>
     <AppDescription>
       <Typography align="center" variant="h3">
         What is
