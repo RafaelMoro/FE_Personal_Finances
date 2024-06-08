@@ -36,26 +36,6 @@ export const HeroTitle = styled(Typography)`
   color: ${AppColors.white};
 `;
 
-export const FeatureBox = styled.article`
-  width: 100%;
-  margin: 0 auto;
-  max-width: 110rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10rem;
-`;
-
-export const FeaturePictureBox = styled.picture`
-  display: block;
-  img {
-    width: 40rem;
-    height: 100%;
-    border-radius: 1rem;
-    object-fit: contain;
-  }
-`;
-
 export const LogoTitle = styled(Typography)`
   font-family: 'Russo One', sans-serif;
   color: ${AppColors.primary};
@@ -66,8 +46,24 @@ export const AppDescription = styled.section`
   margin-top: 10rem;
 `;
 
+export const AppDescriptionBox = styled.div`
+margin-top: 5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+`;
+
+export const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  gap: 3rem;
+`;
+
 export const Card = styled.article`
   padding: 3rem;
+  max-width: 45rem;
   box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.2);
   &:hover {
     box-shadow: 0 .8rem 1.6rem 0 rgba(0, 0, 0, 0.2);
