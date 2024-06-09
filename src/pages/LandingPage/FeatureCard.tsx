@@ -8,7 +8,7 @@ interface FeatureCardProps {
 
 const FeatureCard = ({ title, body }: FeatureCardProps) => (
   <Card>
-    <FeatureTitle>{title}</FeatureTitle>
+    <FeatureTitle variant="h4">{title}</FeatureTitle>
     <Typography>{body}</Typography>
   </Card>
 );

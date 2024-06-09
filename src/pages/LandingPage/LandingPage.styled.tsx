@@ -79,7 +79,6 @@ export const Card = styled.article`
 
 export const FeatureTitle = styled(Typography)`
   color: ${AppColors.primary};
-  font-size: 3rem !important;
   font-weight: 900;
   text-align: center;
   margin-bottom: 4rem;

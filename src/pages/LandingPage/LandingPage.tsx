@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { Header } from '../../components/templates';
-import { AnchorButton, PrimaryButton } from '../../styles';
+import { PrimaryButton } from '../../styles';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
 import {
   AnchorButtonHero,
