@@ -43,14 +43,15 @@ export const AnchorButtonHero = styled(AnchorButton)`
   justify-self: center;
 `;
 
-export const LogoTitle = styled(Typography)`
-  font-family: 'Russo One', sans-serif;
-  color: ${AppColors.primary};
-  display: inline-block;
-`;
-
 export const AppDescription = styled.section`
   margin-top: 10rem;
+`;
+
+export const AppDescriptionTitle = styled(Typography)`
+  span {
+    font-family: 'Russo One', sans-serif;
+    color: ${AppColors.primary};
+  }
 `;
 
 export const AppDescriptionBox = styled.div`

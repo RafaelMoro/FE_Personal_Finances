@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { Header } from '../../components/templates';
 import { PrimaryButton } from '../../styles';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
@@ -6,10 +5,10 @@ import {
   AnchorButtonHero,
   AppDescription,
   AppDescriptionBox,
+  AppDescriptionTitle,
   CardContainer,
   HeaderHeroBox,
   Hero, HeroTitle,
-  LogoTitle,
 } from './LandingPage.styled';
 
 import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app-1.png';
@@ -32,13 +31,13 @@ const LandingPage = () => (
       </Hero>
     </HeaderHeroBox>
     <AppDescription>
-      <Typography align="center" variant="h3">
+      <AppDescriptionTitle align="center" variant="h3">
         What is
         {' '}
-        <LogoTitle variant="h3">Budget Master</LogoTitle>
+        <span>Budget Master</span>
         {' '}
         ?
-      </Typography>
+      </AppDescriptionTitle>
       <AppDescriptionBox>
         <img src={budgetMasterShot} alt="Budget Master App Shot" />
         <CardContainer>
