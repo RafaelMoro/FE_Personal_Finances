@@ -23,7 +23,9 @@ const LandingPage = () => (
     <HeaderHeroBox>
       <Header isLandingPage />
       <Hero>
-        <HeroTitle variant="h1">Take control of your finances</HeroTitle>
+        <HeroTitle variant="h1">
+          Don&apos;t let your credit cards to be out of control
+        </HeroTitle>
         <AnchorButtonHero to={DASHBOARD_ROUTE}>
           <PrimaryButton variant="contained" size="large">Start now</PrimaryButton>
         </AnchorButtonHero>
