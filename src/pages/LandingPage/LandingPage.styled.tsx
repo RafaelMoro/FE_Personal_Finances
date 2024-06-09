@@ -1,29 +1,25 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import { AnchorButton, AppColors, responsiveBreakpoints } from '../../styles';
-import heroDesktop from '../../assets/hero-desktop-webp.webp';
-import heroMobile from '../../assets/hero-mobile-webp.webp';
-import heroTablet from '../../assets/hero-tablet-webp.webp';
 import { appTheme } from '../../styles/theme';
-
-const imageUrl = 'https://images.pexels.com/photos/2403251/pexels-photo-2403251.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+import { BG_HERO_IMAGE_URL } from './constants';
 
 export const HeaderHeroBox = styled.div`
-  background-image: url(${imageUrl});
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
+  background-image: url(${BG_HERO_IMAGE_URL});
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${BG_HERO_IMAGE_URL});
   background-repeat:no-repeat;
   background-size: cover;
   background-position: center center;
 
   @media ${responsiveBreakpoints.tablet} {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${BG_HERO_IMAGE_URL});
     background-repeat:no-repeat;
     background-size: cover;
     background-position: center center;
   }
 
   @media ${responsiveBreakpoints.desktop} {
-    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${imageUrl});
+    background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(${BG_HERO_IMAGE_URL});
     background-repeat:no-repeat;
     background-size: cover;
     background-position: center center;
