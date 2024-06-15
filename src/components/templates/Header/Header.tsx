@@ -1,7 +1,6 @@
 import { Drawer, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { Link } from 'react-router-dom';
 import { useLogin } from '../../../hooks/useLogin';
 import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { useAppSelector } from '../../../redux/hooks';
@@ -15,7 +14,9 @@ import {
   PrimaryButton,
   SecondaryButton,
 } from '../../../styles';
-import { HeaderContainer, HeaderShadow } from './Header.styled';
+import {
+  CloseIconButton, DrawerMenu, DrawerMenuLink, HeaderContainer, HeaderShadow,
+} from './Header.styled';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
@@ -57,15 +58,17 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
         </HeaderContainer>
       </HeaderShadow>
       <Drawer anchor="bottom" open={openHamburguerDrawer}>
-        <IconButton onClick={toggleHamburguerDrawer}>
-          <AppIcon icon="Close" />
-        </IconButton>
-        <Link to={LOGIN_ROUTE}>
-          <Typography>Log inn</Typography>
-        </Link>
-        <Link to={REGISTER_ROUTE}>
-          <Typography>Register</Typography>
-        </Link>
+        <DrawerMenu>
+          <CloseIconButton onClick={toggleHamburguerDrawer}>
+            <AppIcon icon="Close" />
+          </CloseIconButton>
+          <DrawerMenuLink to={LOGIN_ROUTE}>
+            <Typography>Log in</Typography>
+          </DrawerMenuLink>
+          <DrawerMenuLink to={REGISTER_ROUTE}>
+            <Typography>Register</Typography>
+          </DrawerMenuLink>
+        </DrawerMenu>
       </Drawer>
     </>
   );

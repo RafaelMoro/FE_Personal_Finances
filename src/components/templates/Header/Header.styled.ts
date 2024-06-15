@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
+import { IconButton } from '@mui/material';
 import { HeaderShadowProps } from './interface';
+import { Anchor, AppColors } from '../../../styles';
 
 export const HeaderShadow = styled.header`
   padding: 2rem;
@@ -23,4 +25,22 @@ export const LogoImageContainer = styled.picture`
     height: 100%;
     object-fit: contain;
   }
+`;
+
+export const DrawerMenu = styled.div`
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  justify-items: center;
+`;
+
+export const CloseIconButton = styled(IconButton)`
+  justify-self: end;
+`;
+
+export const DrawerMenuLink = styled(Anchor)`
+  text-decoration: none;
+  color: ${AppColors.black};
+  cursor: pointer;
 `;
