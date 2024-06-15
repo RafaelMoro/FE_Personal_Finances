@@ -27,7 +27,7 @@ export const HeaderHeroBox = styled.div`
 `;
 
 export const Hero = styled.div`
-  height: 70rem;
+  height: 80rem;
   margin-bottom: ${appTheme.spacing(5)};
   display: grid;
   justify-content: center;
@@ -37,6 +37,9 @@ export const Hero = styled.div`
 export const HeroTitle = styled(Typography)`
   color: ${AppColors.white};
   align-self: flex-end;
+  padding: 0 2rem;
+  text-align: center;
+  text-wrap: balance;
 `;
 
 export const AnchorButtonHero = styled(AnchorButton)`
@@ -55,11 +58,17 @@ export const AppDescriptionTitle = styled(Typography)`
 `;
 
 export const AppDescriptionBox = styled.div`
-margin-top: 5rem;
+  margin-top: 5rem;
+  padding: 0 1rem;
   width: 100%;
   display: flex;
+  flex-direction: column-reverse;
   justify-content: center;
   gap: 5rem;
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    flex-direction: row;
+  }
 `;
 
 export const CardContainer = styled.div`

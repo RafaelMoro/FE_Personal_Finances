@@ -19,6 +19,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
   const { hasSignedOn } = useSyncLoginInfo();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const isMobile = windowSize === 'Mobile';
 
   return (
     <HeaderShadow isLandingPage={isLandingPage}>
@@ -32,7 +33,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
             <AppIcon icon="LogOut" />
           </IconButton>
         ) }
-        { (!hasSignedOn) && (
+        { (!hasSignedOn && !isMobile) && (
           <FlexContainer gap={3} justifyContent="center">
             <AnchorButton to={LOGIN_ROUTE}>
               <SecondaryButton variant="contained" size="medium">Sign in</SecondaryButton>
