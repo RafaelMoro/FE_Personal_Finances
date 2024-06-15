@@ -3,6 +3,7 @@ import { Typography } from '@mui/material';
 import { AnchorButton, AppColors, responsiveBreakpoints } from '../../styles';
 import { appTheme } from '../../styles/theme';
 import { BG_HERO_IMAGE_URL } from './constants';
+import { FeatureBoxProps } from './interface';
 
 export const HeaderHeroBox = styled.div`
   background-image: url(${BG_HERO_IMAGE_URL});
@@ -94,38 +95,39 @@ export const FeatureTitle = styled(Typography)`
   margin-bottom: 4rem;
 `;
 
-export const Feature = styled.section`
+export const Feature = styled('section', { shouldForwardProp: (props) => props !== 'showPrimaryBgColor' })`
   display: flex;
   justify-content: center;
-  max-width: 153rem;
   margin: 0 auto;
 
   // All background color primary styles with the curve line
-  background-color: ${AppColors.primary};
-  padding: 10rem 0;
-  position: relative;
-  margin: 10rem 0;
-  overflow: hidden;
-
-  &::before,
-  &::after {
-    background-color: ${AppColors.white};
-    content: '';
-    height: 20rem;
-    width: 120%;
-    position: absolute;
-  }
-
-  &:before {
-    top: -10rem;
-    left: 0;
-    transform: rotate(3deg);
-  }
-  &:after {
+  ${(props: FeatureBoxProps) => props.showPrimaryBgColor && `
+    background-color: ${AppColors.primary};
+    padding: 10rem 0;
+    position: relative;
+    margin: 10rem 0;
+    overflow: hidden;
+  
+    &::before,
+    &::after {
+      background-color: ${AppColors.white};
+      content: '';
+      height: 20rem;
+      width: 120%;
+      position: absolute;
+    }
+  
+    &:before {
+      top: -10rem;
+      left: 0;
+      transform: rotate(3deg);
+    }
+    &:after {
       bottom: -10rem;
       right: 0;
       transform: rotate(3deg);
-  }
+    }
+  `}
 `;
 
 export const FeatureDescriptionBox = styled.div`
