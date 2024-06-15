@@ -99,6 +99,33 @@ export const Feature = styled.section`
   justify-content: center;
   max-width: 153rem;
   margin: 0 auto;
+
+  // All background color primary styles with the curve line
+  background-color: ${AppColors.primary};
+  padding: 10rem 0;
+  position: relative;
+  margin: 10rem 0;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    background-color: ${AppColors.white};
+    content: '';
+    height: 20rem;
+    width: 120%;
+    position: absolute;
+  }
+
+  &:before {
+    top: -10rem;
+    left: 0;
+    transform: rotate(3deg);
+  }
+  &:after {
+      bottom: -10rem;
+      right: 0;
+      transform: rotate(3deg);
+  }
 `;
 
 export const FeatureDescriptionBox = styled.div`
@@ -108,4 +135,8 @@ export const FeatureDescriptionBox = styled.div`
   gap: 2rem;
   justify-content: center;
   align-items: center;
+`;
+
+export const FeatureText = styled(Typography)`
+  color: ${AppColors.white};
 `;

@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { Header } from '../../components/templates';
 import { PrimaryButton } from '../../styles';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
@@ -10,6 +9,7 @@ import {
   CardContainer,
   Feature,
   FeatureDescriptionBox,
+  FeatureText,
   HeaderHeroBox,
   Hero, HeroTitle,
 } from './LandingPage.styled';
@@ -56,8 +56,8 @@ const LandingPage = () => {
       </AppDescription>
       <Feature>
         <FeatureDescriptionBox>
-          <Typography variant="h4" color="primary">Did you buy something with your friends and don&apos;t know who owes what?</Typography>
-          <Typography>Have full control on who owes what, how many is remaining and who has paid fully.</Typography>
+          <FeatureText variant="h4">Did you buy something with your friends and don&apos;t know who owes what?</FeatureText>
+          <FeatureText>Have full control on who owes what, how many is remaining and who has paid fully.</FeatureText>
         </FeatureDescriptionBox>
         <img src={firstImageIndebtedPeopleFeature} alt="Feature of people owning you money" />
       </Feature>
