@@ -13,6 +13,7 @@ import {
 
 import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app-1.png';
 import firstImageIndebtedPeopleFeature from '../../assets/app-feature-shots/indebted-people-feature-shot-detailed-2.png';
+import relateTransactionImage from '../../assets/app-feature-shots/relate-expense-feature.png';
 import { Feature } from './Feature';
 import { FeatureCard } from './FeatureCard';
 import { useResizeWindow } from '../../hooks/useResizeWindow';
@@ -58,6 +59,13 @@ const LandingPage = () => {
         imageSrc={firstImageIndebtedPeopleFeature}
         imageAtl="Feature of people owning you money"
         showPrimaryBgColor
+      />
+      <Feature
+        title="Is it hard to remember what transactions has been fully paid?"
+        description="When making a transfer from your debit card into your credit card, link the transactions to that payment."
+        imageSrc={relateTransactionImage}
+        imageAtl="Feature of relating transactions to payments"
+        reverse
       />
     </>
   );

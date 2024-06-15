@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { AnchorButton, AppColors, responsiveBreakpoints } from '../../styles';
 import { appTheme } from '../../styles/theme';
 import { BG_HERO_IMAGE_URL } from './constants';
-import { FeatureBoxProps } from './interface';
+import { FeatureBoxProps, FeatureTextProps } from './interface';
 
 export const HeaderHeroBox = styled.div`
   background-image: url(${BG_HERO_IMAGE_URL});
@@ -95,8 +95,9 @@ export const FeatureTitle = styled(Typography)`
   margin-bottom: 4rem;
 `;
 
-export const Feature = styled('section', { shouldForwardProp: (props) => props !== 'showPrimaryBgColor' })`
+export const Feature = styled('section', { shouldForwardProp: (props) => (props !== 'showPrimaryBgColor' && props !== 'reverse') })`
   display: flex;
+  flex-direction: ${(props: FeatureBoxProps) => (props.reverse ? 'row-reverse' : 'row')};
   justify-content: center;
   margin: 0 auto;
 
@@ -139,6 +140,10 @@ export const FeatureDescriptionBox = styled.div`
   align-items: center;
 `;
 
-export const FeatureText = styled(Typography)`
-  color: ${AppColors.white};
+export const FeatureImage = styled.img`
+  max-width: 96rem;
+`;
+
+export const FeatureText = styled(Typography, { shouldForwardProp: (props) => props !== 'showPrimaryBgColor' })`
+  color: ${(props: FeatureTextProps) => (props.showPrimaryBgColor ? AppColors.white : AppColors.black)};
 `;

@@ -1,15 +1,17 @@
-import { FeatureDescriptionBox, FeatureText, Feature as FeatureBox } from './LandingPage.styled';
+import {
+  FeatureDescriptionBox, FeatureText, Feature as FeatureBox, FeatureImage,
+} from './LandingPage.styled';
 import { FeatureProps } from './interface';
 
 const Feature = ({
-  title, description, imageSrc, imageAtl, showPrimaryBgColor = false,
+  title, description, imageSrc, imageAtl, showPrimaryBgColor = false, reverse = false,
 }: FeatureProps) => (
-  <FeatureBox showPrimaryBgColor={showPrimaryBgColor}>
+  <FeatureBox reverse={reverse} showPrimaryBgColor={showPrimaryBgColor}>
     <FeatureDescriptionBox>
-      <FeatureText variant="h4">{title}</FeatureText>
-      <FeatureText>{description}</FeatureText>
+      <FeatureText showPrimaryBgColor={showPrimaryBgColor} variant="h4">{title}</FeatureText>
+      <FeatureText showPrimaryBgColor={showPrimaryBgColor}>{description}</FeatureText>
     </FeatureDescriptionBox>
-    <img src={imageSrc} alt={imageAtl} />
+    <FeatureImage src={imageSrc} alt={imageAtl} />
   </FeatureBox>
 );
 
