@@ -93,3 +93,19 @@ export const FeatureTitle = styled(Typography)`
   text-align: center;
   margin-bottom: 4rem;
 `;
+
+export const Feature = styled.section`
+  display: flex;
+  justify-content: center;
+  max-width: 153rem;
+  margin: 0 auto;
+`;
+
+export const FeatureDescriptionBox = styled.div`
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+`;

@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import { Header } from '../../components/templates';
 import { PrimaryButton } from '../../styles';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
@@ -7,11 +8,14 @@ import {
   AppDescriptionBox,
   AppDescriptionTitle,
   CardContainer,
+  Feature,
+  FeatureDescriptionBox,
   HeaderHeroBox,
   Hero, HeroTitle,
 } from './LandingPage.styled';
 
 import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app-1.png';
+import firstImageIndebtedPeopleFeature from '../../assets/app-feature-shots/indebted-people-feature-shot-detailed-2.png';
 import { FeatureCard } from './FeatureCard';
 import { useResizeWindow } from '../../hooks/useResizeWindow';
 import {
@@ -50,6 +54,13 @@ const LandingPage = () => {
           </CardContainer>
         </AppDescriptionBox>
       </AppDescription>
+      <Feature>
+        <FeatureDescriptionBox>
+          <Typography variant="h4" color="primary">Did you buy something with your friends and don&apos;t know who owes what?</Typography>
+          <Typography>Have full control on who owes what, how many is remaining and who has paid fully.</Typography>
+        </FeatureDescriptionBox>
+        <img src={firstImageIndebtedPeopleFeature} alt="Feature of people owning you money" />
+      </Feature>
     </>
   );
 };
