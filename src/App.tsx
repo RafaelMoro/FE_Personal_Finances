@@ -30,12 +30,9 @@ function App() {
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/register" element={<CreateAccount />} />
             <Route path="/404" element={<NotFound />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/create-record" element={<CreateRecord />} />
-              <Route path="/edit-record" element={<EditRecord />} />
-              <Route path="*" element={<Navigate to="/404" replace />} />
-            </Route>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/create-record" element={<CreateRecord />} />
+            <Route path="/edit-record" element={<EditRecord />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </LocalizationProvider>
