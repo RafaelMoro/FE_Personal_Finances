@@ -97,9 +97,13 @@ export const FeatureTitle = styled(Typography)`
 
 export const Feature = styled('section', { shouldForwardProp: (props) => (props !== 'showPrimaryBgColor' && props !== 'reverse') })`
   display: flex;
-  flex-direction: ${(props: FeatureBoxProps) => (props.reverse ? 'row-reverse' : 'row')};
+  flex-direction: column;
   justify-content: center;
   margin: 0 auto;
+
+  @media ${responsiveBreakpoints.tabletAndDesktop} {
+    flex-direction: ${(props: FeatureBoxProps) => (props.reverse ? 'row-reverse' : 'row')};
+  }
 
   // All background color primary styles with the curve line
   ${(props: FeatureBoxProps) => props.showPrimaryBgColor && `
@@ -138,6 +142,13 @@ export const FeatureDescriptionBox = styled.div`
   gap: 2rem;
   justify-content: center;
   align-items: center;
+`;
+
+export const FeatureImageBox = styled.picture`
+  @media ${responsiveBreakpoints.mobile} {
+    display: grid;
+    place-items: center;
+  }
 `;
 
 export const FeatureImage = styled.img`

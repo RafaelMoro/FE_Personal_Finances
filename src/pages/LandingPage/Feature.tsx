@@ -1,5 +1,6 @@
 import {
   FeatureDescriptionBox, FeatureText, Feature as FeatureBox, FeatureImage,
+  FeatureImageBox,
 } from './LandingPage.styled';
 import { FeatureProps } from './interface';
 
@@ -11,10 +12,10 @@ const Feature = ({
       <FeatureText showPrimaryBgColor={showPrimaryBgColor} variant="h4">{title}</FeatureText>
       <FeatureText showPrimaryBgColor={showPrimaryBgColor}>{description}</FeatureText>
     </FeatureDescriptionBox>
-    <picture>
+    <FeatureImageBox>
       <source srcSet={imageSrcWebp} type="image/webp" />
       <FeatureImage src={imageSrc} alt={imageAtl} />
-    </picture>
+    </FeatureImageBox>
   </FeatureBox>
 );
 
