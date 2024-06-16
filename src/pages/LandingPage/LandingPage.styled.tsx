@@ -142,6 +142,7 @@ export const FeatureDescriptionBox = styled.div`
 
 export const FeatureImage = styled.img`
   max-width: 96rem;
+  width: 80%;
 `;
 
 export const FeatureText = styled(Typography, { shouldForwardProp: (props) => props !== 'showPrimaryBgColor' })`
