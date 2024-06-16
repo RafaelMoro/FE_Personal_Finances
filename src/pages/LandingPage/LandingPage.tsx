@@ -11,9 +11,9 @@ import {
   Hero, HeroTitle,
 } from './LandingPage.styled';
 
-import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app-1.png';
-import firstImageIndebtedPeopleFeature from '../../assets/app-feature-shots/indebted-people-feature-shot-detailed-2.png';
-import relateTransactionImage from '../../assets/app-feature-shots/relate-expense-feature.png';
+import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app.png';
+import indebtedPeopleFeature from '../../assets/app-feature-shots/indebted-people-feature-shot-detailed.png';
+import relateTransactionFeature from '../../assets/app-feature-shots/relate-expense-feature.png';
 import { Feature } from './Feature';
 import { FeatureCard } from './FeatureCard';
 import { useResizeWindow } from '../../hooks/useResizeWindow';
@@ -56,14 +56,14 @@ const LandingPage = () => {
       <Feature
         title="Did you buy something with your friends and don't know who owes what?"
         description="Have full control on who owes what, how many is remaining and who has paid fully."
-        imageSrc={firstImageIndebtedPeopleFeature}
+        imageSrc={indebtedPeopleFeature}
         imageAtl="Feature of people owning you money"
         showPrimaryBgColor
       />
       <Feature
         title="Is it hard to remember what transactions has been fully paid?"
         description="When making a transfer from your debit card into your credit card, link the transactions to that payment."
-        imageSrc={relateTransactionImage}
+        imageSrc={relateTransactionFeature}
         imageAtl="Feature of relating transactions to payments"
         reverse
       />
