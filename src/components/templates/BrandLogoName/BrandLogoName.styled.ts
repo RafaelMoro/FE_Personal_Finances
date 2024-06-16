@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { LogoImageContainerProps } from './interface';
+import { LogoImageContainerProps, LogoTitleLoginProps } from './interface';
 import { AppColors } from '../../../styles';
 
 export const LogoImageContainer = styled.picture`
@@ -10,10 +10,12 @@ export const LogoImageContainer = styled.picture`
     width: 100%;
     height: 100%;
     object-fit: contain;
+    ${(props: LogoImageContainerProps) => (props.isLandingPage && 'border-radius: 50%;')}
   }
 `;
 
-export const LogoTitleLogin = styled(Typography)`
+export const LogoTitleLogin = styled(Typography, { shouldForwardProp: (props) => props !== 'isLandingPage' })`
   font-family: 'Russo One', sans-serif;
   color: ${AppColors.primary};
+  ${(props: LogoTitleLoginProps) => (props.isLandingPage && `color: ${AppColors.white}; font-weight: 400;`)}
 `;

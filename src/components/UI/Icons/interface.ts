@@ -21,6 +21,7 @@ export interface AppIcons {
   TickMark: AppIcon;
   Visibility: AppIcon;
   VisibilityOff: AppIcon;
+  HamburguerMenu: AppIcon;
 }
 
 export type AppIconKeys = keyof AppIcons;

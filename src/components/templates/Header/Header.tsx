@@ -1,30 +1,76 @@
-import { IconButton, Typography } from '@mui/material';
+import { Drawer, IconButton, Typography } from '@mui/material';
+import { useState } from 'react';
 
 import { useLogin } from '../../../hooks/useLogin';
+import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { useAppSelector } from '../../../redux/hooks';
-import {
-  FlexContainer,
-} from '../../../styles';
+import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
+import { HeaderProps } from './interface';
 import { AppIcon } from '../../UI/Icons';
-import { HeaderContainer, HeaderShadow } from './Header.styled';
 import { BrandLogoName } from '../BrandLogoName';
+import {
+  AnchorButton,
+  FlexContainer,
+  PrimaryButton,
+  SecondaryButton,
+} from '../../../styles';
+import {
+  CloseIconButton, DrawerMenu, DrawerMenuLink, HeaderContainer, HeaderShadow,
+} from './Header.styled';
 
-const Header = () => {
+const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
+  const { hasSignedOn } = useSyncLoginInfo();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
+  const isMobile = windowSize === 'Mobile';
+
+  const [openHamburguerDrawer, setOpenHamburguerDrawer] = useState(false);
+  const toggleHamburguerDrawer = () => setOpenHamburguerDrawer((prevState) => !prevState);
 
   return (
-    <HeaderShadow>
-      <HeaderContainer>
-        <FlexContainer gap={2} alignItems="center">
-          <BrandLogoName />
-        </FlexContainer>
-        { (windowSize === 'Desktop') && (<Typography variant="h3">Account management</Typography>) }
-        <IconButton aria-label="sign-out-button" onClick={signOut}>
-          <AppIcon icon="LogOut" />
-        </IconButton>
-      </HeaderContainer>
-    </HeaderShadow>
+    <>
+      <HeaderShadow isLandingPage={isLandingPage}>
+        <HeaderContainer>
+          <FlexContainer gap={2} alignItems="center">
+            <BrandLogoName isLandingPage={isLandingPage} />
+          </FlexContainer>
+          { (windowSize === 'Desktop' && hasSignedOn) && (<Typography variant="h3">Account management</Typography>) }
+          { (hasSignedOn) && (
+            <IconButton aria-label="sign-out-button" onClick={signOut}>
+              <AppIcon icon="LogOut" />
+            </IconButton>
+          ) }
+          { (!hasSignedOn && !isMobile) && (
+            <FlexContainer gap={3} justifyContent="center">
+              <AnchorButton to={LOGIN_ROUTE}>
+                <SecondaryButton variant="contained" size="medium">Sign in</SecondaryButton>
+              </AnchorButton>
+              <AnchorButton to={REGISTER_ROUTE}>
+                <PrimaryButton variant="contained" size="medium">Register</PrimaryButton>
+              </AnchorButton>
+            </FlexContainer>
+          )}
+          { (!hasSignedOn && isMobile) && (
+            <IconButton onClick={toggleHamburguerDrawer}>
+              <AppIcon icon="HamburguerMenu" />
+            </IconButton>
+          )}
+        </HeaderContainer>
+      </HeaderShadow>
+      <Drawer anchor="bottom" open={openHamburguerDrawer}>
+        <DrawerMenu>
+          <CloseIconButton onClick={toggleHamburguerDrawer}>
+            <AppIcon icon="Close" />
+          </CloseIconButton>
+          <DrawerMenuLink to={LOGIN_ROUTE}>
+            <Typography>Log in</Typography>
+          </DrawerMenuLink>
+          <DrawerMenuLink to={REGISTER_ROUTE}>
+            <Typography>Register</Typography>
+          </DrawerMenuLink>
+        </DrawerMenu>
+      </Drawer>
+    </>
   );
 };
 

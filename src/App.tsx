@@ -13,6 +13,7 @@ import { CreateRecord } from './pages/Records/CreateRecords/CreateRecord';
 import { GlobalStyles } from './styles/Global.styled';
 import { EditRecord } from './pages/Records/EditRecords/EditRecord';
 import { NotFound } from './pages/NotFound';
+import { LandingPage } from './pages/LandingPage';
 import { store } from './redux/store';
 import { appTheme } from './styles/theme';
 
@@ -23,7 +24,8 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Global styles={GlobalStyles} />
           <Routes>
-            <Route path="/" element={<Login />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/register" element={<CreateAccount />} />

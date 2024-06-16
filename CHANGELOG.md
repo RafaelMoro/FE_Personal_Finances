@@ -1,6 +1,19 @@
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests
+[#19](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/19) | Add Landing page
+- Add assets for landing page
+- Add adjustments on header to be different on the landing page
+- Add new components for landing page: Feature and Card
+- Modify home route to be landing page and change login's route
+- Add hamburguer menu icon
+- Change brand logo name component to be adapted to the landing page
+- Add hamburguer menu into header
+- Add Drawer into header
+
+## v0.6.1 (2024-04-10)
+
+### Pull Requests
 [#17](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/17) | Fix error amount prop is missing while editing record
 
 ## v0.6.0 (2024-04-06)
