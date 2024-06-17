@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
+import { DASHBOARD_ROUTE, LANDING_ROUTE } from '../pages/RoutesConstants';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
@@ -54,10 +54,14 @@ const useLogin = () => {
     dispatch(resetTotalBalanceRecords());
     saveInfoToLocalStorage({});
     resetLoginIn();
+    navigate(LANDING_ROUTE);
   };
 
   const handleSubmit = async (values: LoginValues) => {
     try {
+      // First reset local storage if we have guest user logged in.
+      saveInfoToLocalStorage({});
+
       const user = await loginMutation({ values }).unwrap();
       dispatch(signOn(user));
       addToLocalStorage(user);
