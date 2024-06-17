@@ -53,7 +53,6 @@ const useLogin = () => {
     dispatch(resetSelectedAccount());
     dispatch(resetTotalBalanceRecords());
     saveInfoToLocalStorage({});
-    navigate(LOGIN_ROUTE);
     resetLoginIn();
   };
 
