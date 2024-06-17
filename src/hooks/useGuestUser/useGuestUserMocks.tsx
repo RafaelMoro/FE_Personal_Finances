@@ -33,7 +33,7 @@ const useGuestUserMocks = () => {
       color: 'white',
       backgroundColorUI: { name: 'blue', color: 'blue' },
       colorUI: { name: 'white', color: 'white' },
-      selected: true,
+      selected: false,
     },
     {
       _id: '5678',
