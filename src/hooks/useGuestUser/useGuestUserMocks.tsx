@@ -1,5 +1,4 @@
-import { AccountUI } from '../../components/UI/Account/interface';
-import { AnyRecord, User } from '../../globalInterface';
+import { Account, AnyRecord, User } from '../../globalInterface';
 import { formatMockDate } from './utils';
 
 const useGuestUserMocks = () => {
@@ -21,32 +20,24 @@ const useGuestUserMocks = () => {
     },
   };
 
-  const accounts: AccountUI[] = [
+  const accounts: Account[] = [
     {
       _id: '1234',
       __v: 0,
       title: 'Citibanamex Debit',
       amount: 8246.41,
-      amountFormatted: '$8,246.41',
       accountType: 'Debit',
       backgroundColor: 'blue',
       color: 'white',
-      backgroundColorUI: { name: 'blue', color: 'blue' },
-      colorUI: { name: 'white', color: 'white' },
-      selected: false,
     },
     {
       _id: '5678',
       __v: 0,
       title: 'American Express',
       amount: 80000,
-      amountFormatted: '$80,000.00',
       accountType: 'Credit',
       backgroundColor: 'Tomato',
       color: 'black',
-      backgroundColorUI: { name: 'Tomato', color: 'tomato' },
-      colorUI: { name: 'White', color: 'white' },
-      selected: true,
     },
   ];
 

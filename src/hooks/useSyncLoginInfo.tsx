@@ -32,10 +32,13 @@ const useSyncLoginInfo = () => {
       return null;
     }
 
-    const { accessToken, bearerToken, user } = localStorageInfo;
+    const {
+      accessToken, bearerToken, user, accounts,
+    } = localStorageInfo;
     return {
       user: { accessToken, bearerToken, user },
       recordToBeEdited: localStorageInfo?.recordToBeEdited,
+      accounts,
     };
   };
 
@@ -45,11 +48,12 @@ const useSyncLoginInfo = () => {
       if (!data) return;
 
       const { user, recordToBeEdited: dataRecordToBeEdited } = data;
+      const accounts = data?.accounts ?? [];
       const { accessToken } = user;
 
       // Means that it is a guest user. No need to set flag as signed on
       if (!accessToken) {
-        loadGuestUser();
+        loadGuestUser({ accountsLocalStorage: accounts });
         return;
       }
 
