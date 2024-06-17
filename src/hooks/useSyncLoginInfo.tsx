@@ -9,11 +9,13 @@ import { signOn } from '../redux/slices/User/user.slice';
 import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
 import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import { AnyRecord } from '../globalInterface';
+import { useGuestUser } from './useGuestUser/useGuestUser';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { loadGuestUser } = useGuestUser();
   const userReduxState = useAppSelector((state) => state.user);
   const [recordToBeEdited, setRecordtoBeEdited] = useState<null | AnyRecord>(null);
   const [isEmptyLocalStorage, setIsEmptyLocalStorage] = useState<boolean>(false);
@@ -44,6 +46,13 @@ const useSyncLoginInfo = () => {
 
       const { user, recordToBeEdited: dataRecordToBeEdited } = data;
       const { accessToken } = user;
+
+      // Means that it is a guest user. No need to set flag as signed on
+      if (!accessToken) {
+        loadGuestUser();
+        return;
+      }
+
       const isExpiredAccessToken = verifyJwtExpiration(accessToken, signOut);
 
       if (!isExpiredAccessToken) {
