@@ -1,14 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import { Header } from '../../components/templates';
-import { PrimaryButton } from '../../styles';
-import { DASHBOARD_ROUTE } from '../RoutesConstants';
 import {
-  AnchorButtonHero,
   AppDescription,
   AppDescriptionBox,
   AppDescriptionTitle,
   CardContainer,
   HeaderHeroBox,
   Hero, HeroTitle,
+  StartNowButton,
 } from './LandingPage.styled';
 
 import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app.png';
@@ -23,9 +22,18 @@ import { useResizeWindow } from '../../hooks/useResizeWindow';
 import {
   CONTROL_FEATURE_DESCRIPTION, CONTROL_FEATURE_TITLE, EASY_FEATURE_DESCRIPTION, EASY_FEATURE_TITLE,
 } from './constants';
+import { useGuestUser } from '../../hooks/useGuestUser/useGuestUser';
+import { DASHBOARD_ROUTE } from '../RoutesConstants';
 
 const LandingPage = () => {
+  const { addGuestUser } = useGuestUser();
+  const navigate = useNavigate();
   useResizeWindow();
+
+  const handleStartNow = () => {
+    addGuestUser();
+    navigate(DASHBOARD_ROUTE);
+  };
 
   return (
     <>
@@ -35,9 +43,7 @@ const LandingPage = () => {
           <HeroTitle variant="h1">
             Don&apos;t let your credit cards to be out of control
           </HeroTitle>
-          <AnchorButtonHero to={DASHBOARD_ROUTE}>
-            <PrimaryButton variant="contained" size="large">Start now</PrimaryButton>
-          </AnchorButtonHero>
+          <StartNowButton onClick={handleStartNow} variant="contained" size="large">Start now</StartNowButton>
         </Hero>
       </HeaderHeroBox>
       <AppDescription>

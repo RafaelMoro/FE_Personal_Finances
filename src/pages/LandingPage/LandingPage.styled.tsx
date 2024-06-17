@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { AnchorButton, AppColors, responsiveBreakpoints } from '../../styles';
+import {
+  AnchorButton, AppColors, PrimaryButton, responsiveBreakpoints,
+} from '../../styles';
 import { appTheme } from '../../styles/theme';
 import { BG_HERO_IMAGE_URL } from './constants';
 import { FeatureBoxProps, FeatureTextProps } from './interface';
@@ -45,6 +47,11 @@ export const HeroTitle = styled(Typography)`
 
 export const AnchorButtonHero = styled(AnchorButton)`
   justify-self: center;
+`;
+
+export const StartNowButton = styled(PrimaryButton)`
+  justify-self: center;
+  max-height: 4.8rem;
 `;
 
 export const AppDescription = styled.section`
