@@ -111,8 +111,8 @@ const useGuestUserMocks = () => {
       budgets: ['Fast Food'],
       formattedTime: yesterdayTime,
       fullDate: dateYesterday,
-      amount: 15.49,
-      amountFormatted: '$15.49',
+      amount: 47.88,
+      amountFormatted: '$47.88',
       isPaid: false,
     },
     {
@@ -144,7 +144,7 @@ const useGuestUserMocks = () => {
       budgets: [],
       expensesPaid: [
         {
-          _id: '665c90eb0',
+          _id: '456-789-7831-4685',
           shortName: 'Netflix',
           amount: 15.49,
           isPaid: true,
@@ -153,6 +153,31 @@ const useGuestUserMocks = () => {
           formattedTime: yesterdayTime,
         },
       ],
+    },
+    {
+      _id: '456-789-7831-4685',
+      userId: '123-456-789',
+      shortName: 'Netflix',
+      typeOfRecord: 'expense',
+      description: '',
+      category: {
+        _id: '9478-6123-9832',
+        categoryName: 'Subscriptions',
+        icon: 'subcriptions',
+        __v: 0,
+        subCategories: ['Streaming services'],
+      },
+      date: yesterday,
+      account: '5678',
+      subCategory: 'Streaming services',
+      tag: [],
+      indebtedPeople: [],
+      budgets: [],
+      formattedTime: yesterdayTime,
+      fullDate: dateYesterday,
+      amount: 15.49,
+      amountFormatted: '$15.49',
+      isPaid: true,
     },
   ];
 
