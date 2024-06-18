@@ -2,7 +2,7 @@ import { AccountUI } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateAccounts, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
-import { saveRecordsLocalStorage } from '../../redux/slices/Records';
+import { saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
 import { signOn } from '../../redux/slices/User/user.slice';
 import { addToLocalStorage, formatAccounts } from '../../utils';
 import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
@@ -47,7 +47,7 @@ const useGuestUser = () => {
     // Search for the records of that account
     const recordsOfSelectedAccount = records.find((record) => record.account === selectedAccountId) ?? null;
     // Save records
-    dispatch(saveRecordsLocalStorage(recordsOfSelectedAccount));
+    dispatch(saveRecordsLocalStorageSelectedAccount(recordsOfSelectedAccount));
   };
 
   const loadGuestUser = ({ accountsLocalStorage, recordsLocalStorage }:

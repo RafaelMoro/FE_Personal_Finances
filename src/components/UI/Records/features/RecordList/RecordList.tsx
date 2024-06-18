@@ -40,7 +40,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   } = useDate();
   const { isGuestUser } = useGuestUser();
   const user = useAppSelector((state) => state.user.userInfo);
-  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
+  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
   const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;

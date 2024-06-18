@@ -5,6 +5,7 @@ import { RecordsInitialState, UpdateTotalExpenseAndIncomeProps, UpdateTotalExpen
 
 const recordsInitialState: RecordsInitialState = {
   recordToBeModified: null,
+  recordsLocalStorageSelectedAccount: null,
   recordsLocalStorage: null,
   totalRecords: {
     currentMonth: {
@@ -24,6 +25,9 @@ export const recordsSlice = createSlice({
   reducers: {
     setRecordToBeModified: (state, action) => {
       state.recordToBeModified = action.payload;
+    },
+    saveRecordsLocalStorageSelectedAccount: (state, action) => {
+      state.recordsLocalStorageSelectedAccount = action.payload;
     },
     saveRecordsLocalStorage: (state, action) => {
       state.recordsLocalStorage = action.payload;
@@ -69,7 +73,7 @@ export const recordsSlice = createSlice({
 
 export const {
   resetTotalBalanceRecords, resetLastMonthBalance, setRecordToBeModified,
-  updateTotalExpense, updateTotalIncome, updateTotalExpensesIncomes, saveRecordsLocalStorage,
+  updateTotalExpense, updateTotalIncome, updateTotalExpensesIncomes, saveRecordsLocalStorageSelectedAccount, saveRecordsLocalStorage,
 } = recordsSlice.actions;
 
 export default recordsSlice.reducer;

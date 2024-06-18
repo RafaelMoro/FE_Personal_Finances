@@ -10,7 +10,8 @@ import { RecordsLocalStorage } from '../../../utils/LocalStorage/interface';
 export interface RecordsInitialState {
   totalRecords: RecordsTotal;
   recordToBeModified: AnyRecord | null;
-  recordsLocalStorage: RecordsLocalStorage | null;
+  recordsLocalStorageSelectedAccount: RecordsLocalStorage | null;
+  recordsLocalStorage: RecordsLocalStorage[] | null;
 }
 
 export interface GetRecordByMonthAndYearProps {

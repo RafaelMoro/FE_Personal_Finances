@@ -10,6 +10,7 @@ import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
 import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import { AnyRecord } from '../globalInterface';
 import { useGuestUser } from './useGuestUser/useGuestUser';
+import { saveRecordsLocalStorage } from '../redux/slices/Records';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
@@ -56,6 +57,7 @@ const useSyncLoginInfo = () => {
       // Means that it is a guest user. No need to set flag as signed on
       if (!accessToken) {
         loadGuestUser({ accountsLocalStorage: accounts, recordsLocalStorage: records });
+        dispatch(saveRecordsLocalStorage(records));
         return;
       }
 
