@@ -1,4 +1,5 @@
 import { Account, AnyRecord, User } from '../../globalInterface';
+import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
 import { formatMockDate } from './utils';
 
 const useGuestUserMocks = () => {
@@ -22,7 +23,7 @@ const useGuestUserMocks = () => {
 
   const accounts: Account[] = [
     {
-      _id: '1234',
+      _id: CITIBANAMEX_DEBIT_ID,
       __v: 0,
       title: 'Citibanamex Debit',
       amount: 8246.41,
@@ -31,7 +32,7 @@ const useGuestUserMocks = () => {
       color: 'white',
     },
     {
-      _id: '5678',
+      _id: AMERICAN_EXPRESS_ID,
       __v: 0,
       title: 'American Express',
       amount: 80000,

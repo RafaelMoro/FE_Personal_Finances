@@ -15,6 +15,7 @@ import {
 } from '../../constants';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { useDate } from '../../../../../hooks/useDate';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 import {
   useFetchRecordsByMonthYearQuery,
   useLazyFetchRecordsByMonthYearQuery,
@@ -37,7 +38,9 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   const {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
+  const { isGuestUser } = useGuestUser();
   const user = useAppSelector((state) => state.user.userInfo);
+  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
   const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;
@@ -59,6 +62,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   }] = useLazyFetchRecordsByMonthYearQuery();
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
+  const currentRecords = isGuestUser ? recordsLocalStorage?.records : responseFetchRecords?.records;
 
   /** Update total balance of expenses and incomes after fetch of current month records */
   useEffect(() => {
@@ -93,7 +97,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
     }
   };
 
-  if (accountsFetchStatus === 'isUninitialized') {
+  if (accountsFetchStatus === 'isUninitialized' && !isGuestUser) {
     return (
       <LoadingStatus text="Waiting on the load of accounts..." />
     );
@@ -120,7 +124,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         totalExpense={totalRecords.currentMonth.expenseTotal}
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
-        records={responseFetchRecords?.records ?? []}
+        records={currentRecords ?? []}
         loading={isFetchingThisMonthRecs}
         error={isErrorThisMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
