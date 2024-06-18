@@ -17,13 +17,22 @@ const useGuestUser = () => {
     recordsAmericanExpress, recordsDebitAccount, accounts, guestUser,
   } = useGuestUserMocks();
 
+  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorage[]) => {
+    // Check What is the account id of the selected account
+    const selectedAccountId = selectedAccount._id;
+    // Search for the records of that account
+    const recordsOfSelectedAccount = records.find((record) => record.account === selectedAccountId) ?? null;
+    // Save records
+    dispatch(saveRecordsLocalStorageSelectedAccount(recordsOfSelectedAccount));
+  };
+
   const addGuestUser = () => {
     // Add user
     dispatch(signOn(guestUser));
     addToLocalStorage(guestUser);
 
     // Add accounts
-    const accountsUI = formatAccounts({ accounts });
+    const accountsUI = formatAccounts({ accounts, selectedAccountId: accounts[1]._id });
     dispatch(updateAccounts(accountsUI));
     dispatch(updateSelectedAccount(accountsUI[1]));
     addToLocalStorage({ accounts });
@@ -39,15 +48,8 @@ const useGuestUser = () => {
       },
     ];
     addToLocalStorage({ records });
-  };
-
-  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorage[]) => {
-    // Check What is the account id of the selected account
-    const selectedAccountId = selectedAccount._id;
-    // Search for the records of that account
-    const recordsOfSelectedAccount = records.find((record) => record.account === selectedAccountId) ?? null;
-    // Save records
-    dispatch(saveRecordsLocalStorageSelectedAccount(recordsOfSelectedAccount));
+    // Load records
+    loadRecords(accountsUI[1], records);
   };
 
   const loadGuestUser = ({ accountsLocalStorage, recordsLocalStorage }:
