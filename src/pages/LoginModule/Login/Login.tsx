@@ -15,12 +15,14 @@ import {
   Main, LoginCard, LogoContainer,
   FormLoginTitle, FormInstructions, LoginInput, ForgotPasswordLink,
 } from './Login.styled';
+import { useAppSelector } from '../../../redux/hooks';
 
 const Login = () => {
-  const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
+  const { navigateToDashboard } = useSyncLoginInfo();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter, loginSuccess, loginLoading,
   } = useLogin();
+  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
 

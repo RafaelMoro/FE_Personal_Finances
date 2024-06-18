@@ -7,6 +7,7 @@ import { WindowSizeValues } from '../../aliasType';
 interface UserInterfaceInitialState {
   notification: GlobalNotification;
   windowSize: WindowSizeValues;
+  hasSignedOn: boolean;
 }
 
 const userInterfaceInitialState: UserInterfaceInitialState = {
@@ -17,12 +18,16 @@ const userInterfaceInitialState: UserInterfaceInitialState = {
     showNotification: false,
   },
   windowSize: 'Mobile',
+  hasSignedOn: false,
 };
 
 export const userInterfaceSlice = createSlice({
   name: 'userInterface',
   initialState: userInterfaceInitialState,
   reducers: {
+    toggleSignedOn: (state) => {
+      state.hasSignedOn = !state.hasSignedOn;
+    },
     updateNotificationTitle: (state, action) => {
       state.notification.title = action.payload;
     },
@@ -43,7 +48,7 @@ export const userInterfaceSlice = createSlice({
 
 export const {
   updateNotificationTitle, updateNotificationDescription, updateNotificationStatus,
-  toggleNotification, updateWindowSize,
+  toggleNotification, updateWindowSize, toggleSignedOn,
 } = userInterfaceSlice.actions;
 
 export default userInterfaceSlice.reducer;

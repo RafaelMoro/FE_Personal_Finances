@@ -15,6 +15,7 @@ import { resetTotalBalanceRecords } from '../redux/slices/Records/records.slice'
 import { useLoginMutation } from '../redux/budgetMaster.api';
 import { LOGIN_FIXED_CACHED_KEY } from '../redux/constants';
 import { GeneralError } from '../globalInterface';
+import { toggleSignedOn } from '../redux/slices/userInterface.slice';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -52,6 +53,7 @@ const useLogin = () => {
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
     dispatch(resetTotalBalanceRecords());
+    dispatch(toggleSignedOn());
     saveInfoToLocalStorage({});
     resetLoginIn();
     navigate(LANDING_ROUTE);
@@ -63,7 +65,9 @@ const useLogin = () => {
       saveInfoToLocalStorage({});
 
       const user = await loginMutation({ values }).unwrap();
+      // Save user on redux state of userInfo
       dispatch(signOn(user));
+      dispatch(toggleSignedOn());
       addToLocalStorage(user);
       setTimeout(() => {
         navigate(DASHBOARD_ROUTE);

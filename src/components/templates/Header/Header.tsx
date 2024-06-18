@@ -2,7 +2,6 @@ import { Drawer, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { useLogin } from '../../../hooks/useLogin';
-import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
 import { useAppSelector } from '../../../redux/hooks';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
 import { HeaderProps } from './interface';
@@ -20,7 +19,7 @@ import {
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
-  const { hasSignedOn } = useSyncLoginInfo();
+  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
 

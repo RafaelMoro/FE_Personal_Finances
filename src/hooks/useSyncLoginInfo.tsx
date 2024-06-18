@@ -11,6 +11,7 @@ import { DASHBOARD_ROUTE } from '../pages/RoutesConstants';
 import { AnyRecord } from '../globalInterface';
 import { useGuestUser } from './useGuestUser/useGuestUser';
 import { saveRecordsLocalStorage } from '../redux/slices/Records';
+import { toggleSignedOn } from '../redux/slices/userInterface.slice';
 
 const useSyncLoginInfo = () => {
   const { signOut } = useLogin();
@@ -20,7 +21,6 @@ const useSyncLoginInfo = () => {
   const userReduxState = useAppSelector((state) => state.user);
   const [recordToBeEdited, setRecordtoBeEdited] = useState<null | AnyRecord>(null);
   const [isEmptyLocalStorage, setIsEmptyLocalStorage] = useState<boolean>(false);
-  const [hasSignedOn, setHasSignedOn] = useState<boolean>(false);
 
   const navigateToDashboard = () => navigate(DASHBOARD_ROUTE);
 
@@ -65,7 +65,7 @@ const useSyncLoginInfo = () => {
 
       if (!isExpiredAccessToken) {
         dispatch(signOn(user));
-        setHasSignedOn(true);
+        dispatch(toggleSignedOn());
       }
 
       if (dataRecordToBeEdited) setRecordtoBeEdited(dataRecordToBeEdited);
@@ -75,7 +75,6 @@ const useSyncLoginInfo = () => {
 
   return {
     isEmptyLocalStorage,
-    hasSignedOn,
     recordToBeEdited,
     navigateToDashboard,
   };
