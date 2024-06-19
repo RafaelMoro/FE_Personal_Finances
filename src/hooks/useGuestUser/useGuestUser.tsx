@@ -47,17 +47,10 @@ const useGuestUser = () => {
         records: recordsAmericanExpress,
       },
     ];
-    const recordsRedux: RecordsLocalStorageRedux[] = records.map((recordLocalStorage) => ({
-      ...recordLocalStorage,
-      records: recordLocalStorage.records.map((record) => ({
-        ...record,
-        date: record.date.toISOString(),
-      })),
-    }));
-    addToLocalStorage({ records: recordsRedux });
-    dispatch(saveRecordsLocalStorage(recordsRedux));
+    addToLocalStorage({ records });
+    dispatch(saveRecordsLocalStorage(records));
     // Load records
-    loadRecords(accountsUI[1], recordsRedux);
+    loadRecords(accountsUI[1], records);
   };
 
   const loadGuestUser = ({ accountsLocalStorage, recordsLocalStorage }:

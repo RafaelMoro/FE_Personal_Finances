@@ -1,4 +1,4 @@
-import { Account, AnyRecord, User } from '../../globalInterface';
+import { Account, RecordRedux, User } from '../../globalInterface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
 import { formatMockDate } from './utils';
 
@@ -42,7 +42,7 @@ const useGuestUserMocks = () => {
     },
   ];
 
-  const recordsAmericanExpress: AnyRecord[] = [
+  const recordsAmericanExpress: RecordRedux[] = [
     {
       _id: '456-789',
       userId: '123-456-789',
@@ -56,7 +56,7 @@ const useGuestUserMocks = () => {
         __v: 0,
         subCategories: ['Uber/Didi'],
       },
-      date: today,
+      date: today.toISOString(),
       account: '5678',
       subCategory: 'Uber/Didi',
       tag: ['Important'],
@@ -81,7 +81,7 @@ const useGuestUserMocks = () => {
         __v: 0,
         subCategories: ['Fast Food'],
       },
-      date: yesterday,
+      date: yesterday.toISOString(),
       account: '5678',
       subCategory: 'Fast Food',
       tag: [],
@@ -127,7 +127,7 @@ const useGuestUserMocks = () => {
       description: '',
       amount: 76,
       amountFormatted: '$76.00',
-      date: today,
+      date: today.toISOString(),
       fullDate: currentDate,
       formattedTime: currentTime,
       category: {
@@ -167,7 +167,7 @@ const useGuestUserMocks = () => {
         __v: 0,
         subCategories: ['Streaming services'],
       },
-      date: yesterday,
+      date: yesterday.toISOString(),
       account: '5678',
       subCategory: 'Streaming services',
       tag: [],
@@ -181,7 +181,7 @@ const useGuestUserMocks = () => {
     },
   ];
 
-  const recordsDebitAccount: AnyRecord[] = [
+  const recordsDebitAccount: RecordRedux[] = [
     {
       transferRecord: {
         transferId: '665c91a10',
@@ -194,7 +194,7 @@ const useGuestUserMocks = () => {
       description: '',
       amount: 76,
       amountFormatted: '$76.00',
-      date: today,
+      date: today.toISOString(),
       fullDate: currentDate,
       formattedTime: currentTime,
       category: {

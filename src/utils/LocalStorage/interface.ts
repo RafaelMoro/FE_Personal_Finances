@@ -4,7 +4,7 @@ import {
 
 export interface RecordsLocalStorage {
   account: string;
-  records: AnyRecord[];
+  records: RecordRedux[];
 }
 
 export interface RecordsLocalStorageRedux {
