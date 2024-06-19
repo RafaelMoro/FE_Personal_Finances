@@ -29,7 +29,7 @@ const useGuestUser = () => {
   const addGuestUser = () => {
     // Add user
     dispatch(signOn(guestUser));
-    addToLocalStorage(guestUser);
+    addToLocalStorage({ user: guestUser });
 
     // Add accounts
     const accountsUI = formatAccounts({ accounts, selectedAccountId: accounts[1]._id });
