@@ -1,4 +1,5 @@
-import { AccountUI } from '../../components/UI/Account/interface';
+import crypto from 'crypto';
+import { AccountUI, CreateAccount } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { findColor } from '../FindColor';
 import { formatValueToCurrency } from '../FormatNumberToCurrency';
@@ -69,4 +70,23 @@ export const formatAccounts = ({
       }),
     };
   });
+};
+
+export const formatAccountsForLocalStorage = (account: CreateAccount): Account => {
+  const newId = crypto.randomUUID();
+  // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
+  const __v = 0;
+  const {
+    title, amount, accountType, backgroundColor, color,
+  } = account;
+  const newAccount: Account = {
+    _id: newId,
+    __v,
+    title,
+    amount,
+    accountType,
+    backgroundColor,
+    color,
+  };
+  return newAccount;
 };
