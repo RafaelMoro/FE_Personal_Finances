@@ -2,7 +2,7 @@ import { AccountUI } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateAccounts, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
-import { saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
+import { saveRecordsLocalStorage, saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
 import { signOn } from '../../redux/slices/User/user.slice';
 import { addToLocalStorage, formatAccounts } from '../../utils';
 import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
@@ -48,6 +48,7 @@ const useGuestUser = () => {
       },
     ];
     addToLocalStorage({ records });
+    dispatch(saveRecordsLocalStorage(records));
     // Load records
     loadRecords(accountsUI[1], records);
   };
