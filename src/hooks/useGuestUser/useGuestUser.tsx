@@ -5,7 +5,7 @@ import { updateAccounts, updateSelectedAccount } from '../../redux/slices/Accoun
 import { saveRecordsLocalStorage, saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
 import { signOn } from '../../redux/slices/User/user.slice';
 import { addToLocalStorage, formatAccounts } from '../../utils';
-import { RecordsLocalStorage, RecordsLocalStorageRedux } from '../../utils/LocalStorage/interface';
+import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
 import { useGuestUserMocks } from './useGuestUserMocks';
 
@@ -17,7 +17,7 @@ const useGuestUser = () => {
     recordsAmericanExpress, recordsDebitAccount, accounts, guestUser,
   } = useGuestUserMocks();
 
-  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorageRedux[]) => {
+  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorage[]) => {
     // Check What is the account id of the selected account
     const selectedAccountId = selectedAccount._id;
     // Search for the records of that account
@@ -54,7 +54,7 @@ const useGuestUser = () => {
   };
 
   const loadGuestUser = ({ accountsLocalStorage, recordsLocalStorage }:
-  { accountsLocalStorage: Account[], recordsLocalStorage: RecordsLocalStorageRedux[] }) => {
+  { accountsLocalStorage: Account[], recordsLocalStorage: RecordsLocalStorage[] }) => {
     dispatch(signOn(guestUser));
     // Check is the account local american express exist.
     const amexExist = accountsLocalStorage.some((account) => account._id === AMERICAN_EXPRESS_ID);

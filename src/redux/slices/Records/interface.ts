@@ -5,13 +5,13 @@ import {
   AnyRecord, Expense, GeneralResponse, RecordsTotal,
 } from '../../../globalInterface';
 import { RecordAgeCategory } from '../../../aliasType';
-import { RecordsLocalStorageRedux } from '../../../utils/LocalStorage/interface';
+import { RecordsLocalStorage } from '../../../utils/LocalStorage/interface';
 
 export interface RecordsInitialState {
   totalRecords: RecordsTotal;
   recordToBeModified: AnyRecord | null;
-  recordsLocalStorageSelectedAccount: RecordsLocalStorageRedux | null;
-  recordsLocalStorage: RecordsLocalStorageRedux[] | null;
+  recordsLocalStorageSelectedAccount: RecordsLocalStorage | null;
+  recordsLocalStorage: RecordsLocalStorage[] | null;
 }
 
 export interface GetRecordByMonthAndYearProps {
