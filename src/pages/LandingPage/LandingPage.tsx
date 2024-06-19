@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Header } from '../../components/templates';
 import {
   AppDescription,
@@ -24,13 +25,26 @@ import {
 } from './constants';
 import { useGuestUser } from '../../hooks/useGuestUser/useGuestUser';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
+import { useAppSelector } from '../../redux/hooks';
+import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
 
 const LandingPage = () => {
   const { addGuestUser } = useGuestUser();
+  const { verifyGuestUser } = useSyncLoginInfo();
+  const existGuestUser = useAppSelector((state) => state.user.userInfo?.user.firstName === 'Guest');
   const navigate = useNavigate();
   useResizeWindow();
 
+  useEffect(() => {
+    verifyGuestUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleStartNow = () => {
+    if (existGuestUser) {
+      navigate(DASHBOARD_ROUTE);
+      return;
+    }
     addGuestUser();
     navigate(DASHBOARD_ROUTE);
   };
