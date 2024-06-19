@@ -7,7 +7,7 @@ export interface RecordsLocalStorage {
   records: RecordRedux[];
 }
 
-export interface CountOnMeLocalStorage {
+export interface BudgetMasterLocalStorage {
   bearerToken: string
   accessToken: string
   user: User;

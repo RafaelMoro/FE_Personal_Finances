@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { useLogin } from './useLogin';
-import { CountOnMeLocalStorage } from '../utils/LocalStorage/interface';
+import { BudgetMasterLocalStorage } from '../utils/LocalStorage/interface';
 import { getLocalStorageInfo } from '../utils';
 import { signOn } from '../redux/slices/User/user.slice';
 import { verifyJwtExpiration } from '../utils/verifyJwtExpiration';
@@ -25,7 +25,7 @@ const useSyncLoginInfo = () => {
   const navigateToDashboard = () => navigate(DASHBOARD_ROUTE);
 
   const getDataFromLocalStorage = () => {
-    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
+    const localStorageInfo: BudgetMasterLocalStorage = getLocalStorageInfo();
     const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
 
     if (IsEmptyLocalStorage) {
@@ -45,7 +45,7 @@ const useSyncLoginInfo = () => {
   };
 
   const verifyGuestUser = () => {
-    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
+    const localStorageInfo: BudgetMasterLocalStorage = getLocalStorageInfo();
     const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
 
     if (IsEmptyLocalStorage) return;
