@@ -44,6 +44,22 @@ const useSyncLoginInfo = () => {
     };
   };
 
+  const verifyGuestUser = () => {
+    const localStorageInfo: CountOnMeLocalStorage = getLocalStorageInfo();
+    const IsEmptyLocalStorage = Object.keys(localStorageInfo).length < 1;
+
+    if (IsEmptyLocalStorage) return;
+    const { user } = localStorageInfo;
+    if (!user) return;
+
+    const accounts = localStorageInfo?.accounts ?? [];
+    const records = localStorageInfo?.records ?? [];
+
+    if (user?.user?.firstName === 'Guest') {
+      loadGuestUser({ accountsLocalStorage: accounts, recordsLocalStorage: records });
+    }
+  };
+
   useEffect(() => {
     if (!userReduxState.userInfo) {
       const data = getDataFromLocalStorage();
@@ -77,6 +93,7 @@ const useSyncLoginInfo = () => {
     isEmptyLocalStorage,
     recordToBeEdited,
     navigateToDashboard,
+    verifyGuestUser,
   };
 };
 
