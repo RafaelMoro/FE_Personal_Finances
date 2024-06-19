@@ -152,6 +152,11 @@ export interface AnyRecord extends AccountRecord {
   expensesPaid?: ExpensePaid[];
 }
 
+// We do not load records on redux but only the ones of local storage
+export interface RecordRedux extends Omit<AnyRecord, 'date'> {
+  date: string;
+}
+
 export interface MonthTotal {
   expenseTotal: string;
   incomeTotal: string;

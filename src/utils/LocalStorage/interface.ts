@@ -1,8 +1,15 @@
-import { Account, AnyRecord, User } from '../../globalInterface';
+import {
+  Account, AnyRecord, RecordRedux, User,
+} from '../../globalInterface';
 
 export interface RecordsLocalStorage {
   account: string;
   records: AnyRecord[];
+}
+
+export interface RecordsLocalStorageRedux {
+  account: string;
+  records: RecordRedux[];
 }
 
 export interface CountOnMeLocalStorage {
@@ -11,7 +18,7 @@ export interface CountOnMeLocalStorage {
   user: User;
   recordToBeEdited: AnyRecord;
   accounts?: Account[];
-  records?: RecordsLocalStorage[];
+  records?: RecordsLocalStorageRedux[];
 }
 
 export interface JWT {

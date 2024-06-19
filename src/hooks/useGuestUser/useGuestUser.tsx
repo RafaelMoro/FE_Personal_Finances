@@ -5,7 +5,7 @@ import { updateAccounts, updateSelectedAccount } from '../../redux/slices/Accoun
 import { saveRecordsLocalStorage, saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
 import { signOn } from '../../redux/slices/User/user.slice';
 import { addToLocalStorage, formatAccounts } from '../../utils';
-import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
+import { RecordsLocalStorage, RecordsLocalStorageRedux } from '../../utils/LocalStorage/interface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
 import { useGuestUserMocks } from './useGuestUserMocks';
 
@@ -17,7 +17,7 @@ const useGuestUser = () => {
     recordsAmericanExpress, recordsDebitAccount, accounts, guestUser,
   } = useGuestUserMocks();
 
-  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorage[]) => {
+  const loadRecords = (selectedAccount: AccountUI, records: RecordsLocalStorageRedux[]) => {
     // Check What is the account id of the selected account
     const selectedAccountId = selectedAccount._id;
     // Search for the records of that account
@@ -37,7 +37,7 @@ const useGuestUser = () => {
     dispatch(updateSelectedAccount(accountsUI[1]));
     addToLocalStorage({ accounts });
 
-    const records = [
+    const records: RecordsLocalStorage[] = [
       {
         account: CITIBANAMEX_DEBIT_ID,
         records: recordsDebitAccount,
@@ -47,14 +47,21 @@ const useGuestUser = () => {
         records: recordsAmericanExpress,
       },
     ];
-    addToLocalStorage({ records });
-    dispatch(saveRecordsLocalStorage(records));
+    const recordsRedux: RecordsLocalStorageRedux[] = records.map((recordLocalStorage) => ({
+      ...recordLocalStorage,
+      records: recordLocalStorage.records.map((record) => ({
+        ...record,
+        date: record.date.toISOString(),
+      })),
+    }));
+    addToLocalStorage({ records: recordsRedux });
+    dispatch(saveRecordsLocalStorage(recordsRedux));
     // Load records
-    loadRecords(accountsUI[1], records);
+    loadRecords(accountsUI[1], recordsRedux);
   };
 
   const loadGuestUser = ({ accountsLocalStorage, recordsLocalStorage }:
-  { accountsLocalStorage: Account[], recordsLocalStorage: RecordsLocalStorage[] }) => {
+  { accountsLocalStorage: Account[], recordsLocalStorage: RecordsLocalStorageRedux[] }) => {
     dispatch(signOn(guestUser));
     // Check is the account local american express exist.
     const amexExist = accountsLocalStorage.some((account) => account._id === AMERICAN_EXPRESS_ID);

@@ -25,6 +25,7 @@ import {
 } from '../../../../../redux/slices/Records';
 import { AppColors } from '../../../../../styles';
 import { List } from '../../Records.styled';
+import { AnyRecord, RecordRedux } from '../../../../../globalInterface';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -40,7 +41,12 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   } = useDate();
   const { isGuestUser } = useGuestUser();
   const user = useAppSelector((state) => state.user.userInfo);
-  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
+  const recordsLocalStorageSelectedAccount = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
+  const recordsLocalStorage: RecordRedux[] = recordsLocalStorageSelectedAccount?.records ?? [];
+  const recordsFormattedDate: AnyRecord[] = recordsLocalStorage.map((recordSaved) => ({
+    ...recordSaved,
+    date: new Date(recordSaved.date),
+  }));
   const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;
@@ -62,7 +68,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   }] = useLazyFetchRecordsByMonthYearQuery();
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
-  const currentRecords = isGuestUser ? recordsLocalStorage?.records : responseFetchRecords?.records;
+  const currentRecords = isGuestUser ? recordsFormattedDate : (responseFetchRecords?.records ?? []);
 
   /** Update total balance of expenses and incomes after fetch of current month records */
   useEffect(() => {
@@ -124,7 +130,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         totalExpense={totalRecords.currentMonth.expenseTotal}
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
-        records={currentRecords ?? []}
+        records={currentRecords}
         loading={isFetchingThisMonthRecs}
         error={isErrorThisMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
