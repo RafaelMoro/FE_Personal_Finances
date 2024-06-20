@@ -7,6 +7,7 @@ import { accountsApiSlice } from './actions';
 const accountsInitialState: AccountsInitialState = {
   accounts: null,
   accountSelected: null,
+  accountsLocalStorage: null,
   // This flag will let know records if they can fetch and give feedback to the user
   accountsFetchStatus: 'isUninitialized',
 };
@@ -17,6 +18,9 @@ export const accountsSlice = createSlice({
   reducers: {
     updateAccounts: (state, action) => {
       state.accounts = action.payload;
+    },
+    updateAccountsLocalStorage: (state, action) => {
+      state.accountsLocalStorage = action.payload;
     },
     updateAccountsStatus: (state, action: UpdateAccountsStatusProps) => {
       if (action.payload.status === 'loading') {
@@ -74,7 +78,7 @@ export const accountsSlice = createSlice({
 });
 
 export const {
-  updateAccounts, updateSelectedAccount, resetAccounts,
+  updateAccounts, updateSelectedAccount, resetAccounts, updateAccountsLocalStorage,
   resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount,
 } = accountsSlice.actions;
 

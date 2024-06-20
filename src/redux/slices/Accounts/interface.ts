@@ -6,6 +6,7 @@ type AccountsState = 'isUninitialized' | 'loading' | 'success';
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
   accountSelected: AccountUI | null;
+  accountsLocalStorage: Account[] | null;
   accountsFetchStatus: AccountsState;
 }
 
