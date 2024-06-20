@@ -68,7 +68,7 @@ const useLogin = () => {
       // Save user on redux state of userInfo
       dispatch(signOn(user));
       dispatch(toggleSignedOn());
-      addToLocalStorage(user);
+      addToLocalStorage({ newInfo: user });
       setTimeout(() => {
         navigate(DASHBOARD_ROUTE);
       }, 3000);

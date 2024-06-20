@@ -1,7 +1,7 @@
 import { AccountUI } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { updateAccounts, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
+import { updateAccounts, updateAccountsLocalStorage, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
 import { saveRecordsLocalStorage, saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
 import { signOn } from '../../redux/slices/User/user.slice';
 import { addToLocalStorage, formatAccounts } from '../../utils';
@@ -29,13 +29,14 @@ const useGuestUser = () => {
   const addGuestUser = () => {
     // Add user
     dispatch(signOn(guestUser));
-    addToLocalStorage({ user: guestUser });
+    addToLocalStorage({ newInfo: { user: guestUser } });
 
     // Add accounts
+    dispatch(updateAccountsLocalStorage(accounts));
     const accountsUI = formatAccounts({ accounts, selectedAccountId: accounts[1]._id });
     dispatch(updateAccounts(accountsUI));
     dispatch(updateSelectedAccount(accountsUI[1]));
-    addToLocalStorage({ accounts });
+    addToLocalStorage({ newInfo: { accounts } });
 
     const records: RecordsLocalStorage[] = [
       {
@@ -47,7 +48,7 @@ const useGuestUser = () => {
         records: recordsAmericanExpress,
       },
     ];
-    addToLocalStorage({ records });
+    addToLocalStorage({ newInfo: { records } });
     dispatch(saveRecordsLocalStorage(records));
     // Load records
     loadRecords(accountsUI[1], records);
@@ -60,6 +61,8 @@ const useGuestUser = () => {
     const amexExist = accountsLocalStorage.some((account) => account._id === AMERICAN_EXPRESS_ID);
     // Make the local american express as the selected account. If it does not exist, select the first account.
     const selectedAccountId = amexExist ? AMERICAN_EXPRESS_ID : null;
+    // Load accounts local storage
+    dispatch(updateAccountsLocalStorage(accountsLocalStorage));
     // Format accounts
     const accountsUI = formatAccounts({ accounts: accountsLocalStorage, selectedAccountId });
     const newSelectedAccount = accountsUI.find((account) => account._id === AMERICAN_EXPRESS_ID) ?? accountsUI[0];

@@ -52,7 +52,7 @@ const RecordDrawer = ({
   const handleEditRecord = () => {
     dispatch(setRecordToBeModified(record));
     // Update local storage
-    addToLocalStorage({ recordToBeEdited: record });
+    addToLocalStorage({ newInfo: { recordToBeEdited: record } });
     navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
   };
 
