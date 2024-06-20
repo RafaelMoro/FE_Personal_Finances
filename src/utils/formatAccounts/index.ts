@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import { AccountUI, CreateAccount } from '../../components/UI/Account/interface';
 import { Account } from '../../globalInterface';
 import { findColor } from '../FindColor';
@@ -72,8 +71,23 @@ export const formatAccounts = ({
   });
 };
 
+export const formatSingleAccount = (account: Account): AccountUI => {
+  const formattedAccount: AccountUI = {
+    ...account,
+    amountFormatted: formatValueToCurrency({ amount: account.amount }),
+    selected: false,
+    backgroundColorUI: findColor({
+      colorName: account.backgroundColor,
+    }),
+    colorUI: findColor({
+      colorName: account.color, findTextColor: true,
+    }),
+  };
+  return formattedAccount;
+};
+
 export const formatAccountsForLocalStorage = (account: CreateAccount): Account => {
-  const newId = crypto.randomUUID();
+  const newId = window.crypto.randomUUID();
   // eslint-disable-next-line no-underscore-dangle, @typescript-eslint/naming-convention
   const __v = 0;
   const {
