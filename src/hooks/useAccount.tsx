@@ -1,7 +1,10 @@
-import { CreateAccount } from '../components/UI/Account/interface';
+import { CreateAccount, ModifyAccountValues } from '../components/UI/Account/interface';
+import { Account } from '../globalInterface';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateAccounts, updateAccountsLocalStorage } from '../redux/slices/Accounts/accounts.slice';
-import { addToLocalStorage, formatAccountsForLocalStorage, formatSingleAccount } from '../utils';
+import {
+  addToLocalStorage, formatAccounts, formatAccountsForLocalStorage, formatSingleAccount,
+} from '../utils';
 
 const useAccount = () => {
   const dispatch = useAppDispatch();
@@ -21,8 +24,28 @@ const useAccount = () => {
     }
   };
 
+  const editAccountGuestUser = (modifyAccountValues: ModifyAccountValues) => {
+    // Edit it in redux
+    const accountFound = accountsLocalStorage?.find((account) => account._id === modifyAccountValues.accountId);
+
+    if (accountFound && accountsLocalStorage) {
+      const { accountId, ...restValues } = modifyAccountValues;
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { __v, _id } = accountFound;
+      const modifiedAccount: Account = { ...restValues, __v, _id };
+      const filteredAccounts = accountsLocalStorage?.filter((account) => account._id !== modifyAccountValues.accountId);
+      const newAccounts = [...filteredAccounts, modifiedAccount];
+
+      dispatch(updateAccountsLocalStorage(newAccounts));
+      addToLocalStorage({ newInfo: newAccounts, prop: 'accounts' });
+      const formattedAccountsUI = formatAccounts({ accounts: newAccounts });
+      dispatch(updateAccounts(formattedAccountsUI));
+    }
+  };
+
   return {
     createAccountGuestUser,
+    editAccountGuestUser,
   };
 };
 

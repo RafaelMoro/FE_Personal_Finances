@@ -42,7 +42,7 @@ const AccountDialog = ({
   account,
 }: AccountDialogProps) => {
   const { isGuestUser } = useGuestUser();
-  const { createAccountGuestUser } = useAccount();
+  const { createAccountGuestUser, editAccountGuestUser } = useAccount();
   const { updateAmount, initialAmount } = useCurrencyField();
   const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
   const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
@@ -115,6 +115,17 @@ const AccountDialog = ({
       const newAmount = initialAmount.current !== '' ? initialAmount.current : amount;
       const amountNumber = Number(newAmount);
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
+
+      if (isGuestUser) {
+        editAccountGuestUser(accountModifiedValues);
+        // Show success notification
+        updateGlobalNotification({
+          newTitle: `Account ${accountModifiedValues.title} updated`,
+          newDescription: '',
+          newStatus: SystemStateEnum.Success,
+        });
+        onClose(); return;
+      }
       const modifyAccountMutationProps: ModifyAccountMutationProps = { values: accountModifiedValues, bearerToken };
       await modifyAccountMutation(modifyAccountMutationProps);
 
