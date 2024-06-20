@@ -28,8 +28,8 @@ const useGuestUserMocks = () => {
       title: 'Citibanamex Debit',
       amount: 8246.41,
       accountType: 'Debit',
-      backgroundColor: 'blue',
-      color: 'white',
+      backgroundColor: 'Blue',
+      color: 'White',
     },
     {
       _id: AMERICAN_EXPRESS_ID,
@@ -38,7 +38,7 @@ const useGuestUserMocks = () => {
       amount: 80000,
       accountType: 'Credit',
       backgroundColor: 'Tomato',
-      color: 'black',
+      color: 'Black',
     },
   ];
 
