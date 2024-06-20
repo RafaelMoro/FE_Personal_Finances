@@ -8,7 +8,7 @@ import { Field, Formik } from 'formik';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
 import { TYPE_OF_ACCOUNTS } from '../../../../../globalInterface';
 import { SystemStateEnum } from '../../../../../enums';
-import { useAppSelector } from '../../../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { CreateAccountMutationProps, ModifyAccountMutationProps } from '../../../../../redux/slices/Accounts/interface';
 import { useNotification } from '../../../../../hooks/useNotification';
 import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyField';
@@ -25,6 +25,11 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import { CurrencyField } from '../../../../Other';
 import { useCreateAccountMutation, useModifyAccountMutation } from '../../../../../redux/slices/Accounts/actions';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
+import {
+  addToLocalStorage, formatAccountsForLocalStorage, formatSingleAccount,
+} from '../../../../../utils';
+import { updateAccounts, updateAccountsLocalStorage } from '../../../../../redux/slices/Accounts/accounts.slice';
 
 const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
@@ -39,6 +44,8 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
+  const dispatch = useAppDispatch();
+  const { isGuestUser } = useGuestUser();
   const { updateAmount, initialAmount } = useCurrencyField();
   const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
   const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
@@ -46,6 +53,8 @@ const AccountDialog = ({
   const { updateGlobalNotification } = useNotification();
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
+  const accountsLocalStorage = useAppSelector((state) => state.accounts.accountsLocalStorage);
+  const accountsUI = useAppSelector((state) => state.accounts.accounts);
 
   // Copying constant because it is readyonly
   const typeAccounts = [...TYPE_OF_ACCOUNTS];
@@ -69,8 +78,29 @@ const AccountDialog = ({
       // Leaving default color black as the prop is still needed to create an account.
       const createAccountValues: CreateAccount = { ...values, amount: amountNumber, color: 'black' };
       const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
-      await createAccountMutation(createAccountMutationProps).unwrap();
 
+      if (isGuestUser && accountsLocalStorage && accountsUI) {
+        const formattedAccount = formatAccountsForLocalStorage(createAccountValues);
+        const newAccountUI = formatSingleAccount(formattedAccount);
+        const newAccountsUI = [...accountsUI, newAccountUI];
+        const newAccounts = [...accountsLocalStorage, formattedAccount];
+
+        addToLocalStorage({ newInfo: newAccounts, prop: 'accounts' });
+        dispatch(updateAccounts(newAccountsUI));
+        dispatch(updateAccountsLocalStorage(newAccounts));
+
+        // Show success notification
+        updateGlobalNotification({
+          newTitle: `Account ${values.title} created`,
+          newDescription: '',
+          newStatus: SystemStateEnum.Success,
+        });
+
+        onClose();
+        return;
+      }
+
+      await createAccountMutation(createAccountMutationProps).unwrap();
       // Show success notification
       updateGlobalNotification({
         newTitle: `Account ${values.title} created`,
