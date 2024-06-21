@@ -1,5 +1,5 @@
 import { Account, RecordRedux, User } from '../../globalInterface';
-import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
+import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID, GUEST_USER_ID } from './constants';
 import { formatMockDate } from './utils';
 
 const useGuestUserMocks = () => {
@@ -17,7 +17,7 @@ const useGuestUserMocks = () => {
       firstName: 'Guest',
       lastName: 'User',
       middleName: '',
-      sub: '123-456-789',
+      sub: GUEST_USER_ID,
     },
   };
 
