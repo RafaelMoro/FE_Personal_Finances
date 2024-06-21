@@ -1,10 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { CategoriesInitialState } from './interface';
+import { CATEGORIES_RECORDS } from '../../../constants';
 
 const categoriesInitialState: CategoriesInitialState = {
   currentCategory: null,
   categoryNotSelected: true,
+  categoriesLocalStorage: CATEGORIES_RECORDS,
 };
 
 export const categoriesSlice = createSlice({
