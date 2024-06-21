@@ -10,7 +10,7 @@ import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { GeneralError } from '../../globalInterface';
+import { Expense, ExpenseLocalStorage, GeneralError } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
@@ -157,6 +157,20 @@ const useRecords = ({
     const newTotalCurrency = formatValueToCurrency({ amount: totalUpdated });
     const payload: UpdateTotalExpenseIncomePayload = { newAmount: newTotalCurrency, recordAgeCategory };
     return payload;
+  };
+
+  const createExpenseLocalStorage = (values: CreateExpenseValues) => {
+    const { date, category, subCategory } = values;
+    const dateFormatted = date.toISOString();
+    const newId = window.crypto.randomUUID();
+    const amountFormatted = formatValueToCurrency({ amount: values.amount });
+    console.log('amoiuntFormatted', amountFormatted);
+    // Find category
+    // const category = {  }
+
+    // const newExpense: ExpenseLocalStorage = {
+    //   ...values, date: dateFormatted, _id: newId, amountFormatted, isPaid: false,
+    // };
   };
 
   const createExpense = async (values: CreateExpenseValues) => {

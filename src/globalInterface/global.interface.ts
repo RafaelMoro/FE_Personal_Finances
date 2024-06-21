@@ -124,6 +124,10 @@ export interface AccountRecord {
 export interface Expense extends AccountRecord {
   isPaid: boolean;
 }
+// In local storage we save the date as a string
+export interface ExpenseLocalStorage extends Omit<Expense, 'date'> {
+  date: string;
+}
 
 export interface UpdateMultipleExpensesError {
   statusCode: number;
