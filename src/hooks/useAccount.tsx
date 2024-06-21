@@ -43,9 +43,20 @@ const useAccount = () => {
     }
   };
 
+  const deleteAccountLocalStorage = (accountId: string) => {
+    if (accountsLocalStorage) {
+      const filteredAccounts = accountsLocalStorage?.filter((account) => account._id !== accountId);
+      dispatch(updateAccountsLocalStorage(filteredAccounts));
+      addToLocalStorage({ newInfo: filteredAccounts, prop: 'accounts' });
+      const formattedAccountsUI = formatAccounts({ accounts: filteredAccounts });
+      dispatch(updateAccounts(formattedAccountsUI));
+    }
+  };
+
   return {
     createAccountGuestUser,
     editAccountGuestUser,
+    deleteAccountLocalStorage,
   };
 };
 
