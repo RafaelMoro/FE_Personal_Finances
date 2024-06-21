@@ -38,6 +38,7 @@ import { CreateRecordSchema } from '../../../../../validationsSchemas/records.sc
 import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -48,6 +49,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     createIncome,
     editExpense,
     editIncome,
+    createExpenseLocalStorage,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isLoadingEditExpense,
@@ -57,6 +59,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     isSucessEditExpense,
     isSucessEditIncome,
   } = useRecords({});
+  const { isGuestUser } = useGuestUser();
   const loadingMutation = isLoadingCreateExpense || isLoadingCreateIncome || isLoadingEditExpense || isLoadingEditIncome;
   const successMutation = isSucessCreateExpense || isSucessCreateIncome || isSucessEditExpense || isSucessEditIncome;
   const {
@@ -203,6 +206,10 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
           userId: userIdRecord,
           accountId: (selectedAccount?._id ?? ''),
         });
+        return;
+      }
+      if (isGuestUser) {
+        createExpenseLocalStorage(newValues);
         return;
       }
       createExpense(newValues);

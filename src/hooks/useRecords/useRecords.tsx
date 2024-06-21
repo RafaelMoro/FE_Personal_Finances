@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 import { useNavigate } from 'react-router-dom';
 
-import { formatDateToString, formatValueToCurrency, formatCurrencyToNumber } from '../../utils';
+import {
+  formatDateToString, formatValueToCurrency, formatCurrencyToNumber, addToLocalStorage,
+} from '../../utils';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
@@ -10,7 +12,7 @@ import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { Expense, ExpenseLocalStorage, GeneralError } from '../../globalInterface';
+import { ExpenseLocalStorage, GeneralError } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
@@ -36,9 +38,12 @@ import {
   useCreateIncomeMutation,
   useEditIncomeMutation,
   useCreateTransferMutation,
+  saveRecordsLocalStorage,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
+import { GUEST_USER_ID } from '../useGuestUser/constants';
+import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -56,6 +61,8 @@ const useRecords = ({
   const [updatePaidMultipleExpensesMutation] = useUpdatePaidMultipleExpensesMutation();
 
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
+  const categoriesLocalStorage = useAppSelector((state) => state.categories.categoriesLocalStorage);
+  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const totalRecords = useAppSelector((state) => state.records.totalRecords);
   const userReduxState = useAppSelector((state) => state.user);
@@ -160,17 +167,60 @@ const useRecords = ({
   };
 
   const createExpenseLocalStorage = (values: CreateExpenseValues) => {
+    // this could be part of a hook formatting the expense
     const { date, category, subCategory } = values;
+    const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const dateFormatted = date.toISOString();
     const newId = window.crypto.randomUUID();
+    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
+    if (!categoryFound) {
+      console.error('Category not found while creating expense locally');
+      return;
+    }
     const amountFormatted = formatValueToCurrency({ amount: values.amount });
-    console.log('amoiuntFormatted', amountFormatted);
-    // Find category
-    // const category = {  }
 
-    // const newExpense: ExpenseLocalStorage = {
-    //   ...values, date: dateFormatted, _id: newId, amountFormatted, isPaid: false,
-    // };
+    const newExpense: ExpenseLocalStorage = {
+      ...values,
+      date: dateFormatted,
+      _id: newId,
+      amountFormatted,
+      isPaid: false,
+      category: categoryFound,
+      subCategory,
+      userId: GUEST_USER_ID,
+      typeOfRecord: 'expense',
+      formattedTime,
+      fullDate,
+    };
+
+    // Save in local storage and redux
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
+    if (recordLocalStorage) {
+      const newRecords = [...recordLocalStorage.records, newExpense];
+      const newRecordLocalStorage: RecordsLocalStorage = {
+        account: newExpense.account,
+        records: newRecords,
+      };
+      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
+      if (filteredRecords.length === 0) {
+        console.error(`local records of the account ${newExpense.account} not found`);
+        return;
+      }
+
+      filteredRecords.push(newRecordLocalStorage);
+      dispatch(saveRecordsLocalStorage(filteredRecords));
+      addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record created',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    }
   };
 
   const createExpense = async (values: CreateExpenseValues) => {
@@ -557,6 +607,7 @@ const useRecords = ({
     editIncome,
     createTransfer,
     deleteRecord,
+    createExpenseLocalStorage,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
