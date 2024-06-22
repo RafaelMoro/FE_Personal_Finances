@@ -13,7 +13,7 @@ import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { GeneralError, RecordRedux } from '../../globalInterface';
+import { Category, GeneralError, RecordRedux } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
@@ -47,6 +47,7 @@ import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/acti
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
 import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
+import { isCreateExpense } from './utils';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -305,32 +306,55 @@ const useRecords = ({
     };
   };
 
-  const createExpenseLocalStorage = (values: CreateExpenseValues) => {
-    // this could be part of a hook formatting the expense
-    const { date, category, subCategory } = values;
+  const createRecordLocalStorage = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
+    const { date, subCategory } = values;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const dateFormatted = date.toISOString();
     const newId = window.crypto.randomUUID();
+
+    const amountFormatted = formatValueToCurrency({ amount: values.amount });
+    if (isCreateExpense(values)) {
+      const newExpense: RecordRedux = {
+        ...(values as CreateExpenseValues),
+        date: dateFormatted,
+        _id: newId,
+        amountFormatted,
+        isPaid: false,
+        category,
+        subCategory,
+        userId: GUEST_USER_ID,
+        typeOfRecord: 'expense',
+        formattedTime,
+        fullDate,
+      };
+      return newExpense;
+    }
+
+    const newIncome: RecordRedux = {
+      ...(values as CreateIncomeValues),
+      date: dateFormatted,
+      _id: newId,
+      amountFormatted,
+      isPaid: false,
+      category,
+      subCategory,
+      userId: GUEST_USER_ID,
+      typeOfRecord: 'income',
+      formattedTime,
+      fullDate,
+    };
+    return newIncome;
+  };
+
+  const createExpenseLocalStorage = (values: CreateExpenseValues) => {
+    // this could be part of a hook formatting the expense
+    const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
       console.error('Category not found while creating expense locally');
       return;
     }
-    const amountFormatted = formatValueToCurrency({ amount: values.amount });
-
-    const newExpense: RecordRedux = {
-      ...values,
-      date: dateFormatted,
-      _id: newId,
-      amountFormatted,
-      isPaid: false,
-      category: categoryFound,
-      subCategory,
-      userId: GUEST_USER_ID,
-      typeOfRecord: 'expense',
-      formattedTime,
-      fullDate,
-    };
+    const newExpense = createRecordLocalStorage(values, categoryFound);
 
     // Save in local storage and redux
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
@@ -363,6 +387,10 @@ const useRecords = ({
       navigate(DASHBOARD_ROUTE);
     }
   };
+
+  // const createIncomeLocalStorage = (values: CreateIncomeValues) => {
+
+  // };
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {
