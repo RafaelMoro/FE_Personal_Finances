@@ -166,6 +166,48 @@ const useRecords = ({
     return payload;
   };
 
+  const updateTotalsExpense = ({
+    date, amount, edit = false, previousAmount,
+  }: { date: Date, amount: number, edit?: boolean, previousAmount?: number }) => {
+    const { monthFormatted } = formatDateToString(date);
+    const isLastMonth = lastMonth === monthFormatted;
+    const isCurrentMonth = currentMonth === monthFormatted;
+
+    if (isCurrentMonth) {
+      const payload = edit
+        ? updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Current Month',
+        })
+        : updateTotalCurrency({
+          currentTotal: totalRecords.currentMonth.expenseTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Current Month',
+        });
+      dispatch(updateTotalExpense(payload));
+    }
+
+    if (isLastMonth) {
+      const payload = edit
+        ? updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amount,
+          previousAmount,
+          editRecord: true,
+          recordAgeCategory: 'Last month',
+        })
+        : updateTotalCurrency({
+          currentTotal: totalRecords.lastMonth.expenseTotal,
+          newAmount: amount,
+          recordAgeCategory: 'Last month',
+        });
+      dispatch(updateTotalExpense(payload));
+    }
+  };
+
   const createExpenseLocalStorage = (values: CreateExpenseValues) => {
     // this could be part of a hook formatting the expense
     const { date, category, subCategory } = values;
@@ -235,11 +277,6 @@ const useRecords = ({
       const { amount, date: dateValue, account } = values;
       const date = dateValue.toDate();
 
-      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
-      const { monthFormatted } = formatDateToString(date);
-      const isLastMonth = lastMonth === monthFormatted;
-      const isCurrentMonth = currentMonth === monthFormatted;
-
       await createExpenseMutation({ values, bearerToken }).unwrap();
 
       // Update the amount of the account.
@@ -247,24 +284,7 @@ const useRecords = ({
       // If there's an error while updating the account, return
       if (updateAmountAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
-      // Update amount of total records
-      if (isCurrentMonth) {
-        const payload = updateTotalCurrency({
-          currentTotal: totalRecords.currentMonth.expenseTotal,
-          newAmount: amount,
-          recordAgeCategory: 'Current Month',
-        });
-        dispatch(updateTotalExpense(payload));
-      }
-
-      if (isLastMonth) {
-        const payload = updateTotalCurrency({
-          currentTotal: totalRecords.lastMonth.expenseTotal,
-          newAmount: amount,
-          recordAgeCategory: 'Last month',
-        });
-        dispatch(updateTotalExpense(payload));
-      }
+      updateTotalsExpense({ date, amount });
 
       // Show success notification
       updateGlobalNotification({
@@ -363,11 +383,6 @@ const useRecords = ({
       const date = dateValue.toDate();
       const newValues: EditExpenseValues = { ...values, recordId, userId };
 
-      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
-      const { monthFormatted } = formatDateToString(date);
-      const isLastMonth = lastMonth === monthFormatted;
-      const isCurrentMonth = currentMonth === monthFormatted;
-
       await editExpenseMutation({ values: newValues, bearerToken }).unwrap();
       if (amountTouched) {
         const updateAmount = await updateAmountAccountOnEditRecord({
@@ -377,27 +392,9 @@ const useRecords = ({
         if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
       }
 
-      if (isCurrentMonth) {
-        const payload = updateTotalCurrency({
-          currentTotal: totalRecords.currentMonth.expenseTotal,
-          newAmount: amount,
-          previousAmount,
-          editRecord: true,
-          recordAgeCategory: 'Current Month',
-        });
-        dispatch(updateTotalExpense(payload));
-      }
-
-      if (isLastMonth) {
-        const payload = updateTotalCurrency({
-          currentTotal: totalRecords.lastMonth.expenseTotal,
-          newAmount: amount,
-          previousAmount,
-          editRecord: true,
-          recordAgeCategory: 'Last month',
-        });
-        dispatch(updateTotalExpense(payload));
-      }
+      updateTotalsExpense({
+        date, amount, edit: true, previousAmount,
+      });
 
       // Show success notification
       updateGlobalNotification({
