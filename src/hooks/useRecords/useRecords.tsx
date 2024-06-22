@@ -43,7 +43,7 @@ import {
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
-import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
+import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -256,6 +256,22 @@ const useRecords = ({
     }
   };
 
+  const getRecordAgeStatus = (date: Date) => {
+    // Get month details
+    const { isLastMonth, isCurrentMonth } = getMonthDetails(date);
+    // Evaluate if the record is from the current month or last month or older
+    if (isCurrentMonth) {
+      const key: RecordAgeStatusKey = 'currentMonth';
+      return key;
+    }
+    if (isLastMonth) {
+      const key: RecordAgeStatusKey = 'lastMonth';
+      return key;
+    }
+    const key: RecordAgeStatusKey = 'olderRecords';
+    return key;
+  };
+
   const createExpenseLocalStorage = (values: CreateExpenseValues) => {
     // this could be part of a hook formatting the expense
     const { date, category, subCategory } = values;
@@ -287,8 +303,9 @@ const useRecords = ({
     // @TODO: Refactor this once we have the function to reuse the isCurrentMonth and isLastMonth
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
     if (recordLocalStorage) {
+      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
       // here change currentMonth
-      const newRecords = [...recordLocalStorage.records.currentMonth, newExpense];
+      const newRecords = [...recordLocalStorage.records[recordAgeStatusKey], newExpense];
       const newRecordLocalStorage: RecordsLocalStorage = {
         account: newExpense.account,
         records: {
