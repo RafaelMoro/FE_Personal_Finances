@@ -398,8 +398,64 @@ const useRecords = ({
     }
   };
 
-  // const editExpenseLocalStorage = (values: ) => {
-  // }
+  const editExpenseLocalStorage = (payload: EditExpenseProps) => {
+    // Preparar valores para editar expense
+    const { values, recordId, userId } = payload;
+    console.log('values', values);
+    const { date, category } = values;
+    const { formattedTime, fullDate } = formatDateToString(date.toDate());
+    const amountFormatted = formatValueToCurrency({ amount: values.amount });
+
+    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
+    if (!categoryFound) {
+      console.error('Category not found while creating expense locally');
+      return;
+    }
+
+    // Remember if using this method to edit income, change type of record here
+    const newExpense: RecordRedux = {
+      ...values,
+      _id: recordId,
+      category: categoryFound,
+      userId,
+      date: date.toISOString(),
+      formattedTime,
+      fullDate,
+      amountFormatted,
+      typeOfRecord: 'expense',
+    };
+
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
+    if (recordLocalStorage) {
+      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
+      const newRecords: RecordRedux[] = [...recordsFiltered, newExpense].sort(sortByDate);
+      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+        newRecords, newRecord: newExpense, recordLocalStorage, recordAgeStatusKey,
+      });
+
+      const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
+      if (filteredRecordsWithoutCurrentAccount.length === 0) {
+        console.error(`local records of the account ${newExpense.account} not found`);
+        return;
+      }
+
+      filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
+      dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
+      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+      addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record updated',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    }
+  };
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {
@@ -697,6 +753,7 @@ const useRecords = ({
     createTransfer,
     deleteRecord,
     createExpenseIncomeLocalStorage,
+    editExpenseLocalStorage,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,

@@ -39,6 +39,7 @@ import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
+import { EditExpenseProps } from '../../../../../hooks/useRecords/interface';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -50,6 +51,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     editExpense,
     editIncome,
     createExpenseIncomeLocalStorage,
+    editExpenseLocalStorage,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isLoadingEditExpense,
@@ -197,15 +199,21 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         const recordId = recordToBeEdited?._id ?? '';
         const previousAmount = recordToBeEdited?.amount ?? 0;
         const userIdRecord = recordToBeEdited?.userId ?? '';
-        resetLocalStorageWithUserOnly();
-        editExpense({
+        const payload: EditExpenseProps = {
           values: newValues,
           recordId,
           amountTouched,
           previousAmount,
           userId: userIdRecord,
           accountId: (selectedAccount?._id ?? ''),
-        });
+        };
+
+        if (isGuestUser) {
+          editExpenseLocalStorage(payload);
+          return;
+        }
+        resetLocalStorageWithUserOnly();
+        editExpense(payload);
         return;
       }
       if (isGuestUser) {
