@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import {
   formatDateToString, formatValueToCurrency, formatCurrencyToNumber, addToLocalStorage,
+  sortByDate,
 } from '../../utils';
 import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
@@ -335,7 +336,8 @@ const useRecords = ({
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
-      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newExpense];
+      // Add new expense and sort records by date.
+      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newExpense].sort(sortByDate);
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({
         newRecords, newRecord: newExpense, recordLocalStorage, recordAgeStatusKey,
       });
