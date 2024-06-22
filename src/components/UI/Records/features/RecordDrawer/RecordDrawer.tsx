@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
 import { AllCategoryIcons } from '../../../Icons/interface';
+import { RecordRedux } from '../../../../../globalInterface';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
-import { addToLocalStorage } from '../../../../../utils';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
+import { addToLocalStorage, getRecordStatus } from '../../../../../utils';
 
 import {
   CategoryIcon, AppIcon,
@@ -27,7 +29,6 @@ import {
   PaymentStatusChipDrawer,
   TransferInformation,
 } from './RecordDrawer.styled';
-import { getRecordStatus } from '../../../../../utils/GetRecordStatus';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
@@ -36,9 +37,10 @@ const RecordDrawer = ({
     shortName, description, fullDate, formattedTime,
     category, subCategory, tag, indebtedPeople, budgets, isPaid, typeOfRecord,
   } = record;
-  const { icon: categoryIcon = 'foodAndDrink' } = category;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isGuestUser } = useGuestUser();
+  const { icon: categoryIcon = 'foodAndDrink' } = category;
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const accounts = useAppSelector((state) => state.accounts.accounts);
   const transferAccountName = (accounts ?? []).find((account) => account._id === record.transferRecord?.account)?.title;
@@ -50,7 +52,11 @@ const RecordDrawer = ({
   const status = getRecordStatus({ isPaid, typeOfRecord });
 
   const handleEditRecord = () => {
-    dispatch(setRecordToBeModified(record));
+    // Redux cannot have serialized values like date type Date
+    const recordModified: RecordRedux = { ...record, date: record.date.toISOString() };
+    // If it's a guest user, use a record redux, otherwise, use record.
+    const newRecord = isGuestUser ? recordModified : record;
+    dispatch(setRecordToBeModified(newRecord));
     // Update local storage
     addToLocalStorage({ newInfo: { recordToBeEdited: record } });
     navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
