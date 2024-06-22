@@ -71,12 +71,13 @@ const CategoriesAndSubcategories = ({
   }, [currentData, isGuestUser]);
 
   useEffect(() => {
-    if (categoryToBeEdited && isSuccess) {
-      const newCategory = (currentData ?? []).find((item) => item.categoryName === categoryToBeEdited.categoryName);
+    if (categoryToBeEdited && (isSuccess || isGuestUser)) {
+      const categories = isGuestUser ? categoriesLocalStorage : (currentData ?? []);
+      const newCategory = categories.find((item) => item.categoryName === categoryToBeEdited.categoryName);
       dispatch(updateCurrentCategory(newCategory));
       dispatch(isCategorySelected());
     }
-  }, [categoryToBeEdited, currentData, dispatch, isSuccess]);
+  }, [categoriesLocalStorage, categoryToBeEdited, currentData, dispatch, isGuestUser, isSuccess]);
 
   useEffect(() => {
     if (isError) {
