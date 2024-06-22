@@ -2,13 +2,17 @@ import {
   Account, AnyRecord, RecordRedux, User,
 } from '../../globalInterface';
 
+export interface RecordAgeStatus {
+  currentMonth: RecordRedux[];
+  lastMonth: RecordRedux[];
+  olderRecords: RecordRedux[];
+}
+
+export type RecordAgeStatusKey = keyof RecordAgeStatus;
+
 export interface RecordsLocalStorage {
   account: string;
-  records: {
-    currentMonth: RecordRedux[];
-    lastMonth: RecordRedux[];
-    olderRecords: RecordRedux[];
-  };
+  records: RecordAgeStatus;
 }
 
 export interface BudgetMasterLocalStorage {
