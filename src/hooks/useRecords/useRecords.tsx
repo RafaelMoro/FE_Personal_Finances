@@ -40,6 +40,7 @@ import {
   useEditIncomeMutation,
   useCreateTransferMutation,
   saveRecordsLocalStorage,
+  saveRecordsLocalStorageSelectedAccount,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
 import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
@@ -346,6 +347,7 @@ const useRecords = ({
 
       filteredRecords.push(newRecordLocalStorage);
       dispatch(saveRecordsLocalStorage(filteredRecords));
+      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
       addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
 
       // Show success notification
