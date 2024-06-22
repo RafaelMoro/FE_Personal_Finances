@@ -194,12 +194,19 @@ const useRecords = ({
     };
 
     // Save in local storage and redux
+    // @TODO: Refactor this once we have the function to reuse the isCurrentMonth and isLastMonth
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
     if (recordLocalStorage) {
-      const newRecords = [...recordLocalStorage.records, newExpense];
+      // here change currentMonth
+      const newRecords = [...recordLocalStorage.records.currentMonth, newExpense];
       const newRecordLocalStorage: RecordsLocalStorage = {
         account: newExpense.account,
-        records: newRecords,
+        records: {
+          // Change here
+          currentMonth: newRecords,
+          lastMonth: recordLocalStorage.records.lastMonth,
+          olderRecords: recordLocalStorage.records.olderRecords,
+        },
       };
       const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
       if (filteredRecords.length === 0) {

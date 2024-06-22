@@ -4,7 +4,11 @@ import {
 
 export interface RecordsLocalStorage {
   account: string;
-  records: RecordRedux[];
+  records: {
+    currentMonth: RecordRedux[];
+    lastMonth: RecordRedux[];
+    olderRecords: RecordRedux[];
+  };
 }
 
 export interface BudgetMasterLocalStorage {

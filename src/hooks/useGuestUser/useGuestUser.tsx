@@ -41,11 +41,19 @@ const useGuestUser = () => {
     const records: RecordsLocalStorage[] = [
       {
         account: CITIBANAMEX_DEBIT_ID,
-        records: recordsDebitAccount,
+        records: {
+          currentMonth: recordsDebitAccount,
+          lastMonth: [],
+          olderRecords: [],
+        },
       },
       {
         account: AMERICAN_EXPRESS_ID,
-        records: recordsAmericanExpress,
+        records: {
+          currentMonth: recordsAmericanExpress,
+          lastMonth: [],
+          olderRecords: [],
+        },
       },
     ];
     addToLocalStorage({ newInfo: { records } });

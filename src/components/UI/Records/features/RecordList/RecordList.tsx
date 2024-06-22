@@ -42,11 +42,18 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   const { isGuestUser } = useGuestUser();
   const user = useAppSelector((state) => state.user.userInfo);
   const recordsLocalStorageSelectedAccount = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
-  const recordsLocalStorage: RecordRedux[] = recordsLocalStorageSelectedAccount?.records ?? [];
-  const recordsFormattedDate: AnyRecord[] = recordsLocalStorage.map((recordSaved) => ({
+  // Pass this down into useGuestUser
+  const recordsLocalStorageCurrentMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [];
+  const recordsLocalStorageLastMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.lastMonth ?? [];
+  const recordsFormattedDate: AnyRecord[] = recordsLocalStorageCurrentMonth.map((recordSaved) => ({
     ...recordSaved,
     date: new Date(recordSaved.date),
   }));
+  const recordsFormattedDateLastMonth: AnyRecord[] = recordsLocalStorageLastMonth.map((recordSaved) => ({
+    ...recordSaved,
+    date: new Date(recordSaved.date),
+  }));
+  // Till here
   const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;
@@ -69,6 +76,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
   const currentRecords = isGuestUser ? recordsFormattedDate : (responseFetchRecords?.records ?? []);
+  const lastMonthRecords = isGuestUser ? recordsFormattedDateLastMonth : (responseLastMonthRecs?.records ?? []);
 
   /** Update total balance of expenses and incomes after fetch of current month records */
   useEffect(() => {
@@ -147,7 +155,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         totalIncome={totalRecords.lastMonth.incomeTotal}
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
-        records={responseLastMonthRecs?.records ?? []}
+        records={lastMonthRecords}
         loading={isFetchingLastMonthRecs}
         error={isErrorLastMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
