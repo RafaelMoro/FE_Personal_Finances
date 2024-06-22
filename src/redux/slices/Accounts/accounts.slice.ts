@@ -62,14 +62,21 @@ export const accountsSlice = createSlice({
       }
 
       // Update the account in the accounts state
-      if (state.accountsLocalStorage && state.accountSelected) {
+      if (state.accountsLocalStorage && state.accountSelected && state.accounts) {
         const accountsUpdated = state.accountsLocalStorage.map((account) => {
           if (account._id === accountId) {
             return { ...account, amount: amountNumber };
           }
           return account;
         });
+        const accountsUIUpdated = state.accounts.map((account) => {
+          if (account._id === accountId) {
+            return { ...account, amount: amountNumber, amountFormatted };
+          }
+          return account;
+        });
         state.accountsLocalStorage = accountsUpdated;
+        state.accounts = accountsUIUpdated;
         addToLocalStorage({ newInfo: accountsUpdated, prop: 'accounts' });
       }
     },
