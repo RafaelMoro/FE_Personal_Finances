@@ -54,7 +54,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   const {
     isError: isErrorThisMonthRecs, isFetching: isFetchingThisMonthRecs,
     currentData: responseFetchRecords, isSuccess: isSuccessThisMonthRecs,
-  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: (!bearerToken || !accountId) });
+  } = useFetchRecordsByMonthYearQuery({ route: recordsRoute, bearerToken }, { skip: (!bearerToken || !accountId || isGuestUser) });
 
   const [fetchLastMonthRecordsMutation, {
     isFetching: isFetchingLastMonthRecs, isError: isErrorLastMonthRecs, currentData: responseLastMonthRecs,
@@ -80,6 +80,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
 
   const handleFetchLastMonthRecords = async () => {
     try {
+      if (isGuestUser) return;
       const recordsLastMonthRoute = `${GET_EXPENSES_AND_INCOMES_BY_MONTH_ROUTE}/${accountId}/${lastMonth}/${year}`;
       const response = await fetchLastMonthRecordsMutation({ route: recordsLastMonthRoute, bearerToken }).unwrap();
       // Update total balance of expenses and incomes after fetch of last month records
