@@ -51,7 +51,7 @@ const useGuestUserMocks = () => {
       description: 'Paying Uber to go to smartfit on Solesta',
       category: {
         _id: '9478-6123',
-        categoryName: 'Transport',
+        categoryName: 'Transportation',
         icon: 'transportation',
         __v: 0,
         subCategories: ['Uber/Didi'],
