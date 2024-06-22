@@ -25,7 +25,6 @@ import {
 } from '../../../../../redux/slices/Records';
 import { AppColors } from '../../../../../styles';
 import { List } from '../../Records.styled';
-import { AnyRecord, RecordRedux } from '../../../../../globalInterface';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
@@ -39,21 +38,8 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   const {
     month, completeCurrentMonth, completeLastMonth, year, lastMonth,
   } = useDate();
-  const { isGuestUser } = useGuestUser();
+  const { isGuestUser, recordsCurrentMonthLocalStorage, recordsLastMonthLocalStorage } = useGuestUser();
   const user = useAppSelector((state) => state.user.userInfo);
-  const recordsLocalStorageSelectedAccount = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
-  // Pass this down into useGuestUser
-  const recordsLocalStorageCurrentMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [];
-  const recordsLocalStorageLastMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.lastMonth ?? [];
-  const recordsFormattedDate: AnyRecord[] = recordsLocalStorageCurrentMonth.map((recordSaved) => ({
-    ...recordSaved,
-    date: new Date(recordSaved.date),
-  }));
-  const recordsFormattedDateLastMonth: AnyRecord[] = recordsLocalStorageLastMonth.map((recordSaved) => ({
-    ...recordSaved,
-    date: new Date(recordSaved.date),
-  }));
-  // Till here
   const accountsFetchStatus = useAppSelector((state) => state.accounts.accountsFetchStatus);
   const recordsState = useAppSelector((state) => state.records);
   const { totalRecords } = recordsState;
@@ -75,8 +61,8 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
   }] = useLazyFetchRecordsByMonthYearQuery();
 
   const color = selectedAccount?.backgroundColorUI?.color ?? AppColors.black;
-  const currentRecords = isGuestUser ? recordsFormattedDate : (responseFetchRecords?.records ?? []);
-  const lastMonthRecords = isGuestUser ? recordsFormattedDateLastMonth : (responseLastMonthRecs?.records ?? []);
+  const currentRecords = isGuestUser ? recordsCurrentMonthLocalStorage : (responseFetchRecords?.records ?? []);
+  const lastMonthRecords = isGuestUser ? recordsLastMonthLocalStorage : (responseLastMonthRecs?.records ?? []);
 
   /** Update total balance of expenses and incomes after fetch of current month records */
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { AccountUI } from '../../components/UI/Account/interface';
-import { Account } from '../../globalInterface';
+import { Account, AnyRecord, RecordRedux } from '../../globalInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateAccounts, updateAccountsLocalStorage, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
 import { saveRecordsLocalStorage, saveRecordsLocalStorageSelectedAccount } from '../../redux/slices/Records';
@@ -13,6 +13,17 @@ const useGuestUser = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user.userInfo);
   const isGuestUser: boolean = user?.user?.firstName === 'Guest';
+  const recordsLocalStorageSelectedAccount = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
+  const recordsLocalStorageCurrentMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [];
+  const recordsLocalStorageLastMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.lastMonth ?? [];
+  const recordsCurrentMonthLocalStorage: AnyRecord[] = recordsLocalStorageCurrentMonth.map((recordSaved) => ({
+    ...recordSaved,
+    date: new Date(recordSaved.date),
+  }));
+  const recordsLastMonthLocalStorage: AnyRecord[] = recordsLocalStorageLastMonth.map((recordSaved) => ({
+    ...recordSaved,
+    date: new Date(recordSaved.date),
+  }));
   const {
     recordsAmericanExpress, recordsDebitAccount, accounts, guestUser,
   } = useGuestUserMocks();
@@ -85,6 +96,8 @@ const useGuestUser = () => {
 
   return {
     isGuestUser,
+    recordsCurrentMonthLocalStorage,
+    recordsLastMonthLocalStorage,
     addGuestUser,
     loadGuestUser,
     loadRecords,
