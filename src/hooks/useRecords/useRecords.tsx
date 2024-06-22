@@ -401,7 +401,6 @@ const useRecords = ({
   const editExpenseLocalStorage = (payload: EditExpenseProps) => {
     // Preparar valores para editar expense
     const { values, recordId, userId } = payload;
-    console.log('values', values);
     const { date, category } = values;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const amountFormatted = formatValueToCurrency({ amount: values.amount });
