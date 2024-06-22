@@ -256,20 +256,17 @@ const useRecords = ({
     }
   };
 
-  const getRecordAgeStatus = (date: Date) => {
+  const getRecordAgeStatus = (date: Date): RecordAgeStatusKey => {
     // Get month details
     const { isLastMonth, isCurrentMonth } = getMonthDetails(date);
     // Evaluate if the record is from the current month or last month or older
     if (isCurrentMonth) {
-      const key: RecordAgeStatusKey = 'currentMonth';
-      return key;
+      return 'currentMonth';
     }
     if (isLastMonth) {
-      const key: RecordAgeStatusKey = 'lastMonth';
-      return key;
+      return 'lastMonth';
     }
-    const key: RecordAgeStatusKey = 'olderRecords';
-    return key;
+    return 'olderRecords';
   };
 
   const createExpenseLocalStorage = (values: CreateExpenseValues) => {
