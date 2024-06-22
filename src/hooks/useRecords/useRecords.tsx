@@ -12,13 +12,14 @@ import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { ExpenseLocalStorage, GeneralError } from '../../globalInterface';
+import { GeneralError, RecordRedux } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
   UpdateTotalCurrencyProps,
   Actions,
   CreateTransferProps,
+  GetNewRecordsClassifiedByAgeProps,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -269,6 +270,39 @@ const useRecords = ({
     return 'olderRecords';
   };
 
+  const getNewRecordsClassifiedByAge = ({
+    newRecord, newRecords, recordLocalStorage, recordAgeStatusKey,
+  }: GetNewRecordsClassifiedByAgeProps): RecordsLocalStorage => {
+    if (recordAgeStatusKey === 'currentMonth') {
+      return {
+        account: newRecord.account,
+        records: {
+          currentMonth: newRecords,
+          lastMonth: recordLocalStorage.records.lastMonth,
+          olderRecords: recordLocalStorage.records.olderRecords,
+        },
+      };
+    }
+    if (recordAgeStatusKey === 'lastMonth') {
+      return {
+        account: newRecord.account,
+        records: {
+          currentMonth: recordLocalStorage.records.currentMonth,
+          lastMonth: newRecords,
+          olderRecords: recordLocalStorage.records.olderRecords,
+        },
+      };
+    }
+    return {
+      account: newRecord.account,
+      records: {
+        currentMonth: recordLocalStorage.records.currentMonth,
+        lastMonth: recordLocalStorage.records.lastMonth,
+        olderRecords: newRecords,
+      },
+    };
+  };
+
   const createExpenseLocalStorage = (values: CreateExpenseValues) => {
     // this could be part of a hook formatting the expense
     const { date, category, subCategory } = values;
@@ -282,7 +316,7 @@ const useRecords = ({
     }
     const amountFormatted = formatValueToCurrency({ amount: values.amount });
 
-    const newExpense: ExpenseLocalStorage = {
+    const newExpense: RecordRedux = {
       ...values,
       date: dateFormatted,
       _id: newId,
@@ -297,21 +331,13 @@ const useRecords = ({
     };
 
     // Save in local storage and redux
-    // @TODO: Refactor this once we have the function to reuse the isCurrentMonth and isLastMonth
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
-      // here change currentMonth
-      const newRecords = [...recordLocalStorage.records[recordAgeStatusKey], newExpense];
-      const newRecordLocalStorage: RecordsLocalStorage = {
-        account: newExpense.account,
-        records: {
-          // Change here
-          currentMonth: newRecords,
-          lastMonth: recordLocalStorage.records.lastMonth,
-          olderRecords: recordLocalStorage.records.olderRecords,
-        },
-      };
+      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newExpense];
+      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+        newRecords, newRecord: newExpense, recordLocalStorage, recordAgeStatusKey,
+      });
       const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
       if (filteredRecords.length === 0) {
         console.error(`local records of the account ${newExpense.account} not found`);

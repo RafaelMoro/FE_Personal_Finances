@@ -1,6 +1,9 @@
 import { RecordAgeCategory } from '../../aliasType';
 import { CreateExpenseValues, CreateIncomeValues } from '../../components/UI/Records/interface';
-import { AnyRecord, ExpensePaid } from '../../globalInterface';
+import {
+  AnyRecord, ExpensePaid, RecordRedux,
+} from '../../globalInterface';
+import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 
 export interface UseRecordsProps {
   recordToBeDeleted?: AnyRecord;
@@ -67,4 +70,11 @@ export interface UpdateTotalCurrencyProps {
   recordAgeCategory: RecordAgeCategory;
   editRecord?: boolean;
   previousAmount?: number;
+}
+
+export interface GetNewRecordsClassifiedByAgeProps {
+  newRecord: RecordRedux;
+  newRecords: RecordRedux[];
+  recordLocalStorage: RecordsLocalStorage;
+  recordAgeStatusKey: RecordAgeStatusKey;
 }
