@@ -50,6 +50,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     editExpense,
     editIncome,
     createExpenseLocalStorage,
+    createIncomeLocalStorage,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isLoadingEditExpense,
@@ -234,6 +235,10 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         userId: userIdRecord,
         accountId: (selectedAccount?._id ?? ''),
       });
+      return;
+    }
+    if (isGuestUser) {
+      createIncomeLocalStorage(newValues);
       return;
     }
     createIncome(newValues);

@@ -335,7 +335,6 @@ const useRecords = ({
       date: dateFormatted,
       _id: newId,
       amountFormatted,
-      isPaid: false,
       category,
       subCategory,
       userId: GUEST_USER_ID,
@@ -388,9 +387,45 @@ const useRecords = ({
     }
   };
 
-  // const createIncomeLocalStorage = (values: CreateIncomeValues) => {
+  const createIncomeLocalStorage = (values: CreateIncomeValues) => {
+    const { category, date } = values;
+    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
+    if (!categoryFound) {
+      console.error('Category not found while creating expense locally');
+      return;
+    }
+    const newIncome = createRecordLocalStorage(values, categoryFound);
 
-  // };
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newIncome.account);
+    if (recordLocalStorage) {
+      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      // Add new expense and sort records by date.
+      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newIncome].sort(sortByDate);
+      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+        newRecords, newRecord: newIncome, recordLocalStorage, recordAgeStatusKey,
+      });
+      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newIncome.account);
+      if (filteredRecords.length === 0) {
+        console.error(`local records of the account ${newIncome.account} not found`);
+        return;
+      }
+
+      filteredRecords.push(newRecordLocalStorage);
+      dispatch(saveRecordsLocalStorage(filteredRecords));
+      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+      addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record created',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    }
+  };
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {
@@ -688,6 +723,7 @@ const useRecords = ({
     createTransfer,
     deleteRecord,
     createExpenseLocalStorage,
+    createIncomeLocalStorage,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
