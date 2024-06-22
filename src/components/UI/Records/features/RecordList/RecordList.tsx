@@ -125,8 +125,8 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         totalIncome={totalRecords.currentMonth.incomeTotal}
         accountId={accountId}
         records={currentRecords}
-        loading={isFetchingThisMonthRecs}
-        error={isErrorThisMonthRecs}
+        loading={isGuestUser ? false : isFetchingThisMonthRecs}
+        error={isGuestUser ? false : isErrorThisMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
@@ -142,8 +142,8 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
         records={lastMonthRecords}
-        loading={isFetchingLastMonthRecs}
-        error={isErrorLastMonthRecs}
+        loading={isGuestUser ? false : isFetchingLastMonthRecs}
+        error={isGuestUser ? false : isErrorLastMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
         onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
         onLoadingCb={() => (
