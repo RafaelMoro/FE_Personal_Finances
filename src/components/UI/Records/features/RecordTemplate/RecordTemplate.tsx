@@ -49,8 +49,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     createIncome,
     editExpense,
     editIncome,
-    createExpenseLocalStorage,
-    createIncomeLocalStorage,
+    createExpenseIncomeLocalStorage,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isLoadingEditExpense,
@@ -210,7 +209,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         return;
       }
       if (isGuestUser) {
-        createExpenseLocalStorage(newValues);
+        createExpenseIncomeLocalStorage(newValues);
         return;
       }
       createExpense(newValues);
@@ -238,7 +237,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       return;
     }
     if (isGuestUser) {
-      createIncomeLocalStorage(newValues);
+      createExpenseIncomeLocalStorage(newValues);
       return;
     }
     createIncome(newValues);

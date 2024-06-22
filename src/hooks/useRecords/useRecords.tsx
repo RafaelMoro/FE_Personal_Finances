@@ -306,7 +306,7 @@ const useRecords = ({
     };
   };
 
-  const createRecordLocalStorage = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
+  const createLocalRecord = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
     const { date, subCategory } = values;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const dateFormatted = date.toISOString();
@@ -345,7 +345,7 @@ const useRecords = ({
     return newIncome;
   };
 
-  const createExpenseLocalStorage = (values: CreateExpenseValues) => {
+  const createExpenseIncomeLocalStorage = (values: CreateExpenseValues) => {
     // this could be part of a hook formatting the expense
     const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
@@ -353,60 +353,20 @@ const useRecords = ({
       console.error('Category not found while creating expense locally');
       return;
     }
-    const newExpense = createRecordLocalStorage(values, categoryFound);
+    const newRecord = createLocalRecord(values, categoryFound);
 
     // Save in local storage and redux
-    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newExpense.account);
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
       // Add new expense and sort records by date.
-      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newExpense].sort(sortByDate);
+      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-        newRecords, newRecord: newExpense, recordLocalStorage, recordAgeStatusKey,
+        newRecords, newRecord, recordLocalStorage, recordAgeStatusKey,
       });
-      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
+      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newRecord.account);
       if (filteredRecords.length === 0) {
-        console.error(`local records of the account ${newExpense.account} not found`);
-        return;
-      }
-
-      filteredRecords.push(newRecordLocalStorage);
-      dispatch(saveRecordsLocalStorage(filteredRecords));
-      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
-      addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
-
-      // Show success notification
-      updateGlobalNotification({
-        newTitle: 'Record created',
-        newDescription: '',
-        newStatus: SystemStateEnum.Success,
-      });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
-    }
-  };
-
-  const createIncomeLocalStorage = (values: CreateIncomeValues) => {
-    const { category, date } = values;
-    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
-    if (!categoryFound) {
-      console.error('Category not found while creating expense locally');
-      return;
-    }
-    const newIncome = createRecordLocalStorage(values, categoryFound);
-
-    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newIncome.account);
-    if (recordLocalStorage) {
-      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
-      // Add new expense and sort records by date.
-      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newIncome].sort(sortByDate);
-      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-        newRecords, newRecord: newIncome, recordLocalStorage, recordAgeStatusKey,
-      });
-      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newIncome.account);
-      if (filteredRecords.length === 0) {
-        console.error(`local records of the account ${newIncome.account} not found`);
+        console.error(`local records of the account ${newRecord.account} not found`);
         return;
       }
 
@@ -722,8 +682,7 @@ const useRecords = ({
     editIncome,
     createTransfer,
     deleteRecord,
-    createExpenseLocalStorage,
-    createIncomeLocalStorage,
+    createExpenseIncomeLocalStorage,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
