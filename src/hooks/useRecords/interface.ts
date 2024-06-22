@@ -22,6 +22,7 @@ export interface UpdateAmountAccountProps {
   isExpense: boolean;
   accountId: string;
   deleteRecord?: boolean;
+  isGuestUser?: boolean;
 }
 
 export interface UpdateAmountAccountOnEditProps extends Omit<UpdateAmountAccountProps, 'deleteRecord'> {

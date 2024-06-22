@@ -5,7 +5,7 @@ import {
   formatDateToString, formatValueToCurrency, formatCurrencyToNumber, addToLocalStorage,
   sortByDate,
 } from '../../utils';
-import { UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
+import { UPDATE_AMOUNT_ACCOUNT_LOCAL_SUCCESS_RESPONSE, UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE } from './constants';
 import { EXPENSE_ROUTE, INCOME_ROUTE } from '../../components/UI/Records/constants';
 import { DASHBOARD_ROUTE } from '../../pages/RoutesConstants';
 
@@ -44,7 +44,7 @@ import {
   saveRecordsLocalStorageSelectedAccount,
 } from '../../redux/slices/Records';
 import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
-import { updateAmountSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
+import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
 import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 import { isCreateExpense } from './utils';
@@ -95,7 +95,7 @@ const useRecords = ({
   };
 
   async function updateAmountAccount({
-    amount, isExpense, accountId, deleteRecord = false,
+    amount, isExpense, accountId, isGuestUser = false, deleteRecord = false,
   }: UpdateAmountAccountProps) {
     try {
       const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
@@ -108,10 +108,15 @@ const useRecords = ({
         : { accountId, amount: amountToUpdate + amount };
 
       const payload: UpdateAmountPayload = deleteRecord ? payloadDeleteRecord : payloadCreateRecord;
-      const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
+      if (isGuestUser) {
+        // Will update redux and local storage
+        dispatch(updateAmountSelectedAccountLocalStorage({ amount: payload.amount, accountId }));
+        return UPDATE_AMOUNT_ACCOUNT_LOCAL_SUCCESS_RESPONSE;
+      }
 
+      await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
       // dispatch update amount account
-      dispatch(updateAmountSelectedAccount({ amount: amountFetched, accountId }));
+      dispatch(updateAmountSelectedAccount({ amount: payload.amount, accountId }));
 
       return UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE;
     } catch (err) {
@@ -345,7 +350,7 @@ const useRecords = ({
     return newIncome;
   };
 
-  const createExpenseIncomeLocalStorage = (values: CreateExpenseValues) => {
+  const createExpenseIncomeLocalStorage = (values: CreateExpenseValues | CreateIncomeValues) => {
     // this could be part of a hook formatting the expense
     const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
@@ -375,6 +380,12 @@ const useRecords = ({
       dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
       addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
 
+      // Modify amount of the account
+      const isExpense = isCreateExpense(values);
+      updateAmountAccount({
+        amount: newRecord.amount, isExpense, accountId: newRecord.account, isGuestUser: true,
+      });
+
       // Show success notification
       updateGlobalNotification({
         newTitle: 'Record created',
@@ -386,6 +397,9 @@ const useRecords = ({
       navigate(DASHBOARD_ROUTE);
     }
   };
+
+  // const editExpenseLocalStorage = (values: ) => {
+  // }
 
   const createExpense = async (values: CreateExpenseValues) => {
     try {

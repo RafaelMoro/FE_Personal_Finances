@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { AccountsInitialState, UpdateAccountsStatusProps, UpdateAmountAccountProps } from './interface';
-import { formatValueToCurrency } from '../../../utils';
+import { addToLocalStorage, formatValueToCurrency } from '../../../utils';
 import { accountsApiSlice } from './actions';
 
 const accountsInitialState: AccountsInitialState = {
@@ -51,6 +51,28 @@ export const accountsSlice = createSlice({
         state.accounts = accountsUpdated;
       }
     },
+    updateAmountSelectedAccountLocalStorage: (state, action: UpdateAmountAccountProps) => {
+      const { accountId, amount: amountNumber } = action.payload;
+      const amountFormatted = formatValueToCurrency({ amount: amountNumber });
+
+      // Update the amount of the selected account
+      if (state.accountSelected && state.accountSelected._id === accountId) {
+        state.accountSelected.amount = amountNumber;
+        state.accountSelected.amountFormatted = amountFormatted;
+      }
+
+      // Update the account in the accounts state
+      if (state.accountsLocalStorage && state.accountSelected) {
+        const accountsUpdated = state.accountsLocalStorage.map((account) => {
+          if (account._id === accountId) {
+            return { ...account, amount: amountNumber };
+          }
+          return account;
+        });
+        state.accountsLocalStorage = accountsUpdated;
+        addToLocalStorage({ newInfo: accountsUpdated, prop: 'accounts' });
+      }
+    },
     updateSelectedAccount: (state, action) => {
       state.accountSelected = action.payload;
     },
@@ -79,7 +101,7 @@ export const accountsSlice = createSlice({
 
 export const {
   updateAccounts, updateSelectedAccount, resetAccounts, updateAccountsLocalStorage,
-  resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount,
+  resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage,
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;
