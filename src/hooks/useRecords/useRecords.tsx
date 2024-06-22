@@ -166,12 +166,21 @@ const useRecords = ({
     return payload;
   };
 
-  const updateTotalsExpense = ({
-    date, amount, edit = false, previousAmount,
-  }: { date: Date, amount: number, edit?: boolean, previousAmount?: number }) => {
+  const getMonthDetails = (date: Date) => {
     const { monthFormatted } = formatDateToString(date);
     const isLastMonth = lastMonth === monthFormatted;
     const isCurrentMonth = currentMonth === monthFormatted;
+
+    return {
+      isLastMonth,
+      isCurrentMonth,
+    };
+  };
+
+  const updateTotalsExpense = ({
+    date, amount, edit = false, previousAmount,
+  }: { date: Date, amount: number, edit?: boolean, previousAmount?: number }) => {
+    const { isLastMonth, isCurrentMonth } = getMonthDetails(date);
 
     if (isCurrentMonth) {
       const payload = edit
@@ -211,9 +220,7 @@ const useRecords = ({
   const updateTotalsIncome = ({
     date, amount, edit = false, previousAmount,
   }: { date: Date, amount: number, edit?: boolean, previousAmount?: number }) => {
-    const { monthFormatted } = formatDateToString(date);
-    const isLastMonth = lastMonth === monthFormatted;
-    const isCurrentMonth = currentMonth === monthFormatted;
+    const { isLastMonth, isCurrentMonth } = getMonthDetails(date);
 
     if (isCurrentMonth) {
       const payload = edit
