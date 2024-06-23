@@ -65,12 +65,12 @@ const SelectExpenses = ({
         <HorizontalLoader />
       </LoadingExpensesContainer>
       ) }
-      { (noExpensesFound && !loading && expenses.length === 0) && (
+      { (noExpensesFound && !loading && expenses && expenses.length === 0) && (
         <ExpensesNotFoundContainer>
           <Typography align="center">{`No expenses found for this account in ${completeMonth} ${year}`}</Typography>
         </ExpensesNotFoundContainer>
       ) }
-      { (!noExpensesFound && !loading && expenses.length > 0) && (
+      { (!noExpensesFound && !loading && expenses && expenses.length > 0) && (
         <SelectExpensesTable
           expenses={expenses}
           modifySelectedExpenses={modifySelectedExpenses}
