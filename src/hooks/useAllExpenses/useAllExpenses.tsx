@@ -25,6 +25,8 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
   const onlyIncomesExpensesLocal = useMemo(() => {
     const recordsLocalStorageSelectedAccount = recordsLocalStorage?.find((record) => record.account === selectedAccountId);
     // Change current month depending on the month selected
+    // 1. Get the record age key and pass it down if current month or last month
+    // 2. If older records, filter the record on the month and year chosen.
     const recordsFormatted: Expense[] = (recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [])
       .filter((record) => record.typeOfRecord === 'expense')
       .map((record) => {
