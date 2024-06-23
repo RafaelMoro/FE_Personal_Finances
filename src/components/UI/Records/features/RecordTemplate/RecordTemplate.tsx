@@ -52,6 +52,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     editIncome,
     createExpenseIncomeLocalStorage,
     editExpenseLocalStorage,
+    editIncomeLocalStorage,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
     isLoadingEditExpense,
@@ -232,6 +233,17 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
+      if (isGuestUser) {
+        editIncomeLocalStorage({
+          values: newValues,
+          recordId,
+          amountTouched,
+          previousAmount,
+          userId: userIdRecord,
+          accountId: (selectedAccount?._id ?? ''),
+        });
+        return;
+      }
       resetLocalStorageWithUserOnly();
       editIncome({
         values: newValues,

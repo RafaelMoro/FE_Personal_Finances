@@ -472,6 +472,54 @@ const useRecords = ({
     }
   };
 
+  const editIncomeLocalStorage = (payload: EditExpenseProps) => {
+    const { values, recordId, previousAmount } = payload;
+    const { category, date } = values;
+    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
+    if (!categoryFound) {
+      console.error('Category not found while creating expense locally');
+      return;
+    }
+    const editedIncome = editLocalRecord(payload, categoryFound);
+
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
+    if (recordLocalStorage) {
+      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
+      const newRecords: RecordRedux[] = [...recordsFiltered, editedIncome].sort(sortByDate);
+      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+        newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
+      });
+
+      const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedIncome.account);
+      if (filteredRecordsWithoutCurrentAccount.length === 0) {
+        console.error(`local records of the account ${editedIncome.account} not found`);
+        return;
+      }
+
+      filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
+      dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
+      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+      addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
+
+      // Modify amount of the account
+      const isExpense = isCreateExpense(values);
+      updateAmountAccountOnEditRecord({
+        amount: editedIncome.amount, isExpense, previousAmount, accountId: editedIncome.account, isGuestUser: true,
+      });
+
+      // Show success notification
+      updateGlobalNotification({
+        newTitle: 'Record updated',
+        newDescription: '',
+        newStatus: SystemStateEnum.Success,
+      });
+
+      // Navigate to dashboard
+      navigate(DASHBOARD_ROUTE);
+    }
+  };
+
   const createExpense = async (values: CreateExpenseValues) => {
     try {
       const { amount, date: dateValue, account } = values;
@@ -769,6 +817,7 @@ const useRecords = ({
     deleteRecord,
     createExpenseIncomeLocalStorage,
     editExpenseLocalStorage,
+    editIncomeLocalStorage,
     loadingDeleteRecord,
     isLoadingCreateExpense,
     isLoadingCreateIncome,
