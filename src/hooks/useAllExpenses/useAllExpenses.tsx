@@ -1,11 +1,14 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { GET_EXPENSES } from '../../components/UI/Records/constants';
 import { UseAllExpensesProps } from './interface';
 import { useAppSelector } from '../../redux/hooks';
 import { useGetExpensesQuery } from '../../redux/slices/Records/actions/expenses.api';
 import { Expense } from '../../globalInterface';
+import { useDate } from '../useDate';
+import { getLocalRecords } from './utils';
 
 const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
+  const { month: currentMonth, lastMonth } = useDate();
   const userReduxState = useAppSelector((state) => state.user);
   const isGuestUser: boolean = userReduxState?.userInfo?.user?.firstName === 'Guest';
   const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
@@ -13,6 +16,18 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
   const selectedAccount = useAppSelector((state) => state.accounts.accountSelected);
   const selectedAccountId = accountId ?? selectedAccount?._id;
   const fullRoute = `${GET_EXPENSES}/${selectedAccountId}/${month}/${year}`;
+  const recordsLocalStorageSelectedAccount = recordsLocalStorage?.find((record) => record.account === selectedAccountId);
+
+  const [localRecords, setLocalRecords] = useState<Expense[]>([]);
+
+  useEffect(() => {
+    if (isGuestUser && recordsLocalStorage) {
+      const fetchedLocalRecords = getLocalRecords({
+        month, lastMonth, currentMonth, year, recordsLocalStorageSelectedAccount,
+      });
+      setLocalRecords(fetchedLocalRecords);
+    }
+  }, [currentMonth, isGuestUser, lastMonth, month, recordsLocalStorage, recordsLocalStorageSelectedAccount, year]);
 
   const { isFetching, isError, currentData } = useGetExpensesQuery(
     { route: fullRoute, bearerToken },
@@ -22,25 +37,8 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
     () => (currentData?.records ?? []).filter((record) => record.typeOfRecord === 'expense'),
     [currentData?.records],
   );
-  const onlyIncomesExpensesLocal = useMemo(() => {
-    const recordsLocalStorageSelectedAccount = recordsLocalStorage?.find((record) => record.account === selectedAccountId);
-    // Change current month depending on the month selected
-    // 1. Get the record age key and pass it down if current month or last month
-    // 2. If older records, filter the record on the month and year chosen.
-    const recordsFormatted: Expense[] = (recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [])
-      .filter((record) => record.typeOfRecord === 'expense')
-      .map((record) => {
-        if (record.isPaid === undefined) {
-          const recordFormatted: Expense = { ...record, date: new Date(record.date), isPaid: false };
-          return recordFormatted;
-        }
-        const newRecord: Expense = { ...record, date: new Date(record.date), isPaid: record.isPaid };
-        return newRecord;
-      });
-    return recordsFormatted;
-  }, [recordsLocalStorage, selectedAccountId]);
 
-  const recordsToShow = isGuestUser ? onlyIncomesExpensesLocal : onlyExpensesIncomes;
+  const recordsToShow = isGuestUser ? localRecords : onlyExpensesIncomes;
 
   return {
     expenses: recordsToShow,
