@@ -52,11 +52,18 @@ const RecordDrawer = ({
   const status = getRecordStatus({ isPaid, typeOfRecord });
 
   const handleEditRecord = () => {
-    // Redux cannot have serialized values like date type Date
-    const recordModified: RecordRedux = { ...record, date: record.date.toISOString() };
-    // If it's a guest user, use a record redux, otherwise, use record.
-    const newRecord = isGuestUser ? recordModified : record;
-    dispatch(setRecordToBeModified(newRecord));
+    if (isGuestUser) {
+      // Redux cannot have serialized values like date type Date
+      const recordModified: RecordRedux = { ...record, date: record.date.toISOString() };
+      // If it's a guest user, use a record redux, otherwise, use record.
+      dispatch(setRecordToBeModified(recordModified));
+      // Update local storage
+      addToLocalStorage({ newInfo: { recordToBeEdited: recordModified } });
+      navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
+      return;
+    }
+
+    dispatch(setRecordToBeModified(record));
     // Update local storage
     addToLocalStorage({ newInfo: { recordToBeEdited: record } });
     navigate(EDIT_RECORD_ROUTE, { state: { typeOfRecord } });
