@@ -350,6 +350,26 @@ const useRecords = ({
     return newIncome;
   };
 
+  const editLocalRecord = (payload: EditExpenseProps, category: Category) => {
+    const { values, recordId, userId } = payload;
+    const { date } = values;
+    const { formattedTime, fullDate } = formatDateToString(date.toDate());
+    const amountFormatted = formatValueToCurrency({ amount: values.amount });
+
+    const newExpense: RecordRedux = {
+      ...values,
+      _id: recordId,
+      category,
+      userId,
+      date: date.toISOString(),
+      formattedTime,
+      fullDate,
+      amountFormatted,
+      typeOfRecord: 'expense',
+    };
+    return newExpense;
+  };
+
   const createExpenseIncomeLocalStorage = (values: CreateExpenseValues | CreateIncomeValues) => {
     // this could be part of a hook formatting the expense
     const { category, date } = values;
@@ -399,43 +419,27 @@ const useRecords = ({
   };
 
   const editExpenseLocalStorage = (payload: EditExpenseProps) => {
-    // Preparar valores para editar expense
-    const { values, recordId, userId } = payload;
-    const { date, category } = values;
-    const { formattedTime, fullDate } = formatDateToString(date.toDate());
-    const amountFormatted = formatValueToCurrency({ amount: values.amount });
-
+    const { values, recordId } = payload;
+    const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
       console.error('Category not found while creating expense locally');
       return;
     }
-
-    // Remember if using this method to edit income, change type of record here
-    const newExpense: RecordRedux = {
-      ...values,
-      _id: recordId,
-      category: categoryFound,
-      userId,
-      date: date.toISOString(),
-      formattedTime,
-      fullDate,
-      amountFormatted,
-      typeOfRecord: 'expense',
-    };
+    const editedExpense = editLocalRecord(payload, categoryFound);
 
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
       const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
-      const newRecords: RecordRedux[] = [...recordsFiltered, newExpense].sort(sortByDate);
+      const newRecords: RecordRedux[] = [...recordsFiltered, editedExpense].sort(sortByDate);
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-        newRecords, newRecord: newExpense, recordLocalStorage, recordAgeStatusKey,
+        newRecords, newRecord: editedExpense, recordLocalStorage, recordAgeStatusKey,
       });
 
-      const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== newExpense.account);
+      const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedExpense.account);
       if (filteredRecordsWithoutCurrentAccount.length === 0) {
-        console.error(`local records of the account ${newExpense.account} not found`);
+        console.error(`local records of the account ${editedExpense.account} not found`);
         return;
       }
 
