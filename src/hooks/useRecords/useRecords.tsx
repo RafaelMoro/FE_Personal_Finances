@@ -131,7 +131,7 @@ const useRecords = ({
   }
 
   const updateAmountAccountOnEditRecord = async ({
-    amount, isExpense, previousAmount, accountId,
+    amount, isExpense, previousAmount, accountId, isGuestUser = false,
   }: UpdateAmountAccountOnEditProps) => {
     try {
       const amountToUpdate = (accounts ?? []).find((account) => account._id === accountId)?.amount as number;
@@ -141,6 +141,12 @@ const useRecords = ({
       const payload: UpdateAmountPayload = isExpense
         ? { accountId: newAccountId, amount: amountResultExpense }
         : { accountId: newAccountId, amount: amountResultIncome };
+
+      if (isGuestUser) {
+        // Will update redux and local storage
+        dispatch(updateAmountSelectedAccountLocalStorage({ amount: payload.amount, accountId }));
+        return UPDATE_AMOUNT_ACCOUNT_LOCAL_SUCCESS_RESPONSE;
+      }
 
       const { data: { account: { amount: amountFetched } } } = await updateAmountAccountMutation({ payload, bearerToken }).unwrap();
 
@@ -419,7 +425,7 @@ const useRecords = ({
   };
 
   const editExpenseLocalStorage = (payload: EditExpenseProps) => {
-    const { values, recordId } = payload;
+    const { values, recordId, previousAmount } = payload;
     const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
@@ -447,6 +453,12 @@ const useRecords = ({
       dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
       dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
       addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
+
+      // Modify amount of the account
+      const isExpense = isCreateExpense(values);
+      updateAmountAccountOnEditRecord({
+        amount: editedExpense.amount, isExpense, previousAmount, accountId: editedExpense.account, isGuestUser: true,
+      });
 
       // Show success notification
       updateGlobalNotification({
