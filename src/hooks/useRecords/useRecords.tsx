@@ -319,7 +319,7 @@ const useRecords = ({
     };
   };
 
-  const createLocalRecord = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
+  const formatCreateLocalRecord = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
     const { date, subCategory } = values;
     const expensesPaid = (values as CreateIncomeValues)?.expensesPaid;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
@@ -378,7 +378,7 @@ const useRecords = ({
     return newIncome;
   };
 
-  const editLocalRecord = (payload: EditExpenseProps, category: Category) => {
+  const formatEditLocalRecord = (payload: EditExpenseProps, category: Category) => {
     const { values, recordId, userId } = payload;
     const { date } = values;
     const expensesPaid = (values as CreateIncomeValues)?.expensesPaid;
@@ -433,7 +433,7 @@ const useRecords = ({
       console.error('Category not found while creating expense locally');
       return;
     }
-    const newRecord = createLocalRecord(values, categoryFound);
+    const newRecord = formatCreateLocalRecord(values, categoryFound);
 
     // Save in local storage and redux
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
@@ -494,7 +494,7 @@ const useRecords = ({
       console.error('Category not found while creating expense locally');
       return;
     }
-    const editedExpense = editLocalRecord(payload, categoryFound);
+    const editedExpense = formatEditLocalRecord(payload, categoryFound);
 
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
     if (recordLocalStorage) {
@@ -544,7 +544,7 @@ const useRecords = ({
       console.error('Category not found while creating expense locally');
       return;
     }
-    const editedIncome = editLocalRecord(payload, categoryFound);
+    const editedIncome = formatEditLocalRecord(payload, categoryFound);
 
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
     if (recordLocalStorage) {
