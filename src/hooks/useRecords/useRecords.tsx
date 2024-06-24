@@ -565,67 +565,69 @@ const useRecords = ({
       return;
     }
     const editedIncome = formatEditLocalRecord(payload, categoryFound);
-
-    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
-    if (recordLocalStorage) {
-      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
-      const { expensesPaid = [] } = editedIncome;
-      const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
-      let newRecords: RecordRedux[] = [...recordsFiltered, editedIncome].sort(sortByDate);
-
-      if (expensesPaid && expensesPaid.length > 0) {
-        const expensesIds = expensesPaid.map((expense) => expense._id);
-        newRecords = newRecords.map((record) => {
-          if (expensesIds.includes(record._id)) {
-            return { ...record, isPaid: true };
-          }
-          return record;
-        });
-      }
-
-      // Set old previous expenses to not paid
-      if (previousExpensesRelated.length > 0) {
-        console.log('previousExpensesRelated', previousExpensesRelated);
-        const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
-        newRecords = newRecords.map((record) => {
-          if (oldExpensesIds.includes(record._id)) {
-            return { ...record, isPaid: false };
-          }
-          return record;
-        });
-      }
-
-      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-        newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
-      });
-
-      const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedIncome.account);
-      if (filteredRecordsWithoutCurrentAccount.length === 0) {
-        console.error(`local records of the account ${editedIncome.account} not found`);
-        return;
-      }
-
-      filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
-      dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
-      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
-      addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
-
-      // Modify amount of the account
-      const isExpense = isCreateExpense(values);
-      updateAmountAccountOnEditRecord({
-        amount: editedIncome.amount, isExpense, previousAmount, accountId: editedIncome.account, isGuestUser: true,
-      });
-
-      // Show success notification
-      updateGlobalNotification({
-        newTitle: 'Record updated',
-        newDescription: '',
-        newStatus: SystemStateEnum.Success,
-      });
-
-      // Navigate to dashboard
-      navigate(DASHBOARD_ROUTE);
+    const { expensesPaid = [] } = editedIncome;
+    const response = getLocalRecordsOrderedOnEdit({
+      account: values.account, date: date.toDate(), recordId, editedRecord: editedIncome,
+    });
+    if (!response) {
+      console.error(`Records of local storage not found by the account: ${values.account}`);
+      return;
     }
+    const { newRecords: newRecordsOrdered, recordLocalStorage, recordAgeStatusKey } = response;
+    let newRecords: RecordRedux[] = newRecordsOrdered;
+
+    if (expensesPaid && expensesPaid.length > 0) {
+      const expensesIds = expensesPaid.map((expense) => expense._id);
+      newRecords = newRecords.map((record) => {
+        if (expensesIds.includes(record._id)) {
+          return { ...record, isPaid: true };
+        }
+        return record;
+      });
+    }
+
+    // Set old previous expenses to not paid
+    if (previousExpensesRelated.length > 0) {
+      console.log('previousExpensesRelated', previousExpensesRelated);
+      const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
+      newRecords = newRecords.map((record) => {
+        if (oldExpensesIds.includes(record._id)) {
+          return { ...record, isPaid: false };
+        }
+        return record;
+      });
+    }
+
+    const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+      newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
+    });
+
+    const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedIncome.account);
+    if (filteredRecordsWithoutCurrentAccount.length === 0) {
+      console.error(`local records of the account ${editedIncome.account} not found`);
+      return;
+    }
+
+    filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
+    dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
+    dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+    addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
+
+    // Modify amount of the account
+    const isExpense = isCreateExpense(values);
+    updateAmountAccountOnEditRecord({
+      amount: editedIncome.amount, isExpense, previousAmount, accountId: editedIncome.account, isGuestUser: true,
+    });
+
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Record updated',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
+
+    // Navigate to dashboard
+    navigate(DASHBOARD_ROUTE);
   };
 
   const createExpense = async (values: CreateExpenseValues) => {
