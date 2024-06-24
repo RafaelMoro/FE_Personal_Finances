@@ -19,9 +19,9 @@ export const getAgeLocalRecord = (
   return 'olderRecords';
 };
 
-export const setRecordsUnPaid = (record: RecordRedux, expensesIds: string[]) => {
+export const updateRecordPaymentStatus = ({ record, expensesIds, paid }: { record: RecordRedux, expensesIds: string[], paid: boolean }) => {
   if (expensesIds.includes(record._id)) {
-    return { ...record, isPaid: false };
+    return { ...record, isPaid: paid };
   }
   return record;
 };

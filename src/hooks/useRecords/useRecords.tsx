@@ -49,7 +49,7 @@ import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/acti
 import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
 import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
-import { isCreateExpense, setRecordsUnPaid } from './utils';
+import { isCreateExpense, updateRecordPaymentStatus } from './utils';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -479,9 +479,15 @@ const useRecords = ({
       // Get expenses ids
       // Map records from currentMonth, lastMonth, olderRecords and set isPaid to false
       const expensesIds = expensesPaid.map((expense) => expense._id);
-      const currentMonthRecords = newRecordLocalStorage.records.currentMonth.map((record) => setRecordsUnPaid(record, expensesIds));
-      const lastMonthRecords = newRecordLocalStorage.records.lastMonth.map((record) => setRecordsUnPaid(record, expensesIds));
-      const olderRecords = newRecordLocalStorage.records.olderRecords.map((record) => setRecordsUnPaid(record, expensesIds));
+      const currentMonthRecords = newRecordLocalStorage.records.currentMonth.map(
+        (record) => updateRecordPaymentStatus({ record, expensesIds, paid: false }),
+      );
+      const lastMonthRecords = newRecordLocalStorage.records.lastMonth.map(
+        (record) => updateRecordPaymentStatus({ record, expensesIds, paid: false }),
+      );
+      const olderRecords = newRecordLocalStorage.records.olderRecords.map(
+        (record) => updateRecordPaymentStatus({ record, expensesIds, paid: false }),
+      );
       newRecordLocalStorage = {
         ...newRecordLocalStorage,
         records: {
