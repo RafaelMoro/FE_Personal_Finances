@@ -456,6 +456,34 @@ const useRecords = ({
     return 'Redux state and local storage updated';
   };
 
+  const deleteLocalRecord = ({ recordId, account, date }: { recordId: string, account: string, date: Date }) => {
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === account);
+    if (!recordLocalStorage) {
+      console.error(`Records of local storage not found by the account: ${account}`);
+      return null;
+    }
+    const recordAgeStatusKey = getRecordAgeStatus(date);
+    const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
+    const newRecordLocalStorage: RecordsLocalStorage = {
+      ...recordLocalStorage,
+      records: {
+        ...recordLocalStorage.records,
+        [recordAgeStatusKey]: recordsFiltered,
+      },
+    };
+
+    const allRecordsLocalStorage = (recordsLocalStorage ?? []).filter((record) => record.account !== account);
+    if (!allRecordsLocalStorage) {
+      return null;
+    }
+    allRecordsLocalStorage.push(newRecordLocalStorage);
+
+    return {
+      newRecordLocalStorage,
+      allRecordsLocalStorage,
+    };
+  };
+
   const createExpenseIncomeLocalStorage = (values: CreateExpenseValues | CreateIncomeValues) => {
     // this could be part of a hook formatting the expense
     const { category, date } = values;
@@ -863,19 +891,31 @@ const useRecords = ({
     }
   };
 
-  const deleteRecord = async ({ deleteTransfer }: { deleteTransfer?: boolean; }) => {
+  const deleteRecord = async ({ deleteTransfer, isGuestUser }: { deleteTransfer?: boolean; isGuestUser: boolean; }) => {
     try {
       const amountOfRecord = recordToBeDeleted?.amount as number;
       const recordId = recordToBeDeleted?._id as string;
       const accountRecord = recordToBeDeleted?.account as string;
+      const date = recordToBeDeleted?.date as Date;
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
-      await deleteRecordMutation({ values: valuesDeleteRecord, route, bearerToken });
+      if (isGuestUser) {
+        const response = deleteLocalRecord({ recordId, account: accountRecord, date });
+        if (!response) {
+          return;
+        }
+        const { newRecordLocalStorage, allRecordsLocalStorage } = response;
+        dispatch(saveRecordsLocalStorage(allRecordsLocalStorage));
+        dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+        addToLocalStorage({ newInfo: allRecordsLocalStorage, prop: 'records' });
+      } else {
+        await deleteRecordMutation({ values: valuesDeleteRecord, route, bearerToken });
+      }
 
       // Update Amount of the account.
       const updateAmount = await updateAmountAccount({
-        amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true, accountId: accountRecord,
+        amount: amountOfRecord, isExpense: deleteRecordExpense ?? false, deleteRecord: true, accountId: accountRecord, isGuestUser,
       });
       // If there's an error while updating the account, return
       if (updateAmount !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) {
