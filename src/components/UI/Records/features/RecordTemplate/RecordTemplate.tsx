@@ -226,6 +226,15 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
     }
 
     if (edit) {
+      const expensesPaid = newValues?.expensesPaid;
+      // Format expenses as the new expenses selected are type ExpensePaid but the old ones are type ExpensePaidRedux
+      const expensesPaidFormatted = expensesPaid.map((expense: { date: string | Date; }) => {
+        if (typeof expense.date === 'string') {
+          return { ...expense, date: new Date(expense.date) };
+        }
+        return expense;
+      });
+      const formattedValues = { ...newValues, expensesPaid: expensesPaidFormatted };
       const recordId = recordToBeEdited?._id ?? '';
       const previousAmount = recordToBeEdited?.amount ?? 0;
       const previousExpensesRelated = recordToBeEdited?.expensesPaid ?? [];
@@ -234,7 +243,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
       const payload: EditIncomeProps = {
-        values: newValues,
+        values: formattedValues,
         recordId,
         amountTouched,
         previousAmount,
