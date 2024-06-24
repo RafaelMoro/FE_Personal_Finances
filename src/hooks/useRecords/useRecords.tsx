@@ -611,16 +611,13 @@ const useRecords = ({
       newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
     });
 
-    const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedIncome.account);
-    if (filteredRecordsWithoutCurrentAccount.length === 0) {
+    const updateReduxLocalStorageResponse = updateStoreStorageOnEditLocalRecord({
+      account: editedIncome.account, newRecords: newRecordLocalStorage,
+    });
+    if (!updateReduxLocalStorageResponse) {
       console.error(`local records of the account ${editedIncome.account} not found`);
       return;
     }
-
-    filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
-    dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
-    dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
-    addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
 
     // Modify amount of the account
     const isExpense = isCreateExpense(values);
