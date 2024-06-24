@@ -14,7 +14,7 @@ import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
 import {
-  Category, ExpensePaidRedux, GeneralError, RecordRedux,
+  Category, ExpensePaid, ExpensePaidRedux, GeneralError, RecordRedux,
 } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
@@ -49,7 +49,7 @@ import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/acti
 import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
 import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
-import { isCreateExpense } from './utils';
+import { isCreateExpense, setRecordsUnPaid } from './utils';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -456,7 +456,10 @@ const useRecords = ({
     return 'Redux state and local storage updated';
   };
 
-  const deleteLocalRecord = ({ recordId, account, date }: { recordId: string, account: string, date: Date }) => {
+  const deleteLocalRecord = ({
+    recordId, account, date, expensesPaid,
+  }
+  : { recordId: string, account: string, date: Date, expensesPaid: ExpensePaid[] }) => {
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === account);
     if (!recordLocalStorage) {
       console.error(`Records of local storage not found by the account: ${account}`);
@@ -464,13 +467,30 @@ const useRecords = ({
     }
     const recordAgeStatusKey = getRecordAgeStatus(date);
     const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
-    const newRecordLocalStorage: RecordsLocalStorage = {
+    let newRecordLocalStorage: RecordsLocalStorage = {
       ...recordLocalStorage,
       records: {
         ...recordLocalStorage.records,
         [recordAgeStatusKey]: recordsFiltered,
       },
     };
+
+    if (expensesPaid.length > 0) {
+      // Get expenses ids
+      // Map records from currentMonth, lastMonth, olderRecords and set isPaid to false
+      const expensesIds = expensesPaid.map((expense) => expense._id);
+      const currentMonthRecords = newRecordLocalStorage.records.currentMonth.map((record) => setRecordsUnPaid(record, expensesIds));
+      const lastMonthRecords = newRecordLocalStorage.records.lastMonth.map((record) => setRecordsUnPaid(record, expensesIds));
+      const olderRecords = newRecordLocalStorage.records.olderRecords.map((record) => setRecordsUnPaid(record, expensesIds));
+      newRecordLocalStorage = {
+        ...newRecordLocalStorage,
+        records: {
+          currentMonth: currentMonthRecords,
+          lastMonth: lastMonthRecords,
+          olderRecords,
+        },
+      };
+    }
 
     const allRecordsLocalStorage = (recordsLocalStorage ?? []).filter((record) => record.account !== account);
     if (!allRecordsLocalStorage) {
@@ -897,11 +917,14 @@ const useRecords = ({
       const recordId = recordToBeDeleted?._id as string;
       const accountRecord = recordToBeDeleted?.account as string;
       const date = recordToBeDeleted?.date as Date;
+      const expensesRelated = recordToBeDeleted?.expensesPaid ?? [];
       const valuesDeleteRecord: DeleteRecordProps = { recordId };
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
       if (isGuestUser) {
-        const response = deleteLocalRecord({ recordId, account: accountRecord, date });
+        const response = deleteLocalRecord({
+          recordId, account: accountRecord, date, expensesPaid: expensesRelated,
+        });
         if (!response) {
           return;
         }
