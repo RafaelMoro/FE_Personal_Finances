@@ -381,11 +381,28 @@ const useRecords = ({
   const editLocalRecord = (payload: EditExpenseProps, category: Category) => {
     const { values, recordId, userId } = payload;
     const { date } = values;
+    const expensesPaid = (values as CreateIncomeValues)?.expensesPaid;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const amountFormatted = formatValueToCurrency({ amount: values.amount });
 
-    const newExpense: RecordRedux = {
-      ...values,
+    if (isCreateExpense(values)) {
+      const newExpense: RecordRedux = {
+        ...values,
+        _id: recordId,
+        category,
+        userId,
+        date: date.toISOString(),
+        formattedTime,
+        fullDate,
+        amountFormatted,
+        typeOfRecord: 'expense',
+        expensesPaid: undefined,
+      };
+      return newExpense;
+    }
+
+    const newIncome: RecordRedux = {
+      ...(values as CreateIncomeValues),
       _id: recordId,
       category,
       userId,
@@ -393,9 +410,19 @@ const useRecords = ({
       formattedTime,
       fullDate,
       amountFormatted,
-      typeOfRecord: 'expense',
+      expensesPaid: [],
+      typeOfRecord: 'income',
     };
-    return newExpense;
+
+    if (expensesPaid && expensesPaid.length > 0) {
+      const newExpensesRelated: ExpensePaidRedux[] = expensesPaid.map((rec) => ({ ...rec, date: rec.date.toISOString() }));
+      const incomeFormatted: RecordRedux = {
+        ...newIncome,
+        expensesPaid: newExpensesRelated,
+      };
+      return incomeFormatted;
+    }
+    return newIncome;
   };
 
   const createExpenseIncomeLocalStorage = (values: CreateExpenseValues | CreateIncomeValues) => {
@@ -527,7 +554,6 @@ const useRecords = ({
       let newRecords: RecordRedux[] = [...recordsFiltered, editedIncome].sort(sortByDate);
 
       if (expensesPaid && expensesPaid.length > 0) {
-        console.log('expensesPaid', expensesPaid);
         const expensesIds = expensesPaid.map((expense) => expense._id);
         newRecords = newRecords.map((record) => {
           if (expensesIds.includes(record._id)) {
