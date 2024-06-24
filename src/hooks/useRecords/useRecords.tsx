@@ -23,11 +23,17 @@ import {
   Actions,
   CreateTransferProps,
   GetNewRecordsClassifiedByAgeProps,
+  GetRecordAgeStatusResponse,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
   DeleteRecordProps, EditExpenseValues, EditIncomeValues, UpdateRelatedExpensesValues, UpdateTotalExpenseIncomePayload,
 } from '../../redux/slices/Records/interface';
+import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
+import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
+import { GUEST_USER_ID } from '../useGuestUser/constants';
+import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
+import { isCreateExpense, updateRecordPaymentStatus } from './utils';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useDate } from '../useDate';
@@ -45,11 +51,6 @@ import {
   saveRecordsLocalStorage,
   saveRecordsLocalStorageSelectedAccount,
 } from '../../redux/slices/Records';
-import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/actions';
-import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
-import { GUEST_USER_ID } from '../useGuestUser/constants';
-import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
-import { isCreateExpense, updateRecordPaymentStatus } from './utils';
 
 const useRecords = ({
   recordToBeDeleted, deleteRecordExpense, closeDeleteRecordModalCb = () => {}, closeDrawer = () => {},
@@ -273,17 +274,26 @@ const useRecords = ({
     }
   };
 
-  const getRecordAgeStatus = (date: Date): RecordAgeStatusKey => {
+  const getRecordAgeStatus = (date: Date): GetRecordAgeStatusResponse => {
     // Get month details
     const { isLastMonth, isCurrentMonth } = getMonthDetails(date);
     // Evaluate if the record is from the current month or last month or older
     if (isCurrentMonth) {
-      return 'currentMonth';
+      return {
+        recordAgeStatusKey: 'currentMonth',
+        missingStatus: ['lastMonth', 'olderRecords'],
+      };
     }
     if (isLastMonth) {
-      return 'lastMonth';
+      return {
+        recordAgeStatusKey: 'lastMonth',
+        missingStatus: ['currentMonth', 'olderRecords'],
+      };
     }
-    return 'olderRecords';
+    return {
+      recordAgeStatusKey: 'olderRecords',
+      missingStatus: ['currentMonth', 'lastMonth'],
+    };
   };
 
   const getNewRecordsClassifiedByAge = ({
@@ -433,7 +443,7 @@ const useRecords = ({
     if (!recordLocalStorage) {
       return null;
     }
-    const recordAgeStatusKey = getRecordAgeStatus(date);
+    const { recordAgeStatusKey } = getRecordAgeStatus(date);
     const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
     const newRecords: RecordRedux[] = [...recordsFiltered, editedRecord].sort(sortByDate);
     return {
@@ -465,7 +475,7 @@ const useRecords = ({
       console.error(`Records of local storage not found by the account: ${account}`);
       return null;
     }
-    const recordAgeStatusKey = getRecordAgeStatus(date);
+    const { recordAgeStatusKey } = getRecordAgeStatus(date);
     const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
     let newRecordLocalStorage: RecordsLocalStorage = {
       ...recordLocalStorage,
@@ -523,7 +533,7 @@ const useRecords = ({
     // Save in local storage and redux
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
     if (recordLocalStorage) {
-      const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      const { recordAgeStatusKey } = getRecordAgeStatus(date.toDate());
       const { expensesPaid = [] } = newRecord;
       // Add new expense and sort records by date.
       let newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);

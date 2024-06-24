@@ -80,3 +80,8 @@ export interface GetNewRecordsClassifiedByAgeProps {
   recordLocalStorage: RecordsLocalStorage;
   recordAgeStatusKey: RecordAgeStatusKey;
 }
+
+export interface GetRecordAgeStatusResponse {
+  recordAgeStatusKey: RecordAgeStatusKey;
+  missingStatus: RecordAgeStatusKey[];
+}
