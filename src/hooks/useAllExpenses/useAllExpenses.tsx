@@ -19,20 +19,38 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
   const recordsLocalStorageSelectedAccount = recordsLocalStorage?.find((record) => record.account === selectedAccountId);
 
   const [localRecords, setLocalRecords] = useState<Expense[]>([]);
+  const [noExpensesFound, setNoExpensesFound] = useState<boolean>(false);
+
+  const toggleNoExpensesFound = () => {
+    setNoExpensesFound((prevState) => !prevState);
+  };
 
   useEffect(() => {
     if (isGuestUser && recordsLocalStorage) {
       const fetchedLocalRecords = getLocalRecords({
-        month, lastMonth, currentMonth, year, recordsLocalStorageSelectedAccount,
+        month,
+        lastMonth,
+        currentMonth,
+        year,
+        recordsLocalStorageSelectedAccount,
+        toggleNoExpensesFound,
+        noExpensesFound,
       });
       setLocalRecords(fetchedLocalRecords);
     }
-  }, [currentMonth, isGuestUser, lastMonth, month, recordsLocalStorage, recordsLocalStorageSelectedAccount, year]);
+  }, [currentMonth, isGuestUser, lastMonth, month, noExpensesFound, recordsLocalStorage, recordsLocalStorageSelectedAccount, year]);
 
   const { isFetching, isError, currentData } = useGetExpensesQuery(
     { route: fullRoute, bearerToken },
     { skip: (!bearerToken || !selectedAccountId || isGuestUser) },
   );
+
+  useEffect(() => {
+    if (currentData?.message === 'No expenses found.') {
+      toggleNoExpensesFound();
+    }
+  }, [currentData?.message]);
+
   const onlyExpensesIncomes = useMemo(
     () => (currentData?.records ?? []).filter((record) => record.typeOfRecord === 'expense'),
     [currentData?.records],
@@ -42,7 +60,7 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
 
   return {
     expenses: recordsToShow,
-    noExpensesFound: currentData?.message === 'No expenses found.',
+    noExpensesFound,
     isError,
     loading: isFetching,
   };
