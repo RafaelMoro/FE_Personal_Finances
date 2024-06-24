@@ -443,6 +443,19 @@ const useRecords = ({
     };
   };
 
+  const updateStoreStorageOnEditLocalRecord = ({ account, newRecords }: { account: string, newRecords: RecordsLocalStorage }) => {
+    const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== account);
+    if (!filteredRecordsWithoutCurrentAccount) {
+      return null;
+    }
+    filteredRecordsWithoutCurrentAccount.push(newRecords);
+    dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
+    dispatch(saveRecordsLocalStorageSelectedAccount(newRecords));
+    addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
+
+    return 'Redux state and local storage updated';
+  };
+
   const createExpenseIncomeLocalStorage = (values: CreateExpenseValues | CreateIncomeValues) => {
     // this could be part of a hook formatting the expense
     const { category, date } = values;
@@ -526,16 +539,13 @@ const useRecords = ({
       newRecords, newRecord: editedExpense, recordLocalStorage, recordAgeStatusKey,
     });
 
-    const filteredRecordsWithoutCurrentAccount = (recordsLocalStorage ?? []).filter((record) => record.account !== editedExpense.account);
-    if (filteredRecordsWithoutCurrentAccount.length === 0) {
+    const updateReduxLocalStorageResponse = updateStoreStorageOnEditLocalRecord({
+      account: editedExpense.account, newRecords: newRecordLocalStorage,
+    });
+    if (!updateReduxLocalStorageResponse) {
       console.error(`local records of the account ${editedExpense.account} not found`);
       return;
     }
-
-    filteredRecordsWithoutCurrentAccount.push(newRecordLocalStorage);
-    dispatch(saveRecordsLocalStorage(filteredRecordsWithoutCurrentAccount));
-    dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
-    addToLocalStorage({ newInfo: filteredRecordsWithoutCurrentAccount, prop: 'records' });
 
     // Modify amount of the account
     const isExpense = isCreateExpense(values);
@@ -588,7 +598,6 @@ const useRecords = ({
 
     // Set old previous expenses to not paid
     if (previousExpensesRelated.length > 0) {
-      console.log('previousExpensesRelated', previousExpensesRelated);
       const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
       newRecords = newRecords.map((record) => {
         if (oldExpensesIds.includes(record._id)) {
