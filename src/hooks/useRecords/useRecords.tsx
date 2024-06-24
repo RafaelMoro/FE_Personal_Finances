@@ -412,8 +412,21 @@ const useRecords = ({
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      const { expensesPaid = [] } = newRecord;
       // Add new expense and sort records by date.
-      const newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
+      let newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
+
+      // If income, update expenses selected
+      if (expensesPaid && expensesPaid.length > 0) {
+        const expensesIds = expensesPaid.map((expense) => expense._id);
+        newRecords = newRecords.map((record) => {
+          if (expensesIds.includes(record._id)) {
+            return { ...record, isPaid: true };
+          }
+          return record;
+        });
+      }
+
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({
         newRecords, newRecord, recordLocalStorage, recordAgeStatusKey,
       });
