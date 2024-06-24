@@ -8,6 +8,7 @@ import { addToLocalStorage, formatAccounts } from '../../utils';
 import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from './constants';
 import { useGuestUserMocks } from './useGuestUserMocks';
+import { transformRecordReduxtoAnyRecord } from './utils';
 
 const useGuestUser = () => {
   const dispatch = useAppDispatch();
@@ -16,14 +17,8 @@ const useGuestUser = () => {
   const recordsLocalStorageSelectedAccount = useAppSelector((state) => state.records.recordsLocalStorageSelectedAccount);
   const recordsLocalStorageCurrentMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.currentMonth ?? [];
   const recordsLocalStorageLastMonth: RecordRedux[] = recordsLocalStorageSelectedAccount?.records?.lastMonth ?? [];
-  const recordsCurrentMonthLocalStorage: AnyRecord[] = recordsLocalStorageCurrentMonth.map((recordSaved) => ({
-    ...recordSaved,
-    date: new Date(recordSaved.date),
-  }));
-  const recordsLastMonthLocalStorage: AnyRecord[] = recordsLocalStorageLastMonth.map((recordSaved) => ({
-    ...recordSaved,
-    date: new Date(recordSaved.date),
-  }));
+  const recordsCurrentMonthLocalStorage: AnyRecord[] = recordsLocalStorageCurrentMonth.map(transformRecordReduxtoAnyRecord);
+  const recordsLastMonthLocalStorage: AnyRecord[] = recordsLocalStorageLastMonth.map(transformRecordReduxtoAnyRecord);
   const {
     recordsAmericanExpress, recordsDebitAccount, accounts, guestUser,
   } = useGuestUserMocks();

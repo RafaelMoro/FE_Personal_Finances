@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
 import { AllCategoryIcons } from '../../../Icons/interface';
-import { RecordRedux } from '../../../../../globalInterface';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
@@ -29,6 +28,7 @@ import {
   PaymentStatusChipDrawer,
   TransferInformation,
 } from './RecordDrawer.styled';
+import { transformAnyRecordToRecordRedux } from '../../../../../hooks/useGuestUser/utils';
 
 const RecordDrawer = ({
   record, amountShown, expensesPaid, chipColor, onCloseCb = () => {}, openDeleteRecordModal = () => {},
@@ -54,7 +54,7 @@ const RecordDrawer = ({
   const handleEditRecord = () => {
     if (isGuestUser) {
       // Redux cannot have serialized values like date type Date
-      const recordModified: RecordRedux = { ...record, date: record.date.toISOString() };
+      const recordModified = transformAnyRecordToRecordRedux(record);
       // If it's a guest user, use a record redux, otherwise, use record.
       dispatch(setRecordToBeModified(recordModified));
       // Update local storage

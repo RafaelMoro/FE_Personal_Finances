@@ -151,6 +151,7 @@ const useGuestUserMocks = () => {
           amountFormatted: '$15.49',
           fullDate: dateYesterday,
           formattedTime: yesterdayTime,
+          date: yesterday.toISOString(),
         },
       ],
     },

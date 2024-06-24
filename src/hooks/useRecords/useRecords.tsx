@@ -13,7 +13,9 @@ import { SystemStateEnum } from '../../enums';
 import {
   CreateExpenseValues, CreateIncomeValues,
 } from '../../components/UI/Records/interface';
-import { Category, GeneralError, RecordRedux } from '../../globalInterface';
+import {
+  Category, ExpensePaidRedux, GeneralError, RecordRedux,
+} from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
   UpdateAmountAccountOnEditProps, EditIncomeProps, EditExpenseProps,
@@ -319,6 +321,7 @@ const useRecords = ({
 
   const createLocalRecord = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
     const { date, subCategory } = values;
+    const expensesPaid = (values as CreateIncomeValues)?.expensesPaid;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const dateFormatted = date.toISOString();
     const newId = window.crypto.randomUUID();
@@ -341,11 +344,30 @@ const useRecords = ({
       return newExpense;
     }
 
+    if (expensesPaid.length > 0) {
+      const newExpensesRelated: ExpensePaidRedux[] = expensesPaid.map((rec) => ({ ...rec, date: rec.date.toISOString() }));
+      const newIncome: RecordRedux = {
+        ...(values as CreateIncomeValues),
+        date: dateFormatted,
+        _id: newId,
+        amountFormatted,
+        category,
+        subCategory,
+        userId: GUEST_USER_ID,
+        typeOfRecord: 'income',
+        expensesPaid: newExpensesRelated,
+        formattedTime,
+        fullDate,
+      };
+      return newIncome;
+    }
+
     const newIncome: RecordRedux = {
       ...(values as CreateIncomeValues),
       date: dateFormatted,
       _id: newId,
       amountFormatted,
+      expensesPaid: [],
       category,
       subCategory,
       userId: GUEST_USER_ID,

@@ -148,7 +148,11 @@ export interface ExpensePaid {
   formattedTime: string;
   fullDate: string;
   isPaid: boolean;
-  date?: Date;
+  date: Date;
+}
+
+export interface ExpensePaidRedux extends Omit<ExpensePaid, 'date'> {
+  date: string;
 }
 
 export interface AnyRecord extends AccountRecord {
@@ -157,8 +161,9 @@ export interface AnyRecord extends AccountRecord {
 }
 
 // We do not load records on redux but only the ones of local storage
-export interface RecordRedux extends Omit<AnyRecord, 'date'> {
+export interface RecordRedux extends Omit<AnyRecord, 'date' | 'expensesPaid'> {
   date: string;
+  expensesPaid?: ExpensePaidRedux[];
 }
 
 export interface MonthTotal {
