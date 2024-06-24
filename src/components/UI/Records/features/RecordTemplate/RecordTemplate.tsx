@@ -39,7 +39,7 @@ import { symmetricDifferenceExpensesRelated } from '../../../../../utils';
 import { resetLocalStorageWithUserOnly } from '../../../../../utils/LocalStorage';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
-import { EditExpenseProps } from '../../../../../hooks/useRecords/interface';
+import { EditExpenseProps, EditIncomeProps } from '../../../../../hooks/useRecords/interface';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -233,19 +233,7 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
 
       // Do symmetric difference to know what expenses should be edited as unpaid and what new records should be edited as paid.
       const { oldRecords } = symmetricDifferenceExpensesRelated(previousExpensesRelated, expensesSelected);
-      if (isGuestUser) {
-        editIncomeLocalStorage({
-          values: newValues,
-          recordId,
-          amountTouched,
-          previousAmount,
-          userId: userIdRecord,
-          accountId: (selectedAccount?._id ?? ''),
-        });
-        return;
-      }
-      resetLocalStorageWithUserOnly();
-      editIncome({
+      const payload: EditIncomeProps = {
         values: newValues,
         recordId,
         amountTouched,
@@ -253,7 +241,13 @@ const RecordTemplate = ({ edit = false, typeOfRecord }: RecordTemplateProps) => 
         previousExpensesRelated: oldRecords,
         userId: userIdRecord,
         accountId: (selectedAccount?._id ?? ''),
-      });
+      };
+      if (isGuestUser) {
+        editIncomeLocalStorage(payload);
+        return;
+      }
+      resetLocalStorageWithUserOnly();
+      editIncome(payload);
       return;
     }
     if (isGuestUser) {

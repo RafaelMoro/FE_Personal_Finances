@@ -507,8 +507,10 @@ const useRecords = ({
     }
   };
 
-  const editIncomeLocalStorage = (payload: EditExpenseProps) => {
-    const { values, recordId, previousAmount } = payload;
+  const editIncomeLocalStorage = (payload: EditIncomeProps) => {
+    const {
+      values, recordId, previousAmount, previousExpensesRelated,
+    } = payload;
     const { category, date } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
@@ -520,8 +522,33 @@ const useRecords = ({
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === values.account);
     if (recordLocalStorage) {
       const recordAgeStatusKey = getRecordAgeStatus(date.toDate());
+      const { expensesPaid = [] } = editedIncome;
       const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
-      const newRecords: RecordRedux[] = [...recordsFiltered, editedIncome].sort(sortByDate);
+      let newRecords: RecordRedux[] = [...recordsFiltered, editedIncome].sort(sortByDate);
+
+      if (expensesPaid && expensesPaid.length > 0) {
+        console.log('expensesPaid', expensesPaid);
+        const expensesIds = expensesPaid.map((expense) => expense._id);
+        newRecords = newRecords.map((record) => {
+          if (expensesIds.includes(record._id)) {
+            return { ...record, isPaid: true };
+          }
+          return record;
+        });
+      }
+
+      // Set old previous expenses to not paid
+      if (previousExpensesRelated.length > 0) {
+        console.log('previousExpensesRelated', previousExpensesRelated);
+        const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
+        newRecords = newRecords.map((record) => {
+          if (oldExpensesIds.includes(record._id)) {
+            return { ...record, isPaid: false };
+          }
+          return record;
+        });
+      }
+
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({
         newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
       });
