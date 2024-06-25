@@ -541,58 +541,68 @@ const useRecords = ({
     return 'Redux state and local storage updated';
   };
 
-  const updateStoreStorageOnCreateLocalTransfer = ({
-    account, date, newRecord,
-  }: { account: string, date: Date, newRecord: RecordRedux }) => {
-    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === account);
-    console.log('recordLocalStorage', recordLocalStorage);
+  const getRecordsLocalStorageInfo = ({
+    newRecord, isIncome, date,
+  }: { newRecord: RecordRedux, date: Date, isIncome?: boolean; }) => {
+    const incomeLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
     let recordLocalStorageModified: RecordsLocalStorage | null = null;
-    if (recordLocalStorage) {
-      const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
-      const { expensesPaid = [] } = newRecord;
-      // Add new expense and sort records by date.
-      let newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
-      console.log('newRecords', newRecords);
-
-      // If income, update expenses selected
-      if (expensesPaid && expensesPaid.length > 0) {
-        const expensesIds = expensesPaid.map((expense) => expense._id);
-        // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
-        newRecords = newRecords.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }));
-        const updatedRecords = recordLocalStorage.records[missingStatus[0]].map(
-          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
-        );
-        const moreUpdatedRecords = recordLocalStorage.records[missingStatus[1]].map(
-          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
-        );
-        recordLocalStorageModified = {
-          ...recordLocalStorage,
-          records: {
-            ...recordLocalStorage.records,
-            [recordAgeStatusKey]: newRecords,
-            [missingStatus[0]]: updatedRecords,
-            [missingStatus[1]]: moreUpdatedRecords,
-          },
-        };
-      }
-
-      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-        newRecords, newRecord, recordLocalStorage: recordLocalStorageModified ?? recordLocalStorage, recordAgeStatusKey,
-      });
-      console.log('newRecordLocalStorage', newRecordLocalStorage);
-      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newRecord.account);
-      console.log('filteredRecords before push', filteredRecords);
-      if (filteredRecords.length === 0) {
-        console.error(`local records of the account ${newRecord.account} not found`);
-        return;
-      }
-
-      filteredRecords.push(newRecordLocalStorage);
-      console.log('filteredRecords', filteredRecords);
-      dispatch(saveRecordsLocalStorage(filteredRecords));
-      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
-      addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+    if (!incomeLocalStorage) {
+      return null;
     }
+    const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
+    const { expensesPaid = [] } = newRecord;
+    // Add new expense and sort records by date.
+    let newRecords: RecordRedux[] = [...incomeLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
+
+    // If income, update expenses selected
+    if (isIncome && expensesPaid && expensesPaid.length > 0) {
+      const expensesIds = expensesPaid.map((currentExpense) => currentExpense._id);
+      // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
+      newRecords = newRecords.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }));
+      const updatedRecords = incomeLocalStorage.records[missingStatus[0]].map(
+        (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
+      );
+      const moreUpdatedRecords = incomeLocalStorage.records[missingStatus[1]].map(
+        (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
+      );
+      recordLocalStorageModified = {
+        ...incomeLocalStorage,
+        records: {
+          ...incomeLocalStorage.records,
+          [recordAgeStatusKey]: newRecords,
+          [missingStatus[0]]: updatedRecords,
+          [missingStatus[1]]: moreUpdatedRecords,
+        },
+      };
+    }
+
+    const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+      newRecords, newRecord, recordLocalStorage: recordLocalStorageModified ?? incomeLocalStorage, recordAgeStatusKey,
+    });
+    return newRecordLocalStorage;
+  };
+
+  const updateStoreStorageOnCreateLocalTransfer = ({
+    date, expense, income,
+  }: { date: Date, expense: RecordRedux, income: RecordRedux }) => {
+    const expenseLocalStorage = getRecordsLocalStorageInfo({ newRecord: expense, date });
+    if (!expenseLocalStorage) {
+      console.log('Error while formatting expense local storage');
+      return;
+    }
+
+    const incomeLocalStorage = getRecordsLocalStorageInfo({ newRecord: income, date, isIncome: true });
+    if (!incomeLocalStorage) {
+      console.log('Error while formatting income local storage');
+      return;
+    }
+    const filteredRecords = (recordsLocalStorage ?? [])
+      .filter((record) => (record.account !== income.account) && (record.account !== expense.account));
+    filteredRecords.push(expenseLocalStorage, incomeLocalStorage);
+
+    dispatch(saveRecordsLocalStorage(filteredRecords));
+    dispatch(saveRecordsLocalStorageSelectedAccount(expenseLocalStorage));
+    addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
   };
 
   const deleteLocalRecord = ({
@@ -887,8 +897,7 @@ const useRecords = ({
     console.log('expense', expense);
     console.log('income', income);
 
-    updateStoreStorageOnCreateLocalTransfer({ newRecord: expense, account: expense.account, date: valuesExpense.date.toDate() });
-    updateStoreStorageOnCreateLocalTransfer({ newRecord: income, account: income.account, date: valuesIncome.date.toDate() });
+    updateStoreStorageOnCreateLocalTransfer({ expense, income, date: valuesExpense.date.toDate() });
 
     updateAmountAccount({
       amount: expense.amount, isExpense: true, accountId: expense.account, isGuestUser: true,
