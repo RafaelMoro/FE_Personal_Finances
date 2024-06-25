@@ -894,8 +894,6 @@ const useRecords = ({
       return;
     }
     const { expense, income } = formatCreateTransfer({ income: valuesIncome, expense: valuesExpense, category: categoryFound });
-    console.log('expense', expense);
-    console.log('income', income);
 
     updateStoreStorageOnCreateLocalTransfer({ expense, income, date: valuesExpense.date.toDate() });
 
