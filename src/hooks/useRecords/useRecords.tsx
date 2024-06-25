@@ -750,14 +750,8 @@ const useRecords = ({
 
   const createTransfer = async ({ valuesExpense, valuesIncome }: CreateTransferProps) => {
     try {
-      const { amount: amountExpense, date: dateValue, account: accountExpense } = valuesExpense;
-      const { amount: amountIncome, account: accountIncome } = valuesIncome;
-      const date = dateValue.toDate();
-
-      // Format date and determine if the record from what period is: currentMonth, lastMonth, older
-      const { monthFormatted } = formatDateToString(date);
-      const isLastMonth = lastMonth === monthFormatted;
-      const isCurrentMonth = currentMonth === monthFormatted;
+      const { amount: amountExpense, date: dateExpense, account: accountExpense } = valuesExpense;
+      const { amount: amountIncome, account: accountIncome, date: dateIncome } = valuesIncome;
 
       await createTransferMutation({ values: { expense: valuesExpense, income: valuesIncome }, bearerToken }).unwrap();
 
@@ -768,36 +762,8 @@ const useRecords = ({
       const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false, accountId: accountIncome });
       if (updateAmountDestinationAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
-      // Update amount of total records
-      if (isCurrentMonth) {
-        const payloadExpense = updateTotalCurrency({
-          currentTotal: totalRecords.currentMonth.expenseTotal,
-          newAmount: amountExpense,
-          recordAgeCategory: 'Current Month',
-        });
-        const payloadIncome = updateTotalCurrency({
-          currentTotal: totalRecords.currentMonth.incomeTotal,
-          newAmount: amountIncome,
-          recordAgeCategory: 'Current Month',
-        });
-        dispatch(updateTotalExpense(payloadExpense));
-        dispatch(updateTotalIncome(payloadIncome));
-      }
-
-      if (isLastMonth) {
-        const payloadExpense = updateTotalCurrency({
-          currentTotal: totalRecords.lastMonth.expenseTotal,
-          newAmount: amountIncome,
-          recordAgeCategory: 'Last month',
-        });
-        const payloadIncome = updateTotalCurrency({
-          currentTotal: totalRecords.lastMonth.incomeTotal,
-          newAmount: amountIncome,
-          recordAgeCategory: 'Last month',
-        });
-        dispatch(updateTotalExpense(payloadExpense));
-        dispatch(updateTotalIncome(payloadIncome));
-      }
+      updateTotalsExpense({ date: dateExpense.toDate(), amount: amountExpense });
+      updateTotalsIncome({ date: dateIncome.toDate(), amount: amountIncome });
 
       // Show success notification
       updateGlobalNotification({
