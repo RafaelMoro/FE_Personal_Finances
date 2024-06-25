@@ -25,3 +25,15 @@ export const updateRecordPaymentStatus = ({ record, expensesIds, paid }: { recor
   }
   return record;
 };
+
+export const updateEditedRecordStatus = ({
+  record, expensesIds, oldExpensesIds,
+}: { record: RecordRedux, expensesIds: string[], oldExpensesIds: string[] }) => {
+  if (expensesIds.includes(record._id)) {
+    return { ...record, isPaid: true };
+  }
+  if (oldExpensesIds.includes(record._id)) {
+    return { ...record, isPaid: false };
+  }
+  return record;
+};

@@ -33,7 +33,7 @@ import { useModifyAmountAccountMutation } from '../../redux/slices/Accounts/acti
 import { updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage } from '../../redux/slices/Accounts/accounts.slice';
 import { GUEST_USER_ID } from '../useGuestUser/constants';
 import { RecordsLocalStorage } from '../../utils/LocalStorage/interface';
-import { isCreateExpense, updateRecordPaymentStatus } from './utils';
+import { isCreateExpense, updateEditedRecordStatus, updateRecordPaymentStatus } from './utils';
 
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useDate } from '../useDate';
@@ -443,12 +443,13 @@ const useRecords = ({
     if (!recordLocalStorage) {
       return null;
     }
-    const { recordAgeStatusKey } = getRecordAgeStatus(date);
+    const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
     const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
     const newRecords: RecordRedux[] = [...recordsFiltered, editedRecord].sort(sortByDate);
     return {
       newRecords,
       recordAgeStatusKey,
+      missingStatus,
       recordLocalStorage,
     };
   };
@@ -659,36 +660,38 @@ const useRecords = ({
       console.error(`Records of local storage not found by the account: ${values.account}`);
       return;
     }
-    const { newRecords: newRecordsOrdered, recordLocalStorage, recordAgeStatusKey } = response;
-    let newRecords: RecordRedux[] = newRecordsOrdered;
-
-    if (expensesPaid && expensesPaid.length > 0) {
-      const expensesIds = expensesPaid.map((expense) => expense._id);
-      newRecords = newRecords.map((record) => {
-        if (expensesIds.includes(record._id)) {
-          return { ...record, isPaid: true };
-        }
-        return record;
-      });
-    }
-
-    // Set old previous expenses to not paid
-    if (previousExpensesRelated.length > 0) {
-      const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
-      newRecords = newRecords.map((record) => {
-        if (oldExpensesIds.includes(record._id)) {
-          return { ...record, isPaid: false };
-        }
-        return record;
-      });
-    }
+    const {
+      newRecords: newRecordsOrdered, recordLocalStorage, recordAgeStatusKey, missingStatus,
+    } = response;
+    const newRecords: RecordRedux[] = newRecordsOrdered;
 
     const newRecordLocalStorage = getNewRecordsClassifiedByAge({
       newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
     });
+    let updatedLocalStorage: RecordsLocalStorage | null = null;
+
+    if (expensesPaid && expensesPaid.length > 0) {
+      const expensesIds = expensesPaid.map((expense) => expense._id);
+      const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
+      updatedLocalStorage = {
+        ...newRecordLocalStorage,
+        records: {
+          ...newRecordLocalStorage.records,
+          [recordAgeStatusKey]: newRecordLocalStorage.records[recordAgeStatusKey].map(
+            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
+          ),
+          [missingStatus[0]]: newRecordLocalStorage.records[missingStatus[0]].map(
+            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
+          ),
+          [missingStatus[1]]: newRecordLocalStorage.records[missingStatus[1]].map(
+            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
+          ),
+        },
+      };
+    }
 
     const updateReduxLocalStorageResponse = updateStoreStorageOnEditLocalRecord({
-      account: editedIncome.account, newRecords: newRecordLocalStorage,
+      account: editedIncome.account, newRecords: updatedLocalStorage ?? newRecordLocalStorage,
     });
     if (!updateReduxLocalStorageResponse) {
       console.error(`local records of the account ${editedIncome.account} not found`);
