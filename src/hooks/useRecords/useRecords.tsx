@@ -329,7 +329,9 @@ const useRecords = ({
     };
   };
 
-  const formatCreateLocalRecord = (values: CreateExpenseValues | CreateIncomeValues, category: Category) => {
+  const formatCreateLocalRecord = ({
+    values, category,
+  }: { values: CreateExpenseValues | CreateIncomeValues, category: Category, }) => {
     const { date, subCategory } = values;
     const expensesPaid = (values as CreateIncomeValues)?.expensesPaid;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
@@ -386,6 +388,78 @@ const useRecords = ({
       fullDate,
     };
     return newIncome;
+  };
+
+  const formatCreateTransfer = ({
+    income, expense, category,
+  }: { income: CreateIncomeValues, expense: CreateExpenseValues, category: Category }) => {
+    const { date, subCategory } = expense;
+    const expensesPaid = (income as CreateIncomeValues)?.expensesPaid;
+    const { formattedTime, fullDate } = formatDateToString(date.toDate());
+    const dateFormatted = date.toISOString();
+    const transferId = window.crypto.randomUUID();
+
+    const amountFormatted = formatValueToCurrency({ amount: expense.amount });
+
+    const newExpense: RecordRedux = {
+      ...(expense as CreateExpenseValues),
+      transferRecord: {
+        transferId,
+        account: income.account,
+      },
+      date: dateFormatted,
+      _id: window.crypto.randomUUID(),
+      amountFormatted,
+      isPaid: false,
+      category,
+      subCategory,
+      userId: GUEST_USER_ID,
+      typeOfRecord: 'transfer',
+      formattedTime,
+      fullDate,
+    };
+
+    if (expensesPaid.length > 0) {
+      const newExpensesRelated: ExpensePaidRedux[] = expensesPaid.map((rec) => ({ ...rec, date: rec.date.toISOString() }));
+      const incomeWithExpenses: RecordRedux = {
+        ...(income as CreateIncomeValues),
+        transferRecord: {
+          transferId,
+          account: expense.account,
+        },
+        date: dateFormatted,
+        _id: window.crypto.randomUUID(),
+        amountFormatted,
+        category,
+        subCategory,
+        userId: GUEST_USER_ID,
+        typeOfRecord: 'transfer',
+        expensesPaid: newExpensesRelated,
+        formattedTime,
+        fullDate,
+      };
+      return { expense: newExpense, income: incomeWithExpenses };
+    }
+
+    const newIncome: RecordRedux = {
+      ...(income as CreateIncomeValues),
+      transferRecord: {
+        transferId,
+        account: expense.account,
+      },
+      expensesPaid: [],
+      date: dateFormatted,
+      _id: window.crypto.randomUUID(),
+      amountFormatted,
+      category,
+      subCategory,
+      userId: GUEST_USER_ID,
+      typeOfRecord: 'transfer',
+      formattedTime,
+      fullDate,
+    };
+
+    return { expense: newExpense, income: newIncome };
   };
 
   const formatEditLocalRecord = (payload: EditExpenseProps, category: Category) => {
@@ -467,6 +541,60 @@ const useRecords = ({
     return 'Redux state and local storage updated';
   };
 
+  const updateStoreStorageOnCreateLocalTransfer = ({
+    account, date, newRecord,
+  }: { account: string, date: Date, newRecord: RecordRedux }) => {
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === account);
+    console.log('recordLocalStorage', recordLocalStorage);
+    let recordLocalStorageModified: RecordsLocalStorage | null = null;
+    if (recordLocalStorage) {
+      const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
+      const { expensesPaid = [] } = newRecord;
+      // Add new expense and sort records by date.
+      let newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
+      console.log('newRecords', newRecords);
+
+      // If income, update expenses selected
+      if (expensesPaid && expensesPaid.length > 0) {
+        const expensesIds = expensesPaid.map((expense) => expense._id);
+        // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
+        newRecords = newRecords.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }));
+        const updatedRecords = recordLocalStorage.records[missingStatus[0]].map(
+          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
+        );
+        const moreUpdatedRecords = recordLocalStorage.records[missingStatus[1]].map(
+          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
+        );
+        recordLocalStorageModified = {
+          ...recordLocalStorage,
+          records: {
+            ...recordLocalStorage.records,
+            [recordAgeStatusKey]: newRecords,
+            [missingStatus[0]]: updatedRecords,
+            [missingStatus[1]]: moreUpdatedRecords,
+          },
+        };
+      }
+
+      const newRecordLocalStorage = getNewRecordsClassifiedByAge({
+        newRecords, newRecord, recordLocalStorage: recordLocalStorageModified ?? recordLocalStorage, recordAgeStatusKey,
+      });
+      console.log('newRecordLocalStorage', newRecordLocalStorage);
+      const filteredRecords = (recordsLocalStorage ?? []).filter((record) => record.account !== newRecord.account);
+      console.log('filteredRecords before push', filteredRecords);
+      if (filteredRecords.length === 0) {
+        console.error(`local records of the account ${newRecord.account} not found`);
+        return;
+      }
+
+      filteredRecords.push(newRecordLocalStorage);
+      console.log('filteredRecords', filteredRecords);
+      dispatch(saveRecordsLocalStorage(filteredRecords));
+      dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+      addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+    }
+  };
+
   const deleteLocalRecord = ({
     recordId, account, date, expensesPaid,
   }
@@ -529,7 +657,7 @@ const useRecords = ({
       console.error('Category not found while creating expense locally');
       return;
     }
-    const newRecord = formatCreateLocalRecord(values, categoryFound);
+    const newRecord = formatCreateLocalRecord({ values, category: categoryFound });
 
     // Save in local storage and redux
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
@@ -748,6 +876,38 @@ const useRecords = ({
     }
   };
 
+  const createTransferLocal = ({ valuesExpense, valuesIncome }: { valuesExpense: CreateExpenseValues; valuesIncome: CreateIncomeValues }) => {
+    const { category } = valuesExpense;
+    const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
+    if (!categoryFound) {
+      console.error('Category not found while creating expense locally');
+      return;
+    }
+    const { expense, income } = formatCreateTransfer({ income: valuesIncome, expense: valuesExpense, category: categoryFound });
+    console.log('expense', expense);
+    console.log('income', income);
+
+    updateStoreStorageOnCreateLocalTransfer({ newRecord: expense, account: expense.account, date: valuesExpense.date.toDate() });
+    updateStoreStorageOnCreateLocalTransfer({ newRecord: income, account: income.account, date: valuesIncome.date.toDate() });
+
+    updateAmountAccount({
+      amount: expense.amount, isExpense: true, accountId: expense.account, isGuestUser: true,
+    });
+    updateAmountAccount({
+      amount: income.amount, isExpense: false, accountId: income.account, isGuestUser: true,
+    });
+
+    // Show success notification
+    updateGlobalNotification({
+      newTitle: 'Transfer created',
+      newDescription: '',
+      newStatus: SystemStateEnum.Success,
+    });
+
+    // Navigate to dashboard
+    navigate(DASHBOARD_ROUTE);
+  };
+
   const createTransfer = async ({ valuesExpense, valuesIncome }: CreateTransferProps) => {
     try {
       const { amount: amountExpense, date: dateExpense, account: accountExpense } = valuesExpense;
@@ -759,7 +919,9 @@ const useRecords = ({
       const updateAmountOriginAccountResponse = await updateAmountAccount({ amount: amountExpense, isExpense: true, accountId: accountExpense });
       // If there's an error while updating the account, return
       if (updateAmountOriginAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
-      const updateAmountDestinationAccountResponse = await updateAmountAccount({ amount: amountIncome, isExpense: false, accountId: accountIncome });
+      const updateAmountDestinationAccountResponse = await updateAmountAccount({
+        amount: amountIncome, isExpense: false, accountId: accountIncome,
+      });
       if (updateAmountDestinationAccountResponse !== UPDATE_AMOUNT_ACCOUNT_SUCCESS_RESPONSE) return;
 
       updateTotalsExpense({ date: dateExpense.toDate(), amount: amountExpense });
@@ -992,6 +1154,7 @@ const useRecords = ({
     createTransfer,
     deleteRecord,
     createExpenseIncomeLocalStorage,
+    createTransferLocal,
     editExpenseLocalStorage,
     editIncomeLocalStorage,
     loadingDeleteRecord,

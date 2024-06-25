@@ -24,6 +24,7 @@ import { FormContainer, SecondaryButtonForm } from '../RecordTemplate/RecordTemp
 import { ShowExpenses } from '../ShowExpenses';
 import { FlexContainer } from '../../../../../styles';
 import { SelectExpenses } from '../SelectExpenses';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 
 interface TransferProps {
   action: string;
@@ -37,12 +38,14 @@ dayjs.extend(timezone);
 const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
   const {
     createTransfer,
+    createTransferLocal,
     editExpense,
     editIncome,
     isLoadingCreateTransfer,
     isSuccessCreateTransfer,
   } = useRecords({});
   const { initialAmount, updateAmount, verifyAmountEndsPeriod } = useCurrencyField();
+  const { isGuestUser } = useGuestUser();
 
   const recordToBeEdited = useAppSelector((state) => state.records.recordToBeModified);
   const isIncome = !!recordToBeEdited?.expensesPaid;
@@ -178,6 +181,12 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     const newAmount = verifyAmountEndsPeriod(initialAmount.current);
     const newValues = { ...restValues, amount: newAmount };
     const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values: newValues, expensesSelected });
+
+    if (isGuestUser) {
+      createTransferLocal({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
+      return;
+    }
+
     createTransfer({ valuesExpense: newValuesExpense, valuesIncome: newValuesIncome });
   };
 
