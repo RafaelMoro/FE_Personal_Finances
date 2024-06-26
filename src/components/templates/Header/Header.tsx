@@ -30,9 +30,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
     <>
       <HeaderShadow isLandingPage={isLandingPage}>
         <HeaderContainer>
-          <FlexContainer gap={2} alignItems="center">
-            <BrandLogoName isLandingPage={isLandingPage} />
-          </FlexContainer>
+          <BrandLogoName isLandingPage={isLandingPage} />
           { (windowSize === 'Desktop' && hasSignedOn) && (<Typography variant="h3">Account management</Typography>) }
           { (hasSignedOn) && (
             <IconButton aria-label="sign-out-button" onClick={signOut}>

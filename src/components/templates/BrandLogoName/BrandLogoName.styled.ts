@@ -2,6 +2,16 @@ import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
 import { LogoImageContainerProps, LogoTitleLoginProps } from './interface';
 import { AppColors } from '../../../styles';
+import { appTheme } from '../../../styles/theme';
+
+export const BrandLogoButton = styled.button`
+  background-color: inherit;
+  border: none;
+  display: flex;
+  gap: ${appTheme.spacing(2)};
+  align-items: center;
+  cursor: pointer;
+`;
 
 export const LogoImageContainer = styled.picture`
   display: block;
