@@ -85,3 +85,8 @@ export interface GetRecordAgeStatusResponse {
   recordAgeStatusKey: RecordAgeStatusKey;
   missingStatus: RecordAgeStatusKey[];
 }
+
+export interface TransferRecordInfo {
+  transferId: string;
+  account: string;
+}

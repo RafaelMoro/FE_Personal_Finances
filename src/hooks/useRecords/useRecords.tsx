@@ -15,6 +15,7 @@ import {
 } from '../../components/UI/Records/interface';
 import {
   Category, ExpensePaid, ExpensePaidRedux, GeneralError, RecordRedux,
+  TypeOfRecord,
 } from '../../globalInterface';
 import {
   UseRecordsProps, UpdateAmountAccountProps, ShowErrorNotificationProps,
@@ -24,6 +25,7 @@ import {
   CreateTransferProps,
   GetNewRecordsClassifiedByAgeProps,
   GetRecordAgeStatusResponse,
+  TransferRecordInfo,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -511,16 +513,18 @@ const useRecords = ({
   };
 
   const getLocalRecordsOrderedOnEdit = ({
-    account, date, recordId, editedRecord,
+    account, date, recordId, editedRecord, transferInfo,
   }
-  : { account: string, date: Date, recordId: string, editedRecord: RecordRedux }) => {
+  : { account: string, date: Date, recordId: string, editedRecord: RecordRedux, transferInfo?: TransferRecordInfo }) => {
     const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === account);
     if (!recordLocalStorage) {
       return null;
     }
+    const transferTypeOfRecord: TypeOfRecord = 'transfer';
+    const updatedEditedRecord = transferInfo ? { ...editedRecord, transferRecord: transferInfo, typeOfRecord: transferTypeOfRecord } : editedRecord;
     const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
     const recordsFiltered = recordLocalStorage.records[recordAgeStatusKey].filter((rec) => rec._id !== recordId);
-    const newRecords: RecordRedux[] = [...recordsFiltered, editedRecord].sort(sortByDate);
+    const newRecords: RecordRedux[] = [...recordsFiltered, updatedEditedRecord].sort(sortByDate);
     return {
       newRecords,
       recordAgeStatusKey,
@@ -733,13 +737,15 @@ const useRecords = ({
     }
   };
 
-  const prepareEditExpenseLocal = ({ payload, category }: { payload: EditExpenseProps, category: Category }) => {
+  const prepareEditExpenseLocal = ({
+    payload, category, transferInfo,
+  }: { payload: EditExpenseProps, category: Category, transferInfo?: TransferRecordInfo }) => {
     const { values, recordId } = payload;
     const { date } = values;
     const editedExpense = formatEditLocalRecord(payload, category);
 
     const response = getLocalRecordsOrderedOnEdit({
-      account: values.account, date: date.toDate(), recordId, editedRecord: editedExpense,
+      account: values.account, date: date.toDate(), recordId, editedRecord: editedExpense, transferInfo,
     });
     if (!response) {
       console.error(`Records of local storage not found by the account: ${values.account}`);
@@ -752,7 +758,9 @@ const useRecords = ({
     return newRecordLocalStorage;
   };
 
-  const prepareEditIncomeLocal = ({ payload, category }: { payload: EditIncomeProps, category: Category }) => {
+  const prepareEditIncomeLocal = ({
+    payload, category, transferInfo,
+  }: { payload: EditIncomeProps, category: Category, transferInfo?: TransferRecordInfo }) => {
     const {
       values, recordId, previousExpensesRelated,
     } = payload;
@@ -761,7 +769,7 @@ const useRecords = ({
     const editedIncome = formatEditLocalRecord(payload, category);
     const { expensesPaid = [] } = editedIncome;
     const response = getLocalRecordsOrderedOnEdit({
-      account: values.account, date: date.toDate(), recordId, editedRecord: editedIncome,
+      account: values.account, date: date.toDate(), recordId, editedRecord: editedIncome, transferInfo,
     });
     if (!response) {
       console.error(`Records of local storage not found by the account: ${values.account}`);
@@ -922,8 +930,8 @@ const useRecords = ({
   };
 
   const editTransferLocal = ({ payloadExpense, payloadIncome }: { payloadExpense: EditExpenseProps, payloadIncome: EditIncomeProps }) => {
-    const { values: { category, account: accountExpense } } = payloadExpense;
-    const { values: { account: accountIncome } } = payloadIncome;
+    const { values: { category, account: accountExpense }, recordId: expenseId } = payloadExpense;
+    const { values: { account: accountIncome }, recordId: incomeId } = payloadIncome;
 
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
@@ -932,11 +940,15 @@ const useRecords = ({
       return;
     }
 
-    const expenseRecordLocalStorage = prepareEditExpenseLocal({ payload: payloadExpense, category: categoryFound });
+    const expenseRecordLocalStorage = prepareEditExpenseLocal({
+      payload: payloadExpense, category: categoryFound, transferInfo: { transferId: incomeId, account: accountIncome },
+    });
     console.log('expenseRecordLocalStorage', expenseRecordLocalStorage);
     if (!expenseRecordLocalStorage) return;
 
-    const incomeRecordLocalStorage = prepareEditIncomeLocal({ payload: payloadIncome, category: categoryFound });
+    const incomeRecordLocalStorage = prepareEditIncomeLocal({
+      payload: payloadIncome, category: categoryFound, transferInfo: { transferId: expenseId, account: accountExpense },
+    });
     console.log('incomeRecordLocalStorage', incomeRecordLocalStorage);
     if (!incomeRecordLocalStorage) return;
 
