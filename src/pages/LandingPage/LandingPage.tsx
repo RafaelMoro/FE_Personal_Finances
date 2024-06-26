@@ -29,11 +29,13 @@ import { useAppSelector } from '../../redux/hooks';
 import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
 
 const LandingPage = () => {
-  const { addGuestUser } = useGuestUser();
-  const { verifyGuestUser } = useSyncLoginInfo();
-  const existGuestUser = useAppSelector((state) => state.user.userInfo?.user.firstName === 'Guest');
   const navigate = useNavigate();
   useResizeWindow();
+  const { addGuestUser, isGuestUser } = useGuestUser();
+  const { verifyGuestUser } = useSyncLoginInfo();
+  const existGuestUser = useAppSelector((state) => state.user.userInfo?.user.firstName === 'Guest');
+
+  const heroButtonText = isGuestUser ? 'Continue Exploring' : 'Start now';
 
   useEffect(() => {
     verifyGuestUser();
@@ -57,7 +59,7 @@ const LandingPage = () => {
           <HeroTitle variant="h1">
             Don&apos;t let your credit cards to be out of control
           </HeroTitle>
-          <StartNowButton onClick={handleStartNow} variant="contained" size="large">Start now</StartNowButton>
+          <StartNowButton onClick={handleStartNow} variant="contained" size="large">{heroButtonText}</StartNowButton>
         </Hero>
       </HeaderHeroBox>
       <AppDescription>
