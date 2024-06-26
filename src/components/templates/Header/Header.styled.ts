@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { IconButton, Typography } from '@mui/material';
-import { HeaderShadowProps } from './interface';
+import { GuestUserButtonProps, HeaderShadowProps } from './interface';
 import { Anchor, AppColors, SecondaryButton } from '../../../styles';
 
 export const HeaderShadow = styled.header`
@@ -27,11 +27,17 @@ export const LogoImageContainer = styled.picture`
   }
 `;
 
-export const GuestUserButton = styled(SecondaryButton)`
+export const GuestUserButton = styled(SecondaryButton, { shouldForwardProp: (props) => props !== 'isLandingPage' })`
   max-height: 5rem;
   border: none;
   border-radius: 0;
   border-bottom: 1px solid ${AppColors.primary};
+
+  ${({ isLandingPage }: GuestUserButtonProps) => (isLandingPage && `
+    background-color: inherit;
+    color: ${AppColors.white};
+    border-color: ${AppColors.white};
+  `)}
 `;
 
 export const DrawerMenu = styled.div`

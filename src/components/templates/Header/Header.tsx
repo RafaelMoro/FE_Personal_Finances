@@ -35,7 +35,14 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
             </IconButton>
           ) }
           { (!hasSignedOn && !isMobile) && (
-            <GuestUserButton variant="text" size="medium" onClick={toggleGuestUserModal}>Get Personalized Experience</GuestUserButton>
+            <GuestUserButton
+              isLandingPage={isLandingPage}
+              variant="text"
+              size="medium"
+              onClick={toggleGuestUserModal}
+            >
+              Get Personalized Experience
+            </GuestUserButton>
           )}
           { (!hasSignedOn && isMobile) && (
             <IconButton onClick={toggleHamburguerDrawer}>
