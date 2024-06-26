@@ -397,18 +397,19 @@ const useRecords = ({
     const expensesPaid = (income as CreateIncomeValues)?.expensesPaid;
     const { formattedTime, fullDate } = formatDateToString(date.toDate());
     const dateFormatted = date.toISOString();
-    const transferId = window.crypto.randomUUID();
+    const expenseId = window.crypto.randomUUID();
+    const incomeId = window.crypto.randomUUID();
 
     const amountFormatted = formatValueToCurrency({ amount: expense.amount });
 
     const newExpense: RecordRedux = {
       ...(expense as CreateExpenseValues),
       transferRecord: {
-        transferId,
+        transferId: incomeId,
         account: income.account,
       },
       date: dateFormatted,
-      _id: window.crypto.randomUUID(),
+      _id: expenseId,
       amountFormatted,
       isPaid: false,
       category,
@@ -424,11 +425,11 @@ const useRecords = ({
       const incomeWithExpenses: RecordRedux = {
         ...(income as CreateIncomeValues),
         transferRecord: {
-          transferId,
+          transferId: expenseId,
           account: expense.account,
         },
         date: dateFormatted,
-        _id: window.crypto.randomUUID(),
+        _id: incomeId,
         amountFormatted,
         category,
         subCategory,
@@ -444,12 +445,12 @@ const useRecords = ({
     const newIncome: RecordRedux = {
       ...(income as CreateIncomeValues),
       transferRecord: {
-        transferId,
+        transferId: expenseId,
         account: expense.account,
       },
       expensesPaid: [],
       date: dateFormatted,
-      _id: window.crypto.randomUUID(),
+      _id: incomeId,
       amountFormatted,
       category,
       subCategory,
@@ -1088,6 +1089,38 @@ const useRecords = ({
       const route = deleteRecordExpense ? EXPENSE_ROUTE : INCOME_ROUTE;
 
       if (isGuestUser) {
+        if (deleteTransfer) {
+          const transferRecordId = recordToBeDeleted?.transferRecord?.transferId ?? '';
+          const transferAccountId = recordToBeDeleted?.transferRecord?.account ?? '';
+
+          const responseRecord = deleteLocalRecord({
+            recordId, account: accountRecord, date, expensesPaid: expensesRelated,
+          });
+          if (!responseRecord) {
+            console.log('Error while obtaining record to be deleted from local storage');
+            return;
+          }
+
+          const responseTransferRecord = deleteLocalRecord({
+            recordId: transferRecordId, account: transferAccountId, date, expensesPaid: expensesRelated,
+          });
+          if (!responseTransferRecord) {
+            console.log('Error while obtaining transfer record from local storage');
+            return;
+          }
+          const { newRecordLocalStorage } = responseRecord;
+          const { newRecordLocalStorage: recordTransferLocalStorage } = responseTransferRecord;
+
+          const filteredRecords = (recordsLocalStorage ?? [])
+            .filter((record) => (record.account !== accountRecord) && (record.account !== transferAccountId));
+          filteredRecords.push(newRecordLocalStorage, recordTransferLocalStorage);
+
+          dispatch(saveRecordsLocalStorage(filteredRecords));
+          dispatch(saveRecordsLocalStorageSelectedAccount(newRecordLocalStorage));
+          addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+          return;
+        }
+
         const response = deleteLocalRecord({
           recordId, account: accountRecord, date, expensesPaid: expensesRelated,
         });
