@@ -48,9 +48,15 @@ export const transformAnyRecordToRecordRedux = (record: AnyRecord) => {
       expensesPaid: expensesPaidFormatted,
     } as RecordRedux;
   }
+  if (record?.isPaid !== undefined) {
+    return {
+      ...record,
+      expensesPaid: undefined,
+      date: record.date.toISOString(),
+    } as RecordRedux;
+  }
   return {
     ...record,
     date: record.date.toISOString(),
-    expensesPaid: [],
   } as RecordRedux;
 };
