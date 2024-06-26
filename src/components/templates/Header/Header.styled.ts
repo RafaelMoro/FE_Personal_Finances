@@ -37,6 +37,9 @@ export const GuestUserButton = styled(SecondaryButton, { shouldForwardProp: (pro
     background-color: inherit;
     color: ${AppColors.white};
     border-color: ${AppColors.white};
+
+    &:hover {
+    background-color: inherit;
   `)}
 `;
 
