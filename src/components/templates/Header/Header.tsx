@@ -8,14 +8,9 @@ import { HeaderProps } from './interface';
 import { AppIcon } from '../../UI/Icons';
 import { BrandLogoName } from '../BrandLogoName';
 import {
-  AnchorButton,
-  FlexContainer,
-  PrimaryButton,
-  SecondaryButton,
-} from '../../../styles';
-import {
-  CloseIconButton, DrawerMenu, DrawerMenuLink, HeaderContainer, HeaderShadow,
+  CloseIconButton, DrawerMenu, DrawerMenuLink, GuestUserButton, HeaderContainer, HeaderShadow,
 } from './Header.styled';
+import { GuestUserModal } from './GuestUserModal';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
@@ -24,6 +19,8 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
   const isMobile = windowSize === 'Mobile';
 
   const [openHamburguerDrawer, setOpenHamburguerDrawer] = useState(false);
+  const [openGuestUserModal, setOpenGuestUserModal] = useState(false);
+  const toggleGuestUserModal = () => setOpenGuestUserModal((prevState) => !prevState);
   const toggleHamburguerDrawer = () => setOpenHamburguerDrawer((prevState) => !prevState);
 
   return (
@@ -38,14 +35,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
             </IconButton>
           ) }
           { (!hasSignedOn && !isMobile) && (
-            <FlexContainer gap={3} justifyContent="center">
-              <AnchorButton to={LOGIN_ROUTE}>
-                <SecondaryButton variant="contained" size="medium">Sign in</SecondaryButton>
-              </AnchorButton>
-              <AnchorButton to={REGISTER_ROUTE}>
-                <PrimaryButton variant="contained" size="medium">Register</PrimaryButton>
-              </AnchorButton>
-            </FlexContainer>
+            <GuestUserButton variant="text" size="medium" onClick={toggleGuestUserModal}>Get Personalized Experience</GuestUserButton>
           )}
           { (!hasSignedOn && isMobile) && (
             <IconButton onClick={toggleHamburguerDrawer}>
@@ -67,6 +57,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
           </DrawerMenuLink>
         </DrawerMenu>
       </Drawer>
+      <GuestUserModal open={openGuestUserModal} onClose={toggleGuestUserModal} />
     </>
   );
 };

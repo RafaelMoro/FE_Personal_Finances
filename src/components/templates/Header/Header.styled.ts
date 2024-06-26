@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { IconButton, Typography } from '@mui/material';
 import { HeaderShadowProps } from './interface';
-import { Anchor, AppColors } from '../../../styles';
+import { Anchor, AppColors, SecondaryButton } from '../../../styles';
 
 export const HeaderShadow = styled.header`
   padding: 2rem;
@@ -25,6 +25,13 @@ export const LogoImageContainer = styled.picture`
     height: 100%;
     object-fit: contain;
   }
+`;
+
+export const GuestUserButton = styled(SecondaryButton)`
+  max-height: 5rem;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid ${AppColors.primary};
 `;
 
 export const DrawerMenu = styled.div`
