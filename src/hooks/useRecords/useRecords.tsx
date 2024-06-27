@@ -872,65 +872,33 @@ const useRecords = ({
 
   const editIncomeLocalStorage = (payload: EditIncomeProps) => {
     const {
-      values, recordId, previousAmount, previousExpensesRelated,
+      values, previousAmount,
     } = payload;
-    const { category, date } = values;
+    const { category, account, amount } = values;
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
       console.error('Category not found while creating expense locally');
       return;
     }
-    const editedIncome = formatEditLocalRecord(payload, categoryFound);
-    const { expensesPaid = [] } = editedIncome;
-    const response = getLocalRecordsOrderedOnEdit({
-      account: values.account, date: date.toDate(), recordId, editedRecord: editedIncome,
-    });
-    if (!response) {
-      console.error(`Records of local storage not found by the account: ${values.account}`);
-      return;
-    }
-    const {
-      newRecords: newRecordsOrdered, recordLocalStorage, recordAgeStatusKey, missingStatus,
-    } = response;
-    const newRecords: RecordRedux[] = newRecordsOrdered;
 
-    const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-      newRecords, newRecord: editedIncome, recordLocalStorage, recordAgeStatusKey,
+    const updatedLocalStorage = prepareEditIncomeLocal({
+      payload, category: categoryFound,
     });
-    let updatedLocalStorage: RecordsLocalStorage | null = null;
-
-    if (expensesPaid && expensesPaid.length > 0) {
-      const expensesIds = expensesPaid.map((expense) => expense._id);
-      const oldExpensesIds = previousExpensesRelated.map((expense) => expense._id);
-      updatedLocalStorage = {
-        ...newRecordLocalStorage,
-        records: {
-          ...newRecordLocalStorage.records,
-          [recordAgeStatusKey]: newRecordLocalStorage.records[recordAgeStatusKey].map(
-            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
-          ),
-          [missingStatus[0]]: newRecordLocalStorage.records[missingStatus[0]].map(
-            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
-          ),
-          [missingStatus[1]]: newRecordLocalStorage.records[missingStatus[1]].map(
-            (record) => updateEditedRecordStatus({ record, expensesIds, oldExpensesIds }),
-          ),
-        },
-      };
-    }
+    // If returns null, it's because Records of local storage not found by the account
+    if (!updatedLocalStorage) return;
 
     const updateReduxLocalStorageResponse = updateStoreStorageOnEditLocalRecord({
-      account: editedIncome.account, newRecords: updatedLocalStorage ?? newRecordLocalStorage,
+      account, newRecords: updatedLocalStorage,
     });
     if (!updateReduxLocalStorageResponse) {
-      console.error(`local records of the account ${editedIncome.account} not found`);
+      console.error(`local records of the account ${account} not found`);
       return;
     }
 
     // Modify amount of the account
     const isExpense = isCreateExpense(values);
     updateAmountAccountOnEditRecord({
-      amount: editedIncome.amount, isExpense, previousAmount, accountId: editedIncome.account, isGuestUser: true,
+      amount, isExpense, previousAmount, accountId: account, isGuestUser: true,
     });
 
     // Show success notification
