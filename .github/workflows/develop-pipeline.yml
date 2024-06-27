@@ -1,0 +1,142 @@
+name: Update Changelog on PR Merge
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [closed]
+
+jobs:
+
+  avoid_reduncy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Cancel Previous Redundant Builds
+        uses: styfle/cancel-workflow-action@0.9.1
+
+  check_label:
+    name: check for patch, minor or major label
+    if: |
+      (contains(github.event.pull_request.labels.*.name, 'major') || 
+      contains(github.event.pull_request.labels.*.name, 'minor') || 
+      contains(github.event.pull_request.labels.*.name, 'patch'))
+    runs-on: ubuntu-18.04
+    steps:
+      - name: print tag type
+        run: |
+          echo "Release type : " ${{ github.event.pull_request.label.name }} "
+
+  check_label_not_present:
+    name: label major, minor or patch not present
+    if: |
+      ! (contains(github.event.pull_request.labels.*.name, 'major') || 
+      contains(github.event.pull_request.labels.*.name, 'minor') || 
+      contains(github.event.pull_request.labels.*.name, 'patch'))
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Missing label
+        run: |
+          echo "Missing label 'major', 'minor' or 'patch in Pull Request"
+          exit 1
+
+  bump-version:
+    name: Create and push tag
+    needs: [check_label]
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Extract original version
+        run: |
+          echo "ORIGINAL_VERSION"=$(node -p "require('./package.json').version" >> $GITHUB_ENV)
+
+      - name: Create "major version"
+        if: contains(github.event.pull_request.labels.*.name, 'major')
+        run: |
+          npm version major --no-git-tag-version
+          git commit -a -m 'version bump major'
+
+      - name: Create "minor version"    
+        if: contains(github.event.pull_request.labels.*.name, 'minor')
+        run: |
+          npm version minor --no-git-tag-version
+          git commit -a -m 'version bump minor'
+  
+      - name: Create "patch version"
+        if: contains(github.event.pull_request.labels.*.name, 'patch')
+        run: |
+            npm version patch --no-git-tag-version 
+            git commit -a -m 'version bump patch'
+
+      - name: ⤴ Update Version tag
+        id: update-version-tag
+        run: |    
+          echo "$(pwd)"
+          git status
+          VERSION=$(node -p "require('./package.json').version") 
+          echo "VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+          git tag -a v${VERSION} -m 'Release tag ${VERSION}'
+          git push -f origin --follow-tags --atomic
+          echo "LATEST_TAG=v${VERSION}" >> $GITHUB_ENV
+          echo "$(git branch)"
+          
+
+  update-changelog:
+    name: Update Changelog
+    needs: [bump-version]
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install gh CLI
+        run: sudo apt-get install -y gh
+
+      - name: Authenticate with GitHub CLI
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
+
+      - name: Get Pull Request Details
+        id: pr-details
+        run: |
+          PR_NUMBER=$(jq -r '.pull_request.number' < "${GITHUB_EVENT_PATH}")
+          PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
+          PR_BODY=$(gh pr view $PR_NUMBER --json body --jq .body)
+          PR_URL=$(gh pr view $PR_NUMBER --json url --jq .url)
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+          echo "PR_BODY=$PR_BODY" >> $GITHUB_ENV
+          echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+
+      - name: Get Version from package.json
+        id: get-version
+        run: |
+          NEW_VERSION=$(jq -r '.version' < package.json)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update CHANGELOG.md
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          NEW_CONTENT="## v${NEW_VERSION} (${DATE})\n\n### Pull Requests\n[#$PR_NUMBER]($PR_URL) | $PR_TITLE\n$PR_BODY\n"
+          echo -e "${NEW_CONTENT}\n$(cat CHANGELOG.md)" > CHANGELOG.md
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "Update README with details of PR #${{ github.event.pull_request.number }}"
+          git push origin HEAD:develop
