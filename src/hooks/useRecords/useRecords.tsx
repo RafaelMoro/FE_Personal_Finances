@@ -26,6 +26,7 @@ import {
   GetNewRecordsClassifiedByAgeProps,
   GetRecordAgeStatusResponse,
   TransferRecordInfo,
+  UpdateExpensesPaidLocalProps,
 } from './interface';
 import { UpdateAmountPayload } from '../../redux/slices/Accounts/interface';
 import {
@@ -328,6 +329,33 @@ const useRecords = ({
         lastMonth: recordLocalStorage.records.lastMonth,
         olderRecords: newRecords,
       },
+    };
+  };
+
+  const updateExpensesPaidLocal = ({
+    expensesPaid, records, recordLocalStorage, recordAgeStatusKey, missingStatus, paidStatus,
+  }: UpdateExpensesPaidLocalProps) => {
+    const expensesIds = expensesPaid.map((expense) => expense._id);
+    // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
+    const firstUpdatedRecords = records.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: paidStatus }));
+    const secondUpdatedRecords = recordLocalStorage.records[missingStatus[0]].map(
+      (record) => updateRecordPaymentStatus({ record, expensesIds, paid: paidStatus }),
+    );
+    const thirdUpdatedRecords = recordLocalStorage.records[missingStatus[1]].map(
+      (record) => updateRecordPaymentStatus({ record, expensesIds, paid: paidStatus }),
+    );
+    const modifiedRecordLocalStorage = {
+      ...recordLocalStorage,
+      records: {
+        ...recordLocalStorage.records,
+        [recordAgeStatusKey]: firstUpdatedRecords,
+        [missingStatus[0]]: secondUpdatedRecords,
+        [missingStatus[1]]: thirdUpdatedRecords,
+      },
+    };
+    return {
+      modifiedRecordLocalStorage,
+      firstUpdatedRecords,
     };
   };
 
@@ -685,24 +713,11 @@ const useRecords = ({
 
       // If income, update expenses selected
       if (expensesPaid && expensesPaid.length > 0) {
-        const expensesIds = expensesPaid.map((expense) => expense._id);
-        // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
-        newRecords = newRecords.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }));
-        const updatedRecords = recordLocalStorage.records[missingStatus[0]].map(
-          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
-        );
-        const moreUpdatedRecords = recordLocalStorage.records[missingStatus[1]].map(
-          (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
-        );
-        recordLocalStorageModified = {
-          ...recordLocalStorage,
-          records: {
-            ...recordLocalStorage.records,
-            [recordAgeStatusKey]: newRecords,
-            [missingStatus[0]]: updatedRecords,
-            [missingStatus[1]]: moreUpdatedRecords,
-          },
-        };
+        const { firstUpdatedRecords, modifiedRecordLocalStorage } = updateExpensesPaidLocal({
+          expensesPaid, records: newRecords, recordLocalStorage, recordAgeStatusKey, missingStatus, paidStatus: true,
+        });
+        newRecords = firstUpdatedRecords;
+        recordLocalStorageModified = modifiedRecordLocalStorage;
       }
 
       const newRecordLocalStorage = getNewRecordsClassifiedByAge({

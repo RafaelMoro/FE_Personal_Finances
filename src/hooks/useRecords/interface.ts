@@ -1,9 +1,9 @@
 import { RecordAgeCategory } from '../../aliasType';
 import { CreateExpenseValues, CreateIncomeValues } from '../../components/UI/Records/interface';
 import {
-  AnyRecord, ExpensePaid, RecordRedux,
+  AnyRecord, ExpensePaid, ExpensePaidRedux, RecordRedux,
 } from '../../globalInterface';
-import { RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
+import { RecordAgeStatus, RecordAgeStatusKey, RecordsLocalStorage } from '../../utils/LocalStorage/interface';
 
 export interface UseRecordsProps {
   recordToBeDeleted?: AnyRecord;
@@ -89,4 +89,13 @@ export interface GetRecordAgeStatusResponse {
 export interface TransferRecordInfo {
   transferId: string;
   account: string;
+}
+
+export interface UpdateExpensesPaidLocalProps {
+  expensesPaid: ExpensePaidRedux[];
+  records: RecordRedux[];
+  recordLocalStorage: RecordsLocalStorage;
+  recordAgeStatusKey: keyof RecordAgeStatus;
+  missingStatus: (keyof RecordAgeStatus)[];
+  paidStatus: boolean;
 }
