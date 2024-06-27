@@ -549,31 +549,31 @@ const useRecords = ({
   const getRecordsLocalStorageInfo = ({
     newRecord, isIncome, date,
   }: { newRecord: RecordRedux, date: Date, isIncome?: boolean; }) => {
-    const incomeLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
+    const recordLocalStorage = (recordsLocalStorage ?? []).find((record) => record.account === newRecord.account);
     let recordLocalStorageModified: RecordsLocalStorage | null = null;
-    if (!incomeLocalStorage) {
+    if (!recordLocalStorage) {
       return null;
     }
     const { recordAgeStatusKey, missingStatus } = getRecordAgeStatus(date);
     const { expensesPaid = [] } = newRecord;
     // Add new expense and sort records by date.
-    let newRecords: RecordRedux[] = [...incomeLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
+    let newRecords: RecordRedux[] = [...recordLocalStorage.records[recordAgeStatusKey], newRecord].sort(sortByDate);
 
     // If income, update expenses selected
     if (isIncome && expensesPaid && expensesPaid.length > 0) {
       const expensesIds = expensesPaid.map((currentExpense) => currentExpense._id);
       // Since we do not know what record age status that we have, we use the missing status from getRecordAgeStatus and that's what we update
       newRecords = newRecords.map((record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }));
-      const updatedRecords = incomeLocalStorage.records[missingStatus[0]].map(
+      const updatedRecords = recordLocalStorage.records[missingStatus[0]].map(
         (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
       );
-      const moreUpdatedRecords = incomeLocalStorage.records[missingStatus[1]].map(
+      const moreUpdatedRecords = recordLocalStorage.records[missingStatus[1]].map(
         (record) => updateRecordPaymentStatus({ record, expensesIds, paid: true }),
       );
       recordLocalStorageModified = {
-        ...incomeLocalStorage,
+        ...recordLocalStorage,
         records: {
-          ...incomeLocalStorage.records,
+          ...recordLocalStorage.records,
           [recordAgeStatusKey]: newRecords,
           [missingStatus[0]]: updatedRecords,
           [missingStatus[1]]: moreUpdatedRecords,
@@ -582,7 +582,7 @@ const useRecords = ({
     }
 
     const newRecordLocalStorage = getNewRecordsClassifiedByAge({
-      newRecords, newRecord, recordLocalStorage: recordLocalStorageModified ?? incomeLocalStorage, recordAgeStatusKey,
+      newRecords, newRecord, recordLocalStorage: recordLocalStorageModified ?? recordLocalStorage, recordAgeStatusKey,
     });
     return newRecordLocalStorage;
   };
