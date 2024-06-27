@@ -9,7 +9,7 @@ on:
 jobs:
 
   avoid_reduncy:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Redundant Builds
         uses: styfle/cancel-workflow-action@0.9.1
@@ -20,7 +20,7 @@ jobs:
       (contains(github.event.pull_request.labels.*.name, 'major') || 
       contains(github.event.pull_request.labels.*.name, 'minor') || 
       contains(github.event.pull_request.labels.*.name, 'patch'))
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: print tag type
         run: |
@@ -32,7 +32,7 @@ jobs:
       ! (contains(github.event.pull_request.labels.*.name, 'major') || 
       contains(github.event.pull_request.labels.*.name, 'minor') || 
       contains(github.event.pull_request.labels.*.name, 'patch'))
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Missing label
         run: |
@@ -43,7 +43,7 @@ jobs:
     name: Create and push tag
     needs: [check_label]
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -93,7 +93,7 @@ jobs:
     name: Update Changelog
     needs: [bump-version]
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
