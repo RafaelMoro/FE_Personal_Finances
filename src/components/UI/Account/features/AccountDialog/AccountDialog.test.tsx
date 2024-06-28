@@ -130,4 +130,38 @@ describe('AccountDialog creation account', () => {
       expect(onClose).toHaveBeenCalled();
     });
   });
+
+  test('Create account with no success', async () => {
+    fetchMock.once(JSON.stringify(unsuccessfulResponse));
+    const onClose = jest.fn();
+    renderWithProviders(
+      <AccountDialog
+        open
+        onClose={onClose}
+        accountAction="Create"
+        account={null}
+      />,
+      { preloadedState: {} },
+    );
+
+    const accountTitleTextBox = screen.getByRole('textbox', {
+      name: /account title/i,
+    });
+    const amountTextBox = screen.getByRole('textbox', {
+      name: /amount/i,
+    });
+    const createAccountByutton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    userEvent.type(accountTitleTextBox, 'Bank account');
+    userEvent.type(amountTextBox, '499');
+
+    userEvent.click(createAccountByutton);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalled();
+      expect(onClose).toHaveBeenCalled();
+    });
+  });
 });
