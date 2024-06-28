@@ -128,6 +128,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         records={currentRecords}
         loading={isGuestUser ? false : isFetchingThisMonthRecs}
         error={isGuestUser ? false : isErrorThisMonthRecs}
+        isGuestUser={isGuestUser}
         onEmptyCb={() => <NoRecordsFound />}
         onErrorCb={() => <Error hideIcon title={ERROR_TITLE} description={ERROR_DESCRIPTION} />}
         onLoadingCb={() => (
@@ -143,6 +144,7 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
         onClickCb={handleFetchLastMonthRecords}
         accountId={accountId}
         records={lastMonthRecords}
+        isGuestUser={isGuestUser}
         loading={isGuestUser ? false : isFetchingLastMonthRecs}
         error={isGuestUser ? false : isErrorLastMonthRecs}
         onEmptyCb={() => <NoRecordsFound />}
