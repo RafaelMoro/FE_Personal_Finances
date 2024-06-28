@@ -16,7 +16,7 @@ import { AppColors } from '../../../styles';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
-  const { isGuestUser } = useGuestUser();
+  const { isGuestUser, userLoggedOn } = useGuestUser();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
 
@@ -31,7 +31,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
         <HeaderContainer>
           <BrandLogoName isLandingPage={isLandingPage} />
           { (windowSize === 'Desktop' && !isGuestUser && !isLandingPage) && (<Typography variant="h3">Account management</Typography>) }
-          { (!isGuestUser) && (
+          { (!isGuestUser && userLoggedOn) && (
             <IconButton aria-label="sign-out-button" onClick={signOut}>
               <AppIcon fillColor={isLandingPage ? AppColors.white : AppColors.primary} icon="LogOut" />
             </IconButton>
@@ -46,7 +46,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
               Get Personalized Experience
             </GuestUserButton>
           )}
-          { (!isGuestUser && isMobile) && (
+          { (!isGuestUser && isMobile && !userLoggedOn) && (
             <IconButton onClick={toggleHamburguerDrawer}>
               <AppIcon icon="HamburguerMenu" />
             </IconButton>
