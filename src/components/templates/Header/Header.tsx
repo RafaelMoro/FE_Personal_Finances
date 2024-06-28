@@ -12,6 +12,7 @@ import { GuestUserModal } from './GuestUserModal';
 import {
   CloseIconButton, DrawerMenu, DrawerMenuLink, GuestUserButton, HeaderContainer, HeaderShadow,
 } from './Header.styled';
+import { AppColors } from '../../../styles';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
@@ -32,7 +33,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
           { (windowSize === 'Desktop' && !isGuestUser && !isLandingPage) && (<Typography variant="h3">Account management</Typography>) }
           { (!isGuestUser) && (
             <IconButton aria-label="sign-out-button" onClick={signOut}>
-              <AppIcon icon="LogOut" />
+              <AppIcon fillColor={isLandingPage ? AppColors.white : AppColors.primary} icon="LogOut" />
             </IconButton>
           ) }
           { (isGuestUser && !isMobile) && (
