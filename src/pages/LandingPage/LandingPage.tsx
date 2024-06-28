@@ -25,7 +25,6 @@ import {
 } from './constants';
 import { useGuestUser } from '../../hooks/useGuestUser/useGuestUser';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
-import { useAppSelector } from '../../redux/hooks';
 import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
 import { getHeroButtonText } from './utils';
 
@@ -34,7 +33,6 @@ const LandingPage = () => {
   useResizeWindow();
   const { addGuestUser, isGuestUser, userLoggedOn } = useGuestUser();
   const { verifyGuestUser } = useSyncLoginInfo();
-  const existGuestUser = useAppSelector((state) => state.user.userInfo?.user.firstName === 'Guest');
 
   const heroButtonText = getHeroButtonText(isGuestUser, userLoggedOn);
 
@@ -44,7 +42,7 @@ const LandingPage = () => {
   }, []);
 
   const handleStartNow = () => {
-    if (existGuestUser) {
+    if (isGuestUser) {
       navigate(DASHBOARD_ROUTE);
       return;
     }
