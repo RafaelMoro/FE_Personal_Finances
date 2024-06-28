@@ -13,6 +13,9 @@ export const categoriesSlice = createSlice({
   name: 'categories',
   initialState: categoriesInitialState,
   reducers: {
+    resetCategoriesLocalStorage: (state) => {
+      state.categoriesLocalStorage = [];
+    },
     updateCurrentCategory: (state, action) => {
       state.currentCategory = action.payload;
     },
@@ -25,6 +28,8 @@ export const categoriesSlice = createSlice({
   },
 });
 
-export const { updateCurrentCategory, isCategorySelected, isCategoryNotSelected } = categoriesSlice.actions;
+export const {
+  updateCurrentCategory, isCategorySelected, isCategoryNotSelected, resetCategoriesLocalStorage,
+} = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

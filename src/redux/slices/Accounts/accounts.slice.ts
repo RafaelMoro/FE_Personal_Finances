@@ -16,6 +16,9 @@ export const accountsSlice = createSlice({
   name: 'accounts',
   initialState: accountsInitialState,
   reducers: {
+    resetAccountsLocalStorage: (state) => {
+      state.accountsLocalStorage = null;
+    },
     updateAccounts: (state, action) => {
       state.accounts = action.payload;
     },
@@ -108,7 +111,8 @@ export const accountsSlice = createSlice({
 
 export const {
   updateAccounts, updateSelectedAccount, resetAccounts, updateAccountsLocalStorage,
-  resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount, updateAmountSelectedAccountLocalStorage,
+  resetSelectedAccount, updateAccountsStatus, updateAmountSelectedAccount,
+  updateAmountSelectedAccountLocalStorage, resetAccountsLocalStorage,
 } = accountsSlice.actions;
 
 export default accountsSlice.reducer;

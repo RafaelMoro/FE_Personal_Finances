@@ -23,6 +23,12 @@ export const recordsSlice = createSlice({
   name: 'records',
   initialState: recordsInitialState,
   reducers: {
+    resetRecordsLocalStorage: (state) => {
+      state.recordsLocalStorage = null;
+    },
+    resetRecordsLocalStorageSelectedAccount: (state) => {
+      state.recordsLocalStorageSelectedAccount = null;
+    },
     setRecordToBeModified: (state, action) => {
       state.recordToBeModified = action.payload;
     },
@@ -73,7 +79,8 @@ export const recordsSlice = createSlice({
 
 export const {
   resetTotalBalanceRecords, resetLastMonthBalance, setRecordToBeModified,
-  updateTotalExpense, updateTotalIncome, updateTotalExpensesIncomes, saveRecordsLocalStorageSelectedAccount, saveRecordsLocalStorage,
+  updateTotalExpense, updateTotalIncome, updateTotalExpensesIncomes, saveRecordsLocalStorageSelectedAccount,
+  saveRecordsLocalStorage, resetRecordsLocalStorage, resetRecordsLocalStorageSelectedAccount,
 } = recordsSlice.actions;
 
 export default recordsSlice.reducer;
