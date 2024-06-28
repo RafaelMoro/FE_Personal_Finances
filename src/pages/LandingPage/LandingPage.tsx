@@ -42,7 +42,7 @@ const LandingPage = () => {
   }, []);
 
   const handleStartNow = () => {
-    if (isGuestUser) {
+    if (isGuestUser || userLoggedOn) {
       navigate(DASHBOARD_ROUTE);
       return;
     }
