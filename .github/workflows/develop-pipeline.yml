@@ -1,4 +1,4 @@
-name: Update Changelog on PR Merge
+name: Update Changelog on PR Merge for Develop
 
 on:
   pull_request:
@@ -15,42 +15,10 @@ jobs:
         uses: styfle/cancel-workflow-action@0.9.1
 
   check_label:
-    name: check for patch, minor or major label
-    if: |
-      (contains(github.event.pull_request.labels.*.name, 'major') || 
-      contains(github.event.pull_request.labels.*.name, 'minor') || 
-      contains(github.event.pull_request.labels.*.name, 'patch'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    uses: ./.github/workflows/verify_pr.yml
+    secrets: inherit
 
-      - name: Install gh CLI
-        run: sudo apt-get install -y gh
-
-      - name: Authenticate with GitHub CLI
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - name: Get and Echo PR Labels
-        run: |
-          PR_NUMBER=$(jq -r '.pull_request.number' < "${GITHUB_EVENT_PATH}")
-          LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels | map(.name) | join(", ")')
-          echo "Labels: $LABELS"
-
-  check_label_not_present:
-    name: label major, minor or patch not present
-    if: |
-      ! (contains(github.event.pull_request.labels.*.name, 'major') || 
-      contains(github.event.pull_request.labels.*.name, 'minor') || 
-      contains(github.event.pull_request.labels.*.name, 'patch'))
-    runs-on: ubuntu-latest
-    steps:
-      - name: Missing label
-        run: |
-          echo "Missing label 'major', 'minor' or 'patch in Pull Request"
-          exit 1
-
-  bump-version:
+  bump_version:
     name: Create and push tag
     needs: [check_label]
     if: github.event.pull_request.merged == true
@@ -67,7 +35,14 @@ jobs:
 
       - name: Extract original version
         run: |
-          echo "ORIGINAL_VERSION"=$(node -p "require('./package.json').version" >> $GITHUB_ENV)
+          original_version=$(node -p "require('./package.json').version")
+          echo "Original version: $original_version"
+          echo "original_version=$original_version" >> "$GITHUB_ENV"
+
+      - name: Check "user details"
+        run: | 
+          git config user.email $GITHUB_ACTOR@users.noreply.github.com
+          git config user.name "$GITHUB_ACTOR"
 
       - name: Create "major version"
         if: contains(github.event.pull_request.labels.*.name, 'major')
@@ -102,7 +77,7 @@ jobs:
 
   update-changelog:
     name: Update Changelog
-    needs: [bump-version]
+    needs: [bump_version, check_label]
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
@@ -110,44 +85,53 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
       - name: Install gh CLI
         run: sudo apt-get install -y gh
 
       - name: Authenticate with GitHub CLI
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
+      - name: Pull main changes
+        run: git pull origin main
+
       - name: Get Pull Request Details
         id: pr-details
         run: |
-          PR_NUMBER=$(jq -r '.pull_request.number' < "${GITHUB_EVENT_PATH}")
-          PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
-          PR_BODY=$(gh pr view $PR_NUMBER --json body --jq .body)
-          PR_URL=$(gh pr view $PR_NUMBER --json url --jq .url)
-          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
-          echo "PR_BODY=$PR_BODY" >> $GITHUB_ENV
-          echo "PR_URL=$PR_URL" >> $GITHUB_ENV
+          new_pr_number=$(jq -r '.pull_request.number' < "${GITHUB_EVENT_PATH}")
+          pr_title=$(gh pr view $new_pr_number --json title --jq .title)
+          pr_current_url=$(gh pr view $new_pr_number --json url --jq .url)
+          echo "PR Number: $new_pr_number"
+          echo "PR Title: $pr_title"
+          echo "PR URL: $pr_current_url"
+          echo "new_pr_number=$new_pr_number" >> "$GITHUB_ENV"
+          echo "pr_title=$pr_title" >> "$GITHUB_ENV"
+          echo "pr_current_url=$pr_current_url" >> "$GITHUB_ENV"
 
       - name: Get Version from package.json
         id: get-version
         run: |
-          NEW_VERSION=$(jq -r '.version' < package.json)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          new_version=$(jq -r '.version' < package.json)
+          echo "New Version: $new_version"
+          echo "new_version=$new_version" >> "$GITHUB_ENV"
+
+      - name: Get info changelog
+        run: |
+          new_date=$(date +%Y-%m-%d)
+          new_content="## v${new_version} (${new_date})\n\n### Pull Requests\n[#$new_pr_number]($pr_current_url) | ${pr_title}\n\n"
+          echo "New Content: $new_content"
+          echo "new_content=$new_content" >> "$GITHUB_ENV"
 
       - name: Update CHANGELOG.md
         run: |
-          DATE=$(date +%Y-%m-%d)
-          NEW_CONTENT="## v${NEW_VERSION} (${DATE})\n\n### Pull Requests\n[#$PR_NUMBER]($PR_URL) | $PR_TITLE\n$PR_BODY\n"
-          echo -e "${NEW_CONTENT}\n$(cat CHANGELOG.md)" > CHANGELOG.md
+          echo "Nuevo contenido: $new_content"
+          echo -e "${new_content}\n$(cat CHANGELOG.md)" > CHANGELOG.md
 
-      - name: Commit changes
+      - name: Check user details
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "Update README with details of PR #${{ github.event.pull_request.number }}"
-          git push origin HEAD:develop
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update CHANGELOG.md
+          branch: main
