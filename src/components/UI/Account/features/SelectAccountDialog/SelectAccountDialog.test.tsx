@@ -36,6 +36,7 @@ const accounts: AccountUI[] = [
 const accountsInitialState: AccountsInitialState = {
   accounts,
   accountSelected: null,
+  accountsLocalStorage: null,
   accountsFetchStatus: 'isUninitialized',
 };
 

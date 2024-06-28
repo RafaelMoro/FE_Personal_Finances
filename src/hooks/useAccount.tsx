@@ -1,4 +1,4 @@
-import { CreateAccount, ModifyAccountValues } from '../components/UI/Account/interface';
+import { CreateAccount, ModifyAccountValues } from '../components/UI/Account/Account.interface';
 import { Account } from '../globalInterface';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { updateAccounts, updateAccountsLocalStorage } from '../redux/slices/Accounts/accounts.slice';

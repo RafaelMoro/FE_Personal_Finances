@@ -1,5 +1,5 @@
 import { ExpensePaid, AnyRecord } from '../../../../../globalInterface';
-import { AccountUI } from '../../../Account/interface';
+import { AccountUI } from '../../../Account/Account.interface';
 import { CreateTransferValues } from '../../interface';
 
 export const getValuesIncomeAndExpense = ({ values, expensesSelected }: { values: CreateTransferValues, expensesSelected: ExpensePaid[] }) => {

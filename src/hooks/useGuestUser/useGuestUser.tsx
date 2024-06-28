@@ -1,4 +1,4 @@
-import { AccountUI } from '../../components/UI/Account/interface';
+import { AccountUI } from '../../components/UI/Account/Account.interface';
 import { Account, AnyRecord, RecordRedux } from '../../globalInterface';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { updateAccounts, updateAccountsLocalStorage, updateSelectedAccount } from '../../redux/slices/Accounts/accounts.slice';
