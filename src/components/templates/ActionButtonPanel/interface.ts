@@ -6,6 +6,7 @@ export interface ActionButtonPanelProps {
   actionDataTestId: string;
   submitForm?: () => void;
   routeCancelButton?: string;
+  cancelStateLink?: object;
   disableCancelButton?: boolean;
   disableSubmitButton?: boolean;
   routeSubmitButton?: string;
