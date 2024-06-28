@@ -12,7 +12,9 @@ import { GuestUserModal } from './GuestUserModal';
 import {
   CloseIconButton, DrawerMenu, DrawerMenuLink, GuestUserButton, HeaderContainer, HeaderShadow,
 } from './Header.styled';
-import { AppColors } from '../../../styles';
+import {
+  AnchorButton, AppColors, FlexContainer, PrimaryButton, SecondaryButton,
+} from '../../../styles';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
@@ -46,6 +48,16 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
               Get Personalized Experience
             </GuestUserButton>
           )}
+          { (!isGuestUser && !userLoggedOn) && (
+            <FlexContainer gap={3} justifyContent="space-between">
+              <AnchorButton to={LOGIN_ROUTE}>
+                <SecondaryButton>Log in</SecondaryButton>
+              </AnchorButton>
+              <AnchorButton to={REGISTER_ROUTE}>
+                <PrimaryButton>Register</PrimaryButton>
+              </AnchorButton>
+            </FlexContainer>
+          ) }
           { (!isGuestUser && isMobile && !userLoggedOn) && (
             <IconButton onClick={toggleHamburguerDrawer}>
               <AppIcon icon="HamburguerMenu" />
