@@ -1,14 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Header } from '../../components/templates';
-import { PrimaryButton } from '../../styles';
-import { DASHBOARD_ROUTE } from '../RoutesConstants';
 import {
-  AnchorButtonHero,
   AppDescription,
   AppDescriptionBox,
   AppDescriptionTitle,
   CardContainer,
   HeaderHeroBox,
   Hero, HeroTitle,
+  StartNowButton,
 } from './LandingPage.styled';
 
 import budgetMasterShot from '../../assets/app-feature-shots/budget-master-app.png';
@@ -23,9 +23,32 @@ import { useResizeWindow } from '../../hooks/useResizeWindow';
 import {
   CONTROL_FEATURE_DESCRIPTION, CONTROL_FEATURE_TITLE, EASY_FEATURE_DESCRIPTION, EASY_FEATURE_TITLE,
 } from './constants';
+import { useGuestUser } from '../../hooks/useGuestUser/useGuestUser';
+import { DASHBOARD_ROUTE } from '../RoutesConstants';
+import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
+import { getHeroButtonText } from './utils';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   useResizeWindow();
+  const { addGuestUser, isGuestUser, userLoggedOn } = useGuestUser();
+  const { verifyGuestUser } = useSyncLoginInfo();
+
+  const heroButtonText = getHeroButtonText(isGuestUser, userLoggedOn);
+
+  useEffect(() => {
+    verifyGuestUser();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleStartNow = () => {
+    if (isGuestUser || userLoggedOn) {
+      navigate(DASHBOARD_ROUTE);
+      return;
+    }
+    addGuestUser();
+    navigate(DASHBOARD_ROUTE);
+  };
 
   return (
     <>
@@ -35,9 +58,7 @@ const LandingPage = () => {
           <HeroTitle variant="h1">
             Don&apos;t let your credit cards to be out of control
           </HeroTitle>
-          <AnchorButtonHero to={DASHBOARD_ROUTE}>
-            <PrimaryButton variant="contained" size="large">Start now</PrimaryButton>
-          </AnchorButtonHero>
+          <StartNowButton onClick={handleStartNow} variant="contained" size="large">{heroButtonText}</StartNowButton>
         </Hero>
       </HeaderHeroBox>
       <AppDescription>

@@ -5,3 +5,6 @@ export interface HeaderProps {
 export interface HeaderShadowProps {
   isLandingPage: boolean;
 }
+export interface GuestUserButtonProps {
+  isLandingPage: boolean;
+}

@@ -4,6 +4,7 @@ import { CategoriesResponse } from '../../../components/UI/Records/interface';
 export interface CategoriesInitialState {
   currentCategory: Category | null;
   categoryNotSelected: boolean;
+  categoriesLocalStorage: Category[];
 }
 
 export interface FetchCategoriesThunkResponse {

@@ -19,6 +19,8 @@ import { UserAndPassword } from './UserAndPassword';
 import {
   Main, MainContainer, FormTitle, FormDescription,
 } from '../../../styles/LoginModule.styled';
+import { saveInfoToLocalStorage } from '../../../utils';
+import { useLogin } from '../../../hooks';
 
 const initialValuesCreateAccountForm = {
   email: '',
@@ -30,6 +32,7 @@ const initialValuesCreateAccountForm = {
 };
 
 const CreateAccount = ():ReactElement => {
+  const { resetUserGuestLocalStorage } = useLogin();
   const [createUserMutation, { isLoading: isLoadingUser, isError: isErrorUser }] = useCreateUserMutation();
   const [createLocalCategoriesMutation, { isLoading: isLoadingCategories, isError: isErrorCategories }] = useCreateLocalCategoriesMutation();
   const {
@@ -47,6 +50,10 @@ const CreateAccount = ():ReactElement => {
 
   const handleSubmit = async (valuesReceived: CreateUserValues) => {
     try {
+      // First reset local storage if we have guest user logged in.
+      saveInfoToLocalStorage({});
+      // Reset from redux all information of the guest user
+      resetUserGuestLocalStorage();
       // Omitting confirmPassword value as it's not needed.
       const {
         firstName, lastName, middleName, password, email,

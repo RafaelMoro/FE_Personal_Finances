@@ -82,6 +82,7 @@ const records: AnyRecord[] = [
         amountFormatted: '$96.03',
         fullDate: 'May 20',
         formattedTime: '16:03',
+        date: new Date('2024-05-20T16:03:00.000Z'),
         isPaid: true,
       },
       {
@@ -91,6 +92,7 @@ const records: AnyRecord[] = [
         amount: 96.03,
         formattedTime: '16:03',
         fullDate: 'May 20',
+        date: new Date('2024-05-20T16:03:00.000Z'),
         isPaid: false,
       },
     ],

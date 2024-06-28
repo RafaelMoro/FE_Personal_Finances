@@ -1,56 +1,64 @@
 import { Drawer, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { useLogin } from '../../../hooks/useLogin';
-import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
+import { useLogin, useGuestUser } from '../../../hooks';
 import { useAppSelector } from '../../../redux/hooks';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
 import { HeaderProps } from './interface';
+
 import { AppIcon } from '../../UI/Icons';
 import { BrandLogoName } from '../BrandLogoName';
+import { GuestUserModal } from './GuestUserModal';
 import {
-  AnchorButton,
-  FlexContainer,
-  PrimaryButton,
-  SecondaryButton,
-} from '../../../styles';
-import {
-  CloseIconButton, DrawerMenu, DrawerMenuLink, HeaderContainer, HeaderShadow,
+  CloseIconButton, DrawerMenu, DrawerMenuLink, GuestUserButton, HeaderContainer, HeaderShadow,
 } from './Header.styled';
+import {
+  AnchorButton, AppColors, FlexContainer, PrimaryButton, SecondaryButton,
+} from '../../../styles';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
-  const { hasSignedOn } = useSyncLoginInfo();
+  const { isGuestUser, userLoggedOn } = useGuestUser();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
 
   const [openHamburguerDrawer, setOpenHamburguerDrawer] = useState(false);
+  const [openGuestUserModal, setOpenGuestUserModal] = useState(false);
+  const toggleGuestUserModal = () => setOpenGuestUserModal((prevState) => !prevState);
   const toggleHamburguerDrawer = () => setOpenHamburguerDrawer((prevState) => !prevState);
 
   return (
     <>
       <HeaderShadow isLandingPage={isLandingPage}>
         <HeaderContainer>
-          <FlexContainer gap={2} alignItems="center">
-            <BrandLogoName isLandingPage={isLandingPage} />
-          </FlexContainer>
-          { (windowSize === 'Desktop' && hasSignedOn) && (<Typography variant="h3">Account management</Typography>) }
-          { (hasSignedOn) && (
+          <BrandLogoName isLandingPage={isLandingPage} />
+          { (windowSize === 'Desktop' && !isGuestUser && !isLandingPage) && (<Typography variant="h3">Account management</Typography>) }
+          { (!isGuestUser && userLoggedOn) && (
             <IconButton aria-label="sign-out-button" onClick={signOut}>
-              <AppIcon icon="LogOut" />
+              <AppIcon fillColor={isLandingPage ? AppColors.white : AppColors.primary} icon="LogOut" />
             </IconButton>
           ) }
-          { (!hasSignedOn && !isMobile) && (
-            <FlexContainer gap={3} justifyContent="center">
+          { (isGuestUser && !isMobile) && (
+            <GuestUserButton
+              isLandingPage={isLandingPage}
+              variant="text"
+              size="medium"
+              onClick={toggleGuestUserModal}
+            >
+              Get Personalized Experience
+            </GuestUserButton>
+          )}
+          { (!isGuestUser && !userLoggedOn) && (
+            <FlexContainer gap={3} justifyContent="space-between">
               <AnchorButton to={LOGIN_ROUTE}>
-                <SecondaryButton variant="contained" size="medium">Sign in</SecondaryButton>
+                <SecondaryButton>Log in</SecondaryButton>
               </AnchorButton>
               <AnchorButton to={REGISTER_ROUTE}>
-                <PrimaryButton variant="contained" size="medium">Register</PrimaryButton>
+                <PrimaryButton>Register</PrimaryButton>
               </AnchorButton>
             </FlexContainer>
-          )}
-          { (!hasSignedOn && isMobile) && (
+          ) }
+          { (!isGuestUser && isMobile && !userLoggedOn) && (
             <IconButton onClick={toggleHamburguerDrawer}>
               <AppIcon icon="HamburguerMenu" />
             </IconButton>
@@ -70,6 +78,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
           </DrawerMenuLink>
         </DrawerMenu>
       </Drawer>
+      <GuestUserModal open={openGuestUserModal} onClose={toggleGuestUserModal} />
     </>
   );
 };

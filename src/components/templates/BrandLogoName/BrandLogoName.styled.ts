@@ -1,7 +1,18 @@
 import styled from '@emotion/styled';
 import { Typography } from '@mui/material';
-import { LogoImageContainerProps, LogoTitleLoginProps } from './interface';
+import { BrandLogoButtonProps, LogoImageContainerProps, LogoTitleLoginProps } from './interface';
 import { AppColors } from '../../../styles';
+import { appTheme } from '../../../styles/theme';
+
+export const BrandLogoButton = styled('button', { shouldForwardProp: (props) => props !== 'isLoginPage' })`
+  background-color: inherit;
+  border: none;
+  display: flex;
+  gap: ${appTheme.spacing(2)};
+  align-items: center;
+  cursor: pointer;
+  ${({ isLoginPage }: BrandLogoButtonProps) => (isLoginPage && 'flex-direction: column;')}
+`;
 
 export const LogoImageContainer = styled.picture`
   display: block;

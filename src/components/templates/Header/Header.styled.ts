@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
-import { IconButton } from '@mui/material';
-import { HeaderShadowProps } from './interface';
-import { Anchor, AppColors } from '../../../styles';
+import { IconButton, Typography } from '@mui/material';
+import { GuestUserButtonProps, HeaderShadowProps } from './interface';
+import { Anchor, AppColors, SecondaryButton } from '../../../styles';
 
 export const HeaderShadow = styled.header`
   padding: 2rem;
@@ -27,6 +27,22 @@ export const LogoImageContainer = styled.picture`
   }
 `;
 
+export const GuestUserButton = styled(SecondaryButton, { shouldForwardProp: (props) => props !== 'isLandingPage' })`
+  max-height: 5rem;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid ${AppColors.primary};
+
+  ${({ isLandingPage }: GuestUserButtonProps) => (isLandingPage && `
+    background-color: inherit;
+    color: ${AppColors.white};
+    border-color: ${AppColors.white};
+
+    &:hover {
+    background-color: inherit;
+  `)}
+`;
+
 export const DrawerMenu = styled.div`
   padding: 2rem;
   display: grid;
@@ -43,4 +59,24 @@ export const DrawerMenuLink = styled(Anchor)`
   text-decoration: none;
   color: ${AppColors.black};
   cursor: pointer;
+`;
+
+export const GuestUserModalBox = styled.div`
+  padding: 3rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+`;
+
+export const GuestUserModalTitle = styled(Typography)`
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  justify-self: center;
+  align-self: center;
+`;
+
+export const CloseModalBox = styled(IconButton)`
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  justify-self: end;
 `;

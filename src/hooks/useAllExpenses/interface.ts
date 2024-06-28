@@ -1,7 +1,7 @@
-import { Expense, GeneralResponse } from '../../globalInterface';
+import { AbbreviatedMonthsType, Expense, GeneralResponse } from '../../globalInterface';
 
 export interface UseAllExpensesProps {
-  month: string;
+  month: AbbreviatedMonthsType;
   year: string;
   accountId?: string;
 }
