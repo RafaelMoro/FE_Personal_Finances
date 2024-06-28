@@ -12,7 +12,7 @@ const BrandLogoName = ({ isLandingPage = false, isLoginPage = false }: BrandLogo
   const navigateHome = () => navigate(LANDING_ROUTE);
 
   return (
-    <BrandLogoButton type="button" onClick={navigateHome}>
+    <BrandLogoButton type="button" onClick={navigateHome} isLoginPage={isLoginPage}>
       <LogoImageContainer isLandingPage={isLandingPage} isLoginPage={isLoginPage}>
         <source srcSet={logoWebp} type="image/webp" />
         <img src={logoPng} alt="Budget Master logo" />

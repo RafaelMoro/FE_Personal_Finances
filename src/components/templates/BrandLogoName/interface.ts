@@ -11,3 +11,7 @@ export interface LogoImageContainerProps {
 export interface LogoTitleLoginProps {
   isLandingPage: boolean;
 }
+
+export interface BrandLogoButtonProps {
+  isLoginPage?: boolean;
+}
