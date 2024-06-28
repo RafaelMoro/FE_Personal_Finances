@@ -1,3 +1,9 @@
+## v0.7.3 (2024-06-28)
+
+### Pull Requests
+[#26](https://github.com/RafaelMoro/FE_Personal_Finances/pull/26) | Fix push changes to develop
+
+
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests

@@ -1,6 +1,6 @@
 {
   "name": "fe_personal_finances",
-  "version": "0.7.0",
+  "version": "0.7.3",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
