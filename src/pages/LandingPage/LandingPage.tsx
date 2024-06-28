@@ -27,15 +27,16 @@ import { useGuestUser } from '../../hooks/useGuestUser/useGuestUser';
 import { DASHBOARD_ROUTE } from '../RoutesConstants';
 import { useAppSelector } from '../../redux/hooks';
 import { useSyncLoginInfo } from '../../hooks/useSyncLoginInfo';
+import { getHeroButtonText } from './utils';
 
 const LandingPage = () => {
   const navigate = useNavigate();
   useResizeWindow();
-  const { addGuestUser, isGuestUser } = useGuestUser();
+  const { addGuestUser, isGuestUser, userLoggedOn } = useGuestUser();
   const { verifyGuestUser } = useSyncLoginInfo();
   const existGuestUser = useAppSelector((state) => state.user.userInfo?.user.firstName === 'Guest');
 
-  const heroButtonText = isGuestUser ? 'Continue Exploring' : 'Start now';
+  const heroButtonText = getHeroButtonText(isGuestUser, userLoggedOn);
 
   useEffect(() => {
     verifyGuestUser();
