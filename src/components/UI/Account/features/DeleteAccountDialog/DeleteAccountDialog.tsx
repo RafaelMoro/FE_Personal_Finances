@@ -18,11 +18,15 @@ import {
   SecondaryButton, CancelButton,
 } from '../../../../../styles';
 import { LoadingSpinner } from '../../../LoadingSpinner';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
+import { useAccount } from '../../../../../hooks/useAccount';
 
 const DeleteAccountDialog = ({
   open, onClose, accountId, accountName,
 }: DeleteAccountDialogProps) => {
   const [deleteAccountMutation, { isLoading }] = useDeleteAccountMutation();
+  const { deleteAccountLocalStorage } = useAccount();
+  const { isGuestUser } = useGuestUser();
   const userReduxState = useAppSelector((state) => state.user);
   const bearerToken = userReduxState.userInfo?.bearerToken as string;
 
@@ -31,6 +35,18 @@ const DeleteAccountDialog = ({
   const handleSubmit = async () => {
     try {
       const deleteAccountMutationProps: DeleteAccountMutationProps = { values: { accountId }, bearerToken };
+
+      if (isGuestUser) {
+        deleteAccountLocalStorage(accountId);
+        updateGlobalNotification({
+          newTitle: `Account ${accountName} deleted`,
+          newDescription: '',
+          newStatus: SystemStateEnum.Success,
+        });
+        onClose();
+        return;
+      }
+
       await deleteAccountMutation(deleteAccountMutationProps);
 
       // Show success notification

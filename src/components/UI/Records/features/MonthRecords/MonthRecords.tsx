@@ -19,13 +19,14 @@ interface MonthRecordsProps {
   records: AnyRecord[];
   loading: boolean;
   error: boolean;
+  isGuestUser: boolean;
   onEmptyCb: () => ReactElement;
   onErrorCb: () => ReactElement;
   onLoadingCb: () => ReactElement;
 }
 
 const MonthRecords = ({
-  color, openedAccordeon, titleMonthAccordeon, accountId,
+  color, openedAccordeon, titleMonthAccordeon, accountId, isGuestUser,
   records, loading, error, onEmptyCb, onLoadingCb, onErrorCb, totalExpense, totalIncome,
   onClickCb = () => {},
 }: MonthRecordsProps) => (
@@ -36,16 +37,18 @@ const MonthRecords = ({
     accountId={accountId}
     onClickCallback={onClickCb}
   >
-    <ShowTotalContianer>
-      <FlexContainer gap={2}>
-        <Typography>Total Expense: </Typography>
-        <RecordExpense>{totalExpense}</RecordExpense>
-      </FlexContainer>
-      <FlexContainer gap={2}>
-        <Typography>Total Income: </Typography>
-        <RecordIncome>{totalIncome}</RecordIncome>
-      </FlexContainer>
-    </ShowTotalContianer>
+    { (!isGuestUser) && (
+      <ShowTotalContianer>
+        <FlexContainer gap={2}>
+          <Typography>Total Expense: </Typography>
+          <RecordExpense>{totalExpense}</RecordExpense>
+        </FlexContainer>
+        <FlexContainer gap={2}>
+          <Typography>Total Income: </Typography>
+          <RecordIncome>{totalIncome}</RecordIncome>
+        </FlexContainer>
+      </ShowTotalContianer>
+    ) }
     <ShowRecords
       records={records}
       loading={loading}

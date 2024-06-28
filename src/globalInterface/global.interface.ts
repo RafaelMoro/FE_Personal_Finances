@@ -124,6 +124,10 @@ export interface AccountRecord {
 export interface Expense extends AccountRecord {
   isPaid: boolean;
 }
+// In local storage we save the date as a string
+export interface ExpenseLocalStorage extends Omit<Expense, 'date'> {
+  date: string;
+}
 
 export interface UpdateMultipleExpensesError {
   statusCode: number;
@@ -144,12 +148,22 @@ export interface ExpensePaid {
   formattedTime: string;
   fullDate: string;
   isPaid: boolean;
-  date?: Date;
+  date: Date;
+}
+
+export interface ExpensePaidRedux extends Omit<ExpensePaid, 'date'> {
+  date: string;
 }
 
 export interface AnyRecord extends AccountRecord {
   isPaid?: boolean;
   expensesPaid?: ExpensePaid[];
+}
+
+// We do not load records on redux but only the ones of local storage
+export interface RecordRedux extends Omit<AnyRecord, 'date' | 'expensesPaid'> {
+  date: string;
+  expensesPaid?: ExpensePaidRedux[];
 }
 
 export interface MonthTotal {

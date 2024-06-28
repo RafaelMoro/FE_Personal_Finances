@@ -16,13 +16,16 @@ import {
   AccountSectionDesktop,
 } from './ViewAccounts.styled';
 import { useFetchAccountsQuery } from '../../../../../redux/slices/Accounts/actions';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 
 const ERROR_TITLE = 'Error.';
 const ERROR_DESCRIPTION = 'Please try again later. If the error persists, contact support with the error code.';
 
 const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
   const dispatch = useAppDispatch();
+  const { isGuestUser, loadRecords } = useGuestUser();
   const accountsState = useAppSelector((state) => state.accounts);
+  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
   const user = useAppSelector((state) => state.user);
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const accountsUI = accountsState?.accounts;
@@ -71,6 +74,10 @@ const ViewAccounts = ({ hide, accountsActions }: ViewAccountsProps) => {
       return { ...account, selected: false };
     });
     dispatch(updateAccounts(newAccountsUI));
+
+    if (isGuestUser) {
+      loadRecords(accountSelected, recordsLocalStorage ?? []);
+    }
   };
 
   if (isLoading) {

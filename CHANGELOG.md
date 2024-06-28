@@ -1,3 +1,28 @@
+## v1.0.0 (2024-06-28)
+
+### Pull Requests
+[#20](https://github.com/RafaelMoro/FE_Personal_Finances/pull/20) | Feature/add guest user
+
+
+## v0.7.3 (2024-06-28)
+
+### Pull Requests
+[#26](https://github.com/RafaelMoro/FE_Personal_Finances/pull/26) | Fix push changes to develop
+
+
+## v0.6.1 (2024-04-10)
+
+### Pull Requests
+[#19](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/19) | Add Landing page
+- Add assets for landing page
+- Add adjustments on header to be different on the landing page
+- Add new components for landing page: Feature and Card
+- Modify home route to be landing page and change login's route
+- Add hamburguer menu icon
+- Change brand logo name component to be adapted to the landing page
+- Add hamburguer menu into header
+- Add Drawer into header
+
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests

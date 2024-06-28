@@ -1,0 +1,44 @@
+name: First github action
+
+on:
+  push:
+    branches:
+      - test/ghaction
+  pull_request:
+    branches:
+      - test/ghaction
+    types:
+      - opened
+      - synchronize
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm test
+
+      - name: E2E Test
+        uses: cypress-io/github-action@v2
+        with:
+          command: npm run tst:e2e
+          start: npm run start-test
+          wait-on: 'http://localhost:3000'
+
+      - name: Deploy
+        run: npm run deploy

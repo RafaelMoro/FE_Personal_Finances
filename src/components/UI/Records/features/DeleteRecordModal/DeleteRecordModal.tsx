@@ -2,6 +2,7 @@ import { Dialog } from '@mui/material';
 import { CancelButton, SecondaryButton } from '../../../../../styles';
 import { DeleteRecordContainer, DeleteRecordTitle, DeleteRecordWarn } from './DeleteRecordModal.styled';
 import { useRecords } from '../../../../../hooks/useRecords/useRecords';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 import { AnyRecord } from '../../../../../globalInterface';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 
@@ -18,6 +19,7 @@ const DeleteRecordModal = ({
 }: DeleteRecordModalProps) => {
   const { shortName: recordName, typeOfRecord } = record;
   const isTransfer = typeOfRecord === 'transfer';
+  const { isGuestUser } = useGuestUser();
   const { deleteRecord, loadingDeleteRecord } = useRecords({
     recordToBeDeleted: record, deleteRecordExpense: isExpense, closeDeleteRecordModalCb: onClose, closeDrawer,
   });
@@ -37,7 +39,7 @@ const DeleteRecordModal = ({
         <SecondaryButton onClick={onClose}>Cancel</SecondaryButton>
         <CancelButton
           disabled={loadingDeleteRecord}
-          onClick={() => deleteRecord({ deleteTransfer: isTransfer })}
+          onClick={() => deleteRecord({ deleteTransfer: isTransfer, isGuestUser })}
         >
           { (loadingDeleteRecord) ? (<LoadingSpinner />) : 'Delete' }
         </CancelButton>
