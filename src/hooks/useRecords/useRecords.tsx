@@ -913,8 +913,17 @@ const useRecords = ({
   };
 
   const editTransferLocal = ({ payloadExpense, payloadIncome }: { payloadExpense: EditExpenseProps, payloadIncome: EditIncomeProps }) => {
-    const { values: { category, account: accountExpense }, recordId: expenseId } = payloadExpense;
-    const { values: { account: accountIncome }, recordId: incomeId } = payloadIncome;
+    const {
+      values:
+        { category, account: accountExpense, amount: amountExpense },
+      recordId: expenseId,
+      previousAmount: previousAmountExpense,
+    } = payloadExpense;
+    const {
+      values: { account: accountIncome, amount: amountIncome },
+      recordId: incomeId,
+      previousAmount: previousAmountIncome,
+    } = payloadIncome;
 
     const categoryFound = categoriesLocalStorage.find((cat) => cat.categoryName === category);
     if (!categoryFound) {
@@ -940,6 +949,13 @@ const useRecords = ({
     dispatch(saveRecordsLocalStorage(filteredRecords));
     dispatch(saveRecordsLocalStorageSelectedAccount(expenseRecordLocalStorage));
     addToLocalStorage({ newInfo: filteredRecords, prop: 'records' });
+
+    updateAmountAccountOnEditRecord({
+      amount: amountExpense, isExpense: true, previousAmount: previousAmountExpense, accountId: accountExpense, isGuestUser: true,
+    });
+    updateAmountAccountOnEditRecord({
+      amount: amountIncome, isExpense: false, previousAmount: previousAmountIncome, accountId: accountIncome, isGuestUser: true,
+    });
 
     // Show success notification
     updateGlobalNotification({
