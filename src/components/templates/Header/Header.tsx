@@ -1,20 +1,21 @@
 import { Drawer, IconButton, Typography } from '@mui/material';
 import { useState } from 'react';
 
-import { useLogin } from '../../../hooks/useLogin';
+import { useLogin, useGuestUser } from '../../../hooks';
 import { useAppSelector } from '../../../redux/hooks';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
 import { HeaderProps } from './interface';
+
 import { AppIcon } from '../../UI/Icons';
 import { BrandLogoName } from '../BrandLogoName';
+import { GuestUserModal } from './GuestUserModal';
 import {
   CloseIconButton, DrawerMenu, DrawerMenuLink, GuestUserButton, HeaderContainer, HeaderShadow,
 } from './Header.styled';
-import { GuestUserModal } from './GuestUserModal';
 
 const Header = ({ isLandingPage = false }: HeaderProps) => {
   const { signOut } = useLogin();
-  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
+  const { isGuestUser } = useGuestUser();
   const windowSize = useAppSelector((state) => state.userInterface.windowSize);
   const isMobile = windowSize === 'Mobile';
 
@@ -28,13 +29,13 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
       <HeaderShadow isLandingPage={isLandingPage}>
         <HeaderContainer>
           <BrandLogoName isLandingPage={isLandingPage} />
-          { (windowSize === 'Desktop' && hasSignedOn) && (<Typography variant="h3">Account management</Typography>) }
-          { (hasSignedOn) && (
+          { (windowSize === 'Desktop' && !isGuestUser && !isLandingPage) && (<Typography variant="h3">Account management</Typography>) }
+          { (!isGuestUser) && (
             <IconButton aria-label="sign-out-button" onClick={signOut}>
               <AppIcon icon="LogOut" />
             </IconButton>
           ) }
-          { (!hasSignedOn && !isMobile) && (
+          { (isGuestUser && !isMobile) && (
             <GuestUserButton
               isLandingPage={isLandingPage}
               variant="text"
@@ -44,7 +45,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
               Get Personalized Experience
             </GuestUserButton>
           )}
-          { (!hasSignedOn && isMobile) && (
+          { (!isGuestUser && isMobile) && (
             <IconButton onClick={toggleHamburguerDrawer}>
               <AppIcon icon="HamburguerMenu" />
             </IconButton>
