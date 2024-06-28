@@ -1,4 +1,5 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { AccountDialog } from './AccountDialog';
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 
@@ -31,11 +32,28 @@ describe('<AccountDialog />', () => {
     });
     const typeOfAccountSelectInput = screen.getByText(/debit/i);
     const colorTextBoxSelectInput = screen.getByText(/dark orange/i);
+    const createAccountByutton = screen.getByRole('button', {
+      name: /create account/i,
+    });
 
     expect(title).toBeInTheDocument();
     expect(accountTitleTextBox).toBeInTheDocument();
     expect(amountTextBox).toBeInTheDocument();
     expect(typeOfAccountSelectInput).toBeInTheDocument();
     expect(colorTextBoxSelectInput).toBeInTheDocument();
+    expect(createAccountByutton).toBeInTheDocument();
+  });
+
+  test('If account title and amount are empty, show validaton error', async () => {
+    const createAccountByutton = screen.getByRole('button', {
+      name: /create account/i,
+    });
+
+    userEvent.click(createAccountByutton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/the title of your account is required\./i)).toBeInTheDocument();
+      expect(screen.getByText(/the initial amount of your account is required\./i)).toBeInTheDocument();
+    });
   });
 });
