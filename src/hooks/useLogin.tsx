@@ -53,6 +53,7 @@ const useLogin = () => {
     dispatch(resetRecordsLocalStorageSelectedAccount());
     dispatch(resetAccountsLocalStorage());
     dispatch(resetCategoriesLocalStorage());
+    dispatch(signOff());
   };
 
   const signOut = () => {
@@ -117,6 +118,7 @@ const useLogin = () => {
     updateDescription,
     updateStatus,
     signOut,
+    resetUserGuestLocalStorage,
     notificationInfo,
     notification,
     submitOnPressEnter,
