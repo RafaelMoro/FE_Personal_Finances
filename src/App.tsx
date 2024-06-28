@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@mui/material';
 
 import {
-  Login, ForgotPassword, ProtectedRoute, Dashboard, ResetPassword, CreateAccount,
+  Login, ForgotPassword, Dashboard, ResetPassword, CreateAccount,
 } from './pages/LoginModule';
 import { CreateRecord } from './pages/Records/CreateRecords/CreateRecord';
 import { GlobalStyles } from './styles/Global.styled';
