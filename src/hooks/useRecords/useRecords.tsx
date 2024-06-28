@@ -926,13 +926,11 @@ const useRecords = ({
     const expenseRecordLocalStorage = prepareEditExpenseLocal({
       payload: payloadExpense, category: categoryFound, transferInfo: { transferId: incomeId, account: accountIncome },
     });
-    console.log('expenseRecordLocalStorage', expenseRecordLocalStorage);
     if (!expenseRecordLocalStorage) return;
 
     const incomeRecordLocalStorage = prepareEditIncomeLocal({
       payload: payloadIncome, category: categoryFound, transferInfo: { transferId: expenseId, account: accountExpense },
     });
-    console.log('incomeRecordLocalStorage', incomeRecordLocalStorage);
     if (!incomeRecordLocalStorage) return;
 
     const filteredRecords = (recordsLocalStorage ?? [])
