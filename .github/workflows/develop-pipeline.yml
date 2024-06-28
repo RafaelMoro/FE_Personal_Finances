@@ -92,7 +92,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Pull main changes
-        run: git pull origin main
+        run: git pull origin develop
 
       - name: Get Pull Request Details
         id: pr-details
