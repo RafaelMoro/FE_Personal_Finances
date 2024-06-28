@@ -8,7 +8,7 @@ import fetchMock from 'jest-fetch-mock';
 
 import { ForgotPassword } from './ForgotPassword';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
-import { LOGIN_ROUTE } from '../../RoutesConstants';
+import { LANDING_ROUTE } from '../../RoutesConstants';
 
 const successfulResponse = {
   version: '2.0.0',
@@ -152,7 +152,7 @@ describe('Reset password page tests', () => {
     });
 
     await waitFor(() => {
-      expect(history.location.pathname).toBe(LOGIN_ROUTE);
+      expect(history.location.pathname).toBe(LANDING_ROUTE);
     }, {
       timeout: 4000,
     });
