@@ -1,3 +1,9 @@
+## v1.0.0 (2024-06-28)
+
+### Pull Requests
+[#20](https://github.com/RafaelMoro/FE_Personal_Finances/pull/20) | Feature/add guest user
+
+
 ## v0.7.3 (2024-06-28)
 
 ### Pull Requests
