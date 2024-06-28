@@ -1,5 +1,6 @@
 import { Field, Formik } from 'formik';
 
+import { useLocation } from 'react-router-dom';
 import { LOGIN_ROUTE } from '../../RoutesConstants';
 import { PersonalInformationProps } from './interface';
 import { PersonalInformationSchema } from '../../../validationsSchemas/login.schema';
@@ -16,6 +17,9 @@ const initialValuesPersonalInfo = {
 };
 
 const PersonalInformation = ({ goNext, counterView, direction }: PersonalInformationProps) => {
+  const location = useLocation();
+  const locationState = location?.state;
+  const returnRoute = locationState ? locationState?.prevPath : LOGIN_ROUTE;
   if (counterView !== 0) return null;
 
   return (
@@ -50,7 +54,7 @@ const PersonalInformation = ({ goNext, counterView, direction }: PersonalInforma
               label="Last Name"
             />
             <FormActionButtons>
-              <AnchorButton to={LOGIN_ROUTE}>
+              <AnchorButton to={returnRoute}>
                 <CancelButton variant="contained" size="medium">Cancel</CancelButton>
               </AnchorButton>
               <PrimaryButton variant="contained" onClick={submitForm} size="medium">Next</PrimaryButton>
