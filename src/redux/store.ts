@@ -20,6 +20,7 @@ export const store = configureStore({
 
 // Add rootReducer and setupStore for testing.
 const rootReducer = combineReducers({
+  [budgetMasterApi.reducerPath]: budgetMasterApi.reducer,
   user: userReducer,
   accounts: accountsReducer,
   records: recordsReducer,
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
 export const setupStore = (preloadedState?: Partial<RootState>) => configureStore({
   reducer: rootReducer,
   preloadedState,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ immutableCheck: false, serializableCheck: false }).concat(budgetMasterApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;
