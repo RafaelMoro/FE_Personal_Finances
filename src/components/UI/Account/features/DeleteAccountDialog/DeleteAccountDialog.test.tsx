@@ -28,6 +28,8 @@ const successfulResponse = {
 describe('<DeleteAccountDialog />', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
+    jest.clearAllMocks();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
   test('When the user wants to delete an account, show a dialog with title, text and buttons', () => {
