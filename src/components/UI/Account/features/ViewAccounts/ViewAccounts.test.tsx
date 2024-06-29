@@ -84,5 +84,19 @@ describe('ViewAccounts', () => {
         expect(screen.getByText('Credit')).toBeInTheDocument();
       });
     });
+
+    test('Show error if it was not possible to fetch the accounts', async () => {
+      fetchMock.once(JSON.stringify(unsuccessfulResponseFetchAccounts));
+      renderWithProviders(
+        <ViewAccounts hide={null} accountsActions={accountsActions} />,
+        { preloadedState: { user: userInitialState, userInterface: initialUserInterfaceState } },
+      );
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+        expect(screen.getByText('Error.')).toBeInTheDocument();
+        expect(screen.getByText('Please try again later. If the error persists, contact support with the error code.')).toBeInTheDocument();
+      });
+    });
   });
 });
