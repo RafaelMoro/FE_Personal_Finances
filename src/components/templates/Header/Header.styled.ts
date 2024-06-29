@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { IconButton, Typography } from '@mui/material';
-import { GuestUserButtonProps, HeaderShadowProps } from './interface';
+import { GuestUserButtonProps, HeaderShadowProps } from './Header.interface';
 import { Anchor, AppColors, SecondaryButton } from '../../../styles';
 
 export const HeaderShadow = styled.header`
