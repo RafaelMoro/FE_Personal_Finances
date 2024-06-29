@@ -3,7 +3,7 @@ import { waitFor, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 import { ViewAccounts } from './ViewAccounts';
 import {
-  accountsActions, successfulResponseFetchAccounts, unsuccessfulResponseFetchAccounts, userInitialState,
+  accountsActions, getInitialUserInterfaceState, successfulResponseFetchAccounts, unsuccessfulResponseFetchAccounts, userInitialState,
 } from '../../Account.mocks';
 
 describe('ViewAccounts', () => {
@@ -48,6 +48,30 @@ describe('ViewAccounts', () => {
         expect(fetchMock).toHaveBeenCalled();
         expect(screen.getByText('Error.')).toBeInTheDocument();
         expect(screen.getByText('Please try again later. If the error persists, contact support with the error code.')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('View accounts on tablet', () => {
+    const initialUserInterfaceState = getInitialUserInterfaceState({ newWindowSize: 'Tablet' });
+    test('Show accounts on tablet', async () => {
+      fetchMock.once(JSON.stringify(successfulResponseFetchAccounts));
+      renderWithProviders(
+        <ViewAccounts hide={null} accountsActions={accountsActions} />,
+        { preloadedState: { user: userInitialState, userInterface: initialUserInterfaceState } },
+      );
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+        // First account
+        expect(screen.getByText('Citibanamex Debit')).toBeInTheDocument();
+        expect(screen.getByText('$8,246.41')).toBeInTheDocument();
+        expect(screen.getByText('Debit')).toBeInTheDocument();
+
+        // Second Account
+        expect(screen.getByText('American Express')).toBeInTheDocument();
+        expect(screen.getByText('$80,000.00')).toBeInTheDocument();
+        expect(screen.getByText('Credit')).toBeInTheDocument();
       });
     });
   });

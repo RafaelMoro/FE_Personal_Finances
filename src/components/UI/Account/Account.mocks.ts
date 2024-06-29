@@ -1,5 +1,8 @@
+import { WindowSizeValues } from '../../../aliasType';
+import { SystemStateEnum } from '../../../enums';
 import { Account } from '../../../globalInterface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from '../../../hooks/useGuestUser/constants';
+import { UserInterfaceInitialState } from '../../../redux/interface';
 import { UserInitialState } from '../../../redux/slices/User/interface';
 import { AccountActions, AccountUI } from './Account.interface';
 
@@ -101,3 +104,14 @@ export const unsuccessfulResponseFetchAccounts = {
   success: false,
   version: '2.0.0',
 };
+
+export const getInitialUserInterfaceState = ({ newWindowSize }: { newWindowSize: WindowSizeValues }): UserInterfaceInitialState => ({
+  notification: {
+    title: '',
+    description: '',
+    status: SystemStateEnum.Info,
+    showNotification: false,
+  },
+  windowSize: newWindowSize,
+  hasSignedOn: false,
+});
