@@ -48,7 +48,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
               Get Personalized Experience
             </GuestUserButton>
           )}
-          { (!isGuestUser && !userLoggedOn) && (
+          { (!isGuestUser && !userLoggedOn && !isMobile) && (
             <FlexContainer gap={3} justifyContent="space-between">
               <AnchorButton to={LOGIN_ROUTE}>
                 <SecondaryButton>Log in</SecondaryButton>
