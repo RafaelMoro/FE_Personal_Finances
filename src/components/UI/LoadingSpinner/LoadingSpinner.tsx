@@ -1,4 +1,4 @@
-import { LoadingSpinnerProps } from './interface';
+import { LoadingSpinnerProps } from './LoadingSpinner.interface';
 import { AppColors } from '../../../styles';
 import { Spinner } from './LoadingSpinner.styled';
 
