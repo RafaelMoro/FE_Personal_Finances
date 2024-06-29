@@ -1,14 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import { SystemStateEnum } from '../../enums';
-import { GlobalNotification } from '../../globalInterface';
-import { WindowSizeValues } from '../../aliasType';
-
-interface UserInterfaceInitialState {
-  notification: GlobalNotification;
-  windowSize: WindowSizeValues;
-  hasSignedOn: boolean;
-}
+import { UserInterfaceInitialState } from '../interface';
 
 const userInterfaceInitialState: UserInterfaceInitialState = {
   notification: {
