@@ -1,3 +1,9 @@
+## v1.1.0 (2024-06-29)
+
+### Pull Requests
+[#28](https://github.com/RafaelMoro/FE_Personal_Finances/pull/28) | Fix: Header showing sign in and register buttons on mobile
+
+
 ## v1.0.0 (2024-06-28)
 
 ### Pull Requests
