@@ -19,7 +19,7 @@ import {
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
 import { MainRecordData } from './features/MainRecordDataBox';
-import { AllCategoryIcons } from '../Icons/interface';
+import { AllCategoryIcons } from '../Icons/Icons.interface';
 import { getRecordStatus } from '../../../utils/GetRecordStatus';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {

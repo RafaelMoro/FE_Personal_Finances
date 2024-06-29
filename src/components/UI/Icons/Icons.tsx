@@ -5,8 +5,8 @@ import {
 import { AppColors } from '../../../styles';
 import {
   AllCategoryIcons, AppIcons, CategoryIconProps, IconProps,
-} from './interface';
-import { APP_ICONS, categoryIcons } from './constants';
+} from './Icons.interface';
+import { APP_ICONS, categoryIcons } from './Icons.constants';
 
 const DEFAULT_SIZE = '2.5rem';
 const DEFAULT_SIZE_CLOSE_ICON = '3.5rem';
