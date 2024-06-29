@@ -1,3 +1,5 @@
+import { Account } from '../../../globalInterface';
+import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from '../../../hooks/useGuestUser/constants';
 import { AccountUI } from './Account.interface';
 
 export const mockedAccountsUI: AccountUI[] = [
@@ -26,5 +28,26 @@ export const mockedAccountsUI: AccountUI[] = [
     backgroundColorUI: { name: 'blue', color: 'blue' },
     colorUI: { name: 'white', color: 'white' },
     selected: false,
+  },
+];
+
+export const mockedAccounts: Account[] = [
+  {
+    _id: CITIBANAMEX_DEBIT_ID,
+    __v: 0,
+    title: 'Citibanamex Debit',
+    amount: 8246.41,
+    accountType: 'Debit',
+    backgroundColor: 'Blue',
+    color: 'White',
+  },
+  {
+    _id: AMERICAN_EXPRESS_ID,
+    __v: 0,
+    title: 'American Express',
+    amount: 80000,
+    accountType: 'Credit',
+    backgroundColor: 'Tomato',
+    color: 'Black',
   },
 ];
