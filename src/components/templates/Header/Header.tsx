@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useLogin, useGuestUser } from '../../../hooks';
 import { useAppSelector } from '../../../redux/hooks';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
-import { HeaderProps } from './interface';
+import { HeaderProps } from './Header.interface';
 
 import { AppIcon } from '../../UI/Icons';
 import { BrandLogoName } from '../BrandLogoName';
@@ -48,7 +48,7 @@ const Header = ({ isLandingPage = false }: HeaderProps) => {
               Get Personalized Experience
             </GuestUserButton>
           )}
-          { (!isGuestUser && !userLoggedOn) && (
+          { (!isGuestUser && !userLoggedOn && !isMobile) && (
             <FlexContainer gap={3} justifyContent="space-between">
               <AnchorButton to={LOGIN_ROUTE}>
                 <SecondaryButton>Log in</SecondaryButton>
