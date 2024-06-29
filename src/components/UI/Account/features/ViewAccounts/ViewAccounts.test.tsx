@@ -1,49 +1,8 @@
 import fetchMock from 'jest-fetch-mock';
 import { waitFor, screen } from '@testing-library/react';
-import { UserInitialState } from '../../../../../redux/slices/User/interface';
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
-import { AccountActions } from '../../Account.interface';
 import { ViewAccounts } from './ViewAccounts';
-import { mockedAccounts } from '../../Account.mocks';
-
-const userInitialState: UserInitialState = {
-  userInfo: {
-    bearerToken: 'The bearer token',
-    accessToken: 'The access token',
-    user: {
-      email: 'email@email.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      middleName: '',
-      sub: 'sub-user-id-123',
-    },
-  },
-};
-
-const accountsActions: AccountActions = {
-  accountAction: 'Create',
-  openAccountModal: false,
-  openChangeToOtherAccountModal: false,
-  modifyAccount: null,
-  openDeleteAccountModal: false,
-  accountToBeDeleted: { current: { accountId: '', accountName: '' } },
-  handleCloseAccountModal: jest.fn(),
-  handleOpenCreateAccount: jest.fn(),
-  handleOpenModifyAccount: jest.fn(),
-  toggleChangeOtherAccountModal: jest.fn(),
-  handleCloseDeleteAccount: jest.fn(),
-  handleOpenDeleteAccount: jest.fn(),
-};
-
-const response = {
-  data: {
-    accounts: mockedAccounts,
-  },
-  error: null,
-  message: null,
-  success: true,
-  version: '2.0.0',
-};
+import { accountsActions, successfulResponseFetchAccounts, userInitialState } from '../../Account.mocks';
 
 describe('ViewAccounts', () => {
   beforeEach(() => {
@@ -54,7 +13,7 @@ describe('ViewAccounts', () => {
 
   // It will show only the first one
   test('Show accounts on mobile', async () => {
-    fetchMock.once(JSON.stringify(response));
+    fetchMock.once(JSON.stringify(successfulResponseFetchAccounts));
     renderWithProviders(
       <ViewAccounts hide={null} accountsActions={accountsActions} />,
       { preloadedState: { user: userInitialState } },

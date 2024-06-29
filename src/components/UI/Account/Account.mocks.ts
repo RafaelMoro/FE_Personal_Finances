@@ -1,6 +1,7 @@
 import { Account } from '../../../globalInterface';
 import { AMERICAN_EXPRESS_ID, CITIBANAMEX_DEBIT_ID } from '../../../hooks/useGuestUser/constants';
-import { AccountUI } from './Account.interface';
+import { UserInitialState } from '../../../redux/slices/User/interface';
+import { AccountActions, AccountUI } from './Account.interface';
 
 export const mockedAccountsUI: AccountUI[] = [
   {
@@ -51,3 +52,42 @@ export const mockedAccounts: Account[] = [
     color: 'Black',
   },
 ];
+
+export const userInitialState: UserInitialState = {
+  userInfo: {
+    bearerToken: 'The bearer token',
+    accessToken: 'The access token',
+    user: {
+      email: 'email@email.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      middleName: '',
+      sub: 'sub-user-id-123',
+    },
+  },
+};
+
+export const accountsActions: AccountActions = {
+  accountAction: 'Create',
+  openAccountModal: false,
+  openChangeToOtherAccountModal: false,
+  modifyAccount: null,
+  openDeleteAccountModal: false,
+  accountToBeDeleted: { current: { accountId: '', accountName: '' } },
+  handleCloseAccountModal: jest.fn(),
+  handleOpenCreateAccount: jest.fn(),
+  handleOpenModifyAccount: jest.fn(),
+  toggleChangeOtherAccountModal: jest.fn(),
+  handleCloseDeleteAccount: jest.fn(),
+  handleOpenDeleteAccount: jest.fn(),
+};
+
+export const successfulResponseFetchAccounts = {
+  data: {
+    accounts: mockedAccounts,
+  },
+  error: null,
+  message: null,
+  success: true,
+  version: '2.0.0',
+};
