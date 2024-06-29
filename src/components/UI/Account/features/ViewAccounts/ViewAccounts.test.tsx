@@ -54,6 +54,16 @@ describe('ViewAccounts', () => {
 
   describe('View accounts on tablet', () => {
     const initialUserInterfaceState = getInitialUserInterfaceState({ newWindowSize: 'Tablet' });
+
+    test('Show loader while loading', async () => {
+      renderWithProviders(
+        <ViewAccounts hide={null} accountsActions={accountsActions} />,
+        { preloadedState: { user: userInitialState, userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getAllByTestId('account-loading-skeleton').length).toBe(4);
+    });
+
     test('Show accounts on tablet', async () => {
       fetchMock.once(JSON.stringify(successfulResponseFetchAccounts));
       renderWithProviders(
