@@ -93,8 +93,11 @@ export const successfulResponseFetchAccounts = {
 };
 export const unsuccessfulResponseFetchAccounts = {
   data: null,
-  error: null,
+  error: {
+    statusCode: 401,
+    message: 'Unauthorized',
+  },
   message: null,
-  success: true,
+  success: false,
   version: '2.0.0',
 };

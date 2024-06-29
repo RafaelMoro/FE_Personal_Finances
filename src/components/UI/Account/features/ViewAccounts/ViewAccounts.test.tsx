@@ -2,7 +2,9 @@ import fetchMock from 'jest-fetch-mock';
 import { waitFor, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 import { ViewAccounts } from './ViewAccounts';
-import { accountsActions, successfulResponseFetchAccounts, userInitialState } from '../../Account.mocks';
+import {
+  accountsActions, successfulResponseFetchAccounts, unsuccessfulResponseFetchAccounts, userInitialState,
+} from '../../Account.mocks';
 
 describe('ViewAccounts', () => {
   beforeEach(() => {
@@ -32,6 +34,20 @@ describe('ViewAccounts', () => {
         expect(fetchMock).toHaveBeenCalled();
         expect(screen.getByText('Citibanamex Debit')).toBeInTheDocument();
         expect(screen.getByText('$8,246.41')).toBeInTheDocument();
+      });
+    });
+
+    test('Show error if it was not possible to fetch the accounts', async () => {
+      fetchMock.once(JSON.stringify(unsuccessfulResponseFetchAccounts));
+      renderWithProviders(
+        <ViewAccounts hide={null} accountsActions={accountsActions} />,
+        { preloadedState: { user: userInitialState } },
+      );
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalled();
+        expect(screen.getByText('Error.')).toBeInTheDocument();
+        expect(screen.getByText('Please try again later. If the error persists, contact support with the error code.')).toBeInTheDocument();
       });
     });
   });
