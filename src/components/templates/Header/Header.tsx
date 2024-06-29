@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useLogin, useGuestUser } from '../../../hooks';
 import { useAppSelector } from '../../../redux/hooks';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from '../../../pages/RoutesConstants';
-import { HeaderProps } from './interface';
+import { HeaderProps } from './Header.interface';
 
 import { AppIcon } from '../../UI/Icons';
 import { BrandLogoName } from '../BrandLogoName';
