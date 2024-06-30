@@ -5,6 +5,7 @@ import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
 import {
   accountsInitialState, getMockExpense, mockExpense, mockExpenseTransfer, mockIncome,
+  mockIncomeTransfer,
 } from './Record.mocks';
 
 describe('<Records />', () => {
@@ -122,6 +123,28 @@ describe('<Records />', () => {
     expect(screen.getByText(/Payment$/i)).toBeInTheDocument();
     expect(screen.getByText(/Payment to credit card/i)).toBeInTheDocument();
     expect(screen.getByText('- $76.00')).toBeInTheDocument();
+    expect(screen.getByText(/sat, jun 29/i)).toBeInTheDocument();
+    expect(screen.getByText(/10:25pm/i)).toBeInTheDocument();
+    expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+    expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+    expect(screen.getByText(/transfer/i)).toBeInTheDocument();
+  });
+
+  test('Show transfer income record in Mobile', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockIncomeTransfer}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    expect(screen.getByText(/Payment$/i)).toBeInTheDocument();
+    expect(screen.getByText(/Payment to credit card/i)).toBeInTheDocument();
+    expect(screen.getByText('+ $76.00')).toBeInTheDocument();
     expect(screen.getByText(/sat, jun 29/i)).toBeInTheDocument();
     expect(screen.getByText(/10:25pm/i)).toBeInTheDocument();
     expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
