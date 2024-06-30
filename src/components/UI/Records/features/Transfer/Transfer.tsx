@@ -14,7 +14,7 @@ import { TypeOfRecord, ExpensePaid } from '../../../../../globalInterface';
 import { TransferSchema } from '../../../../../validationsSchemas/records.schema';
 import { scrollToTop } from '../../../../../utils/ScrollToTop';
 import { getOriginAccount, getValuesIncomeAndExpense } from './Transfer.util';
-import { resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
+import { formatCurrencyToString, resetLocalStorageWithUserOnly, symmetricDifferenceExpensesRelated } from '../../../../../utils';
 
 import { TransferAccountSelector } from '../TransferAccountSelector';
 import { TransactionFormFields } from '../TransactionFormFields';
@@ -148,7 +148,8 @@ const Transfer = ({ action, typeOfRecord, edit = false }: TransferProps) => {
     if (recordToBeEdited?.amount !== Number(initialAmount.current)) {
       amountTouched = true;
     }
-    const newAmount = verifyAmountEndsPeriod(initialAmount.current);
+    const amountFormatted = formatCurrencyToString(values.amount);
+    const newAmount = verifyAmountEndsPeriod(initialAmount.current || amountFormatted);
     const { amount, ...restValues } = values;
     const newValues = { ...restValues, amount: newAmount };
     const { newValuesIncome, newValuesExpense } = getValuesIncomeAndExpense({ values: newValues, expensesSelected });

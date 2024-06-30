@@ -21,9 +21,8 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
   const [localRecords, setLocalRecords] = useState<Expense[]>([]);
   const [noExpensesFound, setNoExpensesFound] = useState<boolean>(false);
 
-  const toggleNoExpensesFound = () => {
-    setNoExpensesFound((prevState) => !prevState);
-  };
+  const turnOnNoExpensesFound = () => setNoExpensesFound(true);
+  const turnOffNoExpensesFound = () => setNoExpensesFound(false);
 
   useEffect(() => {
     if (isGuestUser && recordsLocalStorage) {
@@ -33,7 +32,8 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
         currentMonth,
         year,
         recordsLocalStorageSelectedAccount,
-        toggleNoExpensesFound,
+        turnOnNoExpensesFound,
+        turnOffNoExpensesFound,
         noExpensesFound,
       });
       setLocalRecords(fetchedLocalRecords);
@@ -47,9 +47,12 @@ const useAllExpenses = ({ month, year, accountId }: UseAllExpensesProps) => {
 
   useEffect(() => {
     if (currentData?.message === 'No expenses found.') {
-      toggleNoExpensesFound();
+      turnOnNoExpensesFound();
     }
-  }, [currentData?.message]);
+    if (!currentData?.message) {
+      turnOffNoExpensesFound();
+    }
+  }, [currentData]);
 
   const onlyExpensesIncomes = useMemo(
     () => (currentData?.records ?? []).filter((record) => record.typeOfRecord === 'expense'),
