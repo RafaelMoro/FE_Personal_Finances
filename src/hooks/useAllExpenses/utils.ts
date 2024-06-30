@@ -41,5 +41,7 @@ export const getLocalRecords = ({
     }
     return recordsFormattedOlderRecords;
   }
+
+  if (recordsFormatted.length === 0) turnOnNoExpensesFound();
   return recordsFormatted;
 };
