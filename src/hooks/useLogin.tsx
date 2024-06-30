@@ -5,7 +5,7 @@ import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { addToLocalStorage, saveInfoToLocalStorage } from '../utils';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   signOff, signOn,
 } from '../redux/slices/User/user.slice';
@@ -47,6 +47,7 @@ const useLogin = () => {
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
+  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
 
   const resetUserGuestLocalStorage = () => {
     dispatch(resetRecordsLocalStorage());
@@ -62,7 +63,7 @@ const useLogin = () => {
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
     dispatch(resetTotalBalanceRecords());
-    dispatch(toggleSignedOn());
+    if (hasSignedOn) dispatch(toggleSignedOn());
     saveInfoToLocalStorage({});
     resetLoginIn();
     navigate(LANDING_ROUTE);
@@ -76,7 +77,7 @@ const useLogin = () => {
       const user = await loginMutation({ values }).unwrap();
       // Save user on redux state of userInfo
       dispatch(signOn(user));
-      dispatch(toggleSignedOn());
+      if (!hasSignedOn) dispatch(toggleSignedOn());
       // Reset all information of the guest user in redux
       resetUserGuestLocalStorage();
       addToLocalStorage({ newInfo: user });
