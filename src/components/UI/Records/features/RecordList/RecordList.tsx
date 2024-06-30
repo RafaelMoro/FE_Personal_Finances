@@ -153,6 +153,25 @@ const RecordList = ({ handleOpenCreateAccount }: RecordListProps) => {
           <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="last-month" />
         )}
       />
+      <MonthRecords
+        color={color}
+        openedAccordeon={false}
+        titleMonthAccordeon="Older Records"
+        totalExpense="0.00"
+        totalIncome="0.00"
+        onClickCb={() => {}}
+        accountId={accountId}
+        records={[]}
+        isGuestUser={isGuestUser}
+        loading={false}
+        error={false}
+        onEmptyCb={() => <NoRecordsFound />}
+        onErrorCb={() => <Error hideIcon description="An error has ocurred. Please try again later." />}
+        onLoadingCb={() => (
+          <ShowMultipleRecordLoader numberOfSkeletons={3} keyMap="older-records" />
+        )}
+        seeMoreUI
+      />
     </List>
   );
 };

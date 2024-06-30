@@ -7,6 +7,8 @@ import { Record } from '../../Record';
 import { FlexContainer } from '../../../../../styles';
 import { RecordExpense, RecordIncome } from '../../Records.styled';
 import { ShowTotalContianer } from '../Features.styled';
+import { useDate } from '../../../../../hooks';
+import { SelectMonthYear } from '../SelectExpenses/SelectMonthYear';
 
 interface MonthRecordsProps {
   color: string;
@@ -15,6 +17,7 @@ interface MonthRecordsProps {
   totalExpense: string;
   totalIncome: string;
   onClickCb?: () => Promise<void> | void;
+  seeMoreUI?: boolean;
   accountId: string;
   records: AnyRecord[];
   loading: boolean;
@@ -26,18 +29,31 @@ interface MonthRecordsProps {
 }
 
 const MonthRecords = ({
-  color, openedAccordeon, titleMonthAccordeon, accountId, isGuestUser,
+  color, openedAccordeon, titleMonthAccordeon, accountId, isGuestUser, seeMoreUI,
   records, loading, error, onEmptyCb, onLoadingCb, onErrorCb, totalExpense, totalIncome,
   onClickCb = () => {},
-}: MonthRecordsProps) => (
-  <MonthAccordeon
-    color={color}
-    opened={openedAccordeon}
-    title={titleMonthAccordeon}
-    accountId={accountId}
-    onClickCallback={onClickCb}
-  >
-    { (!isGuestUser) && (
+}: MonthRecordsProps) => {
+  const {
+    completeMonth, year, years, updateMonthAndYear,
+  } = useDate();
+
+  return (
+    <MonthAccordeon
+      color={color}
+      opened={openedAccordeon}
+      title={titleMonthAccordeon}
+      accountId={accountId}
+      onClickCallback={onClickCb}
+    >
+      { (seeMoreUI) && (
+      <SelectMonthYear
+        updateMonthYear={updateMonthAndYear}
+        completeMonth={completeMonth}
+        currentYear={year}
+        yearsArray={years}
+      />
+      ) }
+      { (!isGuestUser) && (
       <ShowTotalContianer>
         <FlexContainer gap={2}>
           <Typography>Total Expense: </Typography>
@@ -48,15 +64,15 @@ const MonthRecords = ({
           <RecordIncome>{totalIncome}</RecordIncome>
         </FlexContainer>
       </ShowTotalContianer>
-    ) }
-    <ShowRecords
-      records={records}
-      loading={loading}
-      error={error}
-      onEmptyRecords={onEmptyCb}
-      onErrorRecords={onErrorCb}
-      onLoadingRecords={onLoadingCb}
-      renderRecords={
+      ) }
+      <ShowRecords
+        records={records}
+        loading={loading}
+        error={error}
+        onEmptyRecords={onEmptyCb}
+        onErrorRecords={onErrorCb}
+        onLoadingRecords={onLoadingCb}
+        renderRecords={
           (record: AnyRecord, index: number) => (
             <div key={record._id}>
               { (index === 0) && (<Divider />) }
@@ -68,8 +84,9 @@ const MonthRecords = ({
             </div>
           )
         }
-    />
-  </MonthAccordeon>
-);
+      />
+    </MonthAccordeon>
+  );
+};
 
 export { MonthRecords };
