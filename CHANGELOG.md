@@ -1,3 +1,9 @@
+## v1.1.1 (2024-06-30)
+
+### Pull Requests
+[#29](https://github.com/RafaelMoro/FE_Personal_Finances/pull/29) | Multiple Fixes: Error on edit transfer, select expenses drawer, wrong signed on status
+
+
 ## v1.1.0 (2024-06-29)
 
 ### Pull Requests
