@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { AnyRecord } from '../../../globalInterface';
-import { WrapperRedux } from '../../../tests/WrapperRedux';
+import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
 
 const records: AnyRecord[] = [
   {
@@ -101,18 +101,16 @@ const records: AnyRecord[] = [
 
 describe('<Records />', () => {
   test('Render expense in Mobile', () => {
-    const expense = records[0];
+    const [expense] = records;
     const backgroundColor = 'green';
     const history = createMemoryHistory();
-    render(
-      <WrapperRedux>
-        <Router location={history.location} navigator={history}>
-          <Record
-            record={expense}
-            backgroundColor={backgroundColor}
-          />
-        </Router>
-      </WrapperRedux>,
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={expense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
     );
 
     expect(screen.getByText(/casa a solesta gym/i)).toBeInTheDocument();
@@ -125,18 +123,16 @@ describe('<Records />', () => {
   });
 
   test('Render income in Mobile', () => {
-    const income = records[1];
+    const [, income] = records;
     const backgroundColor = 'green';
     const history = createMemoryHistory();
-    render(
-      <WrapperRedux>
-        <Router location={history.location} navigator={history}>
-          <Record
-            record={income}
-            backgroundColor={backgroundColor}
-          />
-        </Router>
-      </WrapperRedux>,
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={income}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
     );
 
     expect(screen.getByText(/solesta gym a casa/i)).toBeInTheDocument();
