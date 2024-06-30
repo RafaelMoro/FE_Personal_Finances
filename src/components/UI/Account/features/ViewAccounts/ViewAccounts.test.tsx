@@ -3,8 +3,9 @@ import { waitFor, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 import { ViewAccounts } from './ViewAccounts';
 import {
-  accountsActions, getInitialUserInterfaceState, successfulResponseFetchAccounts, unsuccessfulResponseFetchAccounts, userInitialState,
+  accountsActions, successfulResponseFetchAccounts, unsuccessfulResponseFetchAccounts, userInitialState,
 } from '../../Account.mocks';
+import { getInitialUserInterfaceState } from '../../../../../tests/Global.mocks';
 
 describe('ViewAccounts', () => {
   beforeEach(() => {
