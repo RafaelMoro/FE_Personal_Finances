@@ -3,8 +3,7 @@ import { IconButton, Typography } from '@mui/material';
 import { useAllExpenses } from '../../../../../hooks/useAllExpenses';
 import { useDate } from '../../../../../hooks/useDate';
 import { ERROR_MESSAGE_GENERAL } from '../../../../../constants';
-import { SelectMonthYearValues } from '../../interface';
-import { ABBREVIATED_MONTHS, ExpensePaid, MONTHS } from '../../../../../globalInterface';
+import { ExpensePaid } from '../../../../../globalInterface';
 
 import { SelectMonthYear } from './SelectMonthYear';
 import { Error } from '../../../Error';
@@ -26,18 +25,11 @@ const SelectExpenses = ({
   modifySelectedExpenses, selectedExpenses = [], closeDrawer, accountId,
 }: SelectExpensesProps) => {
   const {
-    month, completeMonth, year, years, updateYear, updateMonth, updateCompleteMonth,
+    month, completeMonth, year, years, updateMonthAndYear,
   } = useDate();
   const {
     expenses, noExpensesFound, loading, isError,
   } = useAllExpenses({ month, year, accountId });
-
-  const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
-    const monthIndex = MONTHS.indexOf(newMonth);
-    updateMonth(ABBREVIATED_MONTHS[monthIndex]);
-    updateCompleteMonth(newMonth);
-    updateYear(newYear);
-  };
 
   return (
     <>

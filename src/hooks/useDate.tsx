@@ -7,6 +7,7 @@ import {
   ABBREVIATED_MONTHS, AbbreviatedMonthsType, CompleteMonthsType, MONTHS,
 } from '../globalInterface';
 import { createYearsArray } from '../utils/CreateYearsArray';
+import { SelectMonthYearValues } from '../components/UI/Records/interface';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -32,6 +33,13 @@ const useDate = () => {
   const updateMonth = (newMonth: AbbreviatedMonthsType) => setMonth(newMonth);
   const updateCompleteMonth = (newMonth: CompleteMonthsType) => setCompleteMonth(newMonth);
 
+  const updateMonthAndYear = ({ month: newMonth, year: newYear }: SelectMonthYearValues) => {
+    const monthIndex = MONTHS.indexOf(newMonth);
+    updateMonth(ABBREVIATED_MONTHS[monthIndex]);
+    updateCompleteMonth(newMonth);
+    updateYear(newYear);
+  };
+
   return {
     month,
     completeMonth,
@@ -43,6 +51,7 @@ const useDate = () => {
     updateYear,
     updateMonth,
     updateCompleteMonth,
+    updateMonthAndYear,
   };
 };
 
