@@ -92,7 +92,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   if (windowSize !== 'Mobile') {
     return (
       <>
-        <ListItemRecord onClick={showLongView}>
+        <ListItemRecord data-testid="record" onClick={showLongView}>
           <RecordDate variant="body2" align="center">
             { fullDate }
             { ' ' }
@@ -177,7 +177,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   return (
     <>
-      <ListItemRecord onClick={showLongView}>
+      <ListItemRecord data-testid="record" onClick={showLongView}>
         <RecordDate variant="body2" align="center">
           { fullDate }
           { ' ' }

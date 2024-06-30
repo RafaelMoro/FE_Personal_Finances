@@ -70,7 +70,7 @@ const RecordDrawer = ({
   };
 
   return (
-    <RecordDrawerContainer>
+    <RecordDrawerContainer data-testid="record-drawer">
       <DrawerDate variant="body2">
         {fullDate}
         {' '}
