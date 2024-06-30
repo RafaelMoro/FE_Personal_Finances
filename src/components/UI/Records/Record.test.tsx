@@ -299,6 +299,156 @@ describe('<Records />', () => {
       expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
       expect(screen.getByText(/no tags/i)).toBeInTheDocument();
     });
+
+    test('Show expense record in Drawer on Desktop', async () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockExpense}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      const record = screen.getByTestId('record');
+      userEvent.click(record);
+
+      await screen.findByTestId('record-drawer');
+      expect(screen.getAllByText(/casa a solesta gym/i).length).toBe(2);
+      expect(
+        screen.getAllByText(
+          /Esta es una descripcion muy larga para darme una idea de cuanto debo de cortar aproximadamente para la vista corta y la vista larga/i,
+        ).length,
+      ).toBe(2);
+      expect(screen.getAllByText(/- \$150\.09/i).length).toBe(2);
+      expect(screen.getAllByText(/may 20/i).length).toBe(2);
+      expect(screen.getAllByText(/12:34pm/i).length).toBe(2);
+    });
+
+    test('Show income record in Desktop', () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockIncome}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getByText(/solesta gym a casa/i)).toBeInTheDocument();
+      expect(screen.getByText(/didi para ir a casa/i)).toBeInTheDocument();
+      expect(screen.getByText(/\+ \$110\.24/i)).toBeInTheDocument();
+      expect(screen.getByText(/may 21/i)).toBeInTheDocument();
+      expect(screen.getByText(/1:50pm/i)).toBeInTheDocument();
+      expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+      expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+      expect(screen.getByText(/records paid: 2/i)).toBeInTheDocument();
+    });
+
+    test('Show income record in Drawer on Desktop', async () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockIncome}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      const record = screen.getByTestId('record');
+      userEvent.click(record);
+
+      await screen.findByTestId('record-drawer');
+      expect(screen.getAllByText(/solesta gym a casa/i).length).toBe(2);
+      expect(screen.getAllByText(/didi para ir a casa/i).length).toBe(2);
+      expect(screen.getAllByText(/\+ \$110\.24/i).length).toBe(2);
+      expect(screen.getAllByText(/may 21/i).length).toBe(2);
+      expect(screen.getAllByText(/1:50pm/i).length).toBe(2);
+    });
+
+    test('Show expenses related of an income in Drawer on Desktop', async () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockIncome}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      const record = screen.getByTestId('record');
+      userEvent.click(record);
+
+      await screen.findByTestId('record-drawer');
+      expect(screen.getByText(/expenses selected:/i)).toBeInTheDocument();
+
+      // Expenses related expected
+      expect(screen.getByText(/chilaquiles/i)).toBeInTheDocument();
+      expect(screen.getByText(/bodega despensa/i)).toBeInTheDocument();
+      expect(screen.getByText(/\$96\.03/i)).toBeInTheDocument();
+      expect(screen.getByText(/\$370\.83/i)).toBeInTheDocument();
+      expect(screen.getByText(/16:03/i)).toBeInTheDocument();
+      expect(screen.getByText(/16:08/i)).toBeInTheDocument();
+      expect(screen.getAllByText(/may 20/i).length).toBe(2);
+    });
+
+    test('Show transfer expense record in Desktop', () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockExpenseTransfer}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getByText(/Payment$/i)).toBeInTheDocument();
+      expect(screen.getByText(/Payment to credit card/i)).toBeInTheDocument();
+      expect(screen.getByText('- $76.00')).toBeInTheDocument();
+      expect(screen.getByText(/sat, jun 29/i)).toBeInTheDocument();
+      expect(screen.getByText(/10:25pm/i)).toBeInTheDocument();
+      expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+      expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+      expect(screen.getByText(/transfer/i)).toBeInTheDocument();
+    });
+
+    test('Show transfer income record in Desktop', () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockIncomeTransfer}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getByText(/Payment$/i)).toBeInTheDocument();
+      expect(screen.getByText(/Payment to credit card/i)).toBeInTheDocument();
+      expect(screen.getByText('+ $76.00')).toBeInTheDocument();
+      expect(screen.getByText(/sat, jun 29/i)).toBeInTheDocument();
+      expect(screen.getByText(/10:25pm/i)).toBeInTheDocument();
+      expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+      expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+      expect(screen.getByText(/transfer/i)).toBeInTheDocument();
+    });
   });
 
   test('Show Records Paid verbiage with transfer income record', () => {
