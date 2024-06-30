@@ -8,15 +8,16 @@ interface GetLocalRecordsProps {
   currentMonth: AbbreviatedMonthsType;
   year: string;
   recordsLocalStorageSelectedAccount: RecordsLocalStorage | undefined;
-  toggleNoExpensesFound: () => void;
+  turnOnNoExpensesFound: () => void;
+  turnOffNoExpensesFound: () => void;
   noExpensesFound: boolean;
 }
 
 export const getLocalRecords = ({
-  month, lastMonth, currentMonth, year, recordsLocalStorageSelectedAccount, toggleNoExpensesFound, noExpensesFound,
+  month, lastMonth, currentMonth, year, recordsLocalStorageSelectedAccount, turnOnNoExpensesFound, turnOffNoExpensesFound, noExpensesFound,
 }: GetLocalRecordsProps) => {
   if (noExpensesFound) {
-    toggleNoExpensesFound();
+    turnOffNoExpensesFound();
   }
 
   const recordAge = getAgeLocalRecord({ month, lastMonth, currentMonth });
@@ -36,9 +37,11 @@ export const getLocalRecords = ({
       (record) => record.date.getMonth() === new Date(`${year}-${month}-01`).getMonth(),
     );
     if (recordsFormattedOlderRecords.length === 0) {
-      toggleNoExpensesFound();
+      turnOnNoExpensesFound();
     }
     return recordsFormattedOlderRecords;
   }
+
+  if (recordsFormatted.length === 0) turnOnNoExpensesFound();
   return recordsFormatted;
 };

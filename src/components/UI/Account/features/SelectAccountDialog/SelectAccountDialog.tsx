@@ -8,20 +8,24 @@ import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { updateSelectedAccount, updateAccounts } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { ListAccountSelected, ListItemButtonContainer } from './SelectAccountDialog.styled';
 import { DialogTitle, ListItemText } from '../../../../../styles';
+import { useGuestUser } from '../../../../../hooks';
 
 const SelectAccountDialog = ({
   open, onClose,
 }: AccountDialogProps) => {
   const dispatch = useAppDispatch();
+  const { isGuestUser, loadRecords } = useGuestUser();
   const accountsReduxState = useAppSelector((state) => state.accounts);
+  const recordsLocalStorage = useAppSelector((state) => state.records.recordsLocalStorage);
   const accountsUI = accountsReduxState?.accounts;
 
   const handleAccountClick = (accountId: string) => {
     if (accountsUI) {
       const newAccounts: AccountUI[] = (accountsUI).map((account) => {
         if (account._id === accountId) {
-          const newSelectedAccount = { ...account, selected: true };
+          const newSelectedAccount: AccountUI = { ...account, selected: true };
           dispatch(updateSelectedAccount(newSelectedAccount));
+          if (isGuestUser) loadRecords(newSelectedAccount, recordsLocalStorage ?? []);
           return newSelectedAccount;
         }
 

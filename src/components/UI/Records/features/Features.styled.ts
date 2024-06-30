@@ -40,18 +40,22 @@ export const LoadingExpensesContainer = styled.div`
   padding-top: 3rem;
 
   @media ${responsiveBreakpoints.tablet} {
-    min-width: 48rem;
+    min-width: 68.4rem;
   }
 
   @media ${responsiveBreakpoints.desktop} {
-    min-width: 70rem;
+    min-width: 77rem;
   }
 `;
 
 export const ExpensesNotFoundContainer = styled.div`
   padding-top: 3rem;
 
-  @media ${responsiveBreakpoints.tabletAndDesktop} {
+  @media ${responsiveBreakpoints.tablet} {
+    min-width: 68.4rem;
+  }
+
+  @media ${responsiveBreakpoints.desktop} {
     min-width: 77rem;
   }
 `;
