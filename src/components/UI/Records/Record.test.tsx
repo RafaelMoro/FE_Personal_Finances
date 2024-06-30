@@ -4,7 +4,7 @@ import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
 import {
-  accountsInitialState, mockExpense, mockExpenseTransfer, mockIncome,
+  accountsInitialState, getMockExpense, mockExpense, mockExpenseTransfer, mockIncome,
 } from './Record.mocks';
 
 describe('<Records />', () => {
@@ -32,10 +32,11 @@ describe('<Records />', () => {
   test('Do not show unpaid badge in record with non credit account', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
+    const expense = getMockExpense({ paidStatus: false });
     renderWithProviders(
       <Router location={history.location} navigator={history}>
         <Record
-          record={mockExpense}
+          record={expense}
           backgroundColor={backgroundColor}
         />
       </Router>,
@@ -49,10 +50,11 @@ describe('<Records />', () => {
   test('Show unpaid badge in record with credit account', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
+    const expense = getMockExpense({ paidStatus: false });
     renderWithProviders(
       <Router location={history.location} navigator={history}>
         <Record
-          record={mockExpense}
+          record={expense}
           backgroundColor={backgroundColor}
         />
       </Router>,
@@ -62,6 +64,25 @@ describe('<Records />', () => {
     // Show unpaid badge and do not show paid status badge
     expect(screen.getByText(/unpaid/i)).toBeInTheDocument();
     expect(screen.queryByText(/^paid/i)).not.toBeInTheDocument();
+  });
+
+  test('Show paid badge in record with credit account', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    const expense = getMockExpense({ paidStatus: true });
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={expense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+      { preloadedState: { accounts: accountsInitialState } },
+    );
+
+    // Show unpaid badge and do not show paid status badge
+    expect(screen.queryByText(/unpaid/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^paid/i)).toBeInTheDocument();
   });
 
   test('Show income record in Mobile', () => {
