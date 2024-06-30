@@ -134,11 +134,34 @@ describe('<Records />', () => {
     expect(screen.getByText(/solesta gym a casa/i)).toBeInTheDocument();
     expect(screen.getByText(/didi para ir a casa/i)).toBeInTheDocument();
     expect(screen.getByText(/\+ \$110\.24/i)).toBeInTheDocument();
-    expect(screen.getByText(/may 20/i)).toBeInTheDocument();
+    expect(screen.getByText(/may 21/i)).toBeInTheDocument();
     expect(screen.getByText(/1:50pm/i)).toBeInTheDocument();
     expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
     expect(screen.getByText(/records paid: 2/i)).toBeInTheDocument();
+  });
+
+  test('Show income record in Drawer on Mobile', async () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockIncome}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    const record = screen.getByTestId('record');
+    userEvent.click(record);
+
+    await screen.findByTestId('record-drawer');
+    expect(screen.getAllByText(/solesta gym a casa/i).length).toBe(2);
+    expect(screen.getAllByText(/didi para ir a casa/i).length).toBe(2);
+    expect(screen.getAllByText(/\+ \$110\.24/i).length).toBe(2);
+    expect(screen.getAllByText(/may 21/i).length).toBe(2);
+    expect(screen.getAllByText(/1:50pm/i).length).toBe(2);
   });
 
   test('Show transfer expense record in Mobile', () => {

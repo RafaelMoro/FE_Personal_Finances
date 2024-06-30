@@ -75,7 +75,7 @@ export const mockIncome: AnyRecord = {
   indebtedPeople: [],
   budgets: [],
   formattedTime: '1:50pm',
-  fullDate: 'May 20',
+  fullDate: 'May 21',
   amount: 110.24,
   amountFormatted: '$110.24',
   account: '123-456-789',
