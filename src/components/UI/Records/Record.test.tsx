@@ -3,7 +3,9 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
-import { mockExpense, mockExpenseTransfer, mockIncome } from './Record.mocks';
+import {
+  accountsInitialState, mockExpense, mockExpenseTransfer, mockIncome,
+} from './Record.mocks';
 
 describe('<Records />', () => {
   test('Show expense record in Mobile', () => {
@@ -25,6 +27,41 @@ describe('<Records />', () => {
     expect(screen.getByText(/12:34pm/i)).toBeInTheDocument();
     expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+  });
+
+  test('Do not show unpaid badge in record with non credit account', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockExpense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    // Do not show any paid status badge
+    expect(screen.queryByText(/unpaid/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/^paid/i)).not.toBeInTheDocument();
+  });
+
+  test('Show unpaid badge in record with credit account', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockExpense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+      { preloadedState: { accounts: accountsInitialState } },
+    );
+
+    // Show unpaid badge and do not show paid status badge
+    expect(screen.getByText(/unpaid/i)).toBeInTheDocument();
+    expect(screen.queryByText(/^paid/i)).not.toBeInTheDocument();
   });
 
   test('Show income record in Mobile', () => {

@@ -1,4 +1,6 @@
 import { AnyRecord } from '../../../globalInterface';
+import { AccountsInitialState } from '../../../redux/slices/Accounts/interface';
+import { AccountUI } from '../Account/Account.interface';
 
 export const mockRecords: AnyRecord[] = [];
 
@@ -164,4 +166,26 @@ export const mockIncomeTransfer: AnyRecord = {
       date: new Date('2024-06-28'),
     },
   ],
+};
+
+const selectedAccount: AccountUI = {
+  _id: '2',
+  __v: 0,
+  title: 'Bank account 2',
+  amount: 30000,
+  amountFormatted: '$30,000.00',
+  accountType: 'Credit',
+  backgroundColor: 'blue',
+  color: 'white',
+  backgroundColorUI: { name: 'blue', color: 'blue' },
+  colorUI: { name: 'white', color: 'white' },
+  selected: false,
+};
+
+export const accountsInitialState: AccountsInitialState = {
+  accounts: null,
+  accountSelected: selectedAccount,
+  accountsLocalStorage: null,
+  // This flag will let know records if they can fetch and give feedback to the user
+  accountsFetchStatus: 'isUninitialized',
 };
