@@ -449,6 +449,24 @@ describe('<Records />', () => {
       expect(screen.getByText(/no tags/i)).toBeInTheDocument();
       expect(screen.getByText(/transfer/i)).toBeInTheDocument();
     });
+
+    test('Show record with tags and budgets for Desktop', () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      const expense = getMockExpense({ tag: ['first tag'], budgets: ['first budget'] });
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={expense}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getByText(/first tag/i)).toBeInTheDocument();
+      expect(screen.getByText(/first budget/i)).toBeInTheDocument();
+    });
   });
 
   test('Show Records Paid verbiage with transfer income record', () => {
