@@ -1,6 +1,7 @@
 import { AnyRecord } from '../../../globalInterface';
 import { AccountsInitialState } from '../../../redux/slices/Accounts/interface';
 import { AccountUI } from '../Account/Account.interface';
+import { GetMockExpenseProps } from './interface';
 
 export const mockRecords: AnyRecord[] = [];
 
@@ -50,9 +51,12 @@ export const mockExpense: AnyRecord = {
   isPaid: false,
 };
 
-export const getMockExpense = ({ paidStatus = false, budgets = [], tag = [] }
-: { paidStatus?: boolean, budgets?: string[], tag?: string[] }): AnyRecord => ({
+export const getMockExpense = ({
+  paidStatus = false, budgets = [], tag = [], shortName = '',
+}
+: GetMockExpenseProps): AnyRecord => ({
   ...mockExpense,
+  shortName,
   budgets,
   tag,
   isPaid: paidStatus,

@@ -100,3 +100,10 @@ export interface ListExpandableContainerProps {
 export interface SelectExpensesCellProps {
   noHorizontalPadding?: boolean;
 }
+
+export interface GetMockExpenseProps {
+  paidStatus?: boolean;
+  budgets?: string[];
+  tag?: string[];
+  shortName?: string;
+}
