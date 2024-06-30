@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import userEvent from '@testing-library/user-event';
+
 import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
 import {
@@ -9,6 +11,10 @@ import {
 } from './Record.mocks';
 
 describe('<Records />', () => {
+  beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
   test('Show expense record in Mobile', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
@@ -28,6 +34,33 @@ describe('<Records />', () => {
     expect(screen.getByText(/12:34pm/i)).toBeInTheDocument();
     expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+  });
+
+  test('Show expense record in Drawer on Mobile', async () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockExpense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    const record = screen.getByTestId('record');
+    userEvent.click(record);
+
+    await screen.findByTestId('record-drawer');
+    expect(screen.getAllByText(/casa a solesta gym/i).length).toBe(2);
+    expect(
+      screen.getByText(
+        /Esta es una descripcion muy larga para darme una idea de cuanto debo de cortar aproximadamente para la vista corta y la vista larga/i,
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText(/- \$150\.09/i).length).toBe(2);
+    expect(screen.getAllByText(/may 20/i).length).toBe(2);
+    expect(screen.getAllByText(/12:34pm/i).length).toBe(2);
   });
 
   test('Do not show unpaid badge in record with non credit account', () => {
