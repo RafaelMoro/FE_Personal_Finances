@@ -164,6 +164,34 @@ describe('<Records />', () => {
     expect(screen.getAllByText(/1:50pm/i).length).toBe(2);
   });
 
+  test('Show expenses related of an income in Drawer on Mobile', async () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockIncome}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    const record = screen.getByTestId('record');
+    userEvent.click(record);
+
+    await screen.findByTestId('record-drawer');
+    expect(screen.getByText(/expenses selected:/i)).toBeInTheDocument();
+
+    // Expenses related expected
+    expect(screen.getByText(/chilaquiles/i)).toBeInTheDocument();
+    expect(screen.getByText(/bodega despensa/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$96\.03/i)).toBeInTheDocument();
+    expect(screen.getByText(/\$370\.83/i)).toBeInTheDocument();
+    expect(screen.getByText(/16:03/i)).toBeInTheDocument();
+    expect(screen.getByText(/16:08/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/may 20/i).length).toBe(2);
+  });
+
   test('Show transfer expense record in Mobile', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
