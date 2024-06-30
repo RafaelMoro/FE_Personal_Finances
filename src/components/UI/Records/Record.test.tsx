@@ -3,10 +3,10 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
-import { mockExpense, mockIncome } from './Record.mocks';
+import { mockExpense, mockExpenseTransfer, mockIncome } from './Record.mocks';
 
 describe('<Records />', () => {
-  test('Render expense in Mobile', () => {
+  test('Show expense record in Mobile', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
     renderWithProviders(
@@ -27,7 +27,7 @@ describe('<Records />', () => {
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
   });
 
-  test('Render income in Mobile', () => {
+  test('Show income record in Mobile', () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
     renderWithProviders(
@@ -47,5 +47,27 @@ describe('<Records />', () => {
     expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
     expect(screen.getByText(/records paid: 2/i)).toBeInTheDocument();
+  });
+
+  test('Show transfer expense record in Mobile', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={mockExpenseTransfer}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    expect(screen.getByText(/Payment$/i)).toBeInTheDocument();
+    expect(screen.getByText(/Payment to credit card/i)).toBeInTheDocument();
+    expect(screen.getByText('- $76.00')).toBeInTheDocument();
+    expect(screen.getByText(/sat, jun 29/i)).toBeInTheDocument();
+    expect(screen.getByText(/10:25pm/i)).toBeInTheDocument();
+    expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+    expect(screen.getByText(/no tags/i)).toBeInTheDocument();
+    expect(screen.getByText(/transfer/i)).toBeInTheDocument();
   });
 });
