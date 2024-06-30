@@ -47,6 +47,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   // A transfer may be an expense.
   const isExpense = typeof isPaid !== 'undefined';
   const isTransferIncome = typeOfRecord === 'transfer' && !isExpense;
+  const isTransferExpense = typeOfRecord === 'transfer' && isExpense;
   const status = getRecordStatus({ isPaid, typeOfRecord });
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
@@ -107,7 +108,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
               <PaymentStatusChip label={status} variant="filled" status={status} />
             </RecordStatusContainer>
             ) }
-            { (isTransferIncome) && (
+            { (isTransferIncome || isTransferExpense) && (
               <RecordStatusContainer>
                 <PaymentStatusChip label={status} variant="filled" status="Transfer" />
               </RecordStatusContainer>
@@ -193,7 +194,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             <PaymentStatusChip label={status} variant="filled" status={status} />
           </RecordStatusContainer>
           ) }
-          { (isTransferIncome) && (
+          { (isTransferIncome || isTransferExpense) && (
           <RecordStatusContainer>
             <PaymentStatusChip label={status} variant="filled" status="Transfer" />
           </RecordStatusContainer>
