@@ -3,17 +3,16 @@ import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Record } from './Record';
 import { renderWithProviders } from '../../../tests/CustomWrapperRedux';
-import { mockRecords } from './Record.mocks';
+import { mockExpense, mockIncome } from './Record.mocks';
 
 describe('<Records />', () => {
   test('Render expense in Mobile', () => {
-    const [expense] = mockRecords;
     const backgroundColor = 'green';
     const history = createMemoryHistory();
     renderWithProviders(
       <Router location={history.location} navigator={history}>
         <Record
-          record={expense}
+          record={mockExpense}
           backgroundColor={backgroundColor}
         />
       </Router>,
@@ -29,13 +28,12 @@ describe('<Records />', () => {
   });
 
   test('Render income in Mobile', () => {
-    const [, income] = mockRecords;
     const backgroundColor = 'green';
     const history = createMemoryHistory();
     renderWithProviders(
       <Router location={history.location} navigator={history}>
         <Record
-          record={income}
+          record={mockIncome}
           backgroundColor={backgroundColor}
         />
       </Router>,
