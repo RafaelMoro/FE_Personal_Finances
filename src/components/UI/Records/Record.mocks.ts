@@ -50,8 +50,11 @@ export const mockExpense: AnyRecord = {
   isPaid: false,
 };
 
-export const getMockExpense = ({ paidStatus = false }: { paidStatus?: boolean }): AnyRecord => ({
+export const getMockExpense = ({ paidStatus = false, budgets = [], tag = [] }
+: { paidStatus?: boolean, budgets?: string[], tag?: string[] }): AnyRecord => ({
   ...mockExpense,
+  budgets,
+  tag,
   isPaid: paidStatus,
 
 });

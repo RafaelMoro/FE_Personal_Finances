@@ -36,6 +36,23 @@ describe('<Records />', () => {
     expect(screen.getByText(/no tags/i)).toBeInTheDocument();
   });
 
+  test('Show expense record in Mobile with tags and budgets', () => {
+    const backgroundColor = 'green';
+    const history = createMemoryHistory();
+    const expense = getMockExpense({ tag: ['first tag'], budgets: ['first budget'] });
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <Record
+          record={expense}
+          backgroundColor={backgroundColor}
+        />
+      </Router>,
+    );
+
+    expect(screen.getByText(/first tag/i)).toBeInTheDocument();
+    expect(screen.getByText(/first budget/i)).toBeInTheDocument();
+  });
+
   test('Show expense record in Drawer on Mobile', async () => {
     const backgroundColor = 'green';
     const history = createMemoryHistory();
