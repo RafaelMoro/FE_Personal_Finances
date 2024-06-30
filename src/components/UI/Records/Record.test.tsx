@@ -9,6 +9,7 @@ import {
   accountsInitialState, getMockExpense, mockExpense, mockExpenseTransfer, mockIncome,
   mockIncomeTransfer,
 } from './Record.mocks';
+import { getInitialUserInterfaceState } from '../../../tests/Global.mocks';
 
 describe('<Records />', () => {
   beforeEach(() => {
@@ -272,6 +273,31 @@ describe('<Records />', () => {
       expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
       expect(screen.getByText(/no tags/i)).toBeInTheDocument();
       expect(screen.getByText(/transfer/i)).toBeInTheDocument();
+    });
+  });
+
+  describe('<Record /> for Desktop View', () => {
+    const initialUserInterfaceState = getInitialUserInterfaceState({ newWindowSize: 'Desktop' });
+    test('Show expense record in Desktop', () => {
+      const backgroundColor = 'green';
+      const history = createMemoryHistory();
+      renderWithProviders(
+        <Router location={history.location} navigator={history}>
+          <Record
+            record={mockExpense}
+            backgroundColor={backgroundColor}
+          />
+        </Router>,
+        { preloadedState: { userInterface: initialUserInterfaceState } },
+      );
+
+      expect(screen.getByText(/casa a solesta gym/i)).toBeInTheDocument();
+      expect(screen.getByText(/esta es una descripcion muy larga para darme una i.../i)).toBeInTheDocument();
+      expect(screen.getByText(/- \$150\.09/i)).toBeInTheDocument();
+      expect(screen.getByText(/may 20/i)).toBeInTheDocument();
+      expect(screen.getByText(/12:34pm/i)).toBeInTheDocument();
+      expect(screen.getByText(/no budgets/i)).toBeInTheDocument();
+      expect(screen.getByText(/no tags/i)).toBeInTheDocument();
     });
   });
 
