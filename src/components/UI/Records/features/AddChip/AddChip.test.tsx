@@ -1,5 +1,5 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 
 import { useState } from 'react';
 import { AddChip } from './AddChip';
@@ -108,5 +108,23 @@ describe('<AddChip />', () => {
     userEvent.click(button);
 
     expect(await screen.findByText(/one cannot be repeated. Try a different one\./i)).toBeInTheDocument();
+  });
+
+  test('If there exist the element one, and the user deletes it, do not find the element', async () => {
+    const initialTags = ['one'];
+    render(
+      <WrapperAddChip initialTags={initialTags} />,
+    );
+
+    const removeItemButton = screen.getByTestId('CancelIcon');
+
+    expect(screen.getByText(/one/i)).toBeInTheDocument();
+
+    userEvent.click(removeItemButton);
+
+    await waitFor(() => {
+      expect(screen.queryByText(/one/i)).not.toBeInTheDocument();
+    });
+    expect(await screen.findByText(/no tags added/i)).toBeInTheDocument();
   });
 });
