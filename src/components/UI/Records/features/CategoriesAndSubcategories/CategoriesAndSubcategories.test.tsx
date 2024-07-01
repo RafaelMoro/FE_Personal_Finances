@@ -7,41 +7,13 @@ import { CategoriesAndSubcategories } from './CategoriesAndSubcategories';
 import { Category } from '../../../../../globalInterface';
 import { TestCategorySchema } from '../../../../../validationsSchemas/records.schema';
 import {
-  categoriesInitialState, mockCategories, modifyCategoryState, userInitialState,
+  categoriesInitialState, createCategoriesResponse, emptyCategoriesResponse, modifyCategoryState, successfulResponseFetchCategories, userInitialState,
 } from '../../Record.mocks';
 
 interface CreateCategoryValues {
   category: string;
   subCategory: string;
 }
-
-const successfulResponseFetchCategories = {
-  data: {
-    categories: mockCategories,
-  },
-  error: null,
-  message: null,
-  success: true,
-  version: '2.0.0',
-};
-const emptyCategoriesResponse = {
-  data: {
-    categories: [],
-  },
-  error: null,
-  message: null,
-  success: true,
-  version: '2.0.0',
-};
-const createCategoriesResponse = {
-  data: {
-    categories: mockCategories,
-  },
-  error: null,
-  message: 'New category created',
-  success: true,
-  version: '2.0.0',
-};
 
 const WrapperCategoriesAndSubcategories = ({ categoryToBeEdited = null }: { categoryToBeEdited?: Category | null }) => {
   const initialValues: CreateCategoryValues = {

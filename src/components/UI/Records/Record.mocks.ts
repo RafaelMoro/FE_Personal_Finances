@@ -252,3 +252,31 @@ export const categoriesInitialState: CategoriesInitialState = {
 export const modifyCategoryState: CategoriesInitialState = {
   ...categoriesInitialState, currentCategory: mockCategories[1], categoryNotSelected: false,
 };
+
+export const successfulResponseFetchCategories = {
+  data: {
+    categories: mockCategories,
+  },
+  error: null,
+  message: null,
+  success: true,
+  version: '2.0.0',
+};
+export const emptyCategoriesResponse = {
+  data: {
+    categories: [],
+  },
+  error: null,
+  message: null,
+  success: true,
+  version: '2.0.0',
+};
+export const createCategoriesResponse = {
+  data: {
+    categories: mockCategories,
+  },
+  error: null,
+  message: 'New category created',
+  success: true,
+  version: '2.0.0',
+};
