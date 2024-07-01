@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { useState } from 'react';
+import userEvent from '@testing-library/user-event';
 import { AddIndebtedPerson } from './AddIndebtedPerson';
 import { IndebtedPeople } from '../../../../../globalInterface';
 import { mockIndebtedPerson } from '../../Record.mocks';
 
-const WrapperAddIndebtedPerson = ({ onClose, indebtedPerson, modifyAction = false }
-: { onClose: () => void; modifyAction?: boolean; indebtedPerson: IndebtedPeople | null }) => {
-  const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople[]>([]);
+const WrapperAddIndebtedPerson = ({
+  onClose, indebtedPerson, modifyAction = false, initialIndebtedPerson = [],
+}
+: { onClose: () => void; modifyAction?: boolean; indebtedPerson: IndebtedPeople | null; initialIndebtedPerson?: IndebtedPeople[] }) => {
+  const [indebtedPeople, setIndebtedPeople] = useState<IndebtedPeople[]>(initialIndebtedPerson);
   const addIndebtedPerson = (newIndebtedPerson: IndebtedPeople) => setIndebtedPeople([...indebtedPeople, newIndebtedPerson]);
   const updateIndebtedPerson = (newIndebtedPerson: IndebtedPeople):void => {
     const personExist = indebtedPeople.find((person) => person.name === newIndebtedPerson.name);
@@ -52,6 +55,26 @@ describe('<AddIndebtedPerson />', () => {
     expect(
       screen.getByRole('button', { name: /add person/i }),
     ).toBeInTheDocument();
+  });
+
+  test('If the user tries to put a name that was already exist, show error', async () => {
+    const initialIndebtedPerson: IndebtedPeople[] = [{
+      name: 'John', amount: '100', amountPaid: '0', isPaid: false,
+    }];
+
+    render(
+      <WrapperAddIndebtedPerson onClose={onClose} indebtedPerson={null} initialIndebtedPerson={initialIndebtedPerson} />,
+    );
+
+    const fullNameInput = screen.getByRole('textbox', {
+      name: /full name/i,
+    });
+    const button = screen.getByRole('button', { name: /add person/i });
+
+    userEvent.type(fullNameInput, 'John');
+    userEvent.click(button);
+
+    expect(await screen.findByText(/John cannot be repeated. Try a different one./i)).toBeInTheDocument();
   });
 
   test('If a user wants to modify an indebted person, show Modify in title and button', () => {
