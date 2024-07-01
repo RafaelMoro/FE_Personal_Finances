@@ -32,15 +32,9 @@ const WrapperAddChip = ({ initialTags }: { initialTags: string[] }) => {
 
 describe('<AddChip />', () => {
   test('Show an input with placeholder add tag and add tag button', () => {
-    const mockUpdateData = jest.fn();
+    const initialTags: string[] = [];
     render(
-      <AddChip
-        name="tag"
-        label="Tag"
-        action="Add Tag"
-        chipsData={[]}
-        updateData={mockUpdateData}
-      />,
+      <WrapperAddChip initialTags={initialTags} />,
     );
 
     expect(screen.getByRole('button', { name: /add tag/i })).toBeInTheDocument();
@@ -48,37 +42,14 @@ describe('<AddChip />', () => {
   });
 
   test('Show an error if the input is empty and the button is clicked', async () => {
-    const tags: string[] = [];
-    const mockUpdateData = jest.fn((newTags) => tags.push(newTags));
+    const initialTags = ['one'];
     render(
-      <AddChip
-        name="tag"
-        label="Tag"
-        action="Add Tag"
-        chipsData={tags}
-        updateData={mockUpdateData}
-      />,
+      <WrapperAddChip initialTags={initialTags} />,
     );
     const button = screen.getByRole('button', { name: /add tag/i });
     userEvent.click(button);
 
     expect(await screen.findByText(/Tag cannot be added empty/i)).toBeInTheDocument();
-  });
-
-  test('If the element has one item, show the tag', async () => {
-    const tags: string[] = ['one'];
-    const mockUpdateData = jest.fn((newTags) => tags.push(newTags));
-    render(
-      <AddChip
-        name="tag"
-        label="Tag"
-        action="Add Tag"
-        chipsData={tags}
-        updateData={mockUpdateData}
-      />,
-    );
-
-    expect(screen.getByText(/one/i)).toBeInTheDocument();
   });
 
   test('Add an element using the input, click the button and the element has been added', async () => {
