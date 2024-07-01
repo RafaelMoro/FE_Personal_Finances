@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
+
 import { AddChip } from './AddChip';
 
 beforeEach(() => {
@@ -22,7 +23,7 @@ test('Show an input with placeholder add tag and add tag button', () => {
   expect(screen.getByText(/no tags added/i)).toBeInTheDocument();
 });
 
-test('Add a tag and the array has changed', async () => {
+test('Add an element using the input, click the button and the element has been added', async () => {
   const tags: string[] = [];
   const mockUpdateData = jest.fn((newTags) => tags.push(newTags));
   render(
