@@ -1,13 +1,14 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Formik } from 'formik';
-import { useState } from 'react';
 import fetchMock from 'jest-fetch-mock';
 
 import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 import { CategoriesAndSubcategories } from './CategoriesAndSubcategories';
 import { Category } from '../../../../../globalInterface';
 import { TestCategorySchema } from '../../../../../validationsSchemas/records.schema';
-import { categoriesInitialState, mockCategories, userInitialState } from '../../Record.mocks';
+import {
+  categoriesInitialState, mockCategories, modifyCategoryState, userInitialState,
+} from '../../Record.mocks';
 
 interface CreateCategoryValues {
   category: string;
@@ -43,10 +44,10 @@ const createCategoriesResponse = {
 };
 
 const WrapperCategoriesAndSubcategories = ({ categoryToBeEdited = null }: { categoryToBeEdited?: Category | null }) => {
-  const [initialValues] = useState<CreateCategoryValues>({
-    category: '',
-    subCategory: '',
-  });
+  const initialValues: CreateCategoryValues = {
+    category: categoryToBeEdited ? categoryToBeEdited.categoryName : '',
+    subCategory: categoryToBeEdited ? categoryToBeEdited.subCategories[0] : '',
+  };
   const handleSubmit = jest.fn();
   return (
     <Formik
@@ -115,5 +116,16 @@ describe('<CategoriesAndSubcategories />', () => {
     await waitFor(() => {
       expect(fetchMock).toHaveBeenCalledTimes(3);
     });
+  });
+
+  test('Show category to be edited', async () => {
+    const categoryToBeEdited = mockCategories[1];
+    fetchMock.once(JSON.stringify(successfulResponseFetchCategories));
+    renderWithProviders(
+      <WrapperCategoriesAndSubcategories categoryToBeEdited={categoryToBeEdited} />,
+      { preloadedState: { categories: modifyCategoryState, user: userInitialState } },
+    );
+
+    expect(await screen.findByText(/savings/i)).toBeInTheDocument();
   });
 });

@@ -248,3 +248,7 @@ export const categoriesInitialState: CategoriesInitialState = {
   categoryNotSelected: true,
   categoriesLocalStorage: [],
 };
+
+export const modifyCategoryState: CategoriesInitialState = {
+  ...categoriesInitialState, currentCategory: mockCategories[1], categoryNotSelected: false,
+};
