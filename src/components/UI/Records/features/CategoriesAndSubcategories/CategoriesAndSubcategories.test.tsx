@@ -77,6 +77,8 @@ describe('<CategoriesAndSubcategories />', () => {
     fetchMock.resetMocks();
     jest.clearAllMocks();
     jest.spyOn(console, 'error').mockImplementation(() => {});
+    // Ignoring warning of mui of providing an out-of-range value into select category
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
   test('Show loading status on category and subcategory', () => {
     renderWithProviders(
@@ -119,10 +121,9 @@ describe('<CategoriesAndSubcategories />', () => {
   });
 
   test('Show category to be edited', async () => {
-    const categoryToBeEdited = mockCategories[1];
     fetchMock.once(JSON.stringify(successfulResponseFetchCategories));
     renderWithProviders(
-      <WrapperCategoriesAndSubcategories categoryToBeEdited={categoryToBeEdited} />,
+      <WrapperCategoriesAndSubcategories categoryToBeEdited={successfulResponseFetchCategories.data.categories[1]} />,
       { preloadedState: { categories: modifyCategoryState, user: userInitialState } },
     );
 
