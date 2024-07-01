@@ -57,6 +57,19 @@ describe('<AddIndebtedPerson />', () => {
     ).toBeInTheDocument();
   });
 
+  test('If the user clicks on the add person button, show that inputs are required to be filled', async () => {
+    render(
+      <WrapperAddIndebtedPerson onClose={onClose} indebtedPerson={null} />,
+    );
+
+    const button = screen.getByRole('button', { name: /add person/i });
+    userEvent.click(button);
+
+    expect(await screen.findByText(/full name is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/amount is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/amount paid is required/i)).toBeInTheDocument();
+  });
+
   test('If the user tries to put a name that was already exist, show error', async () => {
     const initialIndebtedPerson: IndebtedPeople[] = [{
       name: 'John', amount: '100', amountPaid: '0', isPaid: false,
