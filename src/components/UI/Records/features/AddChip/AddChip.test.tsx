@@ -8,13 +8,6 @@ beforeEach(() => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
 });
 
-/*
-* Missing tests:
-* - Test add one more element when the elements are already 7, when 8, show error
-* - Test that cannot add the same element twice
-* - Test delete chip
-*/
-
 const WrapperAddChip = ({ initialTags }: { initialTags: string[] }) => {
   const [tags, setTags] = useState<string[]>(initialTags);
   const updateTags = (newTags: string[]) => setTags(newTags);
