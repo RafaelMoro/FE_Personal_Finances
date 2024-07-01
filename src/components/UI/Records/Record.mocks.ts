@@ -1,4 +1,4 @@
-import { AnyRecord, IndebtedPeople } from '../../../globalInterface';
+import { AnyRecord, Category, IndebtedPeople } from '../../../globalInterface';
 import { AccountsInitialState } from '../../../redux/slices/Accounts/interface';
 import { AccountUI } from '../Account/Account.interface';
 import { GetMockExpenseProps } from './interface';
@@ -209,3 +209,20 @@ export const mockIndebtedPerson: IndebtedPeople = {
   amountPaid: '0',
   isPaid: false,
 };
+
+export const mockCategories: Category[] = [
+  {
+    _id: 'some id 1',
+    categoryName: 'Food and Drink',
+    icon: 'foodAndDrink',
+    subCategories: ['Restaurants', 'Groceries'],
+    __v: 0,
+  },
+  {
+    _id: 'some id 2',
+    categoryName: 'Savings',
+    icon: 'savings',
+    subCategories: ['Collectible', 'Retirement'],
+    __v: 0,
+  },
+];
