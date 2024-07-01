@@ -104,6 +104,7 @@ const CategoriesAndSubcategories = ({
       <>
         <SelectInput
           labelId="select-record-category"
+          dataTestId="select-record-category"
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
@@ -116,6 +117,7 @@ const CategoriesAndSubcategories = ({
         />
         <SelectInput
           labelId="select-record-subcategory"
+          dataTestId="select-record-subcategory"
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
@@ -149,6 +151,7 @@ const CategoriesAndSubcategories = ({
         labelId="select-record-subcategory"
         labelName="Subcategory"
         fieldName="subCategory"
+        dataTestId="select-record-subcategory"
         stringOptions={(categoriesState.currentCategory ?? CATEGORIES_RECORDS[0]).subCategories}
         colorOptions={[]}
         disabled={categoriesState.categoryNotSelected}

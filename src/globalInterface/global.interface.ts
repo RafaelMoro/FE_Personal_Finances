@@ -196,5 +196,6 @@ export interface SelectFormikProps {
   children: ReactNode;
   field: SelectFormikFieldProps;
   form: SelectFormikFormProps;
+  dataTestId: string;
   disabled?: boolean;
 }
