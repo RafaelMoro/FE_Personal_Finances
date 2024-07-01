@@ -1,4 +1,4 @@
-import { AnyRecord } from '../../../globalInterface';
+import { AnyRecord, IndebtedPeople } from '../../../globalInterface';
 import { AccountsInitialState } from '../../../redux/slices/Accounts/interface';
 import { AccountUI } from '../Account/Account.interface';
 import { GetMockExpenseProps } from './interface';
@@ -201,4 +201,11 @@ export const accountsInitialState: AccountsInitialState = {
   accountsLocalStorage: null,
   // This flag will let know records if they can fetch and give feedback to the user
   accountsFetchStatus: 'isUninitialized',
+};
+
+export const mockIndebtedPerson: IndebtedPeople = {
+  name: 'John',
+  amount: '100',
+  amountPaid: '0',
+  isPaid: false,
 };
