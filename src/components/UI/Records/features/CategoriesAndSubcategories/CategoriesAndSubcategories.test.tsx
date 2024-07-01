@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Formik } from 'formik';
 import { useState } from 'react';
 import fetchMock from 'jest-fetch-mock';
@@ -20,6 +20,24 @@ const successfulResponseFetchCategories = {
   },
   error: null,
   message: null,
+  success: true,
+  version: '2.0.0',
+};
+const emptyCategoriesResponse = {
+  data: {
+    categories: [],
+  },
+  error: null,
+  message: null,
+  success: true,
+  version: '2.0.0',
+};
+const createCategoriesResponse = {
+  data: {
+    categories: mockCategories,
+  },
+  error: null,
+  message: 'New category created',
   success: true,
   version: '2.0.0',
 };
@@ -80,5 +98,22 @@ describe('<CategoriesAndSubcategories />', () => {
     const subCategoryContainer = screen.getByTestId('select-record-subcategory');
     const subCategoryInput = subCategoryContainer.querySelector('input');
     expect(subCategoryInput).toBeDisabled();
+  });
+
+  test('If the categories fetched are empty, create new ones automatically', async () => {
+    fetchMock.mockResponse((request) => {
+      if (request.url.includes('create-local-categories')) {
+        return Promise.resolve(JSON.stringify(createCategoriesResponse));
+      }
+      return Promise.resolve(JSON.stringify(emptyCategoriesResponse));
+    });
+    renderWithProviders(
+      <WrapperCategoriesAndSubcategories />,
+      { preloadedState: { categories: categoriesInitialState, user: userInitialState } },
+    );
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    });
   });
 });
