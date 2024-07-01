@@ -1,6 +1,7 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
+import { useState } from 'react';
 import { AddChip } from './AddChip';
 
 beforeEach(() => {
@@ -13,6 +14,21 @@ beforeEach(() => {
 * - Test that cannot add the same element twice
 * - Test delete chip
 */
+
+const WrapperAddChip = ({ initialTags }: { initialTags: string[] }) => {
+  const [tags, setTags] = useState<string[]>(initialTags);
+  const updateTags = (newTags: string[]) => setTags(newTags);
+
+  return (
+    <AddChip
+      name="tag"
+      label="Tag"
+      action="Add Tag"
+      chipsData={tags}
+      updateData={updateTags}
+    />
+  );
+};
 
 describe('<AddChip />', () => {
   test('Show an input with placeholder add tag and add tag button', () => {
@@ -29,32 +45,6 @@ describe('<AddChip />', () => {
 
     expect(screen.getByRole('button', { name: /add tag/i })).toBeInTheDocument();
     expect(screen.getByText(/no tags added/i)).toBeInTheDocument();
-  });
-
-  test('Add an element using the input, click the button and the element has been added', async () => {
-    const tags: string[] = [];
-    const mockUpdateData = jest.fn((newTags) => tags.push(newTags));
-    render(
-      <AddChip
-        name="tag"
-        label="Tag"
-        action="Add Tag"
-        chipsData={tags}
-        updateData={mockUpdateData}
-      />,
-    );
-    expect(tags.length).toBe(0);
-
-    const input = screen.getByRole('textbox', {
-      name: /tag$/i,
-    });
-    const button = screen.getByRole('button', { name: /add tag/i });
-    userEvent.type(input, 'New tag');
-    userEvent.click(button);
-
-    await waitFor(() => {
-      expect(tags.length).toBe(1);
-    });
   });
 
   test('Show an error if the input is empty and the button is clicked', async () => {
@@ -89,5 +79,25 @@ describe('<AddChip />', () => {
     );
 
     expect(screen.getByText(/one/i)).toBeInTheDocument();
+  });
+
+  test('Add an element using the input, click the button and the element has been added', async () => {
+    const initialTags = ['one'];
+    render(
+      <WrapperAddChip initialTags={initialTags} />,
+    );
+
+    const input = screen.getByRole('textbox', {
+      name: /tag$/i,
+    });
+    const button = screen.getByRole('button', { name: /add tag/i });
+
+    userEvent.type(input, 'New tag');
+    expect(input).toHaveValue('New tag');
+
+    userEvent.click(button);
+
+    expect(await screen.findByText(/new tag/i)).toBeInTheDocument();
+    expect(await screen.findByText(/one/i)).toBeInTheDocument();
   });
 });
