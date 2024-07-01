@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { AddIndebtedPerson } from './AddIndebtedPerson';
@@ -68,6 +68,28 @@ describe('<AddIndebtedPerson />', () => {
     expect(await screen.findByText(/full name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/amount is required/i)).toBeInTheDocument();
     expect(screen.getByText(/amount paid is required/i)).toBeInTheDocument();
+  });
+
+  test('If the user fills the information, the add indebted person modal is closed', async () => {
+    render(
+      <WrapperAddIndebtedPerson onClose={onClose} indebtedPerson={null} />,
+    );
+
+    const fullNameInput = screen.getByRole('textbox', {
+      name: /full name/i,
+    });
+    const amountInput = screen.getByRole('textbox', { name: /amount$/i });
+    const amountPaidInput = screen.getByRole('textbox', { name: /amount paid/i });
+    const button = screen.getByRole('button', { name: /add person/i });
+
+    userEvent.type(fullNameInput, 'John');
+    userEvent.type(amountInput, '100');
+    userEvent.type(amountPaidInput, '0');
+    userEvent.click(button);
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
   });
 
   test('If the user tries to put a name that was already exist, show error', async () => {
