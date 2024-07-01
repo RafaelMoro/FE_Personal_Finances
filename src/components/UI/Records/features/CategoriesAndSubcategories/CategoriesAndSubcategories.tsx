@@ -115,7 +115,7 @@ const CategoriesAndSubcategories = ({
           disabled
         />
         <SelectInput
-          labelId="select-record-category"
+          labelId="select-record-subcategory"
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
@@ -134,7 +134,7 @@ const CategoriesAndSubcategories = ({
     <>
       <FormControl variant="standard">
         <InputLabel id="select-record-category">Category</InputLabel>
-        <Field name={categoriesFieldName} setNewCategory={setNewCategory} component={SelectCategory}>
+        <Field dataTestId="select-record-category" name={categoriesFieldName} setNewCategory={setNewCategory} component={SelectCategory}>
           {
             onlyCategories.map((option) => (
               <MenuItem key={`${categoriesFieldName}-${option}`} value={option}>{option}</MenuItem>
