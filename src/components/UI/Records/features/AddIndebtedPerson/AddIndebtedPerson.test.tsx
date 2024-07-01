@@ -130,4 +130,26 @@ describe('<AddIndebtedPerson />', () => {
       screen.getByRole('button', { name: /modify person/i }),
     ).toBeInTheDocument();
   });
+
+  test('If the user edits an indebted person, the modify indebted person modal is closed', async () => {
+    render(
+      <WrapperAddIndebtedPerson onClose={onClose} indebtedPerson={mockIndebtedPerson} modifyAction />,
+    );
+
+    const fullNameInput = screen.getByRole('textbox', {
+      name: /full name/i,
+    });
+    const amountInput = screen.getByRole('textbox', { name: /amount$/i });
+    const amountPaidInput = screen.getByRole('textbox', { name: /amount paid/i });
+    const button = screen.getByRole('button', { name: /modify person/i });
+
+    userEvent.type(fullNameInput, 'Beto');
+    userEvent.type(amountInput, '150');
+    userEvent.type(amountPaidInput, '0');
+    userEvent.click(button);
+
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalledTimes(1);
+    });
+  });
 });
