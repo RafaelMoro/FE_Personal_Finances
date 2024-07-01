@@ -90,4 +90,23 @@ describe('<AddChip />', () => {
 
     expect(await screen.findByText(/You cannot add more than 8 tags/i)).toBeInTheDocument();
   });
+
+  test('If there exist the element one, and the user tries to add it again, show error', async () => {
+    const initialTags = ['one'];
+    render(
+      <WrapperAddChip initialTags={initialTags} />,
+    );
+
+    const input = screen.getByRole('textbox', {
+      name: /tag$/i,
+    });
+    const button = screen.getByRole('button', { name: /add tag/i });
+
+    userEvent.type(input, 'one');
+    expect(input).toHaveValue('one');
+
+    userEvent.click(button);
+
+    expect(await screen.findByText(/one cannot be repeated. Try a different one\./i)).toBeInTheDocument();
+  });
 });
