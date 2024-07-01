@@ -100,4 +100,23 @@ describe('<AddChip />', () => {
     expect(await screen.findByText(/new tag/i)).toBeInTheDocument();
     expect(await screen.findByText(/one/i)).toBeInTheDocument();
   });
+
+  test('If there are 7 elements, and the user tries to add one more, show error', async () => {
+    const initialTags = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'];
+    render(
+      <WrapperAddChip initialTags={initialTags} />,
+    );
+
+    const input = screen.getByRole('textbox', {
+      name: /tag$/i,
+    });
+    const button = screen.getByRole('button', { name: /add tag/i });
+
+    userEvent.type(input, 'New tag');
+    expect(input).toHaveValue('New tag');
+
+    userEvent.click(button);
+
+    expect(await screen.findByText(/You cannot add more than 8 tags/i)).toBeInTheDocument();
+  });
 });
