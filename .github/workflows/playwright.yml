@@ -5,18 +5,44 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
+
+  avoid_redundancy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Redundant Builds
+        uses: styfle/cancel-workflow-action@0.9.1
+
+  build:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
+
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    - name: Checkout code
+      uses: actions/checkout@v2
+    
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
       with:
-        node-version: lts/*
+        version: 8
+
     - name: Install dependencies
-      run: npm install -g pnpm && pnpm install
+      run: pnpm install
+    - uses: actions/download-artifact@v2
+      with:
+        name: build
+        path: build
+    
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps
+      
+    - name: Start server
+      run: |
+        pnpm serve &
+        npx wait-on http://localhost:3000
+
     - name: Run Playwright tests
       run: pnpm exec playwright test
     - uses: actions/upload-artifact@v4
