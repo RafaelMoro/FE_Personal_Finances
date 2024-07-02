@@ -15,7 +15,7 @@ import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyFie
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
-} from '../../interface';
+} from '../../Account.interface';
 import { SelectInput } from '../../../SelectInput';
 import { AppIcon } from '../../../Icons';
 import {
@@ -174,6 +174,7 @@ const AccountDialog = ({
               />
               <CurrencyField setFieldValue={setFieldValue} amount={initialAmount.current} updateAmount={updateAmount} />
               <SelectInput
+                dataTestId="select-account-type"
                 labelId="select-account-type"
                 labelName="Type of Account"
                 fieldName="accountType"
@@ -182,6 +183,7 @@ const AccountDialog = ({
               />
               <SelectInput
                 labelId="select-background-color"
+                dataTestId="select-background-color"
                 labelName="Color:"
                 fieldName="backgroundColor"
                 stringOptions={[]}

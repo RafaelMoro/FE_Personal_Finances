@@ -9,7 +9,7 @@ import fetchMock from 'jest-fetch-mock';
 
 import { ResetPassword } from './ResetPassword';
 import { WrapperRedux } from '../../../tests/WrapperRedux';
-import { LOGIN_ROUTE } from '../../RoutesConstants';
+import { LANDING_ROUTE } from '../../RoutesConstants';
 
 beforeEach(() => {
   // having console error because of formik.
@@ -221,7 +221,7 @@ describe('Reset password page', () => {
     });
 
     test(`When the user resets his password successfully, then a success notification is shown,
-    then the user is redirected to the login page`, async () => {
+    then the user is redirected to the dashboard page`, async () => {
       const history = createMemoryHistory();
       fetchMock.once(JSON.stringify(successfulResponse));
       render(
@@ -248,7 +248,7 @@ describe('Reset password page', () => {
       });
 
       await waitFor(() => {
-        expect(history.location.pathname).toBe(LOGIN_ROUTE);
+        expect(history.location.pathname).toBe(LANDING_ROUTE);
       }, {
         timeout: 4000,
       });

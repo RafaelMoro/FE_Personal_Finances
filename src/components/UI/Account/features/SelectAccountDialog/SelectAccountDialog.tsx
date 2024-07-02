@@ -2,8 +2,8 @@ import {
   Dialog, List, ListItem as ListAccount, Divider,
 } from '@mui/material';
 
-import { AccountUI } from '../../interface';
-import { AccountDialogProps } from './interface';
+import { AccountUI } from '../../Account.interface';
+import { AccountDialogProps } from './SelectAccountDialog.interface';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
 import { updateSelectedAccount, updateAccounts } from '../../../../../redux/slices/Accounts/accounts.slice';
 import { ListAccountSelected, ListItemButtonContainer } from './SelectAccountDialog.styled';

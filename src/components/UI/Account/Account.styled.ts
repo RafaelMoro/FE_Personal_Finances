@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Typography } from '@mui/material';
 
-import { AccountDynamicStylesProps } from './interface';
+import { AccountDynamicStylesProps } from './Account.interface';
 import { AppColors } from '../../../styles';
 import { blinkAnimation } from '../../../styles/animations/blink';
 import { FormContainer } from '../../../styles/LoginModule.styled';

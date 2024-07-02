@@ -5,7 +5,7 @@ import { Select } from '../../../styles';
 import { SelectFormikProps } from '../../../globalInterface';
 
 const SelectFormik = ({
-  children, form, field, disabled = false,
+  children, form, field, dataTestId, disabled = false,
 }: SelectFormikProps) => {
   const { name, value } = field;
   const { setFieldValue } = form;
@@ -18,6 +18,7 @@ const SelectFormik = ({
       name={name}
       value={value}
       onChange={handleChange}
+      data-testid={dataTestId}
       disabled={disabled}
     >
       { children }

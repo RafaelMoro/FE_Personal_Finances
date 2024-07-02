@@ -4,7 +4,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import { RecordDrawerProps } from '../../interface';
-import { AllCategoryIcons } from '../../../Icons/interface';
+import { AllCategoryIcons } from '../../../Icons/Icons.interface';
 import { EDIT_RECORD_ROUTE } from '../../../../../pages/RoutesConstants';
 import { setRecordToBeModified } from '../../../../../redux/slices/Records/records.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../redux/hooks';
@@ -70,7 +70,7 @@ const RecordDrawer = ({
   };
 
   return (
-    <RecordDrawerContainer>
+    <RecordDrawerContainer data-testid="record-drawer">
       <DrawerDate variant="body2">
         {fullDate}
         {' '}

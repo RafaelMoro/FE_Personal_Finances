@@ -1,7 +1,7 @@
 import { LoaderStyled } from './HorizontalLoader.styled';
 
 const HorizontalLoader = () => (
-  <LoaderStyled>
+  <LoaderStyled data-testid="horizontal-loader">
     <div />
     <div />
     <div />

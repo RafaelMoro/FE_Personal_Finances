@@ -2,7 +2,7 @@ import { Divider } from '@mui/material';
 import { ListItemRecord, RecordSkeletonHolder, RecordLoadingBox } from '../../Records.styled';
 
 const RecordLoading = () => (
-  <RecordLoadingBox>
+  <RecordLoadingBox data-testid="record-loading-skeleton">
     <Divider />
     <ListItemRecord>
       <RecordSkeletonHolder />

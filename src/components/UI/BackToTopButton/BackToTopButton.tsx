@@ -1,6 +1,9 @@
 import { AppIcon } from '../Icons';
 import { IconButtonBackToTop } from './BackToTopButton.styled';
-import { BackToTopButtonProps } from './interface';
+
+interface BackToTopButtonProps {
+  scrollToTop: () => void;
+}
 
 /**
  * To use this component, use the hook: useBackToTopButton.

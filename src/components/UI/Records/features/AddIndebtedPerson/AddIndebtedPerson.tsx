@@ -11,7 +11,7 @@ import {
   FormControlLabel, TransparentButton, FlexContainer,
 } from '../../../../../styles';
 import { IndebtedPeople } from '../../../../../globalInterface';
-import { AddIndebtedPersonProps } from './interface';
+import { AddIndebtedPersonProps } from './AddIndebtedPerson.interface';
 import { Container } from './AddIndebtedPeople.styled';
 import { AppIcon } from '../../../Icons';
 import { CurrencyField } from '../../../../Other';

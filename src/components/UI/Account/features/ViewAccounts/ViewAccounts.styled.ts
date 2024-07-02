@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { PrimaryButton, SecondaryButton, responsiveBreakpoints } from '../../../../../styles';
-import { ViewAccountsStylesProps } from './interface';
+import { ViewAccountsStylesProps } from '../../Account.interface';
 
 export const AccountSectionBasicStyles = styled('aside', { shouldForwardProp: (props) => props !== 'hide' })`
   width: 100%;
