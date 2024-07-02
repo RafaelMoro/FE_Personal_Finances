@@ -27,5 +27,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Create .env file
+        run: |
+          echo "REACT_APP_LOCAL_STORAGE=BUDGET_MASTER" > .env
+
       - name: Run unit tests
         run: pnpm test
