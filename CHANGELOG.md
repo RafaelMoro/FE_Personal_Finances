@@ -1,3 +1,9 @@
+## v1.2.1 (2024-07-02)
+
+### Pull Requests
+[#30](https://github.com/RafaelMoro/FE_Personal_Finances/pull/30) | Add unit tests Action into the workflows
+
+
 ## v1.2.0 (2024-07-02)
 
 ### Pull Requests
