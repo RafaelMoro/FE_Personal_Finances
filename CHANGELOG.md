@@ -1,3 +1,9 @@
+## v1.2.0 (2024-07-02)
+
+### Pull Requests
+[#27](https://github.com/RafaelMoro/FE_Personal_Finances/pull/27) | Add unit tests
+
+
 ## v1.1.1 (2024-06-30)
 
 ### Pull Requests
