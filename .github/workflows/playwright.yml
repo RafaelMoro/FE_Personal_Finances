@@ -41,7 +41,8 @@ jobs:
       
     - name: Start server
       run: |
-        pnpm serve &
+        pnpm i serve -g
+        serve -s build &
         npx wait-on http://localhost:3000
 
     - name: Run Playwright tests
