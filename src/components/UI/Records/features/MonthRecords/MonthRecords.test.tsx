@@ -65,4 +65,54 @@ describe('<MonthRecords />', () => {
 
     expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
   });
+
+  test('Show month records on error status', () => {
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <MonthRecords
+          color="white"
+          openedAccordeon
+          titleMonthAccordeon="January"
+          totalExpense="$100.00"
+          totalIncome="$200.00"
+          onClickCb={jest.fn()}
+          accountId="1"
+          records={[]}
+          isGuestUser={false}
+          loading={false}
+          error
+          onEmptyCb={() => <div>No records found</div>}
+          onErrorCb={() => <div>Error</div>}
+          onLoadingCb={() => <div>Loading...</div>}
+        />
+      </Router>,
+    );
+
+    expect(screen.getByText(/Error/i)).toBeInTheDocument();
+  });
+
+  test('Show month records with no records found', () => {
+    renderWithProviders(
+      <Router location={history.location} navigator={history}>
+        <MonthRecords
+          color="white"
+          openedAccordeon
+          titleMonthAccordeon="January"
+          totalExpense="$100.00"
+          totalIncome="$200.00"
+          onClickCb={jest.fn()}
+          accountId="1"
+          records={[]}
+          isGuestUser={false}
+          loading={false}
+          error={false}
+          onEmptyCb={() => <div>No records found</div>}
+          onErrorCb={() => <div>Error</div>}
+          onLoadingCb={() => <div>Loading...</div>}
+        />
+      </Router>,
+    );
+
+    expect(screen.getByText(/No records found/i)).toBeInTheDocument();
+  });
 });
