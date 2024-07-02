@@ -1,20 +1,22 @@
 import { useNavigate } from 'react-router-dom';
 
-import { DASHBOARD_ROUTE, LOGIN_ROUTE } from '../pages/RoutesConstants';
+import { DASHBOARD_ROUTE, LANDING_ROUTE } from '../pages/RoutesConstants';
 import { LoginValues } from '../pages/LoginModule/Login/interface';
 import { SystemStateEnum } from '../enums';
 import { useNotification } from './useNotification';
 import { addToLocalStorage, saveInfoToLocalStorage } from '../utils';
-import { useAppDispatch } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import {
   signOff, signOn,
 } from '../redux/slices/User/user.slice';
-import { resetAccounts, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
+import { resetAccounts, resetAccountsLocalStorage, resetSelectedAccount } from '../redux/slices/Accounts/accounts.slice';
 import { ERROR_MESSAGE_GENERAL, ERROR_MESSAGE_UNAUTHORIZED, UNAUTHORIZED_ERROR } from '../constants';
-import { resetTotalBalanceRecords } from '../redux/slices/Records/records.slice';
+import { resetRecordsLocalStorage, resetRecordsLocalStorageSelectedAccount, resetTotalBalanceRecords } from '../redux/slices/Records/records.slice';
 import { useLoginMutation } from '../redux/budgetMaster.api';
 import { LOGIN_FIXED_CACHED_KEY } from '../redux/constants';
 import { GeneralError } from '../globalInterface';
+import { toggleSignedOn } from '../redux/slices/userInterface.slice';
+import { resetCategoriesLocalStorage } from '../redux/slices/Categories/categories.slice';
 
 const NOTIFICATION_TITLE = 'Error';
 const NOTIFICATION_DESCRIPTION = '';
@@ -45,6 +47,15 @@ const useLogin = () => {
   } = useNotification({
     title: NOTIFICATION_TITLE, description: NOTIFICATION_DESCRIPTION, status: NOTIFICATION_STATUS,
   });
+  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
+
+  const resetUserGuestLocalStorage = () => {
+    dispatch(resetRecordsLocalStorage());
+    dispatch(resetRecordsLocalStorageSelectedAccount());
+    dispatch(resetAccountsLocalStorage());
+    dispatch(resetCategoriesLocalStorage());
+    dispatch(signOff());
+  };
 
   const signOut = () => {
     // Reset redux state and local storage after sign out.
@@ -52,16 +63,24 @@ const useLogin = () => {
     dispatch(resetAccounts());
     dispatch(resetSelectedAccount());
     dispatch(resetTotalBalanceRecords());
+    if (hasSignedOn) dispatch(toggleSignedOn());
     saveInfoToLocalStorage({});
-    navigate(LOGIN_ROUTE);
     resetLoginIn();
+    navigate(LANDING_ROUTE);
   };
 
   const handleSubmit = async (values: LoginValues) => {
     try {
+      // First reset local storage if we have guest user logged in.
+      saveInfoToLocalStorage({});
+
       const user = await loginMutation({ values }).unwrap();
+      // Save user on redux state of userInfo
       dispatch(signOn(user));
-      addToLocalStorage(user);
+      if (!hasSignedOn) dispatch(toggleSignedOn());
+      // Reset all information of the guest user in redux
+      resetUserGuestLocalStorage();
+      addToLocalStorage({ newInfo: user });
       setTimeout(() => {
         navigate(DASHBOARD_ROUTE);
       }, 3000);
@@ -100,6 +119,7 @@ const useLogin = () => {
     updateDescription,
     updateStatus,
     signOut,
+    resetUserGuestLocalStorage,
     notificationInfo,
     notification,
     submitOnPressEnter,

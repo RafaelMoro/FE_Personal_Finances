@@ -1,3 +1,52 @@
+## v1.2.1 (2024-07-02)
+
+### Pull Requests
+[#30](https://github.com/RafaelMoro/FE_Personal_Finances/pull/30) | Add unit tests Action into the workflows
+
+
+## v1.2.0 (2024-07-02)
+
+### Pull Requests
+[#27](https://github.com/RafaelMoro/FE_Personal_Finances/pull/27) | Add unit tests
+
+
+## v1.1.1 (2024-06-30)
+
+### Pull Requests
+[#29](https://github.com/RafaelMoro/FE_Personal_Finances/pull/29) | Multiple Fixes: Error on edit transfer, select expenses drawer, wrong signed on status
+
+
+## v1.1.0 (2024-06-29)
+
+### Pull Requests
+[#28](https://github.com/RafaelMoro/FE_Personal_Finances/pull/28) | Fix: Header showing sign in and register buttons on mobile
+
+
+## v1.0.0 (2024-06-28)
+
+### Pull Requests
+[#20](https://github.com/RafaelMoro/FE_Personal_Finances/pull/20) | Feature/add guest user
+
+
+## v0.7.3 (2024-06-28)
+
+### Pull Requests
+[#26](https://github.com/RafaelMoro/FE_Personal_Finances/pull/26) | Fix push changes to develop
+
+
+## v0.6.1 (2024-04-10)
+
+### Pull Requests
+[#19](hhttps://github.com/RafaelMoro/FE_Personal_Finances/pull/19) | Add Landing page
+- Add assets for landing page
+- Add adjustments on header to be different on the landing page
+- Add new components for landing page: Feature and Card
+- Modify home route to be landing page and change login's route
+- Add hamburguer menu icon
+- Change brand logo name component to be adapted to the landing page
+- Add hamburguer menu into header
+- Add Drawer into header
+
 ## v0.6.1 (2024-04-10)
 
 ### Pull Requests

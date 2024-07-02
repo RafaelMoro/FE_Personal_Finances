@@ -19,7 +19,7 @@ import {
 import { CategoryIcon } from '../Icons';
 import { MAX_LENGTH_DESCRIPTION, MAX_LENGTH_TITLE } from './constants';
 import { MainRecordData } from './features/MainRecordDataBox';
-import { AllCategoryIcons } from '../Icons/interface';
+import { AllCategoryIcons } from '../Icons/Icons.interface';
 import { getRecordStatus } from '../../../utils/GetRecordStatus';
 
 const Record = ({ record, backgroundColor }: RecordProps) => {
@@ -47,6 +47,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   // A transfer may be an expense.
   const isExpense = typeof isPaid !== 'undefined';
   const isTransferIncome = typeOfRecord === 'transfer' && !isExpense;
+  const isTransferExpense = typeOfRecord === 'transfer' && isExpense;
   const status = getRecordStatus({ isPaid, typeOfRecord });
   const indebtedPeopleNames = indebtedPeople.map((person, index) => {
     if (index === indebtedPeople.length - 1) return person.name;
@@ -91,7 +92,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
   if (windowSize !== 'Mobile') {
     return (
       <>
-        <ListItemRecord onClick={showLongView}>
+        <ListItemRecord data-testid="record" onClick={showLongView}>
           <RecordDate variant="body2" align="center">
             { fullDate }
             { ' ' }
@@ -107,7 +108,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
               <PaymentStatusChip label={status} variant="filled" status={status} />
             </RecordStatusContainer>
             ) }
-            { (isTransferIncome) && (
+            { (isTransferIncome || isTransferExpense) && (
               <RecordStatusContainer>
                 <PaymentStatusChip label={status} variant="filled" status="Transfer" />
               </RecordStatusContainer>
@@ -176,7 +177,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
 
   return (
     <>
-      <ListItemRecord onClick={showLongView}>
+      <ListItemRecord data-testid="record" onClick={showLongView}>
         <RecordDate variant="body2" align="center">
           { fullDate }
           { ' ' }
@@ -193,7 +194,7 @@ const Record = ({ record, backgroundColor }: RecordProps) => {
             <PaymentStatusChip label={status} variant="filled" status={status} />
           </RecordStatusContainer>
           ) }
-          { (isTransferIncome) && (
+          { (isTransferIncome || isTransferExpense) && (
           <RecordStatusContainer>
             <PaymentStatusChip label={status} variant="filled" status="Transfer" />
           </RecordStatusContainer>

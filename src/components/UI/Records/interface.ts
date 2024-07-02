@@ -41,7 +41,7 @@ export interface CategoriesResponse extends Omit<GeneralResponse, 'data'> {
 }
 
 export interface SelectCategoryProps extends SelectFormikProps {
-  setNewCategory: (value: string) => void
+  setNewCategory: (value: string) => void;
 }
 
 // Check the IndebtedPeople array and fields that may be different.
@@ -99,4 +99,11 @@ export interface ListExpandableContainerProps {
 
 export interface SelectExpensesCellProps {
   noHorizontalPadding?: boolean;
+}
+
+export interface GetMockExpenseProps {
+  paidStatus?: boolean;
+  budgets?: string[];
+  tag?: string[];
+  shortName?: string;
 }

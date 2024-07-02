@@ -15,7 +15,7 @@ import { useCurrencyField } from '../../../../Other/CurrencyField/useCurrencyFie
 import { CreateAccountSchema } from '../../../../../validationsSchemas';
 import {
   CreateAccount, AccountDialogProps, AccountUI, ModifyAccountValues, ModifyAccountInitialValues, CreateAccountInitialValues,
-} from '../../interface';
+} from '../../Account.interface';
 import { SelectInput } from '../../../SelectInput';
 import { AppIcon } from '../../../Icons';
 import {
@@ -25,6 +25,8 @@ import { AccountDialogFormContainer } from '../../Account.styled';
 import { LoadingSpinner } from '../../../LoadingSpinner';
 import { CurrencyField } from '../../../../Other';
 import { useCreateAccountMutation, useModifyAccountMutation } from '../../../../../redux/slices/Accounts/actions';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
+import { useAccount } from '../../../../../hooks/useAccount';
 
 const initialValuesCreateAccount: CreateAccountInitialValues = {
   title: '',
@@ -39,6 +41,8 @@ const AccountDialog = ({
   accountAction,
   account,
 }: AccountDialogProps) => {
+  const { isGuestUser } = useGuestUser();
+  const { createAccountGuestUser, editAccountGuestUser } = useAccount();
   const { updateAmount, initialAmount } = useCurrencyField();
   const [createAccountMutation, { isLoading: isLoadingCreateAccount }] = useCreateAccountMutation();
   const [modifyAccountMutation, { isLoading: isLoadingModifyAccount }] = useModifyAccountMutation();
@@ -69,8 +73,22 @@ const AccountDialog = ({
       // Leaving default color black as the prop is still needed to create an account.
       const createAccountValues: CreateAccount = { ...values, amount: amountNumber, color: 'black' };
       const createAccountMutationProps: CreateAccountMutationProps = { values: createAccountValues, bearerToken };
-      await createAccountMutation(createAccountMutationProps).unwrap();
 
+      if (isGuestUser) {
+        createAccountGuestUser(createAccountValues);
+
+        // Show success notification
+        updateGlobalNotification({
+          newTitle: `Account ${values.title} created`,
+          newDescription: '',
+          newStatus: SystemStateEnum.Success,
+        });
+
+        onClose();
+        return;
+      }
+
+      await createAccountMutation(createAccountMutationProps).unwrap();
       // Show success notification
       updateGlobalNotification({
         newTitle: `Account ${values.title} created`,
@@ -97,6 +115,17 @@ const AccountDialog = ({
       const newAmount = initialAmount.current !== '' ? initialAmount.current : amount;
       const amountNumber = Number(newAmount);
       const accountModifiedValues: ModifyAccountValues = { ...rest, accountId, amount: amountNumber };
+
+      if (isGuestUser) {
+        editAccountGuestUser(accountModifiedValues);
+        // Show success notification
+        updateGlobalNotification({
+          newTitle: `Account ${accountModifiedValues.title} updated`,
+          newDescription: '',
+          newStatus: SystemStateEnum.Success,
+        });
+        onClose(); return;
+      }
       const modifyAccountMutationProps: ModifyAccountMutationProps = { values: accountModifiedValues, bearerToken };
       await modifyAccountMutation(modifyAccountMutationProps);
 
@@ -145,6 +174,7 @@ const AccountDialog = ({
               />
               <CurrencyField setFieldValue={setFieldValue} amount={initialAmount.current} updateAmount={updateAmount} />
               <SelectInput
+                dataTestId="select-account-type"
                 labelId="select-account-type"
                 labelName="Type of Account"
                 fieldName="accountType"
@@ -153,6 +183,7 @@ const AccountDialog = ({
               />
               <SelectInput
                 labelId="select-background-color"
+                dataTestId="select-background-color"
                 labelName="Color:"
                 fieldName="backgroundColor"
                 stringOptions={[]}

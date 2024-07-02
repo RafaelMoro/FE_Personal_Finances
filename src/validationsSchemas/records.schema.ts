@@ -17,15 +17,20 @@ export const IndebtedPeopleFormSchema = Yup.object({
   isPaid: indebtedIsPaid,
 });
 
-const createRecordValidation = {
-  shortName: shortNameValidation,
-  description: Yup.string().min(3, 'Description is too short').max(300, 'Description is too long'),
+const categorySubcategoryValidation = {
   category: stringRequired('Category is required'),
   subCategory: stringRequired('Subcategory is required'),
+};
+
+const createRecordValidation = {
+  ...categorySubcategoryValidation,
+  shortName: shortNameValidation,
+  description: Yup.string().min(3, 'Description is too short').max(300, 'Description is too long'),
   amount: stringRequired('Amount is required'),
 };
 
 export const CreateRecordSchema = Yup.object(createRecordValidation);
+export const TestCategorySchema = Yup.object(categorySubcategoryValidation);
 
 export const TransferSchema = Yup.object({
   ...createRecordValidation,

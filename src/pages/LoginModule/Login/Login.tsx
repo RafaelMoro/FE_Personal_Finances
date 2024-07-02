@@ -3,10 +3,11 @@ import {
   Formik, Form, Field,
 } from 'formik';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { REGISTER_ROUTE } from '../../RoutesConstants';
-import { useLogin } from '../../../hooks/useLogin';
-import { useSyncLoginInfo } from '../../../hooks/useSyncLoginInfo';
+import { useAppSelector } from '../../../redux/hooks';
+import { useGuestUser, useSyncLoginInfo, useLogin } from '../../../hooks';
 import { LoginSchema } from '../../../validationsSchemas';
 import { Notification } from '../../../components/UI';
 import { TogglePasswordAdornment } from '../../../components/UI/TogglePasswordAdornment';
@@ -17,15 +18,19 @@ import {
 } from './Login.styled';
 
 const Login = () => {
-  const { hasSignedOn, navigateToDashboard } = useSyncLoginInfo();
+  const location = useLocation();
+  const { navigateToDashboard } = useSyncLoginInfo();
+  const { isGuestUser } = useGuestUser();
   const {
     handleSubmit, handleShowNotification, notificationInfo, notification, submitOnPressEnter, loginSuccess, loginLoading,
   } = useLogin();
+  const hasSignedOn = useAppSelector((state) => state.userInterface.hasSignedOn);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const toggleShowPassword = () => setShowPassword(!showPassword);
+  const locationState = { prevPath: location.pathname };
 
   useEffect(() => {
-    if (hasSignedOn) {
+    if (hasSignedOn && !isGuestUser) {
       navigateToDashboard();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,6 +94,7 @@ const Login = () => {
                   submitForm={submitForm}
                   cancelButtonText="Register"
                   routeCancelButton={REGISTER_ROUTE}
+                  cancelStateLink={locationState}
                   useSecondaryButton
                   success={loginSuccess}
                   loading={loginLoading}

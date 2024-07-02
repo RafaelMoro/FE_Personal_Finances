@@ -1,4 +1,4 @@
-import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/interface';
+import { AccountUI, CreateAccount, ModifyAccountValues } from '../../../components/UI/Account/Account.interface';
 import { Account, GeneralResponse } from '../../../globalInterface';
 
 type AccountsState = 'isUninitialized' | 'loading' | 'success';
@@ -6,6 +6,7 @@ type AccountsState = 'isUninitialized' | 'loading' | 'success';
 export interface AccountsInitialState {
   accounts: AccountUI[] | null;
   accountSelected: AccountUI | null;
+  accountsLocalStorage: Account[] | null;
   accountsFetchStatus: AccountsState;
 }
 

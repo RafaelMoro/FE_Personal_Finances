@@ -1,6 +1,5 @@
 import { Field, Formik } from 'formik';
 
-import { AddChipProps } from './interface';
 import { TagOrBudgetSchema } from '../../../../../validationsSchemas/records.schema';
 import {
   ChipsContainer, ChipForm, AddChipButtonContainer, SecondaryButtonForm,
@@ -9,6 +8,14 @@ import {
   InputForm, Chip, FlexContainer,
 } from '../../../../../styles';
 import { RecordSubtitleText } from '../../Records.styled';
+
+interface AddChipProps {
+  name: string;
+  label: string
+  action: string;
+  chipsData?: string[];
+  updateData: (newInfo: string[]) => void;
+}
 
 const AddChip = ({
   name, label, action, chipsData = [], updateData,

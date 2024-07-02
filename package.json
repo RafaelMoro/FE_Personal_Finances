@@ -1,6 +1,6 @@
 {
   "name": "fe_personal_finances",
-  "version": "0.6.1",
+  "version": "1.2.1",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -35,6 +35,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom=src/**/*.{ts,tsx} --collectCoverageFrom=!src/**/*.{styled,interface,stories,constants,test}.{ts,tsx} --collectCoverageFrom=!src/**/index.ts",
+    "coverage:sample:single-file": "pnpm test Record.test.tsx -- --coverage --collectCoverageFrom=src/components/UI/Records/Record.tsx",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 7007 -s public",
     "build-storybook": "build-storybook -s public",

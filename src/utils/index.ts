@@ -7,3 +7,5 @@ export * from './handleResizeWindow';
 export * from './SymmetricDifferenceExpensesRelated';
 export * from './FormatCurrencyToNumber/formatCurrencyToNumber';
 export * from './sumTotalRecords';
+export * from './GetRecordStatus';
+export * from './SortByDate';

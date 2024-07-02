@@ -24,6 +24,7 @@ const SelectMonthYear = ({
       <SelectMonthYearBox>
         <SelectInput
           labelId="select-month"
+          dataTestId="select-month"
           labelName="Month"
           fieldName="month"
           stringOptions={MONTHS}
@@ -31,6 +32,7 @@ const SelectMonthYear = ({
         />
         <SelectInput
           labelId="select-year"
+          dataTestId="select-year"
           labelName="Year"
           fieldName="year"
           stringOptions={yearsArray}

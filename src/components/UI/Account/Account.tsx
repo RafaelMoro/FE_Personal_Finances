@@ -1,7 +1,7 @@
 import { IconButton, Typography } from '@mui/material';
 
 import { AppIcon } from '../Icons';
-import { AccountComponentProps } from './interface';
+import { AccountComponentProps } from './Account.interface';
 import {
   AccountContainerColoroued, AccountTitle, AccountIconsContainer, SelectedTextBox,
 } from './Account.styled';

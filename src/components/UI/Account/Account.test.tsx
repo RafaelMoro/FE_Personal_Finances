@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import { AccountUI } from './interface';
+import { AccountUI } from './Account.interface';
 import { Account } from './Account';
 
 const account: AccountUI = {

@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { useAppSelector } from '../redux/hooks';
-import { AccountActions, AccountToBeDeleted, AccountUI } from '../components/UI/Account/interface';
+import { AccountActions, AccountToBeDeleted, AccountUI } from '../components/UI/Account/Account.interface';
 import { ModalAction } from '../aliasType';
 
 const useAccountsActions = (): AccountActions => {

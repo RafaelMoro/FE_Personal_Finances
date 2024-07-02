@@ -4,8 +4,9 @@ import {
   Celebration, MonetizationOn,
   Fastfood, House, Engineering, Language, DirectionsCar,
   AccountBalance, MedicalInformation, FamilyRestroom, ShoppingCart,
+  Menu,
 } from '@mui/icons-material';
-import { AllCategoryIcons, AppIcons } from './interface';
+import { AllCategoryIcons, AppIcons } from './Icons.interface';
 import { AppColors } from '../../../styles';
 
 export const APP_ICONS: AppIcons = {
@@ -44,6 +45,10 @@ export const APP_ICONS: AppIcons = {
   VisibilityOff: {
     icon: VisibilityOff,
     defaultColor: AppColors.black,
+  },
+  HamburguerMenu: {
+    icon: Menu,
+    defaultColor: AppColors.white,
   },
 };
 

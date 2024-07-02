@@ -19,6 +19,7 @@ import { LoadingSpinner } from '../../../LoadingSpinner';
 import { useFetchCategoriesQuery } from '../../../../../redux/slices/Categories/categories.api';
 import { useCreateLocalCategoriesMutation } from '../../../../../redux/slices/User/actions/createUser';
 import { SelectCategory } from './SelectCategory';
+import { useGuestUser } from '../../../../../hooks/useGuestUser/useGuestUser';
 
 interface CategoriesAndSubcategoriesProps {
   errorCategory?: string;
@@ -32,17 +33,22 @@ const CategoriesAndSubcategories = ({
   errorCategory, errorSubcategory, touchedCategory, touchedSubCategory, categoryToBeEdited,
 }: CategoriesAndSubcategoriesProps) => {
   const dispatch = useAppDispatch();
+  const { isGuestUser } = useGuestUser();
+  const { updateGlobalNotification } = useNotification();
+  const categoriesLocalStorage = useAppSelector((state) => state.categories.categoriesLocalStorage);
   const userData = useAppSelector((state) => state.user.userInfo);
   const sub = userData?.user.sub ?? '';
   const bearerToken = userData?.bearerToken as string;
   const categoriesState = useAppSelector((state) => state.categories);
   const categoriesFieldName = 'category';
-  const { updateGlobalNotification } = useNotification();
   const [createLocalCategoriesMutation, { isLoading: isLoadingCreateCategories }] = useCreateLocalCategoriesMutation();
   const {
     currentData, isError, isFetching, isSuccess,
-  } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken });
-  const onlyCategories = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
+  } = useFetchCategoriesQuery({ bearerToken }, { skip: !bearerToken && isGuestUser });
+
+  const onlyCategoriesFetched = useMemo(() => (currentData ?? []).map((item) => item.categoryName), [currentData]);
+  const onlyCategoriesLocalStorage = categoriesLocalStorage.map((category) => category.categoryName);
+  const onlyCategories = isGuestUser ? onlyCategoriesLocalStorage : onlyCategoriesFetched;
 
   const handleCreateLocalCatergories = async () => {
     try {
@@ -58,19 +64,20 @@ const CategoriesAndSubcategories = ({
 
   useEffect(() => {
     // If categories array is empty, create local categories.
-    if (currentData && currentData.length === 0) {
+    if (currentData && currentData.length === 0 && !isGuestUser) {
       handleCreateLocalCatergories();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentData]);
+  }, [currentData, isGuestUser]);
 
   useEffect(() => {
-    if (categoryToBeEdited && isSuccess) {
-      const newCategory = (currentData ?? []).find((item) => item.categoryName === categoryToBeEdited.categoryName);
+    if (categoryToBeEdited && (isSuccess || isGuestUser)) {
+      const categories = isGuestUser ? categoriesLocalStorage : (currentData ?? []);
+      const newCategory = categories.find((item) => item.categoryName === categoryToBeEdited.categoryName);
       dispatch(updateCurrentCategory(newCategory));
       dispatch(isCategorySelected());
     }
-  }, [categoryToBeEdited, currentData, dispatch, isSuccess]);
+  }, [categoriesLocalStorage, categoryToBeEdited, currentData, dispatch, isGuestUser, isSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -84,18 +91,20 @@ const CategoriesAndSubcategories = ({
   }, [isError]);
 
   const setNewCategory = (value: string) => {
-    const selectedCategory = (currentData ?? []).find((item) => item.categoryName === value);
+    const allCategories = isGuestUser ? categoriesLocalStorage : (currentData ?? []);
+    const selectedCategory = allCategories.find((item) => item.categoryName === value);
     if (selectedCategory && categoriesState.currentCategory !== selectedCategory) {
       dispatch(updateCurrentCategory(selectedCategory));
       if (categoriesState.categoryNotSelected === true) dispatch(isCategorySelected());
     }
   };
 
-  if (isFetching || isLoadingCreateCategories) {
+  if ((isFetching || isLoadingCreateCategories) && !isGuestUser) {
     return (
       <>
         <SelectInput
           labelId="select-record-category"
+          dataTestId="select-record-category"
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
@@ -107,7 +116,8 @@ const CategoriesAndSubcategories = ({
           disabled
         />
         <SelectInput
-          labelId="select-record-category"
+          labelId="select-record-subcategory"
+          dataTestId="select-record-subcategory"
           labelName={(
             <FlexContainer justifyContent="center" gap={3}>
               <LoadingSpinner color={AppColors.primary} borderSize="0.3" />
@@ -126,9 +136,9 @@ const CategoriesAndSubcategories = ({
     <>
       <FormControl variant="standard">
         <InputLabel id="select-record-category">Category</InputLabel>
-        <Field name={categoriesFieldName} setNewCategory={setNewCategory} component={SelectCategory}>
+        <Field dataTestId="select-record-category" name={categoriesFieldName} setNewCategory={setNewCategory} component={SelectCategory}>
           {
-            (onlyCategories ?? []).map((option) => (
+            onlyCategories.map((option) => (
               <MenuItem key={`${categoriesFieldName}-${option}`} value={option}>{option}</MenuItem>
             ))
           }
@@ -141,6 +151,7 @@ const CategoriesAndSubcategories = ({
         labelId="select-record-subcategory"
         labelName="Subcategory"
         fieldName="subCategory"
+        dataTestId="select-record-subcategory"
         stringOptions={(categoriesState.currentCategory ?? CATEGORIES_RECORDS[0]).subCategories}
         colorOptions={[]}
         disabled={categoriesState.categoryNotSelected}

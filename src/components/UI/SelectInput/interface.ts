@@ -11,6 +11,7 @@ export interface SelectInputProps {
   labelName: string | ReactNode;
   fieldName: string;
   stringOptions: string[];
+  dataTestId: string;
   colorOptions?: TextColors[] | BackgroundColors[];
   selectInputColors?: boolean;
   disabled?: boolean;
