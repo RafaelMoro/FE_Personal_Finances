@@ -8,7 +8,7 @@ import { renderWithProviders } from '../../../../../tests/CustomWrapperRedux';
 
 describe('<MonthRecords />', () => {
   const history = createMemoryHistory();
-  test('Show month records', () => {
+  test('Show month records with month, total expenses, total incomes, and the records', () => {
     renderWithProviders(
       <Router location={history.location} navigator={history}>
         <MonthRecords
